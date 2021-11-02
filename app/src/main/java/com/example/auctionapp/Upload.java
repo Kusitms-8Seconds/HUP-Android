@@ -11,11 +11,15 @@ import androidx.fragment.app.Fragment;
 
 public class Upload extends Fragment {
 
+    ViewGroup viewGroup;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.activity_upload, container, false);
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_upload, container, false);
+
+        return viewGroup;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
