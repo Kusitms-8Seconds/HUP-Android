@@ -15,5 +15,17 @@
         android:text="myPage"
         android:textSize="100dp"/>
 
+    <TextView
+        android:id="@+id/goLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인하기" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGOUT" />
+
 
 </LinearLayout>
