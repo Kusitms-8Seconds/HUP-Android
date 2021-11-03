@@ -73,41 +73,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //일반 로그인
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        edit_id = (EditText) findViewById(R.id.edit_id);
-        edit_pw = (EditText) findViewById(R.id.edit_pw);
-        CheckBox autochecked = (CheckBox) findViewById(R.id.autoLogin);
-        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = auto.edit();
-        //자동 로그인 체크 여부
-        Boolean checked = auto.getBoolean("checked", false);
-        if(checked == true) {
-            onBackPressed();
-        }
-        else {
-            //자동로그인 체크되어있을 때
-            autochecked.setOnClickListener(new CheckBox.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editor.putBoolean("checked", true);
-                    editor.commit();
-                }
-            }) ;
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String id = edit_id.getText().toString();
-                    String pw = edit_pw.getText().toString();
-                    editor.putString("id", id);
-                    editor.putString("pw", pw);
-                    editor.commit();
-
-                    onBackPressed();
-                }
-            });
-        }
-
         //카카오 로그인
         btn_kakao_login = (Button)findViewById(R.id.btn_kakao_login);
         btn_kakao_login.setOnClickListener(new View.OnClickListener() {
