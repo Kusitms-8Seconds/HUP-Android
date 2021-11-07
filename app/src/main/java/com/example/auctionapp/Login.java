@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity {
                 // 앱에 필요한 사용자 데이터를 요청하도록 로그인 옵션을 설정한다.
                 // DEFAULT_SIGN_IN parameter는 유저의 ID와 기본적인 프로필 정보를 요청하는데 사용된다.
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com")
                         .requestEmail() // email addresses도 요청함
                         .build();
 
@@ -162,6 +163,7 @@ public class Login extends AppCompatActivity {
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
+                String idToken = acct.getIdToken();
 
                 Log.d(TAG, "handleSignInResult:personName "+personName);
                 Log.d(TAG, "handleSignInResult:personGivenName "+personGivenName);
@@ -169,6 +171,7 @@ public class Login extends AppCompatActivity {
                 Log.d(TAG, "handleSignInResult:personId "+personId);
                 Log.d(TAG, "handleSignInResult:personFamilyName "+personFamilyName);
                 Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
+                Log.d(TAG, "handleSignInResult:idToken "+idToken);
 
                 onBackPressed();
             }
@@ -212,6 +215,7 @@ public class Login extends AppCompatActivity {
                         public void onSuccess(MeV2Response result) {
                             onBackPressed();
                             Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
+
 
                             UserAccount kakaoAccount = result.getKakaoAccount();
                             if (kakaoAccount != null) {
