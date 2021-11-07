@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="40dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent"
+    android:layout_margin="50px"
+    android:orientation="vertical">
 
-    <Button
+    <ImageView
         android:id="@+id/btn_kakao_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFC107"
-        android:drawableTint="#1E0404"
-        android:text="KAKAO LOGIN" />
+        android:layout_width="915.81px"
+        android:layout_height="136.13px"
+        app:layout_constraintBottom_toTopOf="@id/btn_google_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/kakaologinbut" />
 
-    <Button
+    <ImageView
         android:id="@+id/btn_google_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="915.81px"
+        android:layout_height="136.13px"
         android:backgroundTint="#3F51B5"
-        android:text="GOOGLE LOGIN" />
+        android:text="GOOGLE LOGIN"
+        app:layout_constraintBaseline_toTopOf="@drawable/naverloginbut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_kakao_login"
+        app:srcCompat="@drawable/googleloginbut" />
 
     <ImageView
         android:id="@+id/btn_naver_login"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_width="915.81px"
+        android:layout_height="136.13px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_google_login"
         app:srcCompat="@drawable/naverloginbut" />
 
     <TextView
         android:id="@+id/goSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원가입하기" />
+        android:layout_margin="40dp"
+        android:fontFamily="sans-serif-black"
+        android:text="이메일로 로그인 / 회원가입"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_naver_login" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

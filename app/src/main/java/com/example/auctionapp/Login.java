@@ -55,8 +55,8 @@ import com.nhn.android.naverlogin.OAuthLoginHandler;
 public class Login extends AppCompatActivity {
 
     Button loginBtn;
-    Button btn_kakao_login;
-    Button btn_google_login;
+    ImageView btn_kakao_login;
+    ImageView btn_google_login;
     ImageView btn_naver_login;
     EditText edit_id;
     EditText edit_pw;
@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //카카오 로그인
-        btn_kakao_login = (Button)findViewById(R.id.btn_kakao_login);
+        btn_kakao_login = (ImageView)findViewById(R.id.btn_kakao_login);
         btn_kakao_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,7 @@ public class Login extends AppCompatActivity {
             }
         });
         //구글 로그인
-        btn_google_login = (Button) findViewById(R.id.btn_google_login);
+        btn_google_login = (ImageView) findViewById(R.id.btn_google_login);
         btn_google_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

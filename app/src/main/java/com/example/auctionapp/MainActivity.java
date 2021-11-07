@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }else if (id == R.id.mypage){
                 fragment = new Mypage();
             }else if (id == R.id.itemlist){
-                fragment = new Fragment1();
+                fragment = new ItemList();
             }
 
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
