@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new Upload();
             }else if (id == R.id.mypage){
                 fragment = new Mypage();
-            }else if (id == R.id.fragment1){
+            }else if (id == R.id.itemlist){
                 fragment = new Fragment1();
             }
 
