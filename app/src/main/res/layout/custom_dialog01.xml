@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="820px"
+    android:layout_height="617px"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_edge">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="157px"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="경매 참여가\n완료되었습니다!"
+        android:textColor="#000000"
+        android:textSize="50px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/goHome"
+        android:layout_width="324px"
+        android:layout_height="120px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/check_bidlist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        app:srcCompat="@drawable/gohome" />
+
+    <ImageView
+        android:id="@+id/check_bidlist"
+        android:layout_width="324px"
+        android:layout_height="120px"
+        android:layout_marginRight="61px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/goHome"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        app:srcCompat="@drawable/checkbitlist" />
+</androidx.constraintlayout.widget.ConstraintLayout>
