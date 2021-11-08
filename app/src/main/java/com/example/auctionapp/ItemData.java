@@ -1,7 +1,7 @@
 package com.example.auctionapp;
 
 public class ItemData {
-    int imageURL;       //나중에 수정
+    int imageURL;       //나중에 수정 (int -> string url)
     String itemName;
     int itemPrice;
     String endTime;
