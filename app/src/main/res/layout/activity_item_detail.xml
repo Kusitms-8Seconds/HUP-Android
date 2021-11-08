@@ -22,10 +22,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="938px"
-                android:src="@drawable/testitemimage"/>
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/goback"
+                    android:layout_width="60px"
+                    android:layout_height="52px"
+                    android:layout_marginTop="99px"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="938px"
+                    android:src="@drawable/testitemimage"
+                    tools:layout_editor_absoluteY="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="생활용품" />
+                    android:text="카테고리" />
 
                 <TextView
                     android:id="@+id/itemName"
@@ -76,9 +95,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:fontFamily="sans-serif-black"
-                    android:text="실내자전거"
-                    android:textSize="48px"
-                    android:textColor="#000000"/>
+                    android:text="제품 이름"
+                    android:textColor="#000000"
+                    android:textSize="48px" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0"
-                            android:text="10,000"
+                            android:text="00000"
                             android:textColor="#000000"
                             android:textSize="40px" />
 
