@@ -15,6 +15,7 @@
         <activity android:name=".Login" />
         <activity android:name=".ItemDetail" />
         <activity android:name=".BidPage" />
+        <activity android:name=".UploadPage" />
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />

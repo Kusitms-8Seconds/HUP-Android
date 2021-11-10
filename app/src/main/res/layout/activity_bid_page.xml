@@ -178,7 +178,7 @@
             android:layout_width="670px"
             android:layout_height="120px"
             android:layout_marginLeft="50px"
-            android:background="@drawable/searchview_background"
+            android:background="@drawable/item_box"
             android:ems="10"
             android:inputType="number"
             android:digits="0123456789"

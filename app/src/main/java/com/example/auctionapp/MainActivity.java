@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.chat){
                 fragment = new Chat();
             }else if (id == R.id.upload){
-                fragment = new Upload();
+                fragment = new UploadFragment();
             }else if (id == R.id.mypage){
                 fragment = new Mypage();
             }else if (id == R.id.itemlist){
