@@ -2,7 +2,6 @@ package com.example.auctionapp;
 
 import android.app.DatePickerDialog;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,12 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static android.content.ContentValues.TAG;
 
 public class UploadPage extends AppCompatActivity {
 
@@ -64,7 +60,8 @@ public class UploadPage extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent tt = new Intent(UploadPage.this, MainActivity.class);
+                startActivity(tt);
             }
         });
 
@@ -119,8 +116,23 @@ public class UploadPage extends AppCompatActivity {
             }
         });
 
+        // category
+        LinearLayout selectCategory = (LinearLayout) findViewById(R.id.selectCategoryLayout);
+        selectCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tt = new Intent(UploadPage.this, SelectCategory.class);
+                startActivity(tt);
+            }
+        });
+        TextView itemCategory = (TextView) findViewById(R.id.selectItemCategory);
+        Intent getCategoryIntent = getIntent();
+        String itemCT = getCategoryIntent.getStringExtra("itemCategory");
+        itemCategory.setText(itemCT);
+
     }
 
+    // select image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
