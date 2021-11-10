@@ -87,6 +87,7 @@ public class UploadPage extends AppCompatActivity {
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, myDatePicker,
                         cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.show();
             }
         });
