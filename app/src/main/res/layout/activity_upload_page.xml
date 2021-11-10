@@ -76,11 +76,42 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="320px"
-                android:layout_height="320px"
-                app:srcCompat="@drawable/choose_image" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="320px"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/chooseImage"
+                        android:layout_width="320px"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/choose_image" />
+
+                    <TextView
+                        android:id="@+id/selectedImageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="70px"
+                        android:text="0/10"
+                        app:layout_constraintBottom_toBottomOf="@id/chooseImage"
+                        app:layout_constraintEnd_toEndOf="@id/chooseImage"
+                        app:layout_constraintStart_toStartOf="@id/chooseImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/selectedImageRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView4"
