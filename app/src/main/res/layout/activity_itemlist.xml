@@ -8,7 +8,7 @@
     android:layout_marginRight="50px"
     tools:context=".ItemList">
 
-    <androidx.appcompat.widget.SearchView
+    <android.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="980px"
         android:layout_height="116px"

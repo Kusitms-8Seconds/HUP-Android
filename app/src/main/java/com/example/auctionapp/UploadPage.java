@@ -92,7 +92,7 @@ public class UploadPage extends AppCompatActivity {
             }
         });
 
-        // 물건 상태 - 왜 안 눌리지
+        // 물건 상태
         ratingbar = findViewById(R.id.itemStateRatingBar);
         ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
