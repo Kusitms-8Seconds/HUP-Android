@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -45,17 +46,23 @@ public class MainActivity extends AppCompatActivity {
         if (fragment == null) {
             if (id == R.id.home) {
                 fragment = new Home();
+                fragmentTransaction.add(R.id.content_layout, fragment, tag);
             } else if (id == R.id.chat){
                 fragment = new Chat();
+                fragmentTransaction.add(R.id.content_layout, fragment, tag);
             }else if (id == R.id.upload){
-                fragment = new UploadFragment();
+                Intent intent = new Intent(MainActivity.this, UploadPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }else if (id == R.id.mypage){
                 fragment = new Mypage();
+                fragmentTransaction.add(R.id.content_layout, fragment, tag);
             }else if (id == R.id.itemlist){
                 fragment = new ItemList();
+                fragmentTransaction.add(R.id.content_layout, fragment, tag);
             }
 
-            fragmentTransaction.add(R.id.content_layout, fragment, tag);
+
         } else {
             fragmentTransaction.show(fragment);
         }

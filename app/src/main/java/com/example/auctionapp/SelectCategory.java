@@ -40,6 +40,7 @@ public class SelectCategory extends AppCompatActivity {
                 String category = (String) parent.getItemAtPosition(position);
                 Intent intent = new Intent(SelectCategory.this, UploadPage.class);
                 intent.putExtra("itemCategory", category);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         }) ;

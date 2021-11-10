@@ -61,6 +61,7 @@ public class UploadPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent tt = new Intent(UploadPage.this, MainActivity.class);
+                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tt);
             }
         });

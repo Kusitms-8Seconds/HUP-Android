@@ -111,7 +111,9 @@ public class Login extends AppCompatActivity {
                 GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(Login.this);
                 // 로그인 되어있는 경우
                 if (gsa != null) {
-                    onBackPressed();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 } else
                     googleSignIn();
             }
@@ -181,7 +183,9 @@ public class Login extends AppCompatActivity {
                 Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
                 Log.d(TAG, "handleSignInResult:idToken "+idToken);
 
-                onBackPressed();
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -221,7 +225,7 @@ public class Login extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(MeV2Response result) {
-                            onBackPressed();
+//                            onBackPressed();
                             // kakao id token?
                             Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
 //                            Log.i("KAKAO_API", "사용자 토큰: " + );
@@ -264,6 +268,9 @@ public class Login extends AppCompatActivity {
                                 }
 
                             }
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         }
                     });
         }

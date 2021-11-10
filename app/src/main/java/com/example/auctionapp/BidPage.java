@@ -64,8 +64,8 @@ public class BidPage extends AppCompatActivity {
                 dialog01.dismiss();
 
                 Intent intent = new Intent(BidPage.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                BidPage.this.finish();
             }
         });
         // 참여내역 확인 버튼
