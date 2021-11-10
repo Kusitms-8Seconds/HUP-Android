@@ -7,10 +7,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
+import static androidx.annotation.Dimension.DP;
+
 public class ItemDetail extends AppCompatActivity {
+
+    private ArrayList<Integer> itemImageList;
+    private static final int DP = 24;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +46,28 @@ public class ItemDetail extends AppCompatActivity {
             }
         });
 
+        // viewpager
+        this.initializeImageData();
+
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setClipToPadding(false);
+        // viewpager detail
+        float density = getResources().getDisplayMetrics().density;
+        int margin = (int) (DP * density);
+        viewPager.setPadding(margin, 0, margin, 0);
+        viewPager.setPageMargin(margin/2);
+
+        viewPager.setAdapter(new ViewPagerAdapter(this, itemImageList));
+
+    }
+    public void initializeImageData()
+    {
+        itemImageList = new ArrayList();
+
+        itemImageList.add(R.drawable.testitemimage);
+        itemImageList.add(R.drawable.testitemimage);
+        itemImageList.add(R.drawable.testitemimage);
+        itemImageList.add(R.drawable.testitemimage);
+        itemImageList.add(R.drawable.testitemimage);
     }
 }

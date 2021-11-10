@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,11 +42,13 @@ public class BidPage extends AppCompatActivity {
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.custom_dialog01);
 
+        EditText editPrice = (EditText) findViewById(R.id.editPrice);
         ImageView bidButton = (ImageView) findViewById(R.id.bidbutton);
         bidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialog();
+                String price = editPrice.getText().toString();
             }
         });
     }
@@ -62,7 +65,7 @@ public class BidPage extends AppCompatActivity {
 
                 Intent intent = new Intent(BidPage.this, MainActivity.class);
                 startActivity(intent);
-
+                BidPage.this.finish();
             }
         });
         // 참여내역 확인 버튼

@@ -31,9 +31,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.kakao.auth.ApiResponseCallback;
+import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
+import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -214,6 +217,7 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onSuccess(MeV2Response result) {
                             onBackPressed();
+                            // kakao id token?
                             Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
 
 
@@ -248,6 +252,7 @@ public class Login extends AppCompatActivity {
                                 } else {
                                     // 프로필 획득 불가
                                 }
+
                             }
                         }
                     });

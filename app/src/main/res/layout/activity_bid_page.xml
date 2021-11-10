@@ -143,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@id/l3" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/auctionState"
             android:layout_width="180px"
             android:layout_height="180px"
             app:layout_constraintBottom_toBottomOf="@id/c3"
@@ -180,8 +180,9 @@
             android:layout_marginLeft="50px"
             android:background="@drawable/searchview_background"
             android:ems="10"
-            android:hint="가격을 입력해주세요"
-            android:inputType="textPersonName"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:hint="가격을 입력해주세요.(숫자만 입력)"
             android:textSize="38px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bidbutton"
