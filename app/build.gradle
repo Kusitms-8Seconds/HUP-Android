@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
     // kakao login
     implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+    implementation "com.kakao.sdk:v2-user:2.5.0"
     //google login
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     //네이버 로그인

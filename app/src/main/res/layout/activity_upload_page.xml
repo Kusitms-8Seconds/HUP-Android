@@ -145,15 +145,31 @@
                 android:textColor="#000000"
                 android:textSize="44px" />
 
-            <EditText
-                android:id="@+id/editItemCategory"
-                android:layout_width="980px"
-                android:layout_height="145px"
-                android:background="@drawable/item_box"
-                android:ems="10"
-                android:hint="카테고리를 선택하세요."
-                android:inputType="textPersonName"
-                android:paddingLeft="39px" />
+            <LinearLayout
+                android:id="@+id/selectCategoryLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/selectItemCategory"
+                    android:layout_width="900px"
+                    android:layout_height="145px"
+                    android:background="@drawable/item_box"
+                    android:paddingLeft="39px"
+                    android:paddingTop="39px"
+                    android:text="카테고리를 선택하세요."
+                    android:textSize="44px" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginTop="30px"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/next" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView6"

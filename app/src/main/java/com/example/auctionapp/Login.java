@@ -36,8 +36,11 @@ import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
+import com.kakao.auth.api.AuthApi;
 import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
+import com.kakao.sdk.auth.AuthApiClient;
+import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
@@ -75,6 +78,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        KakaoSdk.init(this, getString(R.string.kakao_app_key));
 
         //카카오 로그인
         btn_kakao_login = (ImageView)findViewById(R.id.btn_kakao_login);
@@ -219,6 +224,7 @@ public class Login extends AppCompatActivity {
                             onBackPressed();
                             // kakao id token?
                             Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
+//                            Log.i("KAKAO_API", "사용자 토큰: " + );
 
 
                             UserAccount kakaoAccount = result.getKakaoAccount();
@@ -241,10 +247,14 @@ public class Login extends AppCompatActivity {
                                 // 프로필
                                 Profile profile = kakaoAccount.getProfile();
 
+
                                 if (profile != null) {
+
                                     Log.d("KAKAO_API", "nickname: " + profile.getNickname());
                                     Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
                                     Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
+                                    Log.d("KAKAO_API", "accessToken: "+  AuthApiClient.getInstance().getTokenManagerProvider()
+                                            .getManager().getToken().getAccessToken());
 
                                 } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 프로필 정보 획득 가능
