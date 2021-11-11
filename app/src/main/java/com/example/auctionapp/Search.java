@@ -1,12 +1,16 @@
 package com.example.auctionapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +24,15 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        ImageView goBack = (ImageView) findViewById(R.id.goBack);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        // 최근 검색어 db
         DBHelper helper;
         SQLiteDatabase db;
         helper = new DBHelper(Search.this, "newdb.db", null, 1);
@@ -27,14 +40,19 @@ public class Search extends AppCompatActivity {
         helper.onCreate(db);
 
         SearchView searchView = (SearchView) findViewById(R.id.searchView2);
-        // SearchView 검색어 입력/검색 이벤트 처리
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(Search.this, "[검색버튼클릭] 검색어 = "+query, Toast.LENGTH_LONG).show();
+//                Toast.makeText(Search.this, "[검색버튼클릭] 검색어 = "+query, Toast.LENGTH_LONG).show();
                 ContentValues values = new ContentValues();
                 values.put("word", query);
                 db.insert("recentsearch", null, values);
+                // 화면 새로고침
+                finish();
+                overridePendingTransition(0, 0);
+                Intent intent = getIntent();
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
             }
 
@@ -52,12 +70,29 @@ public class Search extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         Cursor c = db.query("recentsearch",null,null,null,null,null,null,null);
-        while(c.moveToNext()){
-            String temp = c.getString(c.getColumnIndex("word"));    //빨간줄 왜 뜨지
+        int total = c.getCount();
+        c.moveToPosition(total);    // db 거꾸로 읽기
+        while(c.moveToPrevious()){
+            String temp = c.getString(c.getColumnIndex("word"));    //빨간줄?
             searchwordList.add(temp);
             adapter.notifyDataSetChanged();
         }
 
+        // 전체삭제
+        TextView removeAll = (TextView) findViewById(R.id.removeAll);
+        removeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String sql3 = "DELETE FROM recentsearch;";
+                db.execSQL(sql3);
+                // 화면 새로고침
+                finish();
+                overridePendingTransition(0, 0);
+                Intent intent = getIntent();
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
 
     }
 }

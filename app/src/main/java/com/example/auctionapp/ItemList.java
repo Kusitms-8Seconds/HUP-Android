@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class ItemList extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        SearchView searchView = (SearchView) viewGroup.findViewById(R.id.searchView);
+        ImageView searchView = (ImageView) viewGroup.findViewById(R.id.searchView);
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

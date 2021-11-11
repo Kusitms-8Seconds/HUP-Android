@@ -1,25 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginStart="50px"
+    android:layout_marginTop="67px"
+    android:layout_marginEnd="50px">
+
+    <ImageView
+        android:id="@+id/goBack"
+        android:layout_width="60px"
+        android:layout_height="52px"
+        android:layout_marginTop="32px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow" />
 
     <android.widget.SearchView
         android:id="@+id/searchView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="880px"
+        android:layout_height="116px"
+        android:layout_marginLeft="40px"
+        android:background="@drawable/searchview_background"
+        app:iconifiedByDefault="false"
+        android:queryHint="검색어를 입력해주세요."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68px"
+        android:layout_marginBottom="30px"
+        android:fontFamily="sans-serif-black"
+        android:text="최근 검색어"
+        android:textSize="42px"
+        app:layout_constraintBottom_toTopOf="@id/searchWordList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView2" />
+
+    <TextView
+        android:id="@+id/removeAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68px"
+        android:fontFamily="sans-serif-black"
+        android:text="전체 삭제"
+        android:textColor="#0505E8"
+        android:textSize="42px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView2" />
 
     <ListView
         android:id="@+id/searchWordList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/searchView2"
+        android:layout_height="428px"
+        android:divider="#00000000"
+        android:dividerHeight="0px"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
