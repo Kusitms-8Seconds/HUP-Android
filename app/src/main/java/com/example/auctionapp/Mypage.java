@@ -1,17 +1,11 @@
 package com.example.auctionapp;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,24 +23,6 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.concurrent.Executor;
-
-import static android.graphics.Color.GRAY;
-
-// 리스트 뷰에 출력할 항목
-class MyItem {
-    int icon;
-    String name;
-
-    MyItem(int icon, String name) {
-        this.icon = icon;
-        this.name = name;
-    }
-}
-
 public class Mypage extends Fragment {
 
     ViewGroup viewGroup;
@@ -56,8 +32,6 @@ public class Mypage extends Fragment {
 
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
-
-    ArrayList<MyItem> arItem;
 
     @Nullable
     @Override
@@ -99,7 +73,7 @@ public class Mypage extends Fragment {
                 startActivity(intent);
             }
         });
-        // 경매 참역 내역
+        // 경매 참여 내역
         TextView goAuctionHistory = (TextView) viewGroup.findViewById(R.id.auc_history);
         goAuctionHistory.setOnClickListener(new View.OnClickListener() {
             @Override
