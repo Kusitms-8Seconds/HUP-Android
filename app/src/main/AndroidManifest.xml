@@ -12,24 +12,26 @@
         android:roundIcon="@mipmap/hup_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AuctionApp">
-        <activity android:name=".SignUp"></activity>
-        <activity android:name=".Login" />
-        <activity android:name=".ItemDetail" />
-        <activity android:name=".BidPage" />
-        <activity android:name=".UploadPage" />
-        <activity android:name=".SelectCategory" />
-        <activity android:name=".Search" />
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
-
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUp" />
+        <activity android:name=".Login" />
+        <activity android:name=".ItemDetail" />
+        <activity android:name=".BidPage" />
+        <activity android:name=".UploadPage" />
+        <activity android:name=".SelectCategory" />
+        <activity android:name=".Search" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name=".MainActivity"/>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
