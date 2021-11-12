@@ -76,6 +76,23 @@ public class Mypage extends Fragment {
                 startActivity(intent);
             }
         });
+        TextView goAuctionHistory = (TextView) viewGroup.findViewById(R.id.auc_history);
+        goAuctionHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AuctionHistory.class);
+                startActivity(intent);
+            }
+        });
+        TextView goSellHistory = (TextView) viewGroup.findViewById(R.id.sell_history);
+        goAuctionHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AuctionHistory.class);
+                startActivity(intent);
+            }
+        });
+
 
         return viewGroup;
     }

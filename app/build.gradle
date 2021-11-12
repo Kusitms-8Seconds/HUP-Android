@@ -66,4 +66,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // slide layout
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
 }
