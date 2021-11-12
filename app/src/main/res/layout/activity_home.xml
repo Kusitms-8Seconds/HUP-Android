@@ -7,71 +7,91 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toolbar_text"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/main_logo">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/bell_none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toEndOf="@+id/toolbar_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/hupbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="194.72px"
-                    android:layout_height="60px"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/main_logo" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <ImageView
-                android:layout_width="450px"
-                android:layout_height="179px"
-                app:srcCompat="@drawable/home_pic1"
-                android:layout_marginTop="170px"
+                android:layout_width="183dp"
+                android:layout_height="44dp"
                 android:layout_marginLeft="59px"
+                android:layout_marginTop="40dp"
+                android:scaleType="fitStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:srcCompat="@drawable/home_pic1" />
 
             <ImageView
                 android:layout_width="79px"
                 android:layout_height="31.48px"
-                app:srcCompat="@drawable/home_pic3"
-                android:layout_marginTop="486px"
                 android:layout_marginLeft="53px"
+                android:layout_marginTop="120dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:srcCompat="@drawable/home_pic3" />
 
             <ImageView
                 android:layout_width="78px"
                 android:layout_height="44.91px"
-                app:srcCompat="@drawable/home_pic2"
-                android:layout_marginTop="644px"
                 android:layout_marginLeft="387px"
+                android:layout_marginTop="150dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:srcCompat="@drawable/home_pic2" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/bestItemViewPager"
                 android:layout_width="wrap_content"
                 android:layout_height="925px"
-                android:layout_marginTop="100px"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hupbar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.rd.PageIndicatorView
                 android:layout_width="wrap_content"
@@ -114,11 +134,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--<androidx.recyclerview.widget.RecyclerView-->
 <!--android:id="@+id/BestItemRecyclerView"-->
 <!--android:layout_width="match_parent"-->
 <!--android:layout_height="wrap_content"-->
