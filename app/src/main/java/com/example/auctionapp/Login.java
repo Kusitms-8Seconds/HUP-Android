@@ -58,6 +58,12 @@ import static android.content.ContentValues.TAG;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Login extends AppCompatActivity {
 
     Button loginBtn;
@@ -182,6 +188,32 @@ public class Login extends AppCompatActivity {
                 Log.d(TAG, "handleSignInResult:personFamilyName "+personFamilyName);
                 Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
                 Log.d(TAG, "handleSignInResult:idToken "+idToken);
+
+                /* ---------retrofit 연습---------
+                Retrofit googleRetrofit = new Retrofit.Builder()
+                        .baseUrl("http://localhost:8080/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                OAuth2Google service1 = googleRetrofit.create(OAuth2Google.class);
+                Call<OAuth2GoogleLogin> call = service1.getIDtoken();
+                call.enqueue(new Callback<OAuth2GoogleLogin>() {
+                    @Override
+                    public void onResponse(Call<OAuth2GoogleLogin> call, Response<OAuth2GoogleLogin> response) {
+                        if(response.isSuccessful()) {
+                            //정상적으로 통신이 성공한 경우
+                            OAuth2GoogleLogin idToken = response.body();
+                            Log.d(TAG, "onResponse: 성공, idToken: " + idToken.toString());
+                        }else {
+                            Log.d(TAG, "onResponse: 실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OAuth2GoogleLogin> call, Throwable t) {
+                        Log.d(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
+                 ------------------------------- */
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
