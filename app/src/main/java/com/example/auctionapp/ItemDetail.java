@@ -16,6 +16,7 @@ public class ItemDetail extends AppCompatActivity {
 
     private ArrayList<Integer> itemImageList;
     private static final int DP = 24;
+    Boolean isHeart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,30 @@ public class ItemDetail extends AppCompatActivity {
         this.initializeImageData();
 
         ViewPager viewPager = findViewById(R.id.itemDetailViewPager);
-        viewPager.setClipToPadding(false);
         // viewpager detail
-        float density = getResources().getDisplayMetrics().density;
-        int margin = (int) (DP * density);
-        viewPager.setPadding(margin, 0, margin, 0);
-        viewPager.setPageMargin(margin/2);
+//        viewPager.setClipToPadding(false);
+//        float density = getResources().getDisplayMetrics().density;
+//        int margin = (int) (DP * density);
+//        viewPager.setPadding(margin, 0, margin, 0);
+//        viewPager.setPageMargin(margin/2);
 
         viewPager.setAdapter(new ItemDetailViewPagerAdapter(this, itemImageList));
+
+        //간단히 구현 - 나중에 수정필요
+        ImageView heart = (ImageView) findViewById(R.id.isheart);
+        isHeart = false;
+        heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isHeart) {
+                    heart.setImageResource(R.drawable.heartx);
+                    isHeart = false;
+                }else {
+                    heart.setImageResource(R.drawable.hearto);
+                    isHeart = true;
+                }
+            }
+        });
 
     }
     public void initializeImageData()
