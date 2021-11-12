@@ -1,14 +1,20 @@
 package com.example.auctionapp;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import static android.graphics.Color.BLUE;
+import static android.graphics.Color.GRAY;
 
 public class SelectCategory extends AppCompatActivity {
 
@@ -34,16 +40,26 @@ public class SelectCategory extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.selectCategoryList);
         listview.setAdapter(adapter);
 
+        TextView completeBut = (TextView) findViewById(R.id.completeB);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
+                listview.setSelector(new PaintDrawable(GRAY));
                 String category = (String) parent.getItemAtPosition(position);
-                Intent intent = new Intent(SelectCategory.this, UploadPage.class);
-                intent.putExtra("itemCategory", category);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                completeBut.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(SelectCategory.this, UploadPage.class);
+                        intent.putExtra("itemCategory", category);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
             }
-        }) ;
+        });
+
+
+
 
     }
 }

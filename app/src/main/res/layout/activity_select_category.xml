@@ -16,6 +16,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/completeB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="79px"
+            android:layout_marginRight="50px"
+            android:fontFamily="sans-serif-black"
+            android:text="완료"
+            android:textColor="@color/Hup"
+            android:textSize="48px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
