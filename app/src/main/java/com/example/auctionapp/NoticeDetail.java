@@ -2,6 +2,8 @@ package com.example.auctionapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,5 +23,14 @@ public class NoticeDetail extends AppCompatActivity {
         TextView noticeDate = (TextView) findViewById(R.id.noticeDate);
         noticeTitle.setText(title);
         noticeDate.setText(date);
+
+        ImageView goBack = (ImageView) findViewById(R.id.goback);
+        goBack.bringToFront();
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 }

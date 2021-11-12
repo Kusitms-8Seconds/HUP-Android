@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,15 @@ public class Notice extends AppCompatActivity {
                 intent.putExtra("noticeTitle", noticeTitle);
                 intent.putExtra("noticeDate", noticeDate);
                 startActivity(intent);
+            }
+        });
+
+        ImageView goBack = (ImageView) findViewById(R.id.goback);
+        goBack.bringToFront();
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 

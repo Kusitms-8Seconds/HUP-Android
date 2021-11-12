@@ -122,8 +122,8 @@ public class Mypage extends Fragment {
         scrap_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), Notice.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), Scrap.class);
+                startActivity(intent);
             }
         });
         // 관심 카테고리

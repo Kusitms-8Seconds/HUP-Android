@@ -30,6 +30,7 @@
         <activity android:name=".SellHistory" />
         <activity android:name=".Notice" />
         <activity android:name=".NoticeDetail" />
+        <activity android:name=".Scrap" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
