@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ly1"
         android:layout_width="match_parent"
-        android:layout_height="783px"
+        android:layout_height="720px"
         android:background="@color/Hup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

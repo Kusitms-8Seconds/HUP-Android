@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -89,6 +90,7 @@ public class Mypage extends Fragment {
 
             }
         });
+        // 로그인하러 가기
         goLogin = (TextView) viewGroup.findViewById(R.id.goLogin);
         goLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +99,7 @@ public class Mypage extends Fragment {
                 startActivity(intent);
             }
         });
+        // 경매 참역 내역
         TextView goAuctionHistory = (TextView) viewGroup.findViewById(R.id.auc_history);
         goAuctionHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +108,7 @@ public class Mypage extends Fragment {
                 startActivity(intent);
             }
         });
+        // 판매 내역
         TextView goSellHistory = (TextView) viewGroup.findViewById(R.id.sell_history);
         goSellHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +117,42 @@ public class Mypage extends Fragment {
                 startActivity(intent);
             }
         });
-
+        // 스크랩 내역
+        ConstraintLayout scrap_layout = (ConstraintLayout) viewGroup.findViewById(R.id.scrap_layout);
+        scrap_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), Notice.class);
+//                startActivity(intent);
+            }
+        });
+        // 관심 카테고리
+        ConstraintLayout interest_layout = (ConstraintLayout) viewGroup.findViewById(R.id.interest_layout);
+        interest_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), Notice.class);
+//                startActivity(intent);
+            }
+        });
+        // 공지사항
+        ConstraintLayout notify_layout = (ConstraintLayout) viewGroup.findViewById(R.id.notify_layout);
+        notify_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), Notice.class);
+                startActivity(intent);
+            }
+        });
+        // 안전거래설정
+        ConstraintLayout safety_layout = (ConstraintLayout) viewGroup.findViewById(R.id.safety_layout);
+        safety_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), Notice.class);
+//                startActivity(intent);
+            }
+        });
 
         return viewGroup;
     }

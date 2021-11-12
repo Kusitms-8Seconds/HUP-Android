@@ -37,7 +37,6 @@ public class Notice extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String noticeTitle = noticeList.get(position).getNoticeTitle();
                 String noticeDate = noticeList.get(position).getNoticeDate();
-
                 Intent intent = new Intent(getApplicationContext(), NoticeDetail.class);
                 intent.putExtra("noticeTitle", noticeTitle);
                 intent.putExtra("noticeDate", noticeDate);
