@@ -36,7 +36,7 @@
                     app:srcCompat="@drawable/arrow" />
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewPager"
+                    android:id="@+id/itemDetailViewPager"
                     android:layout_width="0dp"
                     android:layout_height="300dp"
                     android:layout_marginTop="50px"

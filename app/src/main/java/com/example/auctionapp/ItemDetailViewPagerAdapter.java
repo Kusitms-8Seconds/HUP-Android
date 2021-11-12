@@ -11,11 +11,11 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter extends PagerAdapter {
+public class ItemDetailViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<Integer> imageList;
 
-    public ViewPagerAdapter(Context context, ArrayList<Integer> imageList)
+    public ItemDetailViewPagerAdapter(Context context, ArrayList<Integer> imageList)
     {
         this.mContext = context;
         this.imageList = imageList;
@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.viewpager_layout, null);
+        View view = inflater.inflate(R.layout.viewpager_layout_itemdetail, null);
 
         ImageView ViewPagerImageView = view.findViewById(R.id.viewpagerImageView);
         ViewPagerImageView.setImageResource(imageList.get(position));

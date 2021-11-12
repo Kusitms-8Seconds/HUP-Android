@@ -10,46 +10,84 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="50px"
-        android:layout_marginEnd="50px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/alarm_toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/hupbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/BestItemRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="194.72px"
+                    android:layout_height="60px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/main_logo" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.recyclerview.widget.RecyclerView>
+            <ImageView
+                android:layout_width="600px"
+                android:layout_height="179px"
+                app:srcCompat="@drawable/home_pic1"
+                android:layout_marginTop="263px"
+                android:layout_marginLeft="59px"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="79px"
+                android:layout_height="31.48px"
+                app:srcCompat="@drawable/home_pic3"
+                android:layout_marginTop="486px"
+                android:layout_marginLeft="53px"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="78px"
+                android:layout_height="44.91px"
+                app:srcCompat="@drawable/home_pic3"
+                android:layout_marginTop="644px"
+                android:layout_marginLeft="387px"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/bestItemViewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="925px"
+                android:layout_marginTop="100px"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hupbar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bestItemViewPager">
 
                 <TextView
                     android:id="@+id/itemName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:layout_weight="0"
                     android:fontFamily="sans-serif-black"
                     android:text="진행 중인 경매"
                     android:textColor="#000000"
@@ -59,12 +97,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:orientation="horizontal"
-                    tools:listitem="@layout/home_auction_list"/>
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/home_auction_list" />
 
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

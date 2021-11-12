@@ -11,10 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
 
 public class Home extends Fragment {
     ViewGroup viewGroup;
-    BestItemAdapter adapterBest;
+    private ArrayList<BestItem> bestItemArrayList;
     //HomeAuctionDataAdapter adapterAuction;
 
     @Nullable
@@ -23,41 +26,29 @@ public class Home extends Fragment {
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home, container, false);
 
-        init();
-        getData();
+        initializeBestData();
+
+        ViewPager BestItemViewPager = viewGroup.findViewById(R.id.bestItemViewPager);
+//        BestItemViewPager.setClipToPadding(false);
+        BestItemViewPager.setAdapter(new BestItemAdapter(getContext(), bestItemArrayList));
+
 
         return viewGroup;
     }
 
 
     private void init() {
-        RecyclerView BestrecyclerView = viewGroup.findViewById(R.id.BestItemRecyclerView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        BestrecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
-        adapterBest = new BestItemAdapter();
-        BestrecyclerView.setAdapter(adapterBest);
 
-        adapterBest.setOnItemClickListener(new BestItemAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-//                Toast.makeText(getContext(), "pos: " + position, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), ItemDetail.class);
-                startActivity(intent);
-            }
-        });
     }
-    private void getData(){
-        //일단 레이아웃만
-        BestItem dataBest = new BestItem(R.drawable.testitemimage, "아이폰 11 프로 256GB", "11월 10일", 100);
-        adapterBest.addItem(dataBest);
-        dataBest = new BestItem(R.drawable.testitemimage, "아이폰 11 프로 64GB", "11월 10일", 200);
-        adapterBest.addItem(dataBest);
-        dataBest = new BestItem(R.drawable.testitemimage, "아이폰 11 미니 A급 256GB", "11월 10일", 300);
-        adapterBest.addItem(dataBest);
-        dataBest = new BestItem(R.drawable.testitemimage, "아이폰 11 미니 256GB 레드 미개봉 중고", "11월 10일", 400);
-        adapterBest.addItem(dataBest);
+    public void initializeBestData()
+    {
+        bestItemArrayList = new ArrayList();
+
+        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "1", "1", 1));
+        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "2", "2", 2));
+        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "3", "3", 3));
 
     }
 }
