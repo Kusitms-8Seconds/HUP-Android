@@ -38,10 +38,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:layout_width="600px"
+                android:layout_width="450px"
                 android:layout_height="179px"
                 app:srcCompat="@drawable/home_pic1"
-                android:layout_marginTop="263px"
+                android:layout_marginTop="170px"
                 android:layout_marginLeft="59px"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -58,7 +58,7 @@
             <ImageView
                 android:layout_width="78px"
                 android:layout_height="44.91px"
-                app:srcCompat="@drawable/home_pic3"
+                app:srcCompat="@drawable/home_pic2"
                 android:layout_marginTop="644px"
                 android:layout_marginLeft="387px"
                 app:layout_constraintTop_toTopOf="parent"
