@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class ItemData {
@@ -120,13 +119,11 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView item_views;
         TextView item_hearts;
 
-
-
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             item_image = itemView.findViewById(R.id.item_image);
-            item_name = itemView.findViewById(R.id.item_name);
+            item_name = itemView.findViewById(R.id.bt_item_name);
             item_price = itemView.findViewById(R.id.item_price);
             end_time = itemView.findViewById(R.id.end_time);
             item_views = itemView.findViewById(R.id.item_views);

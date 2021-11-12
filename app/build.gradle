@@ -52,6 +52,7 @@ dependencies {
     def android_x_version = "1.0.0"
     implementation "androidx.appcompat:appcompat:$android_x_version"
     implementation "androidx.legacy:legacy-support-core-utils:$android_x_version"
+    //noinspection GradleDependency
     implementation "androidx.browser:browser:$android_x_version"
     implementation "androidx.legacy:legacy-support-v4:$android_x_version"
     //glide
@@ -59,4 +60,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     // viewpager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    //CircleView xml
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

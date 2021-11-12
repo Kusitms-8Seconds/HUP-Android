@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/hup_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AuctionApp">
+        <activity android:name=".SignUp"></activity>
         <activity android:name=".Login" />
         <activity android:name=".ItemDetail" />
         <activity android:name=".BidPage" />
@@ -21,6 +22,7 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +43,6 @@
                     android:scheme="6605274d9a8165288410480f4bd1fa9b" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
