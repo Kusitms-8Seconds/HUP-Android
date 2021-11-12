@@ -6,6 +6,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="79px"
+            android:layout_marginBottom="20px"
+            android:layout_weight="0"
+            android:fontFamily="sans-serif-black"
+            android:text="경매 참여내역"
+            android:textColor="#000000"
+            android:textSize="48px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/goback"
+            android:layout_width="60px"
+            android:layout_height="52px"
+            app:srcCompat="@drawable/arrow"
+            android:layout_marginTop="79px"
+            android:layout_marginBottom="74px"
+            android:layout_marginStart="50px"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -13,7 +51,7 @@
         app:tabIndicatorColor="@color/Hup"
         app:tabIndicatorHeight="10px"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.tabs.TabItem
