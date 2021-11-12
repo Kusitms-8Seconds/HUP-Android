@@ -1,10 +1,12 @@
 package com.example.auctionapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -29,6 +31,20 @@ public class Notice extends AppCompatActivity {
         noticeListView.setAdapter(noticeAdapter);
 
         init();
+
+        noticeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String noticeTitle = noticeList.get(position).getNoticeTitle();
+                String noticeDate = noticeList.get(position).getNoticeDate();
+
+                Intent intent = new Intent(getApplicationContext(), NoticeDetail.class);
+                intent.putExtra("noticeTitle", noticeTitle);
+                intent.putExtra("noticeDate", noticeDate);
+                startActivity(intent);
+            }
+        });
+
     }
     public void init() {
         noticeList.add(new NoticeData("[점검] 서비스 점검 예정 안내 ", "2021.11.24"));
