@@ -22,19 +22,19 @@ public class Home extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home, container, false);
+
+        init();
+        getData();
+
         return viewGroup;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     private void init() {
         RecyclerView BestrecyclerView = viewGroup.findViewById(R.id.BestItemRecyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        BestrecyclerView.setLayoutManager(linearLayoutManager);
+        BestrecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
         adapterBest = new BestItemAdapter();
         BestrecyclerView.setAdapter(adapterBest);

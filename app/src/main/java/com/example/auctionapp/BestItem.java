@@ -57,7 +57,7 @@ class BestItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_home, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_best_item, parent, false);
         return new BestItemAdapter.BestItemViewHolder(view);
     }
 
