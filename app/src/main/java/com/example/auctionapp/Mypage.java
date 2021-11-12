@@ -85,10 +85,10 @@ public class Mypage extends Fragment {
             }
         });
         TextView goSellHistory = (TextView) viewGroup.findViewById(R.id.sell_history);
-        goAuctionHistory.setOnClickListener(new View.OnClickListener() {
+        goSellHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AuctionHistory.class);
+                Intent intent = new Intent(getContext(), SellHistory.class);
                 startActivity(intent);
             }
         });

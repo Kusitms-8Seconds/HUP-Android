@@ -27,6 +27,7 @@
         <activity android:name=".SelectCategory" />
         <activity android:name=".Search" />
         <activity android:name=".AuctionHistory" />
+        <activity android:name=".SellHistory" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
