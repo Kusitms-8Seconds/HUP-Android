@@ -123,26 +123,15 @@
                     android:textSize="48px" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/AuctionNowView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    tools:listitem="@layout/home_auction_list" />
+                    android:layout_marginBottom="100dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--<androidx.recyclerview.widget.RecyclerView-->
-<!--android:id="@+id/BestItemRecyclerView"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:orientation="horizontal"-->
-<!--app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--tools:listitem="@layout/home_best_item">-->
-
-<!--</androidx.recyclerview.widget.RecyclerView>-->

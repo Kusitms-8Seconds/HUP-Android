@@ -8,23 +8,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class ItemData {
-    int imageURL;       //나중에 수정 (int -> string url)
+public class AuctionNow {
+    int imageURL; //url 수정하기
     String itemName;
     int itemPrice;
-    String endTime;
-    int views;
-    int heart;
+    String date;
+    String itemInfo;
 
-    public ItemData(int imageURL, String itemName, int itemPrice, String endTime, int views, int heart){
+    public AuctionNow(int imageURL, String itemName, int itemPrice, String date, String itemInfo) {
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.endTime = endTime;
-        this.views = views;
-        this.heart = heart;
+        this.date = date;
+        this.itemInfo = itemInfo;
     }
 
     public int getImage() {
@@ -48,93 +47,82 @@ public class ItemData {
         this.itemPrice = itemPrice;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getDate() {
+        return date;
     }
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public int getViews() {
-        return views;
-    }
-    public void setViews(int views) {
-        this.views = views;
+    public void setDate(String endTime) {
+        this.date = endTime;
     }
 
-    public int getHeart() {
-        return heart;
-    }
-    public void setHeart(int heart) {
-        this.heart = heart;
+    public String getItemInfo() { return itemInfo; }
+    public void setItemInfo(int views) {
+        this.itemInfo = itemInfo;
     }
 }
 
-class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
-    private ArrayList<ItemData> listData = new ArrayList<>();
+    private ArrayList<AuctionNow> AuctionNowData = new ArrayList<>();
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_itemlist, parent, false);
-        return new ItemViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_auction_list, parent, false);
+        return new AuctionNowAdapter.AuctionNowViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ItemViewHolder)holder).onBind(listData.get(position));
+        ((AuctionNowViewHolder) holder).onBind(AuctionNowData.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        return AuctionNowData.size();
     }
 
-    void addItem(ItemData data) {
+    void addItem(AuctionNow data) {
         // 외부에서 item을 추가시킬 함수입니다.
-        listData.add(data);
+        AuctionNowData.add(data);
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int position) ;
+        void onItemClick(View v, int position);
     }
+
     // 리스너 객체 참조를 저장하는 변수
-    private OnItemClickListener mListener = null ;
+    private OnItemClickListener mAuctionListener = null;
 
     // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
     public void setOnItemClickListener(OnItemClickListener listener) {
-
-        this.mListener = listener ;
+        this.mAuctionListener = listener;
     }
 
-    public class ItemViewHolder extends  RecyclerView.ViewHolder {
+    public class AuctionNowViewHolder extends RecyclerView.ViewHolder {
 
         ImageView item_image;
         TextView item_name;
-        TextView item_price;
-        TextView end_time;
-        TextView item_views;
-        TextView item_hearts;
+        TextView item_upPrice;
+        TextView item_date;
+        TextView item_info;
 
-        public ItemViewHolder(@NonNull View itemView) {
+        public AuctionNowViewHolder(@NonNull View itemView) {
             super(itemView);
 
             item_image = itemView.findViewById(R.id.auc_list_image);
-            item_name = itemView.findViewById(R.id.bt_item_name);
-            item_price = itemView.findViewById(R.id.item_price);
-            end_time = itemView.findViewById(R.id.end_time);
-            item_views = itemView.findViewById(R.id.item_views);
-            item_hearts = itemView.findViewById(R.id.item_hearts);
+            item_name = itemView.findViewById(R.id.auc_list_name);
+            item_upPrice = itemView.findViewById(R.id.auc_list_price);
+            item_date = itemView.findViewById(R.id.auc_list_date);
+            item_info = itemView.findViewById(R.id.auc_list_info);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = getAdapterPosition() ;
+                    int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
-                        if (mListener != null) {
-                            mListener.onItemClick(v, pos) ;
+                        if (mAuctionListener != null) {
+                            mAuctionListener.onItemClick(v, pos);
                         }
                     }
                 }
@@ -142,14 +130,13 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
 
-        public void onBind(ItemData data){
+        public void onBind(AuctionNow data) {
             item_image.setImageResource(data.getImage());
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
-            item_price.setText(data.getItemPrice()+"");
-            end_time.setText(data.getEndTime());
-            item_views.setText(data.getViews()+"");
-            item_hearts.setText(data.getHeart()+"");
+            item_upPrice.setText(data.getItemPrice() + "");
+            item_date.setText(data.getDate());
+            item_info.setText(data.getItemInfo() + "");
         }
     }
 }
