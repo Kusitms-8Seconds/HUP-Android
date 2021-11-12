@@ -98,14 +98,14 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/imageView5"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.271" />
+                        app:layout_constraintVertical_bias="0.369" />
 
                     <ImageButton
                         android:id="@+id/imageButton4"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:background="@drawable/mypage_circle"
-                        android:scaleType="centerInside"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/modi_profile"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                         app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -113,6 +113,19 @@
                         app:layout_constraintStart_toStartOf="@+id/imageView5"
                         app:layout_constraintTop_toTopOf="@+id/imageView5"
                         app:layout_constraintVertical_bias="1.0" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="43dp"
+                        android:layout_height="26dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#FFFFFF"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/setting"
+                        app:layout_constraintEnd_toEndOf="@+id/myPage_userName"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/myPage_userName"
+                        app:layout_constraintTop_toBottomOf="@+id/myPage_userName" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -155,7 +168,7 @@
                         app:layout_constraintVertical_bias="1.0" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/sell_list"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginEnd="64dp"
@@ -166,7 +179,7 @@
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toEndOf="@+id/imageButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/cart" />
+                        app:srcCompat="@drawable/sell_list" />
 
                     <TextView
                         android:id="@+id/sell_history"
@@ -177,9 +190,9 @@
                         android:textColor="#000000"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-                        app:layout_constraintStart_toStartOf="@+id/imageButton2"
-                        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+                        app:layout_constraintEnd_toEndOf="@+id/sell_list"
+                        app:layout_constraintStart_toStartOf="@+id/sell_list"
+                        app:layout_constraintTop_toBottomOf="@+id/sell_list"
                         app:layout_constraintVertical_bias="1.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -188,9 +201,186 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#E9E9E9"
                     app:layout_constraintBottom_toBottomOf="@+id/linearLayout" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/scrap_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="24dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/scrap"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.538" />
+
+                    <TextView
+                        android:id="@+id/scrap_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="스크랩 내역"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/right_arrow1"
+                        app:layout_constraintHorizontal_bias="0.11"
+                        app:layout_constraintStart_toEndOf="@+id/imageView14"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                    <ImageView
+                        android:id="@+id/right_arrow1"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/right_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/interest_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:id="@+id/interest_imageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="24dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/interest"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.538" />
+
+                    <TextView
+                        android:id="@+id/interest_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="관심 카테고리"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/right_arrow2"
+                        app:layout_constraintHorizontal_bias="0.11"
+                        app:layout_constraintStart_toEndOf="@+id/interest_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                    <ImageView
+                        android:id="@+id/right_arrow2"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/right_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/notify_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:id="@+id/notify_imageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="24dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/notify"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.538" />
+
+                    <TextView
+                        android:id="@+id/notify_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="공지사항"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/right_arrow3"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintStart_toEndOf="@+id/notify_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                    <ImageView
+                        android:id="@+id/right_arrow3"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/right_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/safety_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:id="@+id/safety_imageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="24dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/safety"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.538" />
+
+                    <TextView
+                        android:id="@+id/safety_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="안전거래 설정"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/right_arrow4"
+                        app:layout_constraintHorizontal_bias="0.122"
+                        app:layout_constraintStart_toEndOf="@+id/safety_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6" />
+
+                    <ImageView
+                        android:id="@+id/right_arrow4"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/right_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </LinearLayout>
 
@@ -198,7 +388,7 @@
                 android:id="@+id/logout_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="132dp"
+                android:layout_marginBottom="36dp"
                 android:text="LOGOUT"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

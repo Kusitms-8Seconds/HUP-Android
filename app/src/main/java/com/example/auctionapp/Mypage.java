@@ -2,11 +2,16 @@ package com.example.auctionapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +30,21 @@ import com.nhn.android.naverlogin.OAuthLogin;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
+
+import static android.graphics.Color.GRAY;
+
+// 리스트 뷰에 출력할 항목
+class MyItem {
+    int icon;
+    String name;
+
+    MyItem(int icon, String name) {
+        this.icon = icon;
+        this.name = name;
+    }
+}
 
 public class Mypage extends Fragment {
 
@@ -36,6 +55,8 @@ public class Mypage extends Fragment {
 
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
+
+    ArrayList<MyItem> arItem;
 
     @Nullable
     @Override
@@ -96,6 +117,7 @@ public class Mypage extends Fragment {
 
         return viewGroup;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
