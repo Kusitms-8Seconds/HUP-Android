@@ -31,6 +31,7 @@
         <activity android:name=".Notice" />
         <activity android:name=".NoticeDetail" />
         <activity android:name=".Scrap" />
+        <activity android:name=".Interests" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

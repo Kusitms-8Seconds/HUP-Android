@@ -105,8 +105,8 @@ public class Mypage extends Fragment {
         interest_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), Notice.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), Interests.class);
+                startActivity(intent);
             }
         });
         // 공지사항
