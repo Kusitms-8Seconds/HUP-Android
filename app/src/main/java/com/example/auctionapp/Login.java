@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,6 +87,15 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
+
+        LinearLayout goSignUp = (LinearLayout) findViewById(R.id.goSignUp);
+        goSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, SignUp.class);
+                startActivity(intent);
+            }
+        });
 
         //카카오 로그인
         btn_kakao_login = (ImageView)findViewById(R.id.btn_kakao_login);

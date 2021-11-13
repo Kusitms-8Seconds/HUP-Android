@@ -69,7 +69,7 @@
         android:layout_width="980px"
         android:layout_height="140px"
         android:layout_marginTop="79px"
-        android:background="@drawable/item_box"
+        android:background="@drawable/box_edge"
         android:hint="아이디 입력"
         android:paddingLeft="30px"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
         android:layout_width="980px"
         android:layout_height="140px"
         android:layout_marginTop="35px"
-        android:background="@drawable/item_box"
+        android:background="@drawable/box_edge"
         android:hint="비밀번호 입력"
         android:paddingLeft="30px"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +99,7 @@
         app:srcCompat="@drawable/loginbutton"/>
 
     <LinearLayout
+        android:id="@+id/goSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -116,7 +117,7 @@
             android:textSize="38px" />
 
         <TextView
-            android:id="@+id/goSignUp"
+            android:id="@+id/tv13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"

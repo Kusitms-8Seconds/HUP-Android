@@ -53,7 +53,6 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="318dp"
                 android:text="아이디"
@@ -66,9 +65,12 @@
 
             <EditText
                 android:id="@+id/edt_userId"
-                android:layout_width="249dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="730px"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:layout_marginEnd="20px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
                 android:ems="10"
                 android:hint="아이디 입력 (5~11자)"
                 android:inputType="textPersonName"
@@ -80,7 +82,7 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="69px"
                 android:text="비밀번호"
                 android:textColor="#000000"
                 android:textStyle="bold"
@@ -91,9 +93,11 @@
 
             <EditText
                 android:id="@+id/edt_password"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
+                android:layout_marginTop="32px"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="비밀번호 입력 (숫자, 영문, 대소문자 조합 8~16자)"
@@ -106,8 +110,10 @@
 
             <EditText
                 android:id="@+id/edt_passwordCheck"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
@@ -123,7 +129,7 @@
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="69px"
                 android:text="닉네임"
                 android:textColor="#000000"
                 android:textStyle="bold"
@@ -134,9 +140,11 @@
 
             <EditText
                 android:id="@+id/edt_nickname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
+                android:layout_marginTop="32px"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="사용하실 닉네임을 입력해주세요."
@@ -151,20 +159,21 @@
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="69px"
                 android:text="휴대폰 인증"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.052"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edt_nickname" />
 
             <EditText
                 android:id="@+id/edt_phoneNum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
+                android:layout_marginTop="32px"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="휴대폰 번호 (-없이 숫자만 입력)"
@@ -179,7 +188,7 @@
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="69px"
                 android:text="인증번호"
                 android:textColor="#000000"
                 android:textStyle="bold"
@@ -190,9 +199,11 @@
 
             <EditText
                 android:id="@+id/edt_smsCheck"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
+                android:layout_marginTop="32px"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="인증번호를 입력해주세요."
@@ -207,7 +218,7 @@
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="69px"
                 android:text="이메일 주소"
                 android:textColor="#000000"
                 android:textStyle="bold"
@@ -218,9 +229,11 @@
 
             <EditText
                 android:id="@+id/edt_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:background="@drawable/box_edge"
+                android:paddingLeft="30px"
+                android:layout_marginTop="32px"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="이메일 주소를 입력해주세요."
@@ -231,16 +244,15 @@
                 app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
-            <Button
+            <ImageView
                 android:id="@+id/btn_sendSms"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:backgroundTint="@color/Hup"
-                android:text="인증번호 발송"
+                android:layout_width="980px"
+                android:layout_height="140px"
+                android:layout_marginTop="35px"
                 app:layout_constraintEnd_toEndOf="@+id/edt_phoneNum"
                 app:layout_constraintStart_toStartOf="@+id/edt_phoneNum"
-                app:layout_constraintTop_toBottomOf="@+id/edt_phoneNum" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_phoneNum"
+                app:srcCompat="@drawable/getnum" />
 
             <Button
                 android:id="@+id/btn_smsCheck"
@@ -253,16 +265,17 @@
                 app:layout_constraintStart_toStartOf="@+id/edt_smsCheck"
                 app:layout_constraintTop_toBottomOf="@+id/edt_smsCheck" />
 
-            <Button
+            <ImageView
                 android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="230px"
+                android:layout_height="140px"
                 android:backgroundTint="@color/Hup"
+                android:src="@drawable/id_check"
                 android:text="중복확인"
+                android:textSize="40px"
                 app:layout_constraintBottom_toBottomOf="@+id/edt_userId"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/edt_userId" />
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <TextView
                 android:id="@+id/serviceAgree"

@@ -12,7 +12,7 @@
         android:id="@+id/scrap_image"
         android:layout_width="980px"
         android:layout_height="560px"
-        android:background="@drawable/item_box"
+        android:background="@drawable/box_edge"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

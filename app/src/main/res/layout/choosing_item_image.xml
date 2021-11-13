@@ -10,7 +10,7 @@
         android:layout_width="320px"
         android:layout_height="320px"
         android:layout_marginHorizontal="5dp"
-        android:background="@drawable/item_box"
+        android:background="@drawable/box_edge"
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
