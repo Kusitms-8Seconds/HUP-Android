@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+
 public class BidPage extends AppCompatActivity {
 
     Dialog dialog01;
     PTAdapter ptAdapter;
+    private HupStomp hupstomp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,9 @@ public class BidPage extends AppCompatActivity {
 
         init();
         getData();
+
+        hupstomp = new HupStomp();
+        hupstomp.initStomp();
 
         ImageView goBack = (ImageView) findViewById(R.id.goback);
         goBack.bringToFront();
@@ -47,8 +53,13 @@ public class BidPage extends AppCompatActivity {
         bidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
-                String price = editPrice.getText().toString();
+                try {
+                    hupstomp.sendMessage();
+                }catch(JSONException e) {
+                    e.printStackTrace();
+                }
+//                showDialog();
+//                String price = editPrice.getText().toString();
             }
         });
     }

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,10 +26,16 @@ public class ChatRoom extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<User> chatList;
 
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
+
+        database = FirebaseDatabase.getInstance("https://fir-chat-7bf48-default-rtdb.asia-southeast1.firebasedatabase.app");
+        databaseReference = database.getReference("User");
 
         chat_recyclerView = findViewById(R.id.chattingRecyclerView); // id 연결
         chat_recyclerView.setHasFixedSize(true);
@@ -38,22 +46,23 @@ public class ChatRoom extends AppCompatActivity {
         adapter = new ChatAdapter(chatList, this);
         chat_recyclerView.setAdapter(adapter);
 
-        chatList.add(new User("aa","aa", 123,"aaa"));
+        chatList.add(new User("profile","name","message"));
+        chatList.add(new User("profile","name2","message2"));
+        chatList.add(new User("profile","name3","messag3"));
+        chatList.add(new User("profile","name4","messag4"));
 
     }
 }
 class User {
     private String profile;
-    private String id;
-    private int pw;
-    private String userName;
+    private String name;
+    private String message;
 
     public User(){}
-    public User(String profile, String id, int pw, String userName) {
+    public User(String profile, String name, String message) {
         this.profile = profile;
-        this.id = id;
-        this.pw = pw;
-        this.userName = userName;
+        this.name = name;
+        this.message = message;
     }
 
     public String getProfile() {
@@ -64,28 +73,20 @@ class User {
         this.profile = profile;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getPw() {
-        return pw;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPw(int pw) {
-        this.pw = pw;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
 
@@ -112,9 +113,8 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
         Glide.with(holder.itemView)
                 .load(arrayList.get(position).getProfile())
                 .into(holder.iv_profile);
-        holder.tv_name.setText(arrayList.get(position).getId());
-        holder.tv_message.setText(arrayList.get(position).getPw()+"");
-        holder.tv_userName.setText(arrayList.get(position).getUserName());
+        holder.tv_name.setText(arrayList.get(position).getName());
+        holder.tv_message.setText(arrayList.get(position).getMessage());
     }
 
     @Override
@@ -127,7 +127,6 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
         ImageView iv_profile;
         TextView tv_name;
         TextView tv_message;
-        TextView tv_userName;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
