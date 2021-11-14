@@ -1,28 +1,19 @@
 package com.example.auctionapp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -30,20 +21,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.kakao.auth.ApiResponseCallback;
-import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
-import com.kakao.auth.api.AuthApi;
-import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
 import com.kakao.sdk.auth.AuthApiClient;
 import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.Profile;
@@ -51,19 +36,12 @@ import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.OptionalBoolean;
 import com.kakao.util.exception.KakaoException;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import static android.content.ContentValues.TAG;
 
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Login extends AppCompatActivity {
 
@@ -81,10 +59,15 @@ public class Login extends AppCompatActivity {
     OAuthLogin mOAuthLoginModule;
     Context mContext;
 
+    RetrofitTool rt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
 
@@ -145,6 +128,22 @@ public class Login extends AppCompatActivity {
         });
 
     }
+    private class GoogleLoginCallback implements MainRetrofitCallback<OAuth2GoogleLoginRequest> {
+        @Override
+        public void onSuccessResponse(Response<OAuth2GoogleLoginRequest> response) {
+            OAuth2GoogleLoginRequest temp = response.body();
+            Log.d(TAG, "retrofit success, idToken: " + temp.toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<OAuth2GoogleLoginRequest> response) {
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.d(TAG, "onConnectionFail");
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -201,17 +200,17 @@ public class Login extends AppCompatActivity {
 
                 /* ---------retrofit 연습---------
                 Retrofit googleRetrofit = new Retrofit.Builder()
-                        .baseUrl("http://localhost:8080/")
+                        .baseUrl("http://10.0.2.2:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                OAuth2Google service1 = googleRetrofit.create(OAuth2Google.class);
-                Call<OAuth2GoogleLogin> call = service1.getIDtoken();
-                call.enqueue(new Callback<OAuth2GoogleLogin>() {
+                RestAPI service1 = googleRetrofit.create(RestAPI.class);
+                Call<RetrofitClass> call = service1.getIDtoken();
+                call.enqueue(new Callback<RetrofitClass>() {
                     @Override
-                    public void onResponse(Call<OAuth2GoogleLogin> call, Response<OAuth2GoogleLogin> response) {
+                    public void onResponse(Call<RetrofitClass> call, Response<RetrofitClass> response) {
                         if(response.isSuccessful()) {
                             //정상적으로 통신이 성공한 경우
-                            OAuth2GoogleLogin idToken = response.body();
+                            RetrofitClass idToken = response.body();
                             Log.d(TAG, "onResponse: 성공, idToken: " + idToken.toString());
                         }else {
                             Log.d(TAG, "onResponse: 실패");
@@ -219,11 +218,13 @@ public class Login extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<OAuth2GoogleLogin> call, Throwable t) {
+                    public void onFailure(Call<RetrofitClass> call, Throwable t) {
                         Log.d(TAG, "onFailure: " + t.getMessage());
                     }
                 });
                  ------------------------------- */
+                RetrofitTool.getAPIWithAuthorizationToken(idToken).getIDtoken()
+                        .enqueue(MainRetrofitTool.getCallback(new GoogleLoginCallback()));
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
