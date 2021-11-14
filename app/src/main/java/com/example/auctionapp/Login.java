@@ -128,15 +128,15 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private class GoogleLoginCallback implements MainRetrofitCallback<OAuth2GoogleLoginRequest> {
+    private class GoogleLoginCallback implements MainRetrofitCallback<LoginResponse> {
         @Override
-        public void onSuccessResponse(Response<OAuth2GoogleLoginRequest> response) {
-            OAuth2GoogleLoginRequest temp = response.body();
+        public void onSuccessResponse(Response<LoginResponse> response) {
+            LoginResponse temp = response.body();
             Log.d(TAG, "retrofit success, idToken: " + temp.toString());
 
         }
         @Override
-        public void onFailResponse(Response<OAuth2GoogleLoginRequest> response) {
+        public void onFailResponse(Response<LoginResponse> response) {
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -223,7 +223,9 @@ public class Login extends AppCompatActivity {
                     }
                 });
                  ------------------------------- */
-                RetrofitTool.getAPIWithAuthorizationToken(idToken).getIDtoken()
+                OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+                System.out.println("토큰테스트"+oAuth2GoogleLoginRequest.getIdToken());
+                RetrofitTool.getAPIWithNullConverter().getIDtoken(oAuth2GoogleLoginRequest)
                         .enqueue(MainRetrofitTool.getCallback(new GoogleLoginCallback()));
 
                 Intent intent = new Intent(Login.this, MainActivity.class);

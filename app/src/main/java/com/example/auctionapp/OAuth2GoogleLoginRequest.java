@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.With;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class OAuth2GoogleLoginRequest {
-
-    @SerializedName("idToken")
+    
     private String idToken;
+
+    public OAuth2GoogleLoginRequest(String idToken) {
+        this.idToken = idToken;
+    }
 }
