@@ -141,7 +141,7 @@ public class Login extends AppCompatActivity {
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.d(TAG, "onConnectionFail");
+            Log.e("연결실패", t.getMessage());
         }
     }
 
@@ -224,7 +224,6 @@ public class Login extends AppCompatActivity {
                 });
                  ------------------------------- */
                 OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-                System.out.println("토큰테스트"+oAuth2GoogleLoginRequest.getIdToken());
                 RetrofitTool.getAPIWithNullConverter().getIDtoken(oAuth2GoogleLoginRequest)
                         .enqueue(MainRetrofitTool.getCallback(new GoogleLoginCallback()));
 
