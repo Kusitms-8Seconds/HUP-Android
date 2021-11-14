@@ -6,14 +6,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNV;
+    Dialog dialog02;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +31,37 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 BottomNavigate(menuItem.getItemId());
 
-
                 return true;
             }
         });
         mBottomNV.setSelectedItemId(R.id.home);
+
+        dialog02 = new Dialog(MainActivity.this);
+        dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog02.setContentView(R.layout.custom_dialog02);
+        showDialog();
+    }
+    // dialog02을 디자인하는 함수
+    public void showDialog(){
+        dialog02.show(); // 다이얼로그 띄우기
+
+        // 홈으로 돌아가기 버튼
+        ImageView goHome = dialog02.findViewById(R.id.refuseAuction);
+        goHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog02.dismiss();
+
+            }
+        });
+        // 참여내역 확인 버튼
+        dialog02.findViewById(R.id.ongoAuction).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ChatRoom.class);
+                startActivity(intent);
+            }
+        });
     }
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
         String tag = String.valueOf(id);

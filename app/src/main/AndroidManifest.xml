@@ -33,6 +33,7 @@
         <activity android:name=".NoticeDetail" />
         <activity android:name=".Scrap" />
         <activity android:name=".Interests" />
+        <activity android:name=".ChatRoom" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
