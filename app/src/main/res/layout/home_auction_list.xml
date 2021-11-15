@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/auc_list_image"
+        android:id="@+id/sell_history_ongoing_img"
         android:layout_width="203dp"
         android:layout_height="135dp"
         android:layout_margin="2dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/auc_list_name"
+        android:id="@+id/sell_history_ongoing_edt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -29,10 +29,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auc_list_image" />
+        app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_img" />
 
     <TextView
-        android:id="@+id/auc_list_date"
+        android:id="@+id/sell_history_ongoing_max"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -43,10 +43,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auc_list_name" />
+        app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_edt_name" />
 
     <TextView
-        android:id="@+id/auc_list_info"
+        android:id="@+id/sell_history_ongoing_myPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auc_list_date" />
+        app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_max" />
 
     <TextView
         android:id="@+id/auc_list_price"
@@ -76,7 +76,7 @@
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auc_list_image"
+        app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_img"
         app:layout_constraintVertical_bias="0.375" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
