@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/chat_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="20dp">
+        android:layout_marginTop="35px"
+        android:layout_marginBottom="35px">
 
         <!--프로필 사진-->
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_width="87px"
+            android:layout_height="87px"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintEnd_toStartOf="@id/tv_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!--이름-->
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:text="이름"
+            android:textColor="#000000"
             android:textSize="16sp"
-            android:textColor="#000"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
         <!--메시지-->
         <TextView
             android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+
+            android:layout_weight="0"
+            android:background="@drawable/chatbox_user"
+            android:maxWidth="682px"
+            android:maxLines="10"
+            android:paddingStart="50px"
+            android:paddingTop="20px"
+            android:paddingEnd="50px"
+            android:paddingBottom="20px"
             android:text="메시지"
-            android:textSize="12sp"
-            android:textColor="#444"
-            android:maxLines="1"/>
+            android:textColor="#FFFFFF"
+            android:textSize="42px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="#aaa"/>
-
 </LinearLayout>

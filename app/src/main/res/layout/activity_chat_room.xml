@@ -14,19 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-<!--        <TextView-->
-<!--            android:id="@+id/completeB"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="79px"-->
-<!--            android:layout_marginRight="50px"-->
-<!--            android:fontFamily="sans-serif-black"-->
-<!--            android:text="완료"-->
-<!--            android:textColor="@color/Hup"-->
-<!--            android:textSize="48px"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <TextView
             android:id="@+id/textView333"
             android:layout_width="wrap_content"
@@ -56,6 +43,20 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:layout_marginHorizontal="10dp"
+        android:background="#F3F3F3"
+        app:layout_constraintTop_toBottomOf="@id/topbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/editChatting">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chattingRecyclerView"
         android:layout_width="match_parent"
@@ -64,5 +65,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topbar"/>
 
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editChatting"
+        android:layout_width="match_parent"
+        android:layout_height="190px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:layout_width="844px"
+            android:layout_height="120px"
+            android:background="@drawable/box_edge"
+            android:layout_marginStart="50px"
+            android:hint="채팅을 입력해주세요."
+            android:paddingStart="20px"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:src="@drawable/sendbutton"
+            android:layout_marginEnd="50px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

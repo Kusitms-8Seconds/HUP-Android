@@ -1,15 +1,19 @@
 package com.example.auctionapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,8 +38,8 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
-        database = FirebaseDatabase.getInstance("https://fir-chat-7bf48-default-rtdb.asia-southeast1.firebasedatabase.app");
-        databaseReference = database.getReference("User");
+//        database = FirebaseDatabase.getInstance("https://fir-chat-7bf48-default-rtdb.asia-southeast1.firebasedatabase.app");
+//        databaseReference = database.getReference("User");
 
         chat_recyclerView = findViewById(R.id.chattingRecyclerView); // id 연결
         chat_recyclerView.setHasFixedSize(true);
@@ -46,10 +50,11 @@ public class ChatRoom extends AppCompatActivity {
         adapter = new ChatAdapter(chatList, this);
         chat_recyclerView.setAdapter(adapter);
 
-        chatList.add(new User("profile","name","message"));
-        chatList.add(new User("profile","name2","message2"));
-        chatList.add(new User("profile","name3","messag3"));
-        chatList.add(new User("profile","name4","messag4"));
+        chatList.add(new User("profile","name1","안녕하세요^^"));
+        chatList.add(new User("profile","user","3333-10-1234567 카카오뱅크로 낙찰가 100000원 보내주세요~"));
+        chatList.add(new User("profile","name1","네! 보냈습니다."));
+        chatList.add(new User("profile","user","확인했습니다. 경매상품 안전하게 보내드릴게요~"));
+        chatList.add(new User("profile","user","aaa"));
 
     }
 }
@@ -94,6 +99,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private ArrayList<User> arrayList;
     private Context context;
+    String myName;
 
     public ChatAdapter(ArrayList<User> arrayList, Context context) {
         this.arrayList = arrayList;
@@ -110,11 +116,26 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.ChatViewHolder holder, int position) {
-        Glide.with(holder.itemView)
-                .load(arrayList.get(position).getProfile())
-                .into(holder.iv_profile);
-        holder.tv_name.setText(arrayList.get(position).getName());
         holder.tv_message.setText(arrayList.get(position).getMessage());
+
+        // 사용자에 따라 메세지 detail 조정_나중에 수정     //this.name
+        if(arrayList.get(position).getName().equals("user")) {
+            holder.tv_message.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            holder.tv_message.setGravity(Gravity.RIGHT);
+            holder.tv_name.setVisibility(View.GONE);
+            holder.iv_profile.setVisibility(View.GONE);
+
+        }else {
+            holder.tv_message.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            holder.tv_message.setGravity(Gravity.LEFT);
+            holder.tv_message.setBackgroundResource(R.drawable.chatbox_others);
+            holder.tv_message.setTextColor(Color.BLACK);
+            Glide.with(holder.itemView)
+                    .load(arrayList.get(position).getProfile())
+                    .into(holder.iv_profile);
+//            holder.tv_name.setText(arrayList.get(position).getName());    //getName method
+            holder.tv_name.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -127,12 +148,14 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
         ImageView iv_profile;
         TextView tv_name;
         TextView tv_message;
+        LinearLayout chat_layout;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_message = itemView.findViewById(R.id.tv_message);
+            this.chat_layout = itemView.findViewById(R.id.chat_layout);
 
         }
     }
