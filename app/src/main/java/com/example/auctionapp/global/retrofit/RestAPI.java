@@ -4,6 +4,8 @@ import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
+import com.example.auctionapp.domain.user.dto.SignUpRequest;
+import com.example.auctionapp.domain.user.dto.SignUpResponse;
 
 import java.util.HashMap;
 
@@ -19,6 +21,8 @@ import retrofit2.http.PartMap;
 
 public interface RestAPI {
 
+    @POST("signup")
+    Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
     @POST("oauth2/google/validation")
     Call<LoginResponse> googleIdTokenValidation(@Body OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
     @POST("oauth2/kakao/validation")
@@ -29,4 +33,5 @@ public interface RestAPI {
     @POST("/api/items")
     Call<RegisterItemResponse> uploadItem(@Part MultipartBody.Part itemImg,
                                           @PartMap HashMap<String, RequestBody> data);
+
 }

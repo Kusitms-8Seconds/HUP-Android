@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -51,6 +52,8 @@ import static android.content.ContentValues.TAG;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 
+import org.w3c.dom.Text;
+
 import java.sql.SQLOutput;
 
 import retrofit2.Response;
@@ -63,6 +66,7 @@ public class Login extends AppCompatActivity {
     ImageView btn_naver_login;
     EditText edit_id;
     EditText edit_pw;
+    TextView signUp_tv;
 
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
@@ -139,12 +143,22 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        // 앱 회원가입
+        signUp_tv = (TextView) findViewById(R.id.signUp_tv);
+        signUp_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, SignUp.class);
+                startActivity(intent);
+            }
+        });
+
     }
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
         @Override
         public void onSuccessResponse(Response<LoginResponse> response) {
             Constants.userId = response.body().getUserId();
-            System.out.println("userId"+Constants.userId);
+            Constants.token = response.body().getToken();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
         }

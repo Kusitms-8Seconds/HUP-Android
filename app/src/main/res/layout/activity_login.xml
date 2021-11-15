@@ -117,7 +117,7 @@
             android:textSize="38px" />
 
         <TextView
-            android:id="@+id/tv13"
+            android:id="@+id/signUp_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
