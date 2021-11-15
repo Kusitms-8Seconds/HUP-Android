@@ -50,22 +50,18 @@
         android:background="#F3F3F3"
         app:layout_constraintTop_toBottomOf="@id/topbar"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/editChatting">
+        <ListView
+            android:id="@+id/chattingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#00000000"
+            app:layout_constraintBottom_toTopOf="@id/editChatting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topbar"
+            app:layout_constraintVertical_bias="0.0"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chattingRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar"/>
-
-    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editChatting"
@@ -86,6 +82,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
         <ImageView
+            android:id="@+id/sendbutton"
             android:layout_width="100px"
             android:layout_height="100px"
             android:src="@drawable/sendbutton"
