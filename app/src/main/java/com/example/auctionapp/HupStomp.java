@@ -21,7 +21,8 @@ import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class HupStomp {
 
-    String url = "ws://192.168.2.2/websocket/websocket"; // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
+    private static final String url = "ws://192.168.0.5:8080/websocket/websocket"; // 내부IP(안드로이드휴대폰사용, cmd -> ipconfig IPv4주소)
+    //private static final String url = "http://10.0.2.2:8080/websocket/websocket"; // 안드로이드에뮬레이터IP
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
