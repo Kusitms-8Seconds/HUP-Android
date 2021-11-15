@@ -135,7 +135,7 @@
                 android:paddingLeft="39px" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/history_end_edt_won"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="57px"
@@ -211,7 +211,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/history_end_edt_seller"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="57px"

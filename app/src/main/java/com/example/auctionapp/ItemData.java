@@ -120,7 +120,7 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            item_image = itemView.findViewById(R.id.auc_list_image);
+            item_image = itemView.findViewById(R.id.sell_history_ongoing_img);
             item_name = itemView.findViewById(R.id.bt_item_name);
             item_price = itemView.findViewById(R.id.item_price);
             end_time = itemView.findViewById(R.id.end_time);

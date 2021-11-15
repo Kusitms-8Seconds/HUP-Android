@@ -109,11 +109,11 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public AuctionNowViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            item_image = itemView.findViewById(R.id.auc_list_image);
-            item_name = itemView.findViewById(R.id.auc_list_name);
+            item_image = itemView.findViewById(R.id.sell_history_ongoing_img);
+            item_name = itemView.findViewById(R.id.sell_history_ongoing_edt_name);
             item_upPrice = itemView.findViewById(R.id.auc_list_price);
-            item_date = itemView.findViewById(R.id.auc_list_date);
-            item_info = itemView.findViewById(R.id.auc_list_info);
+            item_date = itemView.findViewById(R.id.sell_history_ongoing_max);
+            item_info = itemView.findViewById(R.id.sell_history_ongoing_myPrice);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
