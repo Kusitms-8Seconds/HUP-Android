@@ -55,7 +55,7 @@
             android:paddingBottom="20px"
             android:text="메시지"
             android:textColor="#FFFFFF"
-            android:textSize="42px"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="parent" />
