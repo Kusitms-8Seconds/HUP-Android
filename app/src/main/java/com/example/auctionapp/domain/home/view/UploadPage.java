@@ -205,6 +205,8 @@ public class UploadPage extends AppCompatActivity {
 //                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
                 RetrofitTool.getAPIWithNullConverter().uploadItem(uploadFile, map)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
+                //file 하나일때만?
+                //RequestBody에 list 넣을 수 있는지
 
             }
         });
