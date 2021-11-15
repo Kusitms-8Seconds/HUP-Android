@@ -17,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.MainActivity;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.LoginResponse;
+import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
+import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
@@ -47,6 +51,8 @@ import static android.content.ContentValues.TAG;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 
+import java.sql.SQLOutput;
+
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
@@ -65,18 +71,13 @@ public class Login extends AppCompatActivity {
     OAuthLogin mOAuthLoginModule;
     Context mContext;
 
-    RetrofitTool rt;
+    //private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-
-
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
-
         LinearLayout goSignUp = (LinearLayout) findViewById(R.id.goSignUp);
         goSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +117,11 @@ public class Login extends AppCompatActivity {
                 GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(Login.this);
                 // 로그인 되어있는 경우
                 if (gsa != null) {
+                    String idToken = gsa.getIdToken();
+                    OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+                    RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
+                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+                    System.out.println("userId"+Constants.userId);
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -134,11 +140,12 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private class GoogleLoginCallback implements MainRetrofitCallback<LoginResponse> {
+    private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
         @Override
         public void onSuccessResponse(Response<LoginResponse> response) {
-            LoginResponse temp = response.body();
-            Log.d(TAG, "retrofit success, idToken: " + temp.toString());
+            Constants.userId = response.body().getUserId();
+            System.out.println("userId"+Constants.userId);
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
         }
         @Override
@@ -230,8 +237,8 @@ public class Login extends AppCompatActivity {
                 });
                  ------------------------------- */
                 OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-                RetrofitTool.getAPIWithNullConverter().getIDtoken(oAuth2GoogleLoginRequest)
-                        .enqueue(MainRetrofitTool.getCallback(new GoogleLoginCallback()));
+                RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -307,8 +314,12 @@ public class Login extends AppCompatActivity {
                                     Log.d("KAKAO_API", "nickname: " + profile.getNickname());
                                     Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
                                     Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
-                                    Log.d("KAKAO_API", "accessToken: "+  AuthApiClient.getInstance().getTokenManagerProvider()
-                                            .getManager().getToken().getAccessToken());
+                                    String accessToken = AuthApiClient.getInstance().getTokenManagerProvider()
+                                            .getManager().getToken().getAccessToken();
+                                    Log.d("KAKAO_API", "accessToken: "+ accessToken);
+                                    OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest = new OAuth2KakaoLoginRequest(accessToken);
+                                    RetrofitTool.getAPIWithNullConverter().kakaoAccessTokenValidation(oAuth2KakaoLoginRequest)
+                                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
 
                                 } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 프로필 정보 획득 가능
@@ -326,7 +337,7 @@ public class Login extends AppCompatActivity {
         }
     }
     //naver login method
-    void naverSignIn() {
+    public void naverSignIn() {
         mOAuthLoginModule = OAuthLogin.getInstance();
         mOAuthLoginModule.init(
                 mContext
@@ -351,6 +362,12 @@ public class Login extends AppCompatActivity {
                     Log.i("LoginData","refreshToken : "+ refreshToken);
                     Log.i("LoginData","expiresAt : "+ expiresAt);
                     Log.i("LoginData","tokenType : "+ tokenType);
+
+                    OAuth2NaverLoginRequest oAuth2NaverLoginRequest = new OAuth2NaverLoginRequest(accessToken);
+                    RetrofitTool.getAPIWithNullConverter().naverAccessTokenValidation(oAuth2NaverLoginRequest)
+                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+
+                    System.out.println("testnaver");
 
                     onBackPressed();
 

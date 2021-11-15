@@ -35,6 +35,7 @@ public class Mypage extends Fragment {
 
     TextView goLogin;
     Button logout_button;
+    Button signIn_button;
 
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;

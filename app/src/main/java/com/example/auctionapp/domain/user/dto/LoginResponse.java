@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.view;
+package com.example.auctionapp.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
