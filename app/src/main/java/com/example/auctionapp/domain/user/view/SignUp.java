@@ -316,4 +316,3 @@ public class SignUp extends AppCompatActivity {
 //        }
 //        return numStr;
 //    }
-}
