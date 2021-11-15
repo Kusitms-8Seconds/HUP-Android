@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.example.auctionapp.domain.chat.view.Chat;
+import com.example.auctionapp.domain.chat.view.ChatRoom;
+import com.example.auctionapp.domain.home.view.Home;
+import com.example.auctionapp.domain.home.view.Mypage;
+import com.example.auctionapp.domain.home.view.UploadPage;
+import com.example.auctionapp.domain.item.view.ItemList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

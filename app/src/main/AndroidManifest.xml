@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".GlobalApplication"
+        android:name=".domain.user.view.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/hup_icon"
         android:label="@string/app_name"
@@ -13,27 +13,27 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AuctionApp">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".domain.home.view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUp" />
-        <activity android:name=".Login" />
-        <activity android:name=".ItemDetail" />
-        <activity android:name=".BidPage" />
-        <activity android:name=".UploadPage" />
-        <activity android:name=".SelectCategory" />
-        <activity android:name=".Search" />
-        <activity android:name=".AuctionHistory" />
-        <activity android:name=".SellHistory" />
-        <activity android:name=".Notice" />
-        <activity android:name=".NoticeDetail" />
-        <activity android:name=".Scrap" />
-        <activity android:name=".Interests" />
-        <activity android:name=".ChatRoom" />
+        <activity android:name=".domain.user.view.SignUp" />
+        <activity android:name=".domain.user.view.Login" />
+        <activity android:name=".domain.item.view.ItemDetail" />
+        <activity android:name=".domain.pricesuggestion.view.BidPage" />
+        <activity android:name=".domain.home.view.UploadPage" />
+        <activity android:name=".domain.item.view.SelectCategory" />
+        <activity android:name=".domain.item.view.Search" />
+        <activity android:name=".domain.pricesuggestion.view.AuctionHistory" />
+        <activity android:name=".domain.item.view.SellHistory" />
+        <activity android:name=".domain.home.view.Notice" />
+        <activity android:name=".domain.home.view.NoticeDetail" />
+        <activity android:name=".domain.scrap.view.Scrap" />
+        <activity android:name=".domain.item.view.Interests" />
+        <activity android:name=".domain.chat.view.ChatRoom" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
