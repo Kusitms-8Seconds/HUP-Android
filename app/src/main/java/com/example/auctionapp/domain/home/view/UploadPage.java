@@ -34,13 +34,23 @@ public class UploadPage extends AppCompatActivity {
     // DatePickerDialog
     TextView editDate;
     Calendar myCalendar = Calendar.getInstance();
-    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
+    DatePickerDialog.OnDateSetListener datePickerEndDate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             editDate.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+        }
+    };
+    TextView buyDate;
+    DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            buyDate.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
         }
     };
 
@@ -83,6 +93,21 @@ public class UploadPage extends AppCompatActivity {
             }
         });
 
+        // 구매 일자
+        buyDate = findViewById(R.id.editAuctionBuyDate);
+        Calendar calender = Calendar.getInstance();
+        buyDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
+        buyDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerBuyDate,
+                        calender.get(Calendar.YEAR), calender.get(Calendar.MONTH), calender.get(Calendar.DATE));
+                dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                dialog.show();
+            }
+        });
+
+
         // 경매 종료 일자
         editDate = findViewById(R.id.editAuctionFinalDate);
         Calendar cal = Calendar.getInstance();
@@ -90,7 +115,7 @@ public class UploadPage extends AppCompatActivity {
         editDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, myDatePicker,
+                DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerEndDate,
                         cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
                 dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.show();
