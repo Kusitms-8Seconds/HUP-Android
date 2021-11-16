@@ -54,39 +54,49 @@ public class Interests extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Category item = (Category) adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "선택 :"+item.getCategory(), Toast.LENGTH_LONG).show();
+                if(item.getSelected()) {
+                    item.setSelected(false);
+                }else {
+                    item.setSelected(true);
+                }
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "선택 :"+item.getCategory(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
     public void init() {
-        adapter.addItem(new Category(R.drawable.necktie, "남성 패션/잡화"));
-        adapter.addItem(new Category(R.drawable.womans_clothes, "여성 패션"));
-        adapter.addItem(new Category(R.drawable.lipstick, "뷰티/미용"));
-        adapter.addItem(new Category(R.drawable.game, "게임/취미"));
-        adapter.addItem(new Category(R.drawable.bowling, "스포츠/레저"));
-        adapter.addItem(new Category(R.drawable.television, "생활가전"));
-        adapter.addItem(new Category(R.drawable.desktop, "디지털기기"));
-        adapter.addItem(new Category(R.drawable.dog, "반려동물 용품"));
-        adapter.addItem(new Category(R.drawable.book, "도서/음반"));
-        adapter.addItem(new Category(R.drawable.plant, "식물"));
-        adapter.addItem(new Category(R.drawable.baby, "유아용품"));
-        adapter.addItem(new Category(R.drawable.bed, "가구"));
+        adapter.addItem(new Category(false, R.drawable.necktie, "남성 패션/잡화"));
+        adapter.addItem(new Category(false, R.drawable.womans_clothes, "여성 패션"));
+        adapter.addItem(new Category(false, R.drawable.lipstick, "뷰티/미용"));
+        adapter.addItem(new Category(false, R.drawable.game, "게임/취미"));
+        adapter.addItem(new Category(false, R.drawable.bowling, "스포츠/레저"));
+        adapter.addItem(new Category(false, R.drawable.television, "생활가전"));
+        adapter.addItem(new Category(false, R.drawable.desktop, "디지털기기"));
+        adapter.addItem(new Category(false, R.drawable.dog, "반려동물 용품"));
+        adapter.addItem(new Category(false, R.drawable.book, "도서/음반"));
+        adapter.addItem(new Category(false, R.drawable.plant, "식물"));
+        adapter.addItem(new Category(false, R.drawable.baby, "유아용품"));
+        adapter.addItem(new Category(false, R.drawable.bed, "가구"));
 
     }
 }
 class Category {
+    boolean selected;
     int image;
     String category;
 
-    public Category(int image, String category) {
+    public Category(boolean selected, int image, String category) {
+        this.selected = selected;
         this.image = image;
         this.category = category;
     }
     public String getCategory() {return category;}
     public int getImage() {return image;}
+    public boolean getSelected() {return selected;}
     public void setCategory(String category) { this.category = category; }
     public void setImage(int image) {this.image = image;}
+    public void setSelected(boolean selected) {this.selected = selected;}
 }
 class CategoryAdapter extends BaseAdapter {
     ArrayList<Category> items = new ArrayList<Category>();
@@ -125,9 +135,14 @@ class CategoryAdapter extends BaseAdapter {
         ImageView category_pic = (ImageView) convertView.findViewById(R.id.category_pic);
         TextView category_name = (TextView) convertView.findViewById(R.id.category_name);
 
-        category_color.setImageResource(R.drawable.category_white);
+        if(items.get(position).getSelected()) {
+            category_color.setImageResource(R.drawable.category_blue);
+        }else {
+            category_color.setImageResource(R.drawable.category_white);
+        }
         category_pic.setImageResource(category.getImage());
         category_name.setText(category.getCategory());
+
 
         return convertView;
     }
