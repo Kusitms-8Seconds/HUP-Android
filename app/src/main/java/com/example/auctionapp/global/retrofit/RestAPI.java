@@ -1,5 +1,6 @@
 package com.example.auctionapp.global.retrofit;
 
+//import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
@@ -13,11 +14,12 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
+import retrofit2.http.DELETE;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 
 public interface RestAPI {
 
@@ -33,5 +35,8 @@ public interface RestAPI {
     @POST("/api/items")
     Call<RegisterItemResponse> uploadItem(@Part MultipartBody.Part itemImg,
                                           @PartMap HashMap<String, RequestBody> data);
-
+    /*
+    @DELETE("/api/v1/items/{id}")
+    Call<DefaultResponse> deleteItem(@Path("id") int id);
+     */
 }
