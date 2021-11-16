@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topbar"
@@ -50,17 +50,19 @@
         android:background="#F3F3F3"
         app:layout_constraintTop_toBottomOf="@id/topbar"/>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chattingRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#00000000"
+
             app:layout_constraintBottom_toTopOf="@id/editChatting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topbar"
             app:layout_constraintVertical_bias="0.0"/>
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,6 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
+            android:id="@+id/editText"
             android:layout_width="844px"
             android:layout_height="120px"
             android:background="@drawable/box_edge"
