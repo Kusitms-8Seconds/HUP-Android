@@ -67,7 +67,7 @@
         android:layout_marginTop="8dp"
         android:text="sell_history_ongoing_edt_name"
         android:textColor="#000000"
-        android:textSize="12sp"
+        android:textSize="40px"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -75,58 +75,16 @@
         app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_img" />
 
     <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:text="나의 경매가"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sell_history_ongoing_edt_name" />
-
-    <TextView
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
         android:text="최고 경매가"
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toTopOf="@+id/textView21">
-
-        <TextView
-            android:id="@+id/sell_history_ongoing_myPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="000000"
-            android:textColor="#000000"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="원"
-            android:textColor="#000000"
-            android:textSize="12sp" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/sell_history_ongoing_edt_name"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

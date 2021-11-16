@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,7 +82,7 @@ public class Mypage extends Fragment {
             }
         });
         // 경매 참여 내역
-        TextView goAuctionHistory = (TextView) viewGroup.findViewById(R.id.auc_history);
+        LinearLayout goAuctionHistory = (LinearLayout) viewGroup.findViewById(R.id.auc_history);
         goAuctionHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +91,7 @@ public class Mypage extends Fragment {
             }
         });
         // 판매 내역
-        TextView goSellHistory = (TextView) viewGroup.findViewById(R.id.sell_history);
+        LinearLayout goSellHistory = (LinearLayout) viewGroup.findViewById(R.id.sell_history);
         goSellHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

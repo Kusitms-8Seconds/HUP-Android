@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/auc_history_ongoing_img"
+        android:id="@+id/auc_history_end_img"
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         android:textSize="44px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/auc_history_ongoing_img"
+        app:layout_constraintStart_toEndOf="@+id/auc_history_end_img"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:text="낙찰가"
         android:textColor="#000000"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/auc_history_ongoing_img"
+        app:layout_constraintStart_toEndOf="@+id/auc_history_end_img"
         app:layout_constraintTop_toBottomOf="@+id/auc_history_end_edt_name" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:text="판매자"
         android:textColor="#000000"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/auc_history_ongoing_img"
+        app:layout_constraintStart_toEndOf="@+id/auc_history_end_img"
         app:layout_constraintTop_toBottomOf="@+id/item_price" />
 
     <TextView
