@@ -50,8 +50,8 @@
         android:background="#F3F3F3"
         app:layout_constraintTop_toBottomOf="@id/topbar"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chattingRecyclerView"
+        <ListView
+            android:id="@+id/chattingListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#00000000"
