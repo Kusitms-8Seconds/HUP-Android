@@ -13,6 +13,7 @@ import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -41,7 +42,7 @@ public interface RestAPI {
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
     @Multipart
     @POST("/api/items")
-    Call<RegisterItemResponse> uploadItem(@Part MultipartBody.Part itemImg,
+    Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
                                           @PartMap HashMap<String, RequestBody> data);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") int id);
