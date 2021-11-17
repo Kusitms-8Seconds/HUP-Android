@@ -194,15 +194,18 @@ public class UploadPage extends AppCompatActivity {
                 String description = editContent.getText().toString();
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
-                LocalDateTime date = LocalDateTime.parse(buyDate, formatter);
+                LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
+                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
 
                 RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
                 RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"),category);
                 RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
-                RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"),buyDate);
+                RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                 RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
-                RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"),auctionClosingDate);
+                RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
                 RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"),description);
+                //localDateTime 이렇게 넣는게 맞는 지?
                 map.put("itemName", itemNameR);
                 map.put("category", categoryR);
                 map.put("initPrice", initPriceR);
@@ -291,7 +294,7 @@ public class UploadPage extends AppCompatActivity {
             // 사진 파일 이름
             String fileName = "photo" + i + ".jpg";
             // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("files", fileName, fileBody);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("fileNames", fileName, fileBody);
             // 추가
             files.add(filePart);
         }

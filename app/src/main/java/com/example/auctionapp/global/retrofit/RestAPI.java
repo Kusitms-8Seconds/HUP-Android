@@ -42,7 +42,7 @@ public interface RestAPI {
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
     @Multipart
     @POST("/api/items")
-    Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
+    Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
                                           @PartMap HashMap<String, RequestBody> data);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") int id);
