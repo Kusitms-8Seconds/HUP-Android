@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -79,7 +80,6 @@ public class ItemDetail extends AppCompatActivity {
         });
 
         //item delete method
-        /*
         Button deleteButton = (Button) findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,6 @@ public class ItemDetail extends AppCompatActivity {
                         .enqueue(MainRetrofitTool.getCallback(new ItemDetail.DeleteItemCallback()));
             }
         });
-        */
 
     }
     public void initializeImageData()
@@ -101,7 +100,7 @@ public class ItemDetail extends AppCompatActivity {
         itemImageList.add(R.drawable.testitemimage);
         itemImageList.add(R.drawable.testitemimage);
     }
-    /*
+
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
@@ -119,5 +118,4 @@ public class ItemDetail extends AppCompatActivity {
             Log.e("연결실패", t.getMessage());
         }
     }
-     */
 }

@@ -1,6 +1,7 @@
 package com.example.auctionapp.global.retrofit;
 
-//import com.example.auctionapp.domain.item.dto.DefaultResponse;
+import com.example.auctionapp.domain.item.dto.DefaultResponse;
+import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
@@ -35,8 +36,6 @@ public interface RestAPI {
     @POST("/api/items")
     Call<RegisterItemResponse> uploadItem(@Part MultipartBody.Part itemImg,
                                           @PartMap HashMap<String, RequestBody> data);
-    /*
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") int id);
-     */
 }

@@ -72,6 +72,7 @@ public class ChatRoom extends AppCompatActivity {
                 chatList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
+                    System.out.println(user.toString());
                     chatList.add(user);
                 }
                 adapter.notifyDataSetChanged();

@@ -1,4 +1,4 @@
-package com.example.auctionapp.global.retrofit;
+package com.example.auctionapp.domain.item.dto;
 
 import android.content.ClipData;
 

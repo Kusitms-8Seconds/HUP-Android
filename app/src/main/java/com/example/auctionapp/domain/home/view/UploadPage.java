@@ -29,9 +29,7 @@ import com.example.auctionapp.domain.file.view.MultiImageAdapter;
 import com.example.auctionapp.domain.item.view.SelectCategory;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RegisterItemRequest;
-import com.example.auctionapp.global.retrofit.RegisterItemResponse;
-import com.example.auctionapp.global.retrofit.RestAPI;
+import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import java.io.ByteArrayOutputStream;
@@ -45,11 +43,7 @@ import java.util.HashMap;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class UploadPage extends AppCompatActivity {
 
