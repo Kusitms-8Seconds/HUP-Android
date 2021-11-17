@@ -2,12 +2,15 @@ package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
+import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
 import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.SignUpResponse;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 
 import java.util.HashMap;
 
@@ -26,6 +29,10 @@ public interface RestAPI {
 
     @POST("signup")
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
+    @POST("login")
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    @POST("api/v1/user/details")
+    Call<UserDetailsInfoResponse> userDetails(@Body UserDetailsInfoRequest userDetailsInfoRequest);
     @POST("oauth2/google/validation")
     Call<LoginResponse> googleIdTokenValidation(@Body OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
     @POST("oauth2/kakao/validation")

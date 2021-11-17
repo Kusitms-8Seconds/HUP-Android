@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class Constants {
 
-    public static Long userId;
-    public static String token;
+    public static Long userId = null;
+    public static String token = null;
 
     public enum ESignUp{
         emailDuplicateMessage("이미 사용하고 있는 이메일입니다."),

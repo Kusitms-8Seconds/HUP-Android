@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
@@ -60,7 +61,7 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
-    Button loginBtn;
+    ImageView loginBtn;
     ImageView btn_kakao_login;
     ImageView btn_google_login;
     ImageView btn_naver_login;
@@ -90,6 +91,24 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        edit_id = findViewById(R.id.editID);
+        edit_pw = findViewById(R.id.editPW);
+
+
+        // App 로그인
+        loginBtn = (ImageView)findViewById(R.id.loginButton);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginRequest loginRequest = LoginRequest.of(edit_id.getText().toString(), edit_pw.getText().toString());
+                RetrofitTool.getAPIWithNullConverter().login(loginRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
 
         //카카오 로그인
         btn_kakao_login = (ImageView)findViewById(R.id.btn_kakao_login);

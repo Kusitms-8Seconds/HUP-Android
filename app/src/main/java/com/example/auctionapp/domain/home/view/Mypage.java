@@ -2,10 +2,12 @@ package com.example.auctionapp.domain.home.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +22,15 @@ import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
 import com.example.auctionapp.domain.pricesuggestion.view.AuctionHistory;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.LoginRequest;
+import com.example.auctionapp.domain.user.dto.LoginResponse;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 import com.example.auctionapp.domain.user.view.Login;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -29,6 +39,10 @@ import com.google.android.gms.tasks.Task;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class Mypage extends Fragment {
 
@@ -41,11 +55,22 @@ public class Mypage extends Fragment {
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
 
+    TextView myName;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        System.out.println("온크리에이트뷰");
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
+        myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);
+        System.out.println("userId"+Constants.userId);
+        System.out.println("userToken"+Constants.token);
+        if(Constants.userId!=null){
+            UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
+                    .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
+        }
 
         // google 객체
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -167,5 +192,25 @@ public class Mypage extends Fragment {
         mOAuthLoginModule.logout(getContext());
         Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
     }
+
+    private class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+        @Override
+        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+            System.out.println("username"+response.body().getUsername());
+            myName.setText(response.body().getUsername());
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<UserDetailsInfoResponse> response) {
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+
+
 
 }

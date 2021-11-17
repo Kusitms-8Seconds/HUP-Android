@@ -22,6 +22,8 @@ import com.example.auctionapp.domain.home.view.UploadPage;
 import com.example.auctionapp.domain.item.view.ItemList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.sql.SQLOutput;
+
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNV;
     Dialog dialog02;
@@ -35,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
         mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                System.out.println("선택될때");
                 BottomNavigate(menuItem.getItemId());
 
                 return true;
             }
         });
+        
+        
         mBottomNV.setSelectedItemId(R.id.home);
 
         dialog02 = new Dialog(MainActivity.this);
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        if (fragment == null) {
+        //if (fragment == null) {
             if (id == R.id.home) {
                 fragment = new Home();
                 fragmentTransaction.add(R.id.content_layout, fragment, tag);
@@ -100,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        } else {
+       // } else {
             fragmentTransaction.show(fragment);
-        }
+        //}
 
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
