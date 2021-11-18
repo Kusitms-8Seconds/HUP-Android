@@ -89,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.home) {
                 fragment = new Home();
                 fragmentTransaction.add(R.id.content_layout, fragment, tag);
+                fragmentTransaction.show(fragment);
             } else if (id == R.id.chat){
                 fragment = new Chat();
                 fragmentTransaction.add(R.id.content_layout, fragment, tag);
+                fragmentTransaction.show(fragment);
             }else if (id == R.id.upload){
                 Intent intent = new Intent(MainActivity.this, UploadPage.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -99,14 +101,16 @@ public class MainActivity extends AppCompatActivity {
             }else if (id == R.id.mypage){
                 fragment = new Mypage();
                 fragmentTransaction.add(R.id.content_layout, fragment, tag);
+                fragmentTransaction.show(fragment);
             }else if (id == R.id.itemlist){
                 fragment = new ItemList();
                 fragmentTransaction.add(R.id.content_layout, fragment, tag);
+                fragmentTransaction.show(fragment);
             }
 
 
        // } else {
-            fragmentTransaction.show(fragment);
+//        fragmentTransaction.show(fragment);
         //}
 
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
