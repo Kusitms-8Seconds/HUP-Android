@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.home.view;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
@@ -40,6 +42,11 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -56,6 +63,7 @@ public class Mypage extends Fragment {
     OAuthLogin mOAuthLoginModule;
 
     TextView myName;
+    ImageView imageView5;
 
     @Nullable
     @Override
@@ -64,6 +72,7 @@ public class Mypage extends Fragment {
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
         myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);
+        imageView5 = (ImageView) viewGroup.findViewById(R.id.imageView5);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
         if(Constants.userId!=null){
@@ -198,11 +207,19 @@ public class Mypage extends Fragment {
         public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
             System.out.println("username"+response.body().getUsername());
             myName.setText(response.body().getUsername());
+            if(response.body().getPicture()!=null){
+                Glide.with(getContext()).load(response.body().getPicture()).into(imageView5);
+            }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
         }
         @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) {
+        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
             Log.d(TAG, "onFailResponse");
         }
         @Override

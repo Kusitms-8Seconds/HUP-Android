@@ -29,7 +29,7 @@ public class RetrofitTool {
     public static RestAPI getAPIWithAuthorizationToken(String token){
         Interceptor interceptor = chain -> {
             Request newRequest  = chain.request().newBuilder()
-                    .addHeader("Authorization", token)
+                    .addHeader("Authorization", "Bearer " + token)
                     .build();
             return chain.proceed(newRequest);
         };
