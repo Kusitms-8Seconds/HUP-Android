@@ -28,7 +28,7 @@ public class ItemDetail extends AppCompatActivity {
 
     private ArrayList<Integer> itemImageList;
     private static final int DP = 24;
-    int id = 2;     //item ID
+    int id = 2;     //item ID (임시)
     Boolean isHeart;
 
     @Override

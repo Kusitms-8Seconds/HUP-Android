@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -48,37 +52,44 @@ import retrofit2.Response;
 public class UploadPage extends AppCompatActivity {
 
     // DatePickerDialog
-    TextView editEndDate;
     Calendar myCalendar = Calendar.getInstance();
-    DatePickerDialog.OnDateSetListener datePickerEndDate = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            editEndDate.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
-        }
-    };
     TextView editBuyDate;
     DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            editBuyDate.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+            LocalDateTime endDateTime = LocalDateTime.of(year, month, dayOfMonth, 00, 00,00,0000);
+            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            editBuyDate.setText(formatDate.toString());
+        }
+    };
+    TextView editEndDate;
+    DatePickerDialog.OnDateSetListener datePickerEndDate = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            LocalDateTime endDateTime = LocalDateTime.of(year, month, dayOfMonth, 00, 00,00,0000);
+            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            editEndDate.setText(formatDate.toString());
         }
     };
 
     private RatingBar ratingbar;
     private static final String TAG = "UploadPage";
+    // uri를 담아야하는지 path를 담아야하는지?
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
     RecyclerView selectedImageRecyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
     TextView selectedImageCount;
     int itemStatePoint; //item rating
     HashMap<String,RequestBody> map = new HashMap<String,RequestBody>();    //hashmap 생성
-    MultipartBody.Part uploadFile;
+    ArrayList<MultipartBody.Part> files = new ArrayList<>(); // 여러 file들을 담아줄 ArrayList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +122,10 @@ public class UploadPage extends AppCompatActivity {
         });
 
         // 경매 종료 일자
-        editBuyDate = findViewById(R.id.editAuctionFinalDate);
+        editEndDate = findViewById(R.id.editAuctionFinalDate);
         Calendar cal = Calendar.getInstance();
-        editBuyDate.setText(cal.get(Calendar.YEAR) +"-"+ (cal.get(Calendar.MONTH)+1) +"-"+ cal.get(Calendar.DATE));
-        editBuyDate.setOnClickListener(new View.OnClickListener() {
+        editEndDate.setText(cal.get(Calendar.YEAR) +"-"+ (cal.get(Calendar.MONTH)+1) +"-"+ cal.get(Calendar.DATE));
+        editEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerEndDate,
@@ -171,6 +182,7 @@ public class UploadPage extends AppCompatActivity {
         // 완료 버튼
         TextView uploadButton = (TextView) findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 // TODO: upload method
@@ -181,13 +193,19 @@ public class UploadPage extends AppCompatActivity {
                 String auctionClosingDate = editEndDate.getText().toString();
                 String description = editContent.getText().toString();
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
+                LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
+                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
+
                 RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
                 RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"),category);
                 RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
-                RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"),buyDate);
+                RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                 RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
-                RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"),auctionClosingDate);
+                RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
                 RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"),description);
+                //localDateTime 이렇게 넣는게 맞는 지?
                 map.put("itemName", itemNameR);
                 map.put("category", categoryR);
                 map.put("initPrice", initPriceR);
@@ -195,12 +213,11 @@ public class UploadPage extends AppCompatActivity {
                 map.put("itemStatePoint", itemStatePointR);
                 map.put("auctionClosingDate", auctionClosingDateR);
                 map.put("description", descriptionR);
+                makeMultiPart();
 
 //                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
-                RetrofitTool.getAPIWithNullConverter().uploadItem(uploadFile, map)
+                RetrofitTool.getAPIWithNullConverter().uploadItem(files, map)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
-                //file 하나일때만?
-                //RequestBody에 list 넣을 수 있는지
 
             }
         });
@@ -225,16 +242,12 @@ public class UploadPage extends AppCompatActivity {
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
 
-                    String fp = imageUri.getPath();
-                    file(fp, imageUri);
-
                     adapter = new MultiImageAdapter(uriList, getApplicationContext());
                     selectedImageRecyclerView.setAdapter(adapter);
                     selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
                 }
                 else{      // 이미지를 여러장 선택한 경우
                     ClipData clipData = data.getClipData();
-                    Log.e("clipData", String.valueOf(clipData.getItemCount()));
                     selectedImageCount.setText(String.valueOf(clipData.getItemCount()) + "/10");
 
                     if(clipData.getItemCount() > 10){   // 선택한 이미지가 11장 이상인 경우
@@ -245,6 +258,7 @@ public class UploadPage extends AppCompatActivity {
 
                         for (int i = 0; i < clipData.getItemCount(); i++){
                             Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
+
                             try {
                                 uriList.add(imageUri);  //uri를 list에 담는다.
                             } catch (Exception e) {
@@ -259,20 +273,32 @@ public class UploadPage extends AppCompatActivity {
             }
         }
     }
-    public void file(String filepath, Uri photoUri) {
+    public void makeMultiPart() {
         //filepath는 photoUri.getPath()
-        File file = new File(filepath);
-        InputStream inputStream = null;
-        try {
-            inputStream = getApplicationContext().getContentResolver().openInputStream(photoUri);
-        }catch(IOException e) {
-            e.printStackTrace();
+//        File file = new File(filepath);
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = getApplicationContext().getContentResolver().openInputStream(photoUri);
+//        }catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
+//        files = MultipartBody.Part.createFormData("itemImg", file.getName() ,requestBody);
+
+        for (int i = 0; i < uriList.size(); ++i) {
+            // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), String.valueOf(uriList.get(i)));
+            // 사진 파일 이름
+            String fileName = "photo" + i + ".jpg";
+            // RequestBody로 Multipart.Part 객체 생성
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("fileNames", fileName, fileBody);
+            // 추가
+            files.add(filePart);
         }
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
-        uploadFile = MultipartBody.Part.createFormData("itemImg", file.getName() ,requestBody);
+
     }
     private class RegisterItemCallback implements MainRetrofitCallback<RegisterItemResponse> {
         @Override
