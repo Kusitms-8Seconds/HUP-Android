@@ -1,5 +1,8 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,66 +12,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ItemData {
-    int imageURL;       //나중에 수정 (int -> string url)
+
+    Long itemId;
+    String imageURL;       //나중에 수정 (int -> string url)
     String itemName;
     int itemPrice;
     String endTime;
     int views;
-    int heart;
+    Long heart;
 
-    public ItemData(int imageURL, String itemName, int itemPrice, String endTime, int views, int heart){
+    public ItemData(Long itemId, String imageURL, String itemName, int itemPrice, String endTime, int views, Long heart){
+        this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.endTime = endTime;
         this.views = views;
-        this.heart = heart;
-    }
-
-    public int getImage() {
-        return imageURL;
-    }
-    public void setImage(int imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getItemPrice() {
-        return itemPrice;
-    }
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public int getViews() {
-        return views;
-    }
-    public void setViews(int views) {
-        this.views = views;
-    }
-
-    public int getHeart() {
-        return heart;
-    }
-    public void setHeart(int heart) {
         this.heart = heart;
     }
 }
@@ -76,6 +48,14 @@ public class ItemData {
 class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
     private ArrayList<ItemData> listData = new ArrayList<>();
+
+    Context context;
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
+    }
 
     @NonNull
     @Override
@@ -86,7 +66,7 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ItemViewHolder)holder).onBind(listData.get(position));
+        ((ItemViewHolder)holder).onBind(context, listData.get(position));
     }
 
     @Override
@@ -111,7 +91,7 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.mListener = listener ;
     }
 
-    public class ItemViewHolder extends  RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         ImageView item_image;
         TextView item_name;
@@ -145,8 +125,9 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
 
-        public void onBind(ItemData data){
-            item_image.setImageResource(data.getImage());
+        public void onBind(Context context, ItemData data){
+            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
+                    ,item_image.getHeight()).into(item_image);
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
             item_price.setText(data.getItemPrice()+"");
@@ -154,5 +135,8 @@ class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             item_views.setText(data.getViews()+"");
             item_hearts.setText(data.getHeart()+"");
         }
+
+
     }
+
 }

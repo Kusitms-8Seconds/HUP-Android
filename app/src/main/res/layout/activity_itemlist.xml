@@ -12,24 +12,24 @@
         android:id="@+id/searchView"
         android:layout_width="980px"
         android:layout_height="116px"
+        android:layout_marginTop="67px"
         app:layout_constraintBottom_toTopOf="@id/searchfilter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="67px"
         app:srcCompat="@drawable/searchview_image" />
 
-<!--    <android.widget.SearchView-->
-<!--        android:id="@+id/searchView"-->
-<!--        android:layout_width="980px"-->
-<!--        android:layout_height="116px"-->
-<!--        android:layout_marginTop="67px"-->
-<!--        android:background="@drawable/searchview_background"-->
-<!--        app:iconifiedByDefault="false"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/searchfilter"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:queryHint="검색어를 입력해주세요" />-->
+    <!--    <android.widget.SearchView-->
+    <!--        android:id="@+id/searchView"-->
+    <!--        android:layout_width="980px"-->
+    <!--        android:layout_height="116px"-->
+    <!--        android:layout_marginTop="67px"-->
+    <!--        android:background="@drawable/searchview_background"-->
+    <!--        app:iconifiedByDefault="false"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/searchfilter"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:queryHint="검색어를 입력해주세요" />-->
 
 
     <LinearLayout

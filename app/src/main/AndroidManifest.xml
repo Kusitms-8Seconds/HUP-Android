@@ -3,10 +3,13 @@
     package="com.example.auctionapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".domain.user.view.GlobalApplication"
         android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/hup_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/hup_icon_round"
