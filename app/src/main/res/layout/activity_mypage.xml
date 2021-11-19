@@ -75,7 +75,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/profileImg"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_margin="8dp"
@@ -84,21 +84,35 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/profile" />
 
-                    <TextView
-                        android:id="@+id/myPage_userName"
+                    <LinearLayout
+                        android:id="@+id/userNameLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="28dp"
-                        android:text="myPage_userName"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintStart_toEndOf="@+id/profileImg"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.369" />
+                        app:layout_constraintVertical_bias="0.369">
+                        <TextView
+                            android:id="@+id/myPage_userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="로그인하기"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <ImageView
+                            android:id="@+id/loginIcon"
+                            android:layout_width="50px"
+                            android:layout_height="50px"
+                            android:layout_marginStart="28px"
+                            android:layout_gravity="center"
+                            android:src="@drawable/gologin"/>
+
+                    </LinearLayout>
+
 
                     <ImageButton
                         android:id="@+id/imageButton4"
@@ -107,11 +121,11 @@
                         android:background="@drawable/mypage_circle"
                         android:scaleType="centerCrop"
                         android:src="@drawable/modi_profile"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+                        app:layout_constraintBottom_toBottomOf="@+id/profileImg"
+                        app:layout_constraintEnd_toEndOf="@+id/profileImg"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/imageView5"
-                        app:layout_constraintTop_toTopOf="@+id/imageView5"
+                        app:layout_constraintStart_toStartOf="@+id/profileImg"
+                        app:layout_constraintTop_toTopOf="@+id/profileImg"
                         app:layout_constraintVertical_bias="1.0" />
 
                     <ImageButton
@@ -122,10 +136,10 @@
                         android:background="#FFFFFF"
                         android:scaleType="fitCenter"
                         android:src="@drawable/setting"
-                        app:layout_constraintEnd_toEndOf="@+id/myPage_userName"
+                        app:layout_constraintEnd_toEndOf="@+id/userNameLayout"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/myPage_userName"
-                        app:layout_constraintTop_toBottomOf="@+id/myPage_userName" />
+                        app:layout_constraintStart_toStartOf="@+id/userNameLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/userNameLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -406,17 +420,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/goLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="로그인하기"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logout_button"
-                app:layout_constraintVertical_bias="0.0" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

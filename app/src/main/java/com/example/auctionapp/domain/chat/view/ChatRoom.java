@@ -48,6 +48,15 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
+        ImageView goBack = (ImageView) findViewById(R.id.goback);
+        goBack.bringToFront();
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         editText = findViewById(R.id.editText);
         sendbutton = findViewById(R.id.sendbutton);
         sendbutton.setOnClickListener(new View.OnClickListener() {

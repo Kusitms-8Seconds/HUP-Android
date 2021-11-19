@@ -55,15 +55,14 @@ public class Mypage extends Fragment {
 
     ViewGroup viewGroup;
 
-    TextView goLogin;
+    LinearLayout goLogin;
     Button logout_button;
-    Button signIn_button;
 
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
 
     TextView myName;
-    ImageView imageView5;
+    ImageView profileImg;
 
     @Nullable
     @Override
@@ -72,7 +71,7 @@ public class Mypage extends Fragment {
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
         myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);
-        imageView5 = (ImageView) viewGroup.findViewById(R.id.imageView5);
+        profileImg = (ImageView) viewGroup.findViewById(R.id.profileImg);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
         if(Constants.userId!=null){
@@ -107,7 +106,7 @@ public class Mypage extends Fragment {
             }
         });
         // 로그인하러 가기
-        goLogin = (TextView) viewGroup.findViewById(R.id.goLogin);
+        goLogin = (LinearLayout) viewGroup.findViewById(R.id.userNameLayout);
         goLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,8 +207,10 @@ public class Mypage extends Fragment {
             System.out.println("username"+response.body().getUsername());
             myName.setText(response.body().getUsername());
             if(response.body().getPicture()!=null){
-                Glide.with(getContext()).load(response.body().getPicture()).into(imageView5);
+                Glide.with(getContext()).load(response.body().getPicture()).into(profileImg);
             }
+            ImageView loginIcon = viewGroup.findViewById(R.id.loginIcon);
+            loginIcon.setVisibility(View.INVISIBLE);
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
         }

@@ -20,7 +20,7 @@ public class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_auction_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_home_auction_list, parent, false);
         return new AuctionNowViewHolder(view);
     }
 

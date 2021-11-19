@@ -61,7 +61,7 @@ public class UploadPage extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            LocalDateTime endDateTime = LocalDateTime.of(year, month, dayOfMonth, 00, 00,00,0000);
+            LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
             String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             editBuyDate.setText(formatDate.toString());
         }
@@ -74,7 +74,7 @@ public class UploadPage extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            LocalDateTime endDateTime = LocalDateTime.of(year, month, dayOfMonth, 00, 00,00,0000);
+            LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
             String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             editEndDate.setText(formatDate.toString());
         }
@@ -123,13 +123,12 @@ public class UploadPage extends AppCompatActivity {
 
         // 경매 종료 일자
         editEndDate = findViewById(R.id.editAuctionFinalDate);
-        Calendar cal = Calendar.getInstance();
-        editEndDate.setText(cal.get(Calendar.YEAR) +"-"+ (cal.get(Calendar.MONTH)+1) +"-"+ cal.get(Calendar.DATE));
+        editEndDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
         editEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerEndDate,
-                        cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+                        calender.get(Calendar.YEAR), calender.get(Calendar.MONTH), calender.get(Calendar.DATE));
                 dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.show();
             }
@@ -188,7 +187,12 @@ public class UploadPage extends AppCompatActivity {
                 // TODO: upload method
                 String itemName = editItemName.getText().toString();
                 String category = editCategory.getText().toString();
-                int initPrice = Integer.parseInt(editPrice.getText().toString());
+                String initPriceStr = editPrice.getText().toString();
+                if(initPriceStr == null) {
+                    System.out.println("경매시작가 입력하세요");
+                    return;
+                }
+                int initPrice = Integer.parseInt(initPriceStr);
                 String buyDate = editBuyDate.getText().toString();
                 String auctionClosingDate = editEndDate.getText().toString();
                 String description = editContent.getText().toString();

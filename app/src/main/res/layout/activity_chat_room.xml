@@ -40,27 +40,116 @@
             android:layout_marginStart="50px"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+        <ImageView
+            android:id="@+id/accuseButton"
+            android:layout_width="61px"
+            android:layout_height="73px"
+            app:srcCompat="@drawable/copimg"
+            android:layout_marginTop="79px"
+            android:layout_marginBottom="74px"
+            android:layout_marginEnd="50px"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="4px"
-        android:layout_marginHorizontal="10dp"
         android:background="#F3F3F3"
         app:layout_constraintTop_toBottomOf="@id/topbar"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chattingItemDetails"
+        android:layout_width="980px"
+        android:layout_height="284px"
+        android:layout_margin="50px"
+        android:background="@drawable/box_edge"
+        android:elevation="8dp"
+        app:layout_constraintTop_toBottomOf="@id/topbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/chattingItemImage"
+            android:layout_width="224px"
+            android:layout_height="224px"
+            android:layout_marginLeft="30px"
+            android:src="@drawable/box_edge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/chattingItemDetailName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44px"
+            android:layout_marginTop="66px"
+            android:fontFamily="sans-serif-black"
+            android:text="item_name"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="40px"
+            app:layout_constraintStart_toEndOf="@id/chattingItemImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/chattingItemDetailCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44px"
+            android:layout_marginTop="66px"
+            android:fontFamily="sans-serif-black"
+            android:text="item_category"
+            app:layout_constraintStart_toEndOf="@id/chattingItemDetailName"
+            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44px"
+            android:layout_marginBottom="66px"
+            app:layout_constraintStart_toEndOf="@id/chattingItemImage"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="낙찰가 "
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/Hup"
+                android:textSize="40px" />
+            <TextView
+                android:id="@+id/chattingItemDetailPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="item_price"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/Hup"
+                android:textSize="40px" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/Hup"
+                android:textSize="40px"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ListView
             android:id="@+id/chattingListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#00000000"
-
+            android:layout_marginStart="50px"
+            android:layout_marginEnd="50px"
             app:layout_constraintBottom_toTopOf="@id/editChatting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topbar"
+            app:layout_constraintTop_toBottomOf="@id/chattingItemDetails"
             app:layout_constraintVertical_bias="0.0"/>
 
 
