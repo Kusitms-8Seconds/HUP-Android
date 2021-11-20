@@ -3,11 +3,13 @@ package com.example.auctionapp.domain.home.view;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -59,7 +61,7 @@ public class UploadPage extends AppCompatActivity {
     // DatePickerDialog
     Calendar myCalendar = Calendar.getInstance();
     TextView editBuyDate;
-    EItemCategory selectedCategory;
+    String selectedCategory;
 
     DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -90,7 +92,8 @@ public class UploadPage extends AppCompatActivity {
     private RatingBar ratingbar;
     private static final String TAG = "UploadPage";
     // uri를 담아야하는지 path를 담아야하는지?
-    ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
+    ArrayList<Uri> uriList;   // 이미지의 uri를 담을 ArrayList 객체
+    ArrayList<File> fileList;
     RecyclerView selectedImageRecyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
     TextView selectedImageCount;
@@ -193,20 +196,15 @@ public class UploadPage extends AppCompatActivity {
             public void onClick(View view) {
                 // TODO: upload method
                 String itemName = editItemName.getText().toString();
-                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
+//                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
+//                while(iterator.hasNext()) {
+//                    EItemCategory next = iterator.next();
+//                    if(next.getName().equals(editCategory.getText().toString())){
+//                        selectedCategory = next; }
+//                }
 
-                while(iterator.hasNext()) {
-                    EItemCategory next = iterator.next();
-                    if(next.getName().equals(editCategory.getText().toString())){
-                        System.out.println("들어오는지?");
-                        System.out.println("editCategory.getText().toString()"+editCategory.getText().toString());
-                        System.out.println("next"+next);
-                        System.out.println("next.getName()"+next.getName());
-                        selectedCategory = next; }
-                }
+                choiceCategory(editCategory.getText().toString());
 
-                System.out.println("selectedCategory"+selectedCategory);
-               // String category = editCategory.getText().toString();
                 String initPriceStr = editPrice.getText().toString();
                 if(initPriceStr == null) {
                     System.out.println("경매시작가 입력하세요");
@@ -217,32 +215,85 @@ public class UploadPage extends AppCompatActivity {
                 String auctionClosingDate = editEndDate.getText().toString()+" 00:00:00";
                 String description = editContent.getText().toString();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
-                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
 
                 RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(Constants.userId));
                 RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
-                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(selectedCategory));
+                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), selectedCategory);
                 RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
                 RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                 RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
                 RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
                 RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"),description);
                 //localDateTime 이렇게 넣는게 맞는 지?
-                map.put("itemName", itemNameR);
-                map.put("category", categoryR);
-                map.put("initPrice", initPriceR);
-                map.put("buyDate", buyDateR);
-                map.put("itemStatePoint", itemStatePointR);
-                map.put("auctionClosingDate", auctionClosingDateR);
-                map.put("description", descriptionR);
+//                map.put("itemName", itemNameR);
+//                map.put("category", categoryR);
+//                map.put("initPrice", initPriceR);
+//                map.put("buyDate", buyDateR);
+//                map.put("itemStatePoint", itemStatePointR);
+//                map.put("auctionClosingDate", auctionClosingDateR);
+//                map.put("description", descriptionR);
                 makeMultiPart();
-
+                System.out.println("files체크"+files.toString());
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
                         itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                         auctionClosingDateR, descriptionR)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
+
+            }
+
+            private void choiceCategory(String toString) {
+                switch (toString){
+                    case "디지털 기기":
+                        selectedCategory = "eDigital";
+                        break;
+                    case "생활가전":
+                        selectedCategory = "eHouseHoldAppliance";
+                        break;
+                    case "가구/인테리어":
+                        selectedCategory = "eFurnitureAndInterior";
+                        break;
+                    case "유아동":
+                        selectedCategory = "eChildren";
+                        break;
+                    case "생활/가공식품":
+                        selectedCategory = "eDailyLifeAndProcessedFood";
+                        break;
+                    case "유아도서":
+                        selectedCategory = "eChildrenBooks";
+                        break;
+                    case "스포츠/레저":
+                        selectedCategory = "eSportsAndLeisure";
+                        break;
+                    case "여성잡화":
+                        selectedCategory = "eMerchandiseForWoman";
+                        break;
+                    case "여성의류":
+                        selectedCategory = "eWomenClothing";
+                        break;
+                    case "남성패션/잡화":
+                        selectedCategory = "eManFashionAndMerchandise";
+                        break;
+                    case "게임/취미":
+                        selectedCategory = "eGameAndHabit";
+                        break;
+                    case "뷰티/미용":
+                        selectedCategory = "eBeauty";
+                        break;
+                    case "반려동물용품":
+                        selectedCategory = "ePetProducts";
+                        break;
+                    case "도서/티켓/음반":
+                        selectedCategory = "eBookTicketAlbum";
+                        break;
+                    case "식물":
+                        selectedCategory = "ePlant";
+                        break;
+                    default:
+                }
             }
         });
 
@@ -253,8 +304,9 @@ public class UploadPage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        uriList.clear();    // 이미지 다시 선택 시 초기화
-
+        //uriList.clear();    // 이미지 다시 선택 시 초기화
+        uriList = new ArrayList<>();
+        fileList = new ArrayList<>();
         if(requestCode == 2222){
             if(data == null){   // 어떤 이미지도 선택하지 않은 경우
                 Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
@@ -265,7 +317,9 @@ public class UploadPage extends AppCompatActivity {
                     selectedImageCount.setText("1/10");
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
-
+                    String imagePath = getRealpath(imageUri);
+                    File destFile = new File(imagePath);
+                    fileList.add(destFile);
                     adapter = new MultiImageAdapter(uriList, getApplicationContext());
                     selectedImageRecyclerView.setAdapter(adapter);
                     selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
@@ -285,6 +339,9 @@ public class UploadPage extends AppCompatActivity {
 
                             try {
                                 uriList.add(imageUri);  //uri를 list에 담는다.
+                                String imagePath = getRealpath(imageUri);
+                                File destFile = new File(imagePath);
+                                fileList.add(destFile);
                             } catch (Exception e) {
                                 Log.e(TAG, "File select error", e);
                             }
@@ -311,14 +368,15 @@ public class UploadPage extends AppCompatActivity {
 //        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
 //        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
 //        files = MultipartBody.Part.createFormData("itemImg", file.getName() ,requestBody);
-
-        for (int i = 0; i < uriList.size(); ++i) {
+        for (int i = 0; i < fileList.size(); ++i) {
             // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), String.valueOf(uriList.get(i)));
+
+            System.out.println("fileList.get(0)"+fileList.get(0).toString());
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), fileList.get(0));
             // 사진 파일 이름
             String fileName = "photo" + i + ".jpg";
             // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("fileNames", fileName, fileBody);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("files", fileName, fileBody);
             // 추가
             files.add(filePart);
         }
@@ -339,6 +397,17 @@ public class UploadPage extends AppCompatActivity {
         public void onConnectionFail(Throwable t) {
             Log.e("연결실패", t.getMessage());
         }
+    }
+
+    public String getRealpath(Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor c = managedQuery(uri, proj, null, null, null);
+        int index = c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        c.moveToFirst();
+        String path = c.getString(index);
+
+        return path;
     }
 }
 

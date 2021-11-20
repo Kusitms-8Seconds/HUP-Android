@@ -2,6 +2,8 @@ package com.example.auctionapp.domain.item.dto;
 
 import android.content.ClipData;
 
+import com.example.auctionapp.domain.item.constant.ItemConstants;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +20,12 @@ public class RegisterItemResponse {
     private Long id;
 
     private final String itemName;
-    private Enum category;
+    private ItemConstants.EItemCategory category;
     private int initPrice;
     private LocalDateTime buyDate;
     private int itemStatePoint;
     private String description;
-    private Enum soldStatus;
+    private ItemConstants.EItemSoldStatus soldStatus;
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
 
