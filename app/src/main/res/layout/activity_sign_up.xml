@@ -30,10 +30,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:layout_width="373dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="50px"
-        android:layout_marginEnd="50px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -53,6 +51,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="318dp"
                 android:text="아이디"
@@ -68,12 +67,11 @@
                 android:layout_width="730px"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
-                android:layout_marginEnd="20px"
                 android:background="@drawable/box_edge"
-                android:paddingLeft="30px"
                 android:ems="10"
                 android:hint="아이디 입력 (5~11자)"
                 android:inputType="textPersonName"
+                android:paddingLeft="30px"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView13"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -96,6 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="비밀번호 입력 (숫자, 영문, 대소문자 조합 8~16자)"
@@ -112,6 +111,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="비밀번호 확인"
@@ -141,6 +141,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="사용하실 닉네임을 입력해주세요."
@@ -156,11 +157,11 @@
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="69px"
                 android:text="휴대폰 인증"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                app:layout_constraintHorizontal_bias="0.052"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edt_nickname" />
 
@@ -169,6 +170,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="휴대폰 번호 (-없이 숫자만 입력)"
@@ -198,6 +200,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="인증번호를 입력해주세요."
@@ -227,6 +230,7 @@
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="이메일 주소를 입력해주세요."
@@ -270,7 +274,8 @@
                 android:textSize="40px"
                 app:layout_constraintBottom_toBottomOf="@+id/edt_userId"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/edt_userId" />
 
             <TextView
                 android:id="@+id/serviceAgree"
@@ -312,10 +317,10 @@
 
             <RadioGroup
                 android:id="@+id/signUp_radioGroup"
-                android:checked="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:checked="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/serviceAgree"
@@ -351,7 +356,9 @@
                 android:id="@+id/btn_signUp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/Hup"
                 android:text="회원가입"
