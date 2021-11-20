@@ -37,6 +37,7 @@
         <activity android:name=".domain.scrap.view.Scrap" />
         <activity android:name=".domain.item.view.Interests" />
         <activity android:name=".domain.chat.view.ChatRoom" />
+        <activity android:name=".domain.pricesuggestion.view.FeesPage" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

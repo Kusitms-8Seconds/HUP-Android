@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="820px"
+    android:layout_height="420px"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_edge">
+    
+    <ImageView
+        android:id="@+id/iv_timer"
+        android:layout_width="136px"
+        android:layout_height="136px"
+        android:layout_marginTop="54px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/Hup"
+        android:textSize="50px"
+        app:layout_constraintBottom_toBottomOf="@id/iv_timer"
+        app:layout_constraintEnd_toEndOf="@id/iv_timer"
+        app:layout_constraintStart_toStartOf="@id/iv_timer"
+        app:layout_constraintTop_toTopOf="@id/iv_timer" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="66px"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="잠시후에 수수료\n결제창으로 이동합니다."
+        android:textColor="#000000"
+        android:textSize="50px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_timer"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

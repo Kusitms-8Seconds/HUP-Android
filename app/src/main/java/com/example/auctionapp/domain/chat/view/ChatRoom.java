@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,10 +58,8 @@ public class ChatRoom extends AppCompatActivity {
     private ImageView button;
     private EditText editText;
 
-    private FirebaseDatabase firebaseDatabase;
 
     private User destUser;
-
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy.MM.dd HH:mm");
 
     //firebase
@@ -83,7 +82,7 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = "판매자";
-        destUid = "null";        //채팅 상대 //임시
+        destUid = "구매자1";        //채팅 상대 //임시
 
         recyclerView = (RecyclerView)findViewById(R.id.chattingRecyclerView);
         button=(ImageView)findViewById(R.id.sendbutton);
@@ -254,7 +253,7 @@ public class ChatRoom extends AppCompatActivity {
 //                viewHolder.linearLayoutDest.setVisibility(View.VISIBLE);
                 viewHolder.textViewMsg.setBackgroundResource(R.drawable.chatbox_others);
                 viewHolder.textViewMsg.setText(comments.get(position).message);
-//                viewHolder.linearLayoutRoot.setGravity(Gravity.LEFT);
+                viewHolder.chat_line.setGravity(Gravity.LEFT);
 //                viewHolder.linearLayoutTime.setGravity(Gravity.LEFT);
             }
             viewHolder.textViewTimeStamp.setText(comments.get(position).timestamp+"");
@@ -281,7 +280,7 @@ public class ChatRoom extends AppCompatActivity {
             public TextView textViewName;
             public TextView textViewTimeStamp;
             public ImageView imageViewProfile;
-//            public LinearLayout linearLayoutDest;
+            public LinearLayout chat_line;
 //            public LinearLayout linearLayoutRoot;
 //            public LinearLayout linearLayoutTime;
 
@@ -292,8 +291,9 @@ public class ChatRoom extends AppCompatActivity {
                 textViewName = (TextView)itemView.findViewById(R.id.tv_name);
                 textViewTimeStamp = (TextView)itemView.findViewById(R.id.tv_time);
                 imageViewProfile = (ImageView)itemView.findViewById(R.id.iv_profile);
-//                linearLayoutDest = (LinearLayout)itemView.findViewById(R.id.item_messagebox_LinearLayout);
-//                linearLayoutRoot = (LinearLayout)itemView.findViewById(R.id.item_messagebox_root);
+                chat_line = (LinearLayout)itemView.findViewById(R.id.chat_line);
+//                linearLayoutRoot = (LinearLayout)itemView.findViewById(R.id.item_messagebox_root)
+//                ;
 //                linearLayoutTime = (LinearLayout)itemView.findViewById(R.id.item_messagebox_layout_timestamp);
             }
         }
