@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.item.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class ItemConstants {
 
@@ -18,6 +19,7 @@ public class ItemConstants {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public enum EItemCategory{
         eDigital("디지털 기기"),
         eHouseHoldAppliance("생활가전"),
@@ -35,7 +37,7 @@ public class ItemConstants {
         eBookTicketAlbum("도서/티켓/음반"),
         ePlant("식물");
 
-        private final String name;
+        private String name;
 
         public static EItemCategory from(String s) {
             return EItemCategory.valueOf(s);

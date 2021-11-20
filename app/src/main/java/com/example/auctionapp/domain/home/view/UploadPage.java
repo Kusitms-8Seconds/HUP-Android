@@ -44,8 +44,10 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -57,6 +59,8 @@ public class UploadPage extends AppCompatActivity {
     // DatePickerDialog
     Calendar myCalendar = Calendar.getInstance();
     TextView editBuyDate;
+    EItemCategory selectedCategory;
+
     DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -189,9 +193,20 @@ public class UploadPage extends AppCompatActivity {
             public void onClick(View view) {
                 // TODO: upload method
                 String itemName = editItemName.getText().toString();
-                //EItemCategory category = EItemCategory.valueOf(editCategory.getText().toString());
-                //System.out.println("category"+category);
-                String category = editCategory.getText().toString();
+                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
+
+                while(iterator.hasNext()) {
+                    EItemCategory next = iterator.next();
+                    if(next.getName().equals(editCategory.getText().toString())){
+                        System.out.println("들어오는지?");
+                        System.out.println("editCategory.getText().toString()"+editCategory.getText().toString());
+                        System.out.println("next"+next);
+                        System.out.println("next.getName()"+next.getName());
+                        selectedCategory = next; }
+                }
+
+                System.out.println("selectedCategory"+selectedCategory);
+               // String category = editCategory.getText().toString();
                 String initPriceStr = editPrice.getText().toString();
                 if(initPriceStr == null) {
                     System.out.println("경매시작가 입력하세요");
@@ -202,13 +217,13 @@ public class UploadPage extends AppCompatActivity {
                 String auctionClosingDate = editEndDate.getText().toString()+" 00:00:00";
                 String description = editContent.getText().toString();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
                 LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
+                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter);
 
+                RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(Constants.userId));
                 RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
-                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(category));
+                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(selectedCategory));
                 RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
                 RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                 RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
@@ -224,13 +239,10 @@ public class UploadPage extends AppCompatActivity {
                 map.put("description", descriptionR);
                 makeMultiPart();
 
-                RegisterItemRequest registerItemRequest = new RegisterItemRequest(itemName, category, initPrice, buyDateTime, itemStatePoint, description, auctionClosingDateTime);
-
-//                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
-                RetrofitTool.getAPIWithNullConverter().uploadItem(files, registerItemRequest)
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
+                        itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
+                        auctionClosingDateR, descriptionR)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
-
-
             }
         });
 
