@@ -60,6 +60,7 @@ public interface RestAPI {
     @Multipart
     @POST("/api/v1/items")
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
+                                          @Part("userId") RequestBody userId,
                                           @Part("itemName") RequestBody itemName,
                                           @Part("category") RequestBody category,
                                           @Part("initPrice") RequestBody initPrice,
@@ -67,14 +68,6 @@ public interface RestAPI {
                                           @Part("itemStatePoint") RequestBody itemStatePoint,
                                           @Part("auctionClosingDate") RequestBody auctionClosingDate,
                                           @Part("description") RequestBody description);
-    /*
-    map.put("category", categoryR);
-                map.put("initPrice", initPriceR);
-                map.put("buyDate", buyDateR);
-                map.put("itemStatePoint", itemStatePointR);
-                map.put("auctionClosingDate", auctionClosingDateR);
-                map.put("description", descriptionR);
-     */
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }
