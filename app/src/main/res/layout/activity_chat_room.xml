@@ -138,8 +138,8 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ListView
-            android:id="@+id/chattingListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chattingRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#00000000"
