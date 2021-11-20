@@ -58,8 +58,8 @@ public interface RestAPI {
     Call<DefaultResponse> scrapItem(@Path("id") Long id);
 
     @Multipart
-    @POST("/api/v1/items")
-    Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
+    @POST("api/v1/items")
+    Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
                                           @Part("userId") RequestBody userId,
                                           @Part("itemName") RequestBody itemName,
                                           @Part("category") RequestBody category,

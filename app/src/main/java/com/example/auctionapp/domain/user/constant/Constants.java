@@ -1,14 +1,18 @@
 package com.example.auctionapp.domain.user.constant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 public class Constants {
 
     public static Long userId = null;
     public static String token = null;
-    public static String imageBaseUrl = "http://192.168.0.5:8080/image/";
+    public static String imageBaseUrl = "http://10.0.2.2:8080/image/";
 
+    @Getter
+    @NoArgsConstructor
     public enum ESignUp{
         emailDuplicateMessage("이미 사용하고 있는 이메일입니다."),
         emailNonDuplicateMessage("사용가능한 이메일입니다."),

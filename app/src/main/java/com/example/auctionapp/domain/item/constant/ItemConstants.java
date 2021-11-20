@@ -8,13 +8,14 @@ public class ItemConstants {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public enum EFileServiceImpl {
         BASE_DIR("user.dir"),
         IMAGES_DIR("images/"),
         FILE_NOT_FOUND_EXCEPTION_MESSAGE("파일이 존재하지 않습니다."),
         FILE_TO_SAVE_NOT_EXIST_EXCEPTION_MESSAGE("저장할 파일이 존재하지 않습니다.");
 
-        private final String message;
+        private String message;
     }
 
     @Getter
@@ -46,12 +47,13 @@ public class ItemConstants {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public enum EItemSoldStatus{
         eNew("새로운 상품"),
         eOnGoing("경매중인 상품"),
         eSoldOut("판매 완료");
 
-        private final String name;
+        private String name;
 
         public static EItemSoldStatus from(String s) {
             return EItemSoldStatus.valueOf(s);
