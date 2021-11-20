@@ -1,7 +1,6 @@
 package com.example.auctionapp.domain.chat.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,8 +57,10 @@ public class ChatRoom extends AppCompatActivity {
     private ImageView button;
     private EditText editText;
 
+    private FirebaseDatabase firebaseDatabase;
 
     private User destUser;
+
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy.MM.dd HH:mm");
 
     //firebase
@@ -83,9 +83,7 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = "판매자";
-//        destUid = "구매자1";        //채팅 상대 //임시
-        Intent intent = getIntent();
-        destUid = intent.getStringExtra("destUid");
+        destUid = "구매자";        //채팅 상대 //임시
 
         recyclerView = (RecyclerView)findViewById(R.id.chattingRecyclerView);
         button=(ImageView)findViewById(R.id.sendbutton);
@@ -128,7 +126,8 @@ public class ChatRoom extends AppCompatActivity {
     private void sendMsgToDataBase()
     {
         if(!editText.getText().toString().equals(""))
-        {
+        { // 이 안에서 한 번 더 나인지 상대방인지 체크해 주는게 필요할 듯
+            // comment.uid 값이 myuid 여야 하는지, destuid여야 하는지 체크해야 함..
             LocalDateTime currentDate = LocalDateTime.now();
             ChatModel.Comment comment = new ChatModel.Comment();
             comment.uid = myuid;
@@ -256,7 +255,7 @@ public class ChatRoom extends AppCompatActivity {
 //                viewHolder.linearLayoutDest.setVisibility(View.VISIBLE);
                 viewHolder.textViewMsg.setBackgroundResource(R.drawable.chatbox_others);
                 viewHolder.textViewMsg.setText(comments.get(position).message);
-                viewHolder.chat_line.setGravity(Gravity.LEFT);
+//                viewHolder.linearLayoutRoot.setGravity(Gravity.LEFT);
 //                viewHolder.linearLayoutTime.setGravity(Gravity.LEFT);
             }
             viewHolder.textViewTimeStamp.setText(comments.get(position).timestamp+"");
@@ -283,7 +282,7 @@ public class ChatRoom extends AppCompatActivity {
             public TextView textViewName;
             public TextView textViewTimeStamp;
             public ImageView imageViewProfile;
-            public LinearLayout chat_line;
+//            public LinearLayout linearLayoutDest;
 //            public LinearLayout linearLayoutRoot;
 //            public LinearLayout linearLayoutTime;
 
@@ -294,9 +293,8 @@ public class ChatRoom extends AppCompatActivity {
                 textViewName = (TextView)itemView.findViewById(R.id.tv_name);
                 textViewTimeStamp = (TextView)itemView.findViewById(R.id.tv_time);
                 imageViewProfile = (ImageView)itemView.findViewById(R.id.iv_profile);
-                chat_line = (LinearLayout)itemView.findViewById(R.id.chat_line);
-//                linearLayoutRoot = (LinearLayout)itemView.findViewById(R.id.item_messagebox_root)
-//                ;
+//                linearLayoutDest = (LinearLayout)itemView.findViewById(R.id.item_messagebox_LinearLayout);
+//                linearLayoutRoot = (LinearLayout)itemView.findViewById(R.id.item_messagebox_root);
 //                linearLayoutTime = (LinearLayout)itemView.findViewById(R.id.item_messagebox_layout_timestamp);
             }
         }
