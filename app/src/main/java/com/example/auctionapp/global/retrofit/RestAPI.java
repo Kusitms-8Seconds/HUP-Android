@@ -4,6 +4,7 @@ import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ImageResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.item.dto.RegisterItemRequest;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
@@ -56,7 +57,7 @@ public interface RestAPI {
     @Multipart
     @POST("/api/v1/items")
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
-                                          @PartMap HashMap<String, RequestBody> data);
+                                          @Body RegisterItemRequest data);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") int id);
 }

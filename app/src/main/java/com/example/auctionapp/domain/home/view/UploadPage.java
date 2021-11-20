@@ -29,6 +29,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.file.view.MultiImageAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants.EItemCategory;
+import com.example.auctionapp.domain.item.dto.RegisterItemRequest;
 import com.example.auctionapp.domain.item.view.SelectCategory;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -223,9 +224,12 @@ public class UploadPage extends AppCompatActivity {
                 map.put("description", descriptionR);
                 makeMultiPart();
 
+                RegisterItemRequest registerItemRequest = new RegisterItemRequest(itemName, category, initPrice, buyDateTime, itemStatePoint, description, auctionClosingDateTime);
+
 //                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, map)
+                RetrofitTool.getAPIWithNullConverter().uploadItem(files, registerItemRequest)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
+
 
             }
         });

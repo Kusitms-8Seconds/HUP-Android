@@ -132,6 +132,7 @@ public class ItemList extends Fragment {
 
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
