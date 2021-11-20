@@ -54,7 +54,7 @@ public interface RestAPI {
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
 
     @Multipart
-    @POST("/api/items")
+    @POST("/api/v1/items")
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
                                           @PartMap HashMap<String, RequestBody> data);
     @DELETE("/api/v1/items/{id}")

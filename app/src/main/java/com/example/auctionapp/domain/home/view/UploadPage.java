@@ -28,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.file.view.MultiImageAdapter;
+import com.example.auctionapp.domain.item.constant.ItemConstants.EItemCategory;
 import com.example.auctionapp.domain.item.view.SelectCategory;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
@@ -176,7 +178,7 @@ public class UploadPage extends AppCompatActivity {
 
         EditText editItemName = (EditText) findViewById(R.id.editItemName);
         TextView editCategory = (TextView) findViewById(R.id.selectItemCategory);
-        EditText editPrice = (EditText)findViewById(R.id.editPrice);
+        EditText editPrice = (EditText)findViewById(R.id.editItemStartPrice);
         EditText editContent = (EditText) findViewById(R.id.editItemContent);
         // 완료 버튼
         TextView uploadButton = (TextView) findViewById(R.id.uploadButton);
@@ -186,6 +188,8 @@ public class UploadPage extends AppCompatActivity {
             public void onClick(View view) {
                 // TODO: upload method
                 String itemName = editItemName.getText().toString();
+                //EItemCategory category = EItemCategory.valueOf(editCategory.getText().toString());
+                //System.out.println("category"+category);
                 String category = editCategory.getText().toString();
                 String initPriceStr = editPrice.getText().toString();
                 if(initPriceStr == null) {
@@ -193,17 +197,17 @@ public class UploadPage extends AppCompatActivity {
                     return;
                 }
                 int initPrice = Integer.parseInt(initPriceStr);
-                String buyDate = editBuyDate.getText().toString();
-                String auctionClosingDate = editEndDate.getText().toString();
+                String buyDate = editBuyDate.getText().toString()+" 00:00:00";
+                String auctionClosingDate = editEndDate.getText().toString()+" 00:00:00";
                 String description = editContent.getText().toString();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
 
                 RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
-                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"),category);
+                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(category));
                 RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
                 RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                 RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
@@ -220,7 +224,7 @@ public class UploadPage extends AppCompatActivity {
                 makeMultiPart();
 
 //                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
-                RetrofitTool.getAPIWithNullConverter().uploadItem(files, map)
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, map)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
 
             }

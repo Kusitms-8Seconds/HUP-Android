@@ -19,7 +19,7 @@ import static android.graphics.Color.GRAY;
 
 public class SelectCategory extends AppCompatActivity {
 
-    static final String[] LIST_MENU = {"디지털기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
+    static final String[] LIST_MENU = {"디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
             ,"유아도서", "스포츠/레저", "여성잡화", "여성의류", "남성패션/잡화", "게임/취미", "뷰티/미용",
             "반려동물용품", "도서/티켓/음반", "식물"} ;
 
