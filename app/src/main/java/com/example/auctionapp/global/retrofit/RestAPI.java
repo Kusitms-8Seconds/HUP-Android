@@ -53,11 +53,28 @@ public interface RestAPI {
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/scrap/heart/{id}")
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
+    //scrap
+    @POST("api/v1/scrap/{id}")
+    Call<DefaultResponse> scrapItem(@Path("id") Long id);
 
     @Multipart
     @POST("/api/v1/items")
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> fileNames,
-                                          @Body RegisterItemRequest data);
+                                          @Part("itemName") RequestBody itemName,
+                                          @Part("category") RequestBody category,
+                                          @Part("initPrice") RequestBody initPrice,
+                                          @Part("buyDate") RequestBody buyDate,
+                                          @Part("itemStatePoint") RequestBody itemStatePoint,
+                                          @Part("auctionClosingDate") RequestBody auctionClosingDate,
+                                          @Part("description") RequestBody description);
+    /*
+    map.put("category", categoryR);
+                map.put("initPrice", initPriceR);
+                map.put("buyDate", buyDateR);
+                map.put("itemStatePoint", itemStatePointR);
+                map.put("auctionClosingDate", auctionClosingDateR);
+                map.put("description", descriptionR);
+     */
     @DELETE("/api/v1/items/{id}")
-    Call<DefaultResponse> deleteItem(@Path("id") int id);
+    Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }

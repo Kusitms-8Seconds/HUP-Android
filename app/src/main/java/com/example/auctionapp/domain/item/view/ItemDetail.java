@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -28,7 +29,7 @@ public class ItemDetail extends AppCompatActivity {
 
     private ArrayList<Integer> itemImageList;
     private static final int DP = 24;
-    int id = 2;     //item ID (임시)
+    Long id = null;     //item ID (임시)
     Boolean isHeart;
 
     @Override
@@ -63,7 +64,7 @@ public class ItemDetail extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.itemDetailViewPager);
         viewPager.setAdapter(new ItemDetailViewPagerAdapter(this, itemImageList));
 
-        //간단히 구현 - 나중에 수정필요
+        //나중에 수정필요
         ImageView heart = (ImageView) findViewById(R.id.isheart);
         isHeart = false;
         heart.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class ItemDetail extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RetrofitTool.getAPIWithNullConverter().deleteItem(id)
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).deleteItem(id)
                         .enqueue(MainRetrofitTool.getCallback(new ItemDetail.DeleteItemCallback()));
             }
         });

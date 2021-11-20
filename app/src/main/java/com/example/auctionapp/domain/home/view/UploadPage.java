@@ -224,10 +224,10 @@ public class UploadPage extends AppCompatActivity {
                 map.put("description", descriptionR);
                 makeMultiPart();
 
-                RegisterItemRequest registerItemRequest = new RegisterItemRequest(itemName, category, initPrice, buyDateTime, itemStatePoint, description, auctionClosingDateTime);
+//                RegisterItemRequest registerItemRequest = new RegisterItemRequest(itemName, category, initPrice, buyDateTime, itemStatePoint, description, auctionClosingDateTime);
 
 //                RegisterItemRequest registerItemRequest = new RegisterItemRequest();
-                RetrofitTool.getAPIWithNullConverter().uploadItem(files, registerItemRequest)
+                RetrofitTool.getAPIWithNullConverter().uploadItem(files, itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR, auctionClosingDateR, descriptionR)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
 
 
