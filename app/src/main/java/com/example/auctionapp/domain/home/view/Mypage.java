@@ -67,7 +67,6 @@ public class Mypage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        System.out.println("온크리에이트뷰");
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
         myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);

@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                System.out.println("선택될때");
                 BottomNavigate(menuItem.getItemId());
 
                 return true;

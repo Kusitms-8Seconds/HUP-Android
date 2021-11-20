@@ -153,7 +153,7 @@ public class ItemList extends Fragment {
                             null,
                             response.body().getData().get(i).getItemName(),
                             response.body().getData().get(i).getInitPrice(),
-                            "14:46", 0, null);
+                            days+"일 "+hours+"시간 "+minutes+"분", 0, null);
                 }
                 itemDataList.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getHeart(response.body().getData().get(i).getId())

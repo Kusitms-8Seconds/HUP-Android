@@ -6,6 +6,8 @@ import com.example.auctionapp.domain.item.dto.ImageResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.dto.RegisterItemRequest;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
@@ -21,6 +23,7 @@ import com.example.auctionapp.global.dto.PaginationDto;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.Getter;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -53,10 +56,8 @@ public interface RestAPI {
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/scrap/heart/{id}")
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
-    //scrap
     @POST("api/v1/scrap/{id}")
     Call<DefaultResponse> scrapItem(@Path("id") Long id);
-
     @Multipart
     @POST("api/v1/items")
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
@@ -68,6 +69,11 @@ public interface RestAPI {
                                           @Part("itemStatePoint") RequestBody itemStatePoint,
                                           @Part("auctionClosingDate") RequestBody auctionClosingDate,
                                           @Part("description") RequestBody description);
+
+    @GET("api/v1/priceSuggestion/maximumPrice/{itemId}")
+    Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestion/participant/{itemId}")
+    Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }
