@@ -1,10 +1,12 @@
 package com.example.auctionapp.domain.chat.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -85,6 +87,16 @@ public class Chat extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String destUid = (String) adapterView.getItemAtPosition(position);
+                Intent intent = new Intent(getContext(), ChatRoom.class);
+                intent.putExtra("destUid", destUid);
+                startActivity(intent);
             }
         });
 
