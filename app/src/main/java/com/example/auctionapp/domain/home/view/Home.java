@@ -1,32 +1,63 @@
 package com.example.auctionapp.domain.home.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
+import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.BestItem;
 import com.example.auctionapp.domain.item.view.BestItemAdapter;
+import com.example.auctionapp.domain.item.view.ItemData;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemList;
+import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.AuctionNow;
 import com.example.auctionapp.domain.pricesuggestion.view.AuctionNowAdapter;
+import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.dto.PaginationDto;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class Home extends Fragment {
     ViewGroup viewGroup;
     private ArrayList<BestItem> bestItemArrayList;
 
     AuctionNowAdapter adapter;
+    AuctionNow data;
+    List<AuctionNow> auctionDataList = new ArrayList<>();
+    int heartCount;
+    int maximumPriceCount;
 
     @Nullable
     @Override
@@ -80,13 +111,109 @@ public class Home extends Fragment {
     }
     public void initializeAuctionNowData()
     {
-        AuctionNow data = new AuctionNow(R.drawable.testitemimage, "아이폰 11 프로 256GB", 530000, "1","1");
-        adapter.addItem(data);
-        data = new AuctionNow(R.drawable.testitemimage, "아이폰 11 프로 64GB", 500000, "82:33", "2");
-        adapter.addItem(data);
-        data = new AuctionNow(R.drawable.testitemimage, "아이폰 11 미니 A급 256GB", 420000, "34:07", "3");
-        adapter.addItem(data);
-        data = new AuctionNow(R.drawable.testitemimage, "아이폰 11 미니 256GB 레드 미개봉 중고", 552000, "34:04", "4");
-        adapter.addItem(data);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
+                .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
+    }
+
+
+    private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
+            for(int i=0; i<response.body().getData().size(); i++){
+                LocalDateTime startDateTime = LocalDateTime.now();
+                LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
+                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
+
+                if(response.body().getData().get(i).getFileNames().size()!=0) {
+                    data = new AuctionNow(response.body().getData().get(i).getId(),
+                            response.body().getData().get(i).getFileNames().get(0),
+                            response.body().getData().get(i).getItemName(),
+                            0,
+                            minutes+"분",
+                            response.body().getData().get(i).getDescription(), null);
+                } else{
+                    data = new AuctionNow(response.body().getData().get(i).getId(),
+                            null,
+                            response.body().getData().get(i).getItemName(),
+                            0,
+                            minutes+"분",
+                            response.body().getData().get(i).getDescription(), null);
+                }
+                auctionDataList.add(data);
+                RetrofitTool.getAPIWithNullConverter().getHeart(response.body().getData().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
+                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().getData().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
+            }
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+
+    private class getHeartCallback implements MainRetrofitCallback<ScrapCountResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<ScrapCountResponse> response) {
+
+            auctionDataList.get(heartCount).setHeart(response.body().getHeart());
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            heartCount++;
+        }
+        @Override
+        public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+
+    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
+
+            auctionDataList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
+            adapter.addItem(auctionDataList.get(maximumPriceCount));
+            adapter.notifyDataSetChanged();
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            maximumPriceCount++;
+        }
+        @Override
+        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
     }
 }

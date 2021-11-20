@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.pricesuggestion.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
 public class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
     private ArrayList<AuctionNow> AuctionNowData = new ArrayList<>();
+    Context context;
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
+    }
 
     @NonNull
     @Override
@@ -84,7 +94,8 @@ public class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void onBind(AuctionNow data) {
-            item_image.setImageResource(data.getImage());
+            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
+                    ,item_image.getHeight()).into(item_image);
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
             item_upPrice.setText(data.getItemPrice() + "");

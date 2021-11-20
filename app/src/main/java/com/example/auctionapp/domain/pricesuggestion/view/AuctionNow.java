@@ -13,52 +13,29 @@ import com.example.auctionapp.R;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AuctionNow {
-    int imageURL; //url 수정하기
+
+    Long itemId;
+    String imageURL;  //url 수정하기
     String itemName;
     int itemPrice;
     String date;
     String itemInfo;
+    Long heart;
 
-    public AuctionNow(int imageURL, String itemName, int itemPrice, String date, String itemInfo) {
+    public AuctionNow(Long itemId, String imageURL, String itemName, int itemPrice, String date, String itemInfo, Long heart) {
+        this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.date = date;
         this.itemInfo = itemInfo;
-    }
-
-    public int getImage() {
-        return imageURL;
-    }
-    public void setImage(int imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getItemPrice() {
-        return itemPrice;
-    }
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public String getDate() {
-        return date;
-    }
-    public void setDate(String endTime) {
-        this.date = endTime;
-    }
-
-    public String getItemInfo() { return itemInfo; }
-    public void setItemInfo(int views) {
-        this.itemInfo = itemInfo;
+        this.heart = heart;
     }
 }
 
