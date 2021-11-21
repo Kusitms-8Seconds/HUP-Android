@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/completeB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="79px"
+            android:layout_marginRight="50px"
+            android:fontFamily="sans-serif-black"
+            android:text="완료"
+            android:textColor="@color/Hup"
+            android:textSize="48px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ttvv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="79px"
+            android:layout_marginBottom="74px"
+            android:layout_weight="0"
+            android:fontFamily="sans-serif-black"
+            android:text="문의하기"
+            android:textColor="#000000"
+            android:textSize="48px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/goback"
+            android:layout_width="60px"
+            android:layout_height="52px"
+            app:srcCompat="@drawable/arrow"
+            android:layout_marginTop="79px"
+            android:layout_marginBottom="74px"
+            android:layout_marginStart="50px"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:background="#F3F3F3"
+        app:layout_constraintTop_toBottomOf="@id/topbar"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ly_chattingItemDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="50px"
+        app:layout_constraintTop_toBottomOf="@id/topbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chattingItemDetails"
+            android:layout_width="980px"
+            android:layout_height="284px"
+            android:background="@drawable/box_edge"
+            android:elevation="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/chattingItemImage"
+                android:layout_width="224px"
+                android:layout_height="224px"
+                android:layout_marginLeft="30px"
+                android:src="@drawable/box_edge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/chattingItemDetailName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44px"
+                android:layout_marginTop="66px"
+                android:fontFamily="sans-serif-black"
+                android:text="item_name"
+                android:textAllCaps="true"
+                android:textColor="#000000"
+                android:textSize="40px"
+                app:layout_constraintStart_toEndOf="@id/chattingItemImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/chattingItemDetailCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44px"
+                android:layout_marginTop="66px"
+                android:fontFamily="sans-serif-black"
+                android:text="item_category"
+                app:layout_constraintStart_toEndOf="@id/chattingItemDetailName"
+                app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44px"
+                android:layout_marginBottom="66px"
+                app:layout_constraintStart_toEndOf="@id/chattingItemImage"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="낙찰가 "
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/Hup"
+                    android:textSize="40px" />
+                <TextView
+                    android:id="@+id/chattingItemDetailPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="item_price"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/Hup"
+                    android:textSize="40px" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="원"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/Hup"
+                    android:textSize="40px"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내용"
+        android:textSize="44px"
+        android:fontFamily="sans-serif-black"
+        android:textColor="#000000"
+        android:layout_marginStart="50px"
+        app:layout_constraintTop_toBottomOf="@id/ly_chattingItemDetails"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <EditText
+        android:id="@+id/edit_qna"
+        android:layout_width="980px"
+        android:layout_height="450px"
+        android:background="@drawable/box_edge"
+        android:layout_marginTop="15px"
+        android:hint="문의글을 작성해주세요."
+        android:padding="20px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvct"/>
+    <TextView
+        android:id="@+id/tvhelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50px"
+        android:textColor="#000000"
+        android:text="제품 문의 안내"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintTop_toBottomOf="@id/edit_qna"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50px"
+        android:layout_marginEnd="50px"
+        android:textColor="#000000"
+        android:text="-제품 Q&amp;A게시판은 물품 판매자가 공시한 내용 이외에 궁금한 사항이 있을 경우 문의하는 게시판입니다.\n-해당 게시판은 모든 경매 참여자가 볼 수 있는 형태로 운영됩니다.\n-욕설, 비방, 거래 글, 분쟁 유발, 명예훼손, 허위사실 유포, 광고성 등의 부적절한 게시글은 금지됩니다."
+        app:layout_constraintTop_toBottomOf="@id/tvhelp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

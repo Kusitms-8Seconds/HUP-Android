@@ -35,24 +35,20 @@ import java.util.List;
 import java.util.Map;
 
 public class ChatRoom extends AppCompatActivity {
+    //uid
     private String chatRoomUid; //채팅방 하나 id
     private String myuid;       //나의 id
     private String destUid;     //상대방 uid
+    private User destUser;
+    String profileUrlStr;
 
     private RecyclerView recyclerView;
-    private ImageView button;
-    private EditText editText;
-
-    private FirebaseDatabase firebaseDatabase;
-
-    private User destUser;
-
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy.MM.dd HH:mm");
+    private ImageView button;   //보내기 버튼
+    private EditText editText;  //메세지 작성
 
     //firebase
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    String profileUrlStr;
 
 
     @Override
