@@ -74,7 +74,6 @@ public class BidPage extends AppCompatActivity {
 
         getData();
 
-
         itemLeftTime = findViewById(R.id.itemLeftTime);
         highPrice = findViewById(R.id.highPrice);
         participants = findViewById(R.id.participants);

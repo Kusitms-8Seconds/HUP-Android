@@ -1,6 +1,9 @@
 package com.example.auctionapp.global.stomp;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.TextView;
@@ -86,11 +89,20 @@ public class HupStomp {
             System.out.println("maximumPrice"+maximumPrice );
             System.out.println("theNumberOfParticipants"+theNumberOfParticipants );
             System.out.println("들어오는지?");
-            this.highPrice.setText(String.valueOf(highPrice));
-            this.participants.setText(String.valueOf(maximumPrice));
-            BidParticipants data = new BidParticipants(R.drawable.choose_image, username, Integer.valueOf(suggestionPrice), "11");
-            ptAdapter.addItem(data);
-            ptAdapter.notifyDataSetChanged();
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    highPrice.setText(String.valueOf(maximumPrice));
+                    participants.setText(String.valueOf(theNumberOfParticipants));
+                    BidParticipants data = new BidParticipants(R.drawable.hearto, username, Integer.valueOf(suggestionPrice), "11");
+                    ptAdapter.addItem(data);
+                    ptAdapter.notifyDataSetChanged();} // This is your code
+            };
+            mainHandler.post(myRunnable);
+
         });
     }
 
