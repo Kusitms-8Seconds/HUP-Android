@@ -1,15 +1,23 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +41,7 @@ import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -60,9 +69,13 @@ public class ItemDetail extends AppCompatActivity {
     TextView itemContent;
     TextView category;
     TextView itemLeftTime;
+    TextView qnacount;
 
     ItemDetailViewPagerAdapter itemDetailViewPagerAdapter;
     ViewPager viewPager;
+
+    ArrayList<qnaData> qnaList = new ArrayList<qnaData>();
+    qnaAdapter adapter;
 
 
     @Override
@@ -153,6 +166,38 @@ public class ItemDetail extends AppCompatActivity {
 //            }
 //        });
 
+        //QNA dumidata
+        qnacount = (TextView) findViewById(R.id.qaCount);
+        ListView qnaListView = (ListView) findViewById(R.id.itemDetail_qnaList);
+        adapter = new qnaAdapter(this.getApplicationContext(), qnaList);
+        qnaListView.setAdapter(adapter);
+        initializeQnAData();
+
+        qnaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                qnaData data = (qnaData) parent.getItemAtPosition(position);
+                Boolean isFolded = data.getFolded();
+                if(isFolded) {
+                    data.setFolded(false);
+                    adapter.notifyDataSetChanged();
+                }else {
+                    data.setFolded(true);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        //view all qnas
+        TextView viewall = (TextView) findViewById(R.id.viewAll);
+        viewall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent t = new Intent(getApplicationContext(), QnA.class);
+                startActivity(t);
+            }
+        });
+
     }
     public void initializeImageData()
     {
@@ -163,6 +208,13 @@ public class ItemDetail extends AppCompatActivity {
 //        itemImageList.add(R.drawable.testitemimage);
 //        itemImageList.add(R.drawable.testitemimage);
 //        itemImageList.add(R.drawable.testitemimage);
+    }
+    public void initializeQnAData() {
+        qnaList.add(new qnaData("자전거 많이 무겁나요?", "2021.11.27", "hoa9***", false, true));
+        qnaList.add(new qnaData("기능 어떤 것들이 있나요?", "2021.11.26", "둠***", true, true));
+        qnaList.add(new qnaData("자전거 브랜드 궁금합니다.", "2021.11.26", "우왕***", true, true));
+
+        qnacount.setText("(" + String.valueOf(qnaList.size()-1) + ")");
     }
 
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
@@ -339,4 +391,123 @@ public class ItemDetail extends AppCompatActivity {
             Log.e("연결실패", t.getMessage());
         }
     }
+}
+class qnaData{
+    private String title;
+    private String date;
+    private String id;
+    private boolean state;  //true - 답변완료, false - 답변예정
+    private boolean isFolded;
+
+    public qnaData(){
+
+    }
+
+    public qnaData(String title, String date, String id, boolean state, boolean isFolded){
+        this.title = title;
+        this.date = date;
+        this.id = id;
+        this.state = state;
+        this.isFolded = isFolded;
+    }
+    public String getTitle() {
+        return this.title;
+    }
+    public String getDate(){
+        return this.date;
+    }
+    public String getId(){
+        return this.id;
+    }
+    public Boolean getState(){
+        return this.state;
+    }
+    public Boolean getFolded(){
+        return this.isFolded;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setDate(String date) {
+        this.date = date;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setState(Boolean state) {
+        this.state = state;
+    }
+    public void setFolded(Boolean isFolded) {
+        this.isFolded = isFolded;
+    }
+
+}
+
+
+
+class qnaAdapter extends BaseAdapter {
+    Context mContext = null;
+    LayoutInflater mLayoutInflater = null;
+    private ArrayList<qnaData> data;
+    private TextView titleTextView;
+    private TextView dateTextView;
+    private TextView idTextView;
+    private TextView stateTextView;
+    private  ImageView icon;
+    private ConstraintLayout ly_answer;
+
+
+    public qnaAdapter() {}
+    public qnaAdapter(Context context, ArrayList<qnaData> dataArray) {
+        mContext = context;
+        data = dataArray;
+        mLayoutInflater = LayoutInflater.from(mContext);
+    }
+
+
+    @Override
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public qnaData getItem(int position) {
+        return data.get(position);
+    }
+
+
+    public View getView(int position, View converView, ViewGroup parent) {
+        View view = mLayoutInflater.inflate(R.layout.custom_qna_list, null);
+
+        titleTextView = (TextView) view.findViewById(R.id.question_title);
+        titleTextView.setText(data.get(position).getTitle());
+        dateTextView = (TextView) view.findViewById(R.id.question_date);
+        dateTextView.setText(data.get(position).getDate());
+        idTextView = (TextView) view.findViewById(R.id.question_id);
+        idTextView.setText(data.get(position).getId());
+        stateTextView = (TextView) view.findViewById(R.id.qna_state);
+        if(data.get(position).getState()) {
+            stateTextView.setText("답변완료");
+            stateTextView.setTextColor(Color.BLUE);
+        }else {
+            stateTextView.setText("답변예정");
+        }
+        icon = (ImageView) view.findViewById(R.id.foldIcon);
+        ly_answer = (ConstraintLayout) view.findViewById(R.id.ly_answer);
+        if(!data.get(position).getFolded()) {
+            ly_answer.setVisibility(View.VISIBLE);
+            icon.setImageResource(R.drawable.down);
+        }else {
+            ly_answer.setVisibility(View.GONE);
+            icon.setImageResource(R.drawable.fold_up);
+        }
+
+        return view;
+    }
+
 }

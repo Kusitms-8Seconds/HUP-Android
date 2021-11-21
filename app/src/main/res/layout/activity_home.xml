@@ -116,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:layout_marginStart="20px"
                     android:layout_weight="0"
                     android:fontFamily="sans-serif-black"
                     android:text="진행 중인 경매"

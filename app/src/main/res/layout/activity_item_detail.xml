@@ -70,6 +70,8 @@
                         android:layout_width="50px"
                         android:layout_height="50px"
                         android:layout_marginRight="10px"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20px"
                         app:srcCompat="@drawable/clockpic" />
 
                     <TextView
@@ -78,6 +80,7 @@
                         android:layout_height="wrap_content"
                         android:text="00일 00시간 00분 전"
                         android:textColor="#000000"
+                        android:padding="20px"
                         android:textSize="40px"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/imgV1" />
@@ -283,6 +286,7 @@
                 </LinearLayout>
 
                 <ListView
+                    android:id="@+id/itemDetail_qnaList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0" >
