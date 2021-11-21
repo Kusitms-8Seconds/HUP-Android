@@ -1,5 +1,7 @@
 package com.example.auctionapp.domain.home.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -64,6 +69,8 @@ public class Home extends Fragment {
     BestItemAdapter bestItemAdapter;
     ViewPager bestItemViewPager;
 
+    RecyclerView AuctionNowRecyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,7 +93,7 @@ public class Home extends Fragment {
     }
 
     private void init(){
-        RecyclerView AuctionNowRecyclerView = viewGroup.findViewById(R.id.AuctionNowView);
+        AuctionNowRecyclerView = viewGroup.findViewById(R.id.AuctionNowView);
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
         AuctionNowRecyclerView.setLayoutManager(linearLayoutManager);
@@ -202,6 +209,7 @@ public class Home extends Fragment {
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
                 RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
+//                setAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
@@ -296,5 +304,10 @@ public class Home extends Fragment {
         public void onConnectionFail(Throwable t) {
             Log.e("연결실패", t.getMessage());
         }
+    }
+    public void setAnimation() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1500);
+        AuctionNowRecyclerView.setAnimation(animation);
     }
 }

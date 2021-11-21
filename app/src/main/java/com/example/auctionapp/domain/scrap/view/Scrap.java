@@ -3,6 +3,10 @@ package com.example.auctionapp.domain.scrap.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +20,8 @@ import com.example.auctionapp.domain.item.view.ItemDetail;
 public class Scrap extends AppCompatActivity {
 
     ScrapAdapter adapter;
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +40,7 @@ public class Scrap extends AppCompatActivity {
         });
     }
     private void init(){
-        RecyclerView recyclerView = findViewById(R.id.scrapRecyclerView);
+        recyclerView = findViewById(R.id.scrapRecyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -68,5 +74,21 @@ public class Scrap extends AppCompatActivity {
         data = new ScrapItem(R.drawable.rectangle, "아이폰 11 미니 256GB 레드 미개봉 중고", 552000, "34:04");
         adapter.addItem(data);
 
+//        setAnimation();
+    }
+    public void setAnimation() {
+        TranslateAnimation translateAnimation = new TranslateAnimation(200, 0, 200, 0);
+        Animation alphaAnimation = new AlphaAnimation(0, 1);
+        translateAnimation.setDuration(500);
+        alphaAnimation.setDuration(1300);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(translateAnimation);
+        animation.addAnimation(alphaAnimation);
+        recyclerView.setAnimation(animation);
+
+
+//        Animation animation = new AlphaAnimation(0, 1);
+//        animation.setDuration(1500);
+//        recyclerView.setAnimation(animation);
     }
 }
