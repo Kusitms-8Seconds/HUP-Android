@@ -80,6 +80,8 @@ public interface RestAPI {
     Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
     @DELETE("api/v1/scrap/{scrapId}")
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
+    @GET("api/v1/items/{id}")
+    Call<ItemDetailsResponse> getItem(@Path("id") Long id);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }

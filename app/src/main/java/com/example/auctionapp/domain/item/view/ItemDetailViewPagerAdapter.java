@@ -9,15 +9,17 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
 public class ItemDetailViewPagerAdapter extends PagerAdapter {
     private Context mContext;
-    private ArrayList<Integer> imageList;
+    private ArrayList<String> imageList;
 
-    public ItemDetailViewPagerAdapter(Context context, ArrayList<Integer> imageList)
+    public ItemDetailViewPagerAdapter(Context context, ArrayList<String> imageList)
     {
         this.mContext = context;
         this.imageList = imageList;
@@ -30,7 +32,8 @@ public class ItemDetailViewPagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.viewpager_layout_itemdetail, null);
 
         ImageView ViewPagerImageView = view.findViewById(R.id.viewpagerImageView);
-        ViewPagerImageView.setImageResource(imageList.get(position));
+        Glide.with(mContext).load(Constants.imageBaseUrl+imageList.get(position)).into(ViewPagerImageView);
+        //ViewPagerImageView.setImageResource(imageList.get(position));
 
         container.addView(view);
 
