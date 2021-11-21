@@ -62,6 +62,7 @@ public class Home extends Fragment {
     int maximumPriceCount;
     int maximumPriceCount2;
     BestItemAdapter bestItemAdapter;
+    ViewPager bestItemViewPager;
 
     @Nullable
     @Override
@@ -73,9 +74,9 @@ public class Home extends Fragment {
         initializeAuctionNowData();
         initializeBestData();
 
-        ViewPager BestItemViewPager = viewGroup.findViewById(R.id.bestItemViewPager);
+        bestItemViewPager = viewGroup.findViewById(R.id.bestItemViewPager);
         bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
-        BestItemViewPager.setAdapter(bestItemAdapter);
+        bestItemViewPager.setAdapter(bestItemAdapter);
 
         return viewGroup;
     }
@@ -277,7 +278,8 @@ public class Home extends Fragment {
 
             bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
             bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
-            bestItemAdapter.notifyDataSetChanged();
+            //bestItemAdapter.notifyDataSetChanged();
+            bestItemViewPager.setAdapter(bestItemAdapter);
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             maximumPriceCount2++;
         }
