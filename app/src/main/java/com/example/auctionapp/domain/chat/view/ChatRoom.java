@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +52,7 @@ public class ChatRoom extends AppCompatActivity {
     //firebase
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    String profileUrlStr;
 
 
     @Override
@@ -195,17 +197,16 @@ public class ChatRoom extends AppCompatActivity {
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ChatModel.Comment commentUser = dataSnapshot.getValue(ChatModel.Comment.class);
-                        String whatUid = commentUser.getUid();
-                        if(whatUid.equals(myuid)) {
-                            comments.add(new ChatModel.Comment(commentUser, 1));
-                        }else {
-                            comments.add(new ChatModel.Comment(commentUser, 0));
+                        String messageStr = commentUser.getMessage();
+                        String timestampStr = commentUser.getTimestamp();
+                        String UidStr = commentUser.getUid();
+                        if (UidStr.equals(myuid)) {
+                            comments.add(new ChatModel.Comment(UidStr, messageStr, timestampStr, 1));
+                        } else {
+                            comments.add(new ChatModel.Comment(UidStr, messageStr, timestampStr, 0));
                         }
-//                        comments.add();
-//                        comments.add(new ChatModel.Comment())
                     }
                     notifyDataSetChanged();
-
                     recyclerView.scrollToPosition(comments.size() - 1);
                 }
 
@@ -213,6 +214,20 @@ public class ChatRoom extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
+        }
+        public String getUserProfile() {
+            databaseReference.child("User").orderByChild("name").equalTo(destUid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        profileUrlStr = dataSnapshot.child("profile").getValue(String.class);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            return profileUrlStr;
         }
 
         @Override
@@ -240,10 +255,38 @@ public class ChatRoom extends AppCompatActivity {
 //                ((CenterViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
             } else if (viewHolder instanceof LeftViewHolder) {
                 ((LeftViewHolder) viewHolder).name.setText(comments.get(position).getUid());
-                ((LeftViewHolder) viewHolder).content.setText(comments.get(position).message);
+                ((LeftViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
+                String chatTimeStr = comments.get(position).getTimestamp();
+                String [] array = chatTimeStr.split("-");
+                String month = array[1];
+                String [] array2 = array[2].split("T");
+                String [] array3 = array2[1].split(":");
+                String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
+                ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
+                ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
+                databaseReference.child("User").orderByChild("name").equalTo(destUid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            profileUrlStr = dataSnapshot.child("profile").getValue(String.class);
+                        }
+                        Glide.with(getApplicationContext()).load(profileUrlStr).into(((LeftViewHolder) viewHolder).image);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
             } else {
 //                ((RightViewHolder) viewHolder).name.setText(comments.get(position).getUid());
-                ((RightViewHolder) viewHolder).content.setText(comments.get(position).message);
+                ((RightViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
+                String chatTimeStr = comments.get(position).getTimestamp();
+                String [] array = chatTimeStr.split("-");
+                String month = array[1];
+                String [] array2 = array[2].split("T");
+                String [] array3 = array2[1].split(":");
+                String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
+                ((RightViewHolder) viewHolder).chat_time.setText(chatTime);
             }
         }
 
@@ -262,7 +305,6 @@ public class ChatRoom extends AppCompatActivity {
 
             CenterViewHolder(View itemView) {
                 super(itemView);
-
                 content = itemView.findViewById(R.id.content);
             }
         }
@@ -270,6 +312,7 @@ public class ChatRoom extends AppCompatActivity {
         public class LeftViewHolder extends RecyclerView.ViewHolder {
             TextView content;
             TextView name;
+            TextView chat_time;
             ImageView image;
 
             LeftViewHolder(View itemView) {
@@ -277,104 +320,32 @@ public class ChatRoom extends AppCompatActivity {
 
                 content = itemView.findViewById(R.id.tv_message);
                 name = itemView.findViewById(R.id.tv_name);
-//                image = itemView.findViewById(R.id.imageView);
+                chat_time = itemView.findViewById(R.id.tv_time);
+                image = itemView.findViewById(R.id.iv_profile);
             }
         }
 
         public class RightViewHolder extends RecyclerView.ViewHolder {
             TextView content;
-            TextView name;
+            TextView chat_time;
             ImageView image;
 
             RightViewHolder(View itemView) {
                 super(itemView);
 
                 content = itemView.findViewById(R.id.tv_message);
+                chat_time = itemView.findViewById(R.id.tv_time);
 //                name = itemView.findViewById(R.id.name);
 //                image = itemView.findViewById(R.id.imageView);
             }
         }
 
-//        @NonNull
-//        @Override
-//        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_chatting_mybox,parent,false);
-//            return new ViewHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-//            ViewHolder viewHolder = ((ViewHolder)holder);
-//
-//            if(comments.get(position).uid.equals(myuid)) //나의 uid 이면
-//            {
-//                //나의 말풍선 오른쪽으로
-//                viewHolder.textViewMsg.setText(comments.get(position).message);
-//                viewHolder.textViewMsg.setBackgroundResource(R.drawable.chatbox_user);
-////                viewHolder.linearLayoutDest.setVisibility(View.INVISIBLE);        //상대방 레이아웃
-////                viewHolder.linearLayoutRoot.setGravity(Gravity.RIGHT);
-////                viewHolder.linearLayoutTime.setGravity(Gravity.RIGHT);
-//            }else{
-//                //상대방 말풍선 왼쪽
-////                Glide.with(holder.itemView.getContext())
-////                        .load(destUser.profileImgUrl)
-////                        .apply(new RequestOptions().circleCrop())
-////                        .into(holder.imageViewProfile);
-////                viewHolder.textViewName.setText(destUser.name);
-////                viewHolder.linearLayoutDest.setVisibility(View.VISIBLE);
-//                viewHolder.textViewMsg.setBackgroundResource(R.drawable.chatbox_others);
-//                viewHolder.textViewMsg.setText(comments.get(position).message);
-////                viewHolder.linearLayoutRoot.setGravity(Gravity.LEFT);
-////                viewHolder.linearLayoutTime.setGravity(Gravity.LEFT);
-//            }
-//            viewHolder.textViewTimeStamp.setText(comments.get(position).timestamp+"");
-//
-//        }
-//
-////        public String getDateTime(int position)
-////        {
-////            long unixTime=(long) comments.get(position).timestamp;
-////            Date date = new Date(unixTime);
-////            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-////            String time = simpleDateFormat.format(date);
-////            return time;
-////        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return comments.size();
-//        }
-//
-//        private class ViewHolder extends RecyclerView.ViewHolder
-//        {
-//            public TextView textViewMsg;   //메시지 내용
-//            public TextView textViewName;
-//            public TextView textViewTimeStamp;
-//            public ImageView imageViewProfile;
-////            public LinearLayout linearLayoutDest;
-////            public LinearLayout linearLayoutRoot;
-////            public LinearLayout linearLayoutTime;
-//
-//            public ViewHolder(@NonNull View itemView) {
-//                super(itemView);
-//
-//                textViewMsg = (TextView)itemView.findViewById(R.id.tv_message);
-//                textViewName = (TextView)itemView.findViewById(R.id.tv_name);
-//                textViewTimeStamp = (TextView)itemView.findViewById(R.id.tv_time);
-//                imageViewProfile = (ImageView)itemView.findViewById(R.id.iv_profile);
-////                linearLayoutDest = (LinearLayout)itemView.findViewById(R.id.item_messagebox_LinearLayout);
-////                linearLayoutRoot = (LinearLayout)itemView.findViewById(R.id.item_messagebox_root);
-////                linearLayoutTime = (LinearLayout)itemView.findViewById(R.id.item_messagebox_layout_timestamp);
-//            }
-//        }
-//    }
-    }
-
-    class Code {
-        public class ViewType {
-            public static final int LEFT_CONTENT = 0;
-            public static final int RIGHT_CONTENT = 1;
-            public static final int CENTER_CONTENT = 2;
+        class Code {
+            public class ViewType {
+                public static final int LEFT_CONTENT = 0;
+                public static final int RIGHT_CONTENT = 1;
+                public static final int CENTER_CONTENT = 2;
+            }
         }
     }
 }
@@ -394,20 +365,15 @@ class ChatModel {
         public String message;
         public String timestamp;
         public int viewType;
-        Comment commentUser;
 
         public Comment() {
 
         }
 
-        public Comment(String uid, String message, String timestamp) {
+        public Comment(String uid, String message, String timestamp, int viewType) {
             this.uid = uid;
             this.message = message;
             this.timestamp = timestamp;
-        }
-
-        public Comment(Comment commentUser, int viewType) {
-            this.commentUser = commentUser;
             this.viewType = viewType;
         }
 
@@ -428,29 +394,3 @@ class ChatModel {
         }
     }
 }
-/*
-public class DataItem {
-
-    private String content;
-    private String name;
-    private int viewType;
-
-    public DataItem(String content, String name ,int viewType) {
-        this.content = content;
-        this.viewType = viewType;
-        this.name = name;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getViewType() {
-        return viewType;
-    }
-}
- */
