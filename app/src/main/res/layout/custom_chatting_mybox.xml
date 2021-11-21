@@ -17,39 +17,6 @@
 
         <!--프로필 사진-->
         <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:visibility="gone" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="87px"
-            android:layout_height="87px"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@id/tv_message"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--이름-->
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이름"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_message"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_profile" />
-
-        <!--메시지-->
-        <TextView
             android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,6 +35,41 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+
+            android:visibility="gone" />
+
+        <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+        <!--            android:id="@+id/iv_profile"-->
+        <!--            android:layout_width="87px"-->
+        <!--            android:layout_height="87px"-->
+        <!--            android:src="@mipmap/ic_launcher"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/tv_message"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--이름-->
+<!--        <TextView-->
+<!--            android:id="@+id/tv_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="이름"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="16sp"-->
+<!--            android:visibility="visible"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/tv_message"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/iv_profile" />-->
+
+        <!--메시지-->
 
     </LinearLayout>
 </LinearLayout>
