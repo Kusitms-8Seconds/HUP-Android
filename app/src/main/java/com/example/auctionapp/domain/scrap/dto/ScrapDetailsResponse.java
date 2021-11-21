@@ -3,7 +3,6 @@ package com.example.auctionapp.domain.scrap.dto;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;

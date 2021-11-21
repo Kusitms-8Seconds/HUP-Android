@@ -1,11 +1,8 @@
 package com.example.auctionapp.domain.item.dto;
 
-import android.content.ClipData;
-
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
