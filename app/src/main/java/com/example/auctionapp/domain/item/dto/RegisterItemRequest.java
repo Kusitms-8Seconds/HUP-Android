@@ -1,8 +1,5 @@
 package com.example.auctionapp.domain.item.dto;
 
-import android.content.ClipData;
-
-import com.google.firebase.database.annotations.NotNull;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.time.LocalDateTime;

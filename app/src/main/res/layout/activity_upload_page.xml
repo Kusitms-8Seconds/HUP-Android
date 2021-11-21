@@ -323,7 +323,7 @@
                 android:hint="제품을 소개해주세요."
                 android:inputType="textPersonName"
                 android:paddingLeft="39px"
-                android:layout_marginBottom="95dp"
+                android:layout_marginBottom="70dp"
                 android:textSize="44px" />
 
         </LinearLayout>
