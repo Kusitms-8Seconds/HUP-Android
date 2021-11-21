@@ -82,6 +82,7 @@ public class ItemDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), BidPage.class);
+                intent.putExtra("itemId", String.valueOf(itemId));
                 startActivity(intent);
             }
         });

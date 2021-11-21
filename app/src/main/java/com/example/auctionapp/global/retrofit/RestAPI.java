@@ -7,6 +7,7 @@ import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCheckedRequest;
 import com.example.auctionapp.domain.scrap.dto.ScrapCheckedResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
@@ -82,6 +83,8 @@ public interface RestAPI {
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/items/{id}")
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
+    @GET("api/v1/priceSuggestion/list/item/{id}")
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }
