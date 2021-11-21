@@ -132,7 +132,7 @@ public class ChatRoom extends AppCompatActivity {
         { // 이 안에서 한 번 더 나인지 상대방인지 체크해 주는게 필요할 듯
             // comment.uid 값이 myuid 여야 하는지, destuid여야 하는지 체크해야 함..
             LocalDateTime currentDate = LocalDateTime.now();
-            ChatModel.Comment comment = new ChatModel.Comment();
+            ChatModel.Comment comment = new ChatModel.Comment(null, null, null);
             comment.uid = myuid;
             comment.message = editText.getText().toString();
             comment.timestamp = String.valueOf(currentDate);
@@ -313,12 +313,59 @@ class User
 class ChatModel
 {
     public Map<String,Boolean> users = new HashMap<>(); //채팅방 유저
-    public Map<String,Comment> comments = new HashMap<>(); //채팅 메시지
+//    public Map<String,Comment> comments = new HashMap<>(); //채팅 메시지
 
-    public static class Comment
-    {
+    public static class Comment {
         public String uid;
         public String message;
-        public Object timestamp;
+        public String timestamp;
+
+        public Comment(String uid, String message, String timestamp) {
+            this.uid = uid;
+            this.message = message;
+            this.timestamp = timestamp;
+        }
+        public String getUid() {
+            return uid;
+        }
+        public String getMessage() {
+            return message;
+        }
+        public String getTimestamp() {
+            return timestamp;
+        }
     }
 }
+class Code {
+    public class ViewType{
+        public static final int LEFT_CONTENT = 0;
+        public static final int RIGHT_CONTENT = 1;
+        public static final int CENTER_CONTENT = 2;
+    }
+}
+/*
+public class DataItem {
+
+    private String content;
+    private String name;
+    private int viewType;
+
+    public DataItem(String content, String name ,int viewType) {
+        this.content = content;
+        this.viewType = viewType;
+        this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getViewType() {
+        return viewType;
+    }
+}
+ */
