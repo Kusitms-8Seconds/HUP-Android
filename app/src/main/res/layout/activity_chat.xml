@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -36,22 +36,23 @@
             android:id="@+id/goback"
             android:layout_width="60px"
             android:layout_height="52px"
-            app:srcCompat="@drawable/arrow"
+            android:layout_marginStart="50px"
             android:layout_marginTop="79px"
             android:layout_marginBottom="74px"
-            android:layout_marginStart="50px"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:srcCompat="@drawable/arrow" />
+
         <ImageView
             android:id="@+id/accuseButton"
             android:layout_width="61px"
             android:layout_height="73px"
-            app:srcCompat="@drawable/copimg"
             android:layout_marginTop="79px"
-            android:layout_marginBottom="74px"
             android:layout_marginEnd="50px"
+            android:layout_marginBottom="74px"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:srcCompat="@drawable/copimg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,12 +60,12 @@
         android:layout_width="match_parent"
         android:layout_height="4px"
         android:background="#F3F3F3"
-        app:layout_constraintTop_toBottomOf="@id/topbar"/>
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="294px"
-        android:src="@drawable/adver"/>
+        android:src="@drawable/adver" />
 
 
     <ListView
