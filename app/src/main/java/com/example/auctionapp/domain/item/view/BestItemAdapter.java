@@ -10,19 +10,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
 public class BestItemAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<BestItem> listData;
+    Context context;
 
 //    public BestItemAdapter() {}
 
     public BestItemAdapter(Context context, ArrayList<BestItem> listData) {
         this.mContext = context;
         this.listData = listData;
+        this.context = context;
     }
 
     @NonNull
@@ -30,9 +34,11 @@ public class BestItemAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_layout_home_bestitem, null);
-
-        ImageView ViewPagerImageView = view.findViewById(R.id.bt_image);
-        ViewPagerImageView.setImageResource(listData.get(position).getBtImage());
+        ImageView viewPagerImageView = view.findViewById(R.id.bt_image);
+        Glide.with(context).load(Constants.imageBaseUrl+listData.get(position).getBtImage()).override(viewPagerImageView.getWidth()
+                ,viewPagerImageView.getHeight()).into(viewPagerImageView);
+//        ViewPagerImageView.setImageResource(listData.get(position).getBtImage());
+//        ViewPagerImageView.setImageURI();
         TextView bt_item_name = view.findViewById(R.id.bt_item_name);
         bt_item_name.setText(listData.get(position).getBtName());
         TextView bt_purchase_date = view.findViewById(R.id.bt_purchase_date);

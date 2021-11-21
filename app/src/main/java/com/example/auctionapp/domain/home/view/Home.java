@@ -19,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
+import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.BestItem;
 import com.example.auctionapp.domain.item.view.BestItemAdapter;
@@ -51,13 +52,16 @@ import static android.content.ContentValues.TAG;
 
 public class Home extends Fragment {
     ViewGroup viewGroup;
-    private ArrayList<BestItem> bestItemArrayList;
+    private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
 
     AuctionNowAdapter adapter;
     AuctionNow data;
+    BestItem bestItem;
     List<AuctionNow> auctionDataList = new ArrayList<>();
     int heartCount;
     int maximumPriceCount;
+    int maximumPriceCount2;
+    BestItemAdapter bestItemAdapter;
 
     @Nullable
     @Override
@@ -66,11 +70,12 @@ public class Home extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home, container, false);
 
         init();
-        initializeBestData();
         initializeAuctionNowData();
+        initializeBestData();
 
         ViewPager BestItemViewPager = viewGroup.findViewById(R.id.bestItemViewPager);
-        BestItemViewPager.setAdapter(new BestItemAdapter(getContext(), bestItemArrayList));
+        bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
+        BestItemViewPager.setAdapter(bestItemAdapter);
 
         return viewGroup;
     }
@@ -84,7 +89,6 @@ public class Home extends Fragment {
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
         AuctionNowRecyclerView.setLayoutManager(linearLayoutManager);
-
         adapter = new AuctionNowAdapter();
         AuctionNowRecyclerView.setAdapter(adapter);
 
@@ -92,27 +96,76 @@ public class Home extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(getContext(), ItemDetail.class);
-                startActivity(intent);
-            }
+                startActivity(intent); }
         });
-
-
     }
 
 
     public void initializeBestData()
     {
-        bestItemArrayList = new ArrayList();
+        bestItemDataList = new ArrayList();
 
-        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "1", "1", 1));
-        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "2", "2", 2));
-        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "3", "3", 3));
+//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "1", "1", 1));
+//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "2", "2", 2));
+//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "3", "3", 3));
+
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getBestItems(ItemConstants.EItemSoldStatus.eOnGoing)
+                .enqueue(MainRetrofitTool.getCallback(new getBestItemsCallback()));
 
     }
     public void initializeAuctionNowData()
     {
+
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
                 .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
+    }
+
+    private class getBestItemsCallback implements MainRetrofitCallback<List<BestItemResponse>> {
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onSuccessResponse(Response<List<BestItemResponse>> response) {
+            bestItemDataList = new ArrayList<>();
+            for(int i=0; i<response.body().size(); i++){
+                LocalDateTime startDateTime = LocalDateTime.now();
+                LocalDateTime endDateTime = response.body().get(i).getAuctionClosingDate();
+                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
+
+                if(response.body().get(i).getFileNames().size()!=0) {
+                    bestItem = new BestItem(response.body().get(i).getFileNames().get(0),
+                            response.body().get(i).getItemName(),
+                            minutes+"분",
+                            0
+                            );
+                } else{
+                    bestItem = new BestItem(null,
+                            response.body().get(i).getItemName(),
+                            minutes+"분",
+                            0
+                    );
+                }
+                bestItemDataList.add(bestItem);
+                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
+            }
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
     }
 
 
@@ -201,6 +254,32 @@ public class Home extends Fragment {
             adapter.notifyDataSetChanged();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             maximumPriceCount++;
+        }
+        @Override
+        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+
+    private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
+
+            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
+            bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
+            bestItemAdapter.notifyDataSetChanged();
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            maximumPriceCount2++;
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {

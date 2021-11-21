@@ -13,43 +13,24 @@ import com.example.auctionapp.R;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BestItem {
-    int btImage;    //나중에 수정
+    String btImage;    //나중에 수정
     String btName;
     String btTime;
     int btTempMax;
 
-    public BestItem(int btImage, String btName, String btTime, int btPrice) {
+    public BestItem(String btImage, String btName, String btTime, int btPrice) {
         this.btImage = btImage;
         this.btName = btName;
         this.btTime = btTime;
         this.btTempMax = btPrice;
     }
 
-    public String getBtName() {
-        return btName;
-    }
-    public void setBtName(String btName) {
-        this.btName = btName;
-    }
-    public String getBtTime() {
-        return btTime;
-    }
-    public void setBtTime(String btTime) {
-        this.btTime = btTime;
-    }
-    public int getBtTempMax() {
-        return btTempMax;
-    }
-    public void setBtTempMax(int btPrice) {
-        this.btTempMax = btPrice;
-    }
-    public int getBtImage() {
-        return btImage;
-    }
-    public void setBtImage(int btImage) {
-        this.btImage = btImage;
-    }
 
 }
 

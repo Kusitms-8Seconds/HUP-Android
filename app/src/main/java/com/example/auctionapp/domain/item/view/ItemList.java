@@ -135,6 +135,7 @@ public class ItemList extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
+            itemDataList = new ArrayList<>();
             for(int i=0; i<response.body().getData().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();

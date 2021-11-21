@@ -9,7 +9,7 @@ public class Constants {
 
     public static Long userId = null;
     public static String token = null;
-    public static String imageBaseUrl = "http://10.0.2.2:8080/image/";
+    public static String imageBaseUrl = "http://172.16.101.162:8080/image/";
 
     @Getter
     @NoArgsConstructor

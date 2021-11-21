@@ -1,6 +1,7 @@
 package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.constant.ItemConstants;
+import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ImageResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
@@ -54,6 +55,8 @@ public interface RestAPI {
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
     @GET("api/v1/items/list/status/{itemSoldStatus}")
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/list/status/heart/{itemSoldStatus}")
+    Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/scrap/heart/{id}")
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
     @POST("api/v1/scrap/{id}")
