@@ -56,7 +56,7 @@ public class Mypage extends Fragment {
     ViewGroup viewGroup;
 
     LinearLayout goLogin;
-    Button logout_button;
+    TextView logout_button;
 
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
@@ -71,6 +71,7 @@ public class Mypage extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
         myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);
         profileImg = (ImageView) viewGroup.findViewById(R.id.profileImg);
+        Glide.with(getContext()).load(R.drawable.profile).into(profileImg);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
         if(Constants.userId!=null){
@@ -87,7 +88,7 @@ public class Mypage extends Fragment {
         // naver 객체
         mOAuthLoginModule = OAuthLogin.getInstance();
 
-        logout_button = (Button) viewGroup.findViewById(R.id.logout_button);
+        logout_button = (TextView) viewGroup.findViewById(R.id.logout_button);
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -210,6 +211,7 @@ public class Mypage extends Fragment {
             }
             ImageView loginIcon = viewGroup.findViewById(R.id.loginIcon);
             loginIcon.setVisibility(View.INVISIBLE);
+            logout_button.setVisibility(View.VISIBLE);
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
         }
