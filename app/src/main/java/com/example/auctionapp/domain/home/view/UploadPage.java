@@ -97,7 +97,6 @@ public class UploadPage extends AppCompatActivity {
         setContentView(R.layout.activity_upload_page);
 
         ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,24 +159,43 @@ public class UploadPage extends AppCompatActivity {
             }
         });
 
+        EditText editItemName = (EditText) findViewById(R.id.editItemName);
+        TextView editCategory = (TextView) findViewById(R.id.selectItemCategory);
+        EditText editPrice = (EditText)findViewById(R.id.editItemStartPrice);
+        EditText editContent = (EditText) findViewById(R.id.editItemContent);
+
         // category
         LinearLayout selectCategory = (LinearLayout) findViewById(R.id.selectCategoryLayout);
         selectCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent tt = new Intent(UploadPage.this, SelectCategory.class);
+                tt.putExtra("itemName", editItemName.getText().toString());
+                tt.putExtra("itemPrice", editPrice.getText().toString());
+                tt.putExtra("itemContent", editContent.getText().toString());
+                tt.putExtra("itemBuyDate", editBuyDate.getText().toString());
+                tt.putExtra("itemEndDate", editEndDate.getText().toString());
+                tt.putExtra("itemStatePoint", itemStatePoint);
                 startActivity(tt);
             }
         });
         TextView itemCategory = (TextView) findViewById(R.id.selectItemCategory);
         Intent getCategoryIntent = getIntent();
         String itemCT = getCategoryIntent.getStringExtra("itemCategory");
+        String ii = getCategoryIntent.getStringExtra("itemName");
+        String ii2 = getCategoryIntent.getStringExtra("itemPrice");
+        String ii3 = getCategoryIntent.getStringExtra("itemContent");
+        String ii4 = getCategoryIntent.getStringExtra("itemBuyDate");
+        String ii5 = getCategoryIntent.getStringExtra("itemEndDate");
+        int ii6 = getCategoryIntent.getIntExtra("itemStatePoint", 0);
+        editItemName.setText(ii);
         itemCategory.setText(itemCT);
+        editPrice.setText(ii2);
+        editContent.setText(ii3);
+        editBuyDate.setText(ii4);
+        editEndDate.setText(ii5);
+        ratingbar.setRating(ii6);
 
-        EditText editItemName = (EditText) findViewById(R.id.editItemName);
-        TextView editCategory = (TextView) findViewById(R.id.selectItemCategory);
-        EditText editPrice = (EditText)findViewById(R.id.editItemStartPrice);
-        EditText editContent = (EditText) findViewById(R.id.editItemContent);
         // 완료 버튼
         TextView uploadButton = (TextView) findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +250,9 @@ public class UploadPage extends AppCompatActivity {
                         itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                         auctionClosingDateR, descriptionR)
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
-
+                //go home
+                Intent tt = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(tt);
             }
 
             private void choiceCategory(String toString) {

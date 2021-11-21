@@ -41,6 +41,14 @@ public class SelectCategory extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.selectCategoryList);
         listview.setAdapter(adapter);
 
+        Intent intent = getIntent();
+        String itemName = intent.getStringExtra("itemName");
+        String itemPrice = intent.getStringExtra("itemPrice");
+        String itemContent = intent.getStringExtra("itemContent");
+        String itemBuyDate = intent.getStringExtra("itemBuyDate");
+        String itemEndDate = intent.getStringExtra("itemEndDate");
+        int itemStatePoint = intent.getIntExtra("itemStatePoint", 0);
+
         TextView completeBut = (TextView) findViewById(R.id.completeB);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,6 +60,12 @@ public class SelectCategory extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(SelectCategory.this, UploadPage.class);
                         intent.putExtra("itemCategory", category);
+                        intent.putExtra("itemName", itemName);
+                        intent.putExtra("itemContent", itemContent);
+                        intent.putExtra("itemPrice", itemPrice);
+                        intent.putExtra("itemBuyDate", itemBuyDate);
+                        intent.putExtra("itemEndDate", itemEndDate);
+                        intent.putExtra("itemStatePoint", itemStatePoint);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
