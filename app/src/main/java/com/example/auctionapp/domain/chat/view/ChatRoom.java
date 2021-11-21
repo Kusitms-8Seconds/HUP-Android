@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.chat.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,7 +84,9 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = "판매자";
-        destUid = "구매자";        //채팅 상대 //임시
+//        destUid = "구매자";        //채팅 상대 //임시
+        Intent intent = getIntent();
+        destUid = intent.getStringExtra("destUid");
 
         recyclerView = (RecyclerView)findViewById(R.id.chattingRecyclerView);
         button=(ImageView)findViewById(R.id.sendbutton);
