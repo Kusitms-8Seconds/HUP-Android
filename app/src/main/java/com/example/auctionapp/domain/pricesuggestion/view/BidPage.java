@@ -58,6 +58,7 @@ public class BidPage extends AppCompatActivity {
     ImageView auctionState;
     ImageView bidImage;
     private int userCount;
+    PTAdapter adapter;
 
     private ArrayList<BidParticipants> bidParticipants;
 
@@ -69,7 +70,8 @@ public class BidPage extends AppCompatActivity {
         String getItemId = intent.getExtras().getString("itemId");
         this.itemId = Long.valueOf(getItemId);
         bidParticipants = new ArrayList<>();
-        init();
+        adapter = init();
+
         getData();
 
 
@@ -86,7 +88,7 @@ public class BidPage extends AppCompatActivity {
                 .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
 
         hupstomp = new HupStomp();
-        hupstomp.initStomp();
+        hupstomp.initStomp(adapter, bidParticipants, highPrice, participants);
 
         ImageView goBack = (ImageView) findViewById(R.id.goback);
         goBack.bringToFront();
@@ -107,7 +109,9 @@ public class BidPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    hupstomp.sendMessage();
+                    if(!editPrice.getText().toString().equals("")){
+                        hupstomp.sendMessage(itemId, Constants.userId, editPrice.getText().toString());
+                    }
                 }catch(JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,7 +145,7 @@ public class BidPage extends AppCompatActivity {
         });
     }
 
-    private void init(){
+    private PTAdapter init(){
         RecyclerView ptRecyclerView = findViewById(R.id.participants_recyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -149,6 +153,7 @@ public class BidPage extends AppCompatActivity {
 
         ptAdapter = new PTAdapter();
         ptRecyclerView.setAdapter(ptAdapter);
+        return ptAdapter;
     }
 
     private void getData(){

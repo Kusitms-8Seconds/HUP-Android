@@ -93,5 +93,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
 
 }

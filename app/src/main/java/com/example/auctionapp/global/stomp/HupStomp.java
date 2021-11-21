@@ -1,8 +1,15 @@
 package com.example.auctionapp.global.stomp;
 
 import android.annotation.SuppressLint;
+import android.text.Editable;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.example.auctionapp.R;
+import com.example.auctionapp.domain.pricesuggestion.view.BidParticipants;
+import com.example.auctionapp.domain.pricesuggestion.view.PTAdapter;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import org.json.JSONException;
@@ -29,11 +36,17 @@ public class HupStomp {
     private List<StompHeader> connectHeaderList;
     private List<StompHeader> topicHeaderList;
     private List<StompHeader> sendHeaderList;
-
-    private String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJranc1OTgwMDAiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjM2NzI5NTQxfQ.sQYhLm4SkNBaosDB2-CbBH_dSRXRlYB7-2fZFwse_t4JbWv3dw-CCxHVkirocpqQEzLQL8T5LggEdWSi3QvI8w";
+    private PTAdapter ptAdapter;
+    private ArrayList<BidParticipants> bidParticipants;
+    TextView participants;
+    TextView highPrice;
 
     @SuppressLint("CheckResult")
-    public void initStomp(){
+    public void initStomp(PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants){
+        this.ptAdapter = adapter;
+        this.bidParticipants = bidParticipants;
+        this.participants = participants;
+        this.highPrice = highPrice;
         connectSTOMP();
         topicSTOMP();
     }
@@ -54,33 +67,44 @@ public class HupStomp {
             }
         });
         connectHeaderList=new ArrayList<>();
-        connectHeaderList.add(new StompHeader("Authorization", "Bearer "+ token));
+        connectHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.token));
         stompClient.connect(connectHeaderList);
     }
 
-
-
     public void topicSTOMP(){
         topicHeaderList=new ArrayList<>();
-        topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ token));
-        stompClient.topic("/topic/greetings", topicHeaderList).subscribe(topicMessage -> {
-            JsonParser jsonParser = new JsonParser();
-//            JSONObject jsonObject = (JSONObject) jsonParser.parse(topicMessage.getPayload());
-            //Object obj = parser.parse(topicMessage.getPayload());
-            //System.out.println("토픽" + obj.toString());
-
+        topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.token));
+        stompClient.topic("/topic/priceSuggestion", topicHeaderList).subscribe(topicMessage -> {
+              JsonParser jsonParser = new JsonParser();
+            JsonElement element = jsonParser.parse(topicMessage.getPayload());
+            String username = element.getAsJsonObject().get("username").getAsString();
+            String suggestionPrice = element.getAsJsonObject().get("suggestionPrice").getAsString();
+            String maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
+            String theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
+            System.out.println("username"+username );
+            System.out.println("suggestionPrice"+suggestionPrice );
+            System.out.println("maximumPrice"+maximumPrice );
+            System.out.println("theNumberOfParticipants"+theNumberOfParticipants );
+            System.out.println("들어오는지?");
+            this.highPrice.setText(String.valueOf(highPrice));
+            this.participants.setText(String.valueOf(maximumPrice));
+            BidParticipants data = new BidParticipants(R.drawable.choose_image, username, Integer.valueOf(suggestionPrice), "11");
+            ptAdapter.addItem(data);
+            ptAdapter.notifyDataSetChanged();
         });
     }
 
-    public void sendMessage() throws JSONException{
+    public void sendMessage(Long itemId, Long userId, String suggestionPrice) throws JSONException{
         sendHeaderList = new ArrayList<>();
-        sendHeaderList.add(new StompHeader("Authorization", "Bearer " + token));
-        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/hello"));
+        sendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.token));
+        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/priceSuggestion"));
         JSONObject json = new JSONObject();
-        json.put("name", "kimjungwoo");
+        json.put("itemId", itemId);
+        json.put("userId", userId);
+        json.put("suggestionPrice", suggestionPrice);
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, sendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
-
     }
+
 
 }
