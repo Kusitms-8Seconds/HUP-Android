@@ -84,6 +84,8 @@ public class HupStomp {
             String suggestionPrice = element.getAsJsonObject().get("suggestionPrice").getAsString();
             String maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
             String theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
+            String userId = element.getAsJsonObject().get("userId").getAsString();
+            System.out.println("userId"+userId );
             System.out.println("username"+username );
             System.out.println("suggestionPrice"+suggestionPrice );
             System.out.println("maximumPrice"+maximumPrice );
@@ -97,7 +99,9 @@ public class HupStomp {
                 public void run() {
                     highPrice.setText(String.valueOf(maximumPrice));
                     participants.setText(String.valueOf(theNumberOfParticipants));
-                    BidParticipants data = new BidParticipants(R.drawable.hearto, username, Integer.valueOf(suggestionPrice), "11");
+                    BidParticipants data = new BidParticipants(Long.valueOf(userId), R.drawable.hearto, username, Integer.valueOf(suggestionPrice), "11");
+                    bidParticipants.add(data);
+                    ptAdapter.validationAndDeleteItem(data.getUserId());
                     ptAdapter.addItem(data);
                     ptAdapter.notifyDataSetChanged();} // This is your code
             };

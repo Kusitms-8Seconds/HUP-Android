@@ -40,6 +40,14 @@ public class PTAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         listData.add(data);
     }
 
+    public void validationAndDeleteItem(Long userId) {
+        for(int i=0; i<listData.size(); i++){
+            if(listData.get(i).getUserId().equals(userId)){
+                 listData.remove(i);
+            }
+        }
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View v, int position);
     }

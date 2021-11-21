@@ -13,42 +13,24 @@ import com.example.auctionapp.R;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BidParticipants {
+    Long userId;
     int ptImage;    //나중에 url로 수정
     String ptName;
     int ptPrice;
     String ptTime;
 
-    public BidParticipants(int ptImage, String ptName, int ptPrice, String ptTime) {
+    public BidParticipants(Long userId, int ptImage, String ptName, int ptPrice, String ptTime) {
+        this.userId = userId;
         this.ptImage = ptImage;
         this.ptName = ptName;
         this.ptPrice = ptPrice;
         this.ptTime = ptTime;
-    }
-
-    public String getPtName() {
-        return ptName;
-    }
-    public void setPtName(String ptName) {
-        this.ptName = ptName;
-    }
-    public String getPtTime() {
-        return ptTime;
-    }
-    public void setPtTime(String ptTime) {
-        this.ptTime = ptTime;
-    }
-    public int getPtPrice() {
-        return ptPrice;
-    }
-    public void setPtPrice(int ptPrice) {
-        this.ptPrice = ptPrice;
-    }
-    public int getPtImage() {
-        return ptImage;
-    }
-    public void setPtImage(int ptImage) {
-        this.ptImage = ptImage;
     }
 
 }

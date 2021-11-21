@@ -236,7 +236,7 @@ public class BidPage extends AppCompatActivity {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                BidParticipants data = new BidParticipants(R.drawable.testuserimage, null,
+                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), R.drawable.hearto, null,
                         response.body().getData().get(i).getSuggestionPrice(), "12:46");
                 bidParticipants.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(response.body().getData().get(i).getUserId()))
