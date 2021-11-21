@@ -90,7 +90,12 @@ public class ItemDetail extends AppCompatActivity {
         sellerImageView = (ImageView) findViewById(R.id.sellerImage);
         //Glide.with(this).load(R.drawable.testuserimage).circleCrop().into(sellerImageView);
 
-        ImageView participateButton = (ImageView) findViewById(R.id.participateButton);
+        Button participateButton = (Button) findViewById(R.id.participateButton);
+        if(Constants.userId == null) {
+            participateButton.setText("로그인 후 이용해주세요.");
+            participateButton.setEnabled(false);
+            participateButton.setBackgroundColor(Color.GRAY);
+        }
         participateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
