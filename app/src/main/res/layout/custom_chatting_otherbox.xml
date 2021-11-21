@@ -11,9 +11,7 @@
         android:id="@+id/chat_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginTop="35px"
-        android:layout_marginBottom="35px">
+        android:layout_gravity="left">
 
         <!--프로필 사진-->
 
@@ -71,6 +69,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_profile"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:text="chat_time" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
