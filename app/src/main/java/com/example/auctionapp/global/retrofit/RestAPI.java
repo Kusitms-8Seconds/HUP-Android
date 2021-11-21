@@ -3,13 +3,15 @@ package com.example.auctionapp.global.retrofit;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
-import com.example.auctionapp.domain.item.dto.ImageResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.dto.RegisterItemRequest;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
+import com.example.auctionapp.domain.scrap.dto.ScrapCheckedRequest;
+import com.example.auctionapp.domain.scrap.dto.ScrapCheckedResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
+import com.example.auctionapp.domain.scrap.dto.ScrapRegisterRequest;
+import com.example.auctionapp.domain.scrap.dto.ScrapRegisterResponse;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
@@ -21,13 +23,10 @@ import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 
-import java.util.HashMap;
 import java.util.List;
 
-import lombok.Getter;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -35,9 +34,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Path;
-import retrofit2.http.Streaming;
 
 public interface RestAPI {
 
@@ -77,6 +74,12 @@ public interface RestAPI {
     Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
     @GET("api/v1/priceSuggestion/participant/{itemId}")
     Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
+    @POST("api/v1/scrap")
+    Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
+    @POST("api/v1/scrap/heart/check")
+    Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
+    @DELETE("api/v1/scrap/{scrapId}")
+    Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }

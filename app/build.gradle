@@ -92,4 +92,6 @@ dependencies {
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+
 }

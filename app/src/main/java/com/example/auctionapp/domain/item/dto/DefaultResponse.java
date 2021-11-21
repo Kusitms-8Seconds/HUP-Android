@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class DefaultResponse {
-    private LocalDateTime responseTime;
+
     private String message;
 
-//    private DefaultResponse(String message) {
-//        this.responseTime = LocalDateTime.now();
-//        this.message = message;
-//    }
+    private DefaultResponse(String message) {
+        this.message = message;
+    }
 //    public static DefaultResponse from(String message) {
 //        return new DefaultResponse(message);
 //    }

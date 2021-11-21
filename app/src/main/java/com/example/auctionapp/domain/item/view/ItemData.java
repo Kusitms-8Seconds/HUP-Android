@@ -45,11 +45,17 @@ public class ItemData {
     }
 }
 
+@Getter
 class ItemDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
     private ArrayList<ItemData> listData = new ArrayList<>();
 
     Context context;
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

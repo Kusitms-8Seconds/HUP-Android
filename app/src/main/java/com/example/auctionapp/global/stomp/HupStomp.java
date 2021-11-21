@@ -19,9 +19,10 @@ import ua.naiksoftware.stomp.dto.StompCommand;
 import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
 
+
 public class HupStomp {
 
-    private static final String url = "ws://172.16.101.162:8080/websocket/websocket"; // 내부IP(안드로이드휴대폰사용, cmd -> ipconfig IPv4주소)
+    private static final String url = "ws://192.168.0.5:8080/websocket/websocket"; // 내부IP(안드로이드휴대폰사용, cmd -> ipconfig IPv4주소)
     //private static final String url = "http://10.0.2.2:8080/websocket/websocket"; // 안드로이드에뮬레이터IP
 
     private StompClient stompClient;
@@ -63,9 +64,10 @@ public class HupStomp {
         topicHeaderList=new ArrayList<>();
         topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ token));
         stompClient.topic("/topic/greetings", topicHeaderList).subscribe(topicMessage -> {
-            JsonParser parser = new JsonParser();
-            Object obj = parser.parse(topicMessage.getPayload());
-            System.out.println("토픽" + obj.toString());
+            JsonParser jsonParser = new JsonParser();
+//            JSONObject jsonObject = (JSONObject) jsonParser.parse(topicMessage.getPayload());
+            //Object obj = parser.parse(topicMessage.getPayload());
+            //System.out.println("토픽" + obj.toString());
 
         });
     }

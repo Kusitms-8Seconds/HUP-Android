@@ -1,12 +1,8 @@
 package com.example.auctionapp.domain.item.view;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,37 +18,26 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
-import com.example.auctionapp.domain.item.dto.DefaultResponse;
-import com.example.auctionapp.domain.item.dto.ImageResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
-import com.google.android.gms.common.util.IOUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -64,6 +49,7 @@ public class ItemList extends Fragment {
     ItemData data;
     List<ItemData> itemDataList = new ArrayList<>();
     int heartCount;
+    int participantCount;
 
     @Nullable
     @Override
@@ -92,6 +78,7 @@ public class ItemList extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(getContext(), ItemDetail.class);
+                intent.putExtra("itemId", String.valueOf(adapter.getListData().get(position).getItemId()));
                 startActivity(intent);
             }
         });
@@ -127,7 +114,6 @@ public class ItemList extends Fragment {
                     .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
         }
 
-
     }
 
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
@@ -159,6 +145,8 @@ public class ItemList extends Fragment {
                 itemDataList.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(response.body().getData().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
@@ -184,13 +172,37 @@ public class ItemList extends Fragment {
         public void onSuccessResponse(Response<ScrapCountResponse> response) {
 
             itemDataList.get(heartCount).setHeart(response.body().getHeart());
-            adapter.addItem(itemDataList.get(heartCount));
-            adapter.notifyDataSetChanged();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             heartCount++;
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+
+    private class getParticipantsCallback implements MainRetrofitCallback<ParticipantsResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<ParticipantsResponse> response) {
+
+            itemDataList.get(participantCount).setViews(response.body().getParticipantsCount());
+            adapter.addItem(itemDataList.get(participantCount));
+            adapter.notifyDataSetChanged();
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            participantCount++;
+        }
+        @Override
+        public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
             System.out.println("errorBody"+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
