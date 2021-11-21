@@ -15,12 +15,11 @@
         android:layout_marginEnd="10px"
         android:orientation="vertical">
 
-        <!--프로필 사진-->
         <TextView
             android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_gravity="right"
             android:layout_weight="0"
             android:background="@drawable/chatbox_user"
             android:maxWidth="682px"
