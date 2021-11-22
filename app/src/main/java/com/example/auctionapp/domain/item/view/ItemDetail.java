@@ -366,8 +366,7 @@ public class ItemDetail extends AppCompatActivity {
         }
     }
 
-    private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
-
+    public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             itemName.setText(response.body().getItemName());

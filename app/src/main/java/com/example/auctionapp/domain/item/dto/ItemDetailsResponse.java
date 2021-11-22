@@ -26,27 +26,4 @@ public class ItemDetailsResponse {
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
 
-//    public static ItemDetailsResponse from(Item item) {
-//        List<String> fileNames = new ArrayList<>();
-//        if (item.getMyFiles().isEmpty() != true) {
-//            List<MyFile> myFiles = item.getMyFiles();
-//            fileNames = new ArrayList<>();
-//            for (MyFile myFile : myFiles) {
-//                fileNames.add(myFile.getFilename());
-//            }
-//        }
-//        return ItemDetailsResponse.builder()
-//                .id(item.getId())
-//                .itemName(item.getItemName())
-//                .category(item.getCategory())
-//                .initPrice(item.getInitPrice())
-//                .soldPrice(item.getSoldPrice())
-//                .buyDate(item.getBuyDate())
-//                .itemStatePoint(item.getItemStatePoint())
-//                .description(item.getDescription())
-//                .soldStatus(item.getSoldStatus())
-//                .fileNames(fileNames)
-//                .auctionClosingDate(item.getAuctionClosingDate())
-//                .build();
-//    }
 }

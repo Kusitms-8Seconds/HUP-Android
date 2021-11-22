@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,11 +38,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class Chat extends Fragment {
 
@@ -45,8 +60,9 @@ public class Chat extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     //uid
-    String myuid = "판매자";       //String myuid = String.valueOf(Constants.userId);
+    String myuid = String.valueOf(Constants.userId);
     String chatRoomUid;
+    Long itemId;
     //chatting room list
     ArrayList<chatListData> chatroomList = new ArrayList<chatListData>();
     chatListAdapter chatListAdapter;
@@ -63,8 +79,29 @@ public class Chat extends Fragment {
         ListView chattingRoomListView = (ListView) viewGroup.findViewById(R.id.chattingRoomListView);
         chatListAdapter = new chatListAdapter(this.getContext(), chatroomList);
         chattingRoomListView.setAdapter(chatListAdapter);
+        getChatList();
 
-        databaseReference.child("chatrooms").orderByChild("users/"+myuid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
+                String destUid = destUser.getProfileName();
+                Long destItemId = destUser.getItemId();
+                Intent intent = new Intent(getContext(), ChatRoom.class);
+                intent.putExtra("destUid", destUid);
+                intent.putExtra("itemId", destItemId);
+                startActivity(intent);
+            }
+        });
+
+        return viewGroup;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+    public void getChatList() {
+        databaseReference.child("chatrooms").orderByChild("users/"+myuid).equalTo(true).addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -72,19 +109,19 @@ public class Chat extends Fragment {
                 {
                     ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
                     chatRoomUid = dataSnapshot.getKey();
+                    itemId = dataSnapshot.child("itemId/itemId").getValue(Long.class);
                     String temp = chatModel.users.toString();
                     String [] array = temp.split("=true");
                     for(int i=0; i<array.length; i++) {
-                        String temp2 = array[i];
-//                        System.out.println(temp2);
-                        if(temp2.contains(myuid)) continue;
-                        temp2 = temp2.replace("{","");
-                        temp2 = temp2.replace("}","");
-                        temp2 = temp2.replace(",","");
-                        temp2 = temp2.replace(" ","");
-                        if(!temp2.equals(myuid) && !temp2.equals("")) {
-//                            chatroomList.add(temp2);
-                            setChatList(chatRoomUid, temp2);
+                        // 내가 들어가 있는 채팅방의 상대방유저 id 가져오기
+                        String usersStr = array[i];
+                        if(usersStr.contains(myuid)) continue;
+                        usersStr = usersStr.replace("{","");
+                        usersStr = usersStr.replace("}","");
+                        usersStr = usersStr.replace(",","");
+                        usersStr = usersStr.replace(" ","");
+                        if(!usersStr.equals(myuid) && !usersStr.equals("")) {
+                            setChatList(chatRoomUid, usersStr, itemId);
                         }
                     }
 
@@ -96,26 +133,9 @@ public class Chat extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-        chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
-                String destUid = destUser.getProfileName();
-                Intent intent = new Intent(getContext(), ChatRoom.class);
-                intent.putExtra("destUid", destUid);
-                startActivity(intent);
-            }
-        });
-
-        return viewGroup;
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-    public void setChatList(String chatRoomUid, String oppName) {
-        databaseReference.child("chatrooms/" + chatRoomUid + "/comments").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void setChatList(String chatRoomUid, String oppName, Long itemIdL) {
+        databaseReference.child("chatrooms/" + chatRoomUid + "/comments").addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -132,35 +152,31 @@ public class Chat extends Fragment {
                 String [] array2 = array[2].split("T");
                 String [] array3 = array2[1].split(":");
                 lastChatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
-                chatroomList.add(new chatListData("temp", oppName, lastChatTime, lastChat));
+                chatroomList.add(new chatListData(itemIdL, oppName, lastChatTime, lastChat));
                 chatListAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
-
 }
 class chatListData {
-    private String itemImage;
+    private Long itemId;
     private String profileName;
     private String chatTime;
     private String lastChat;
 
-    public chatListData(){
+    public chatListData(){ }
 
-    }
-
-    public chatListData(String itemImage, String profileName, String chatTime, String lastChat){
-        this.itemImage = itemImage;
+    public chatListData(Long itemId, String profileName, String chatTime, String lastChat){
+        this.itemId = itemId;
         this.profileName = profileName;
         this.chatTime = chatTime;
         this.lastChat = lastChat;
     }
-    public String getItemImage() {
-        return this.itemImage;
+    public Long getItemId() {
+        return this.itemId;
     }
     public String getProfileName(){
         return this.profileName;
@@ -189,7 +205,6 @@ class chatListAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
-
     @Override
     public int getCount() {
         return data.size();
@@ -210,7 +225,10 @@ class chatListAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.custom_chatlist_listview, null);
 
         itemImageImageView = (ImageView) view.findViewById(R.id.iv_chatlist_itemImage);
-//        Glide.with(view.getContext()).load(url).into(itemImageImageView);
+        Long itemIdL = data.get(position).getItemId();
+        // 상품 이미지 load
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemIdL)
+                .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
         profileNameTextView.setText(data.get(position).getProfileName());
         chatTimeTextView = (TextView) view.findViewById(R.id.tv_chatlist_lastChatTime);
@@ -220,5 +238,28 @@ class chatListAdapter extends BaseAdapter {
 
         return view;
     }
-
+    class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
+        @Override
+        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+            if(response.body().getFileNames().size()!=0){
+                String fileThumbNail = "";
+                for (int i=0; i<response.body().getFileNames().size(); i++) {
+                    fileThumbNail = response.body().getFileNames().get(i);
+                }
+                Glide.with(itemImageImageView.getContext()).load(fileThumbNail).into(itemImageImageView);
+            }
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            itemImageImageView.setImageResource(R.drawable.baby);
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            itemImageImageView.setImageResource(R.drawable.baby);
+            Log.e("연결실패", t.getMessage());
+        }
+    }
 }

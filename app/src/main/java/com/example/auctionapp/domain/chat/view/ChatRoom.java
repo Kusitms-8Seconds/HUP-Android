@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,12 +35,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class ChatRoom extends AppCompatActivity {
     //uid
@@ -41,15 +57,19 @@ public class ChatRoom extends AppCompatActivity {
     private String destUid;     //상대방 uid
     private User destUser;
     String profileUrlStr;
-
-    private RecyclerView recyclerView;
-    private ImageView button;   //보내기 버튼
-    private EditText editText;  //메세지 작성
+    private Long EndItemId;
 
     //firebase
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
+    private RecyclerView recyclerView;
+    private ImageView button;   //보내기 버튼
+    private EditText editText;  //메세지 작성
+    private ImageView chattingItemImage;
+    private TextView chattingItemDetailName;
+    private TextView chattingItemDetailCategory;
+    private TextView chattingItemDetailPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +93,20 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = "판매자";
-//        destUid = "구매자";        //채팅 상대 //임시
         Intent intent = getIntent();
         destUid = intent.getStringExtra("destUid");
+        EndItemId = intent.getLongExtra("itemId", 0);
 
         recyclerView = (RecyclerView) findViewById(R.id.chattingRecyclerView);
         button = (ImageView) findViewById(R.id.sendbutton);
         editText = (EditText) findViewById(R.id.editText);
+        chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
+        chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
+        chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
+        chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
+
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
+                .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
 
         if (editText.getText().toString() == null) button.setEnabled(false);
         else button.setEnabled(true);
@@ -95,6 +122,7 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
+                chatModel.itemId.put("itemId", EndItemId);    //상품 id(임시) ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 key가 생성
                 if (chatRoomUid == null) {
@@ -219,20 +247,6 @@ public class ChatRoom extends AppCompatActivity {
                 }
             });
         }
-        public String getUserProfile() {
-            databaseReference.child("User").orderByChild("name").equalTo(destUid).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        profileUrlStr = dataSnapshot.child("profile").getValue(String.class);
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-            return profileUrlStr;
-        }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -332,15 +346,12 @@ public class ChatRoom extends AppCompatActivity {
         public class RightViewHolder extends RecyclerView.ViewHolder {
             TextView content;
             TextView chat_time;
-            ImageView image;
 
             RightViewHolder(View itemView) {
                 super(itemView);
 
                 content = itemView.findViewById(R.id.tv_message);
                 chat_time = itemView.findViewById(R.id.tv_time);
-//                name = itemView.findViewById(R.id.name);
-//                image = itemView.findViewById(R.id.imageView);
             }
         }
 
@@ -352,6 +363,32 @@ public class ChatRoom extends AppCompatActivity {
             }
         }
     }
+    public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
+        @Override
+        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+            chattingItemDetailName.setText(response.body().getItemName());
+            if(response.body().getFileNames().size()!=0){
+                String fileThumbNail = "";
+                for (int i=0; i<response.body().getFileNames().size(); i++) {
+                    fileThumbNail = response.body().getFileNames().get(i);
+                }
+                Glide.with(getApplicationContext()).load(fileThumbNail).into(chattingItemImage);
+            }
+            chattingItemDetailCategory.setText(response.body().getCategory().getName());
+            chattingItemDetailPrice.setText("????");    //낙찰가 출력(임시)
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            chattingItemDetailPrice.setText("?연결실패?");
+            Log.e("연결실패", t.getMessage());
+        }
+    }
 }
 class User {
     public String name;
@@ -359,10 +396,14 @@ class User {
     public String uid;
     public String pushToken;
 }
+class ItemId {
+    public Long itemId;
+//    public Long getItemId() {return itemId;}
+}
 
 class ChatModel {
     public Map<String, Boolean> users = new HashMap<>(); //채팅방 유저
-//    public Map<String,Comment> comments = new HashMap<>(); //채팅 메시지
+    public Map<String, Long> itemId = new HashMap<>(); //채팅 아이템 id
 
     public static class Comment {
         public String uid;
@@ -384,15 +425,12 @@ class ChatModel {
         public String getUid() {
             return uid;
         }
-
         public String getMessage() {
             return message;
         }
-
         public String getTimestamp() {
             return timestamp;
         }
-
         public int getViewType() {
             return viewType;
         }
