@@ -56,6 +56,7 @@ public class BidPage extends AppCompatActivity {
 
     Long itemId;
     Long participantId;
+    int finalPrice;
 
     TextView highPrice;
     TextView participants;
@@ -127,10 +128,11 @@ public class BidPage extends AppCompatActivity {
         });
 
         // -----------만약 낙찰되었을 때에----------(임시) //
+        finalPrice = Integer.parseInt(highPrice.getText().toString());
         if(itemLeftTime.getText().toString().equals("0분 전")) {
             for (int i = 0; i < ptAdapter.getItemCount() - 1; i++) {
                 int maxprice = bidParticipants.get(i).getPtPrice();
-                if (maxprice == Integer.parseInt(highPrice.getText().toString())) {
+                if (maxprice == finalPrice) {
                     participantId = bidParticipants.get(i).getUserId();
                 }
             }
@@ -180,15 +182,12 @@ public class BidPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog02.dismiss();
-
             }
         });
         // 거래 진행 버튼
         dialog02.findViewById(R.id.ongoAuction).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, ChatRoom.class);
-//                startActivity(intent);
                 showFeesDialog();
             }
         });
@@ -216,6 +215,9 @@ public class BidPage extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent tt = new Intent(BidPage.this, FeesPage.class);
+                tt.putExtra("itemId", itemId);
+                tt.putExtra("participantId", participantId);
+                tt.putExtra("finalPrice", finalPrice);
                 tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tt);
             }

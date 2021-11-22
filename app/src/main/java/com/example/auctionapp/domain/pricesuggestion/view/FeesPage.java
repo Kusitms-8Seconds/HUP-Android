@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,13 +12,33 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.chat.view.ChatRoom;
+import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class FeesPage extends AppCompatActivity {
 
     Boolean isFolded;
+    int finalPrice;
+    private ImageView chattingItemImage;
+    private TextView chattingItemDetailName;
+    private TextView chattingItemDetailCategory;
+    private TextView chattingItemDetailPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +54,24 @@ public class FeesPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // 결제할 상품 수수료 detail
+        chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
+        chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
+        chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
+        chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
+
+        Intent intent = getIntent();
+        Long EndItemId = intent.getLongExtra("itemId", 0);
+        finalPrice = intent.getIntExtra("finalPrice", 0);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
+                .enqueue(MainRetrofitTool.getCallback(new FeesPage.getItemDetailsCallback()));
+
+        // 최종 결제 수수료 가격
+        int feesPrice = finalPrice * 5 / 100;
+        TextView tv_fees = (TextView) findViewById(R.id.tv_fees);
+        tv_fees.setText(feesPrice+"");
+
+        //item detail click
         ImageView goSeeItemDetail = (ImageView) findViewById(R.id.goSeeItemDetail);
         goSeeItemDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,5 +168,31 @@ public class FeesPage extends AppCompatActivity {
             }
         });
 
+    }
+    public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
+        @Override
+        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+            chattingItemDetailName.setText(response.body().getItemName());
+            if(response.body().getFileNames().size()!=0){
+                String fileThumbNail = "";
+                for (int i=0; i<response.body().getFileNames().size(); i++) {
+                    fileThumbNail = response.body().getFileNames().get(i);
+                }
+                Glide.with(getApplicationContext()).load(fileThumbNail).into(chattingItemImage);
+            }
+            chattingItemDetailCategory.setText(response.body().getCategory().getName());
+            chattingItemDetailPrice.setText(finalPrice);    //낙찰가 출력(임시)
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            chattingItemDetailPrice.setText("?연결실패?");
+            Log.e("연결실패", t.getMessage());
+        }
     }
 }
