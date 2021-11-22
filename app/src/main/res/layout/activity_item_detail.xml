@@ -36,15 +36,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/arrow" />
 
-                <Button
-                    android:id="@+id/deleteButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:text="DELETE"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/itemDetailViewPager"
                     android:layout_width="0dp"
@@ -89,6 +80,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/ly_seller"
                 android:layout_width="match_parent"
                 android:layout_height="260px"
                 android:layout_marginStart="50px"
@@ -113,6 +105,27 @@
                     android:text="판매자 이름"
                     android:textColor="#000000"
                     android:textSize="38px" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/deleteButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="92px"
+                    android:layout_weight="0"
+                    android:background="@drawable/box_edge"
+                    android:paddingStart="30px"
+                    android:paddingTop="15px"
+                    android:paddingEnd="30px"
+                    android:paddingBottom="15px"
+                    android:text="삭제하기"
+                    android:textColor="#ABABAB"
+                    android:textSize="36px"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

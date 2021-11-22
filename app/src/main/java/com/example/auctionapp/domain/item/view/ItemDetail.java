@@ -56,11 +56,13 @@ public class ItemDetail extends AppCompatActivity {
 
     private ArrayList<String> itemImageList;
     private static final int DP = 24;
-    Long id = null;     //item ID (임시)
-    public Boolean isHeart = false ;
+    // id
+    Long myId = Constants.userId;
     private Long itemId;
-    private ImageView heart;
     private Long scrapId;
+
+    public Boolean isHeart = false;
+    private ImageView heart;
     TextView highPrice;
     TextView participants;
     TextView sellerName;
@@ -70,6 +72,8 @@ public class ItemDetail extends AppCompatActivity {
     TextView category;
     TextView itemLeftTime;
     TextView qnacount;
+    TextView deleteButton;
+    Button participateButton;
 
     ItemDetailViewPagerAdapter itemDetailViewPagerAdapter;
     ViewPager viewPager;
@@ -90,7 +94,7 @@ public class ItemDetail extends AppCompatActivity {
         sellerImageView = (ImageView) findViewById(R.id.sellerImage);
         //Glide.with(this).load(R.drawable.testuserimage).circleCrop().into(sellerImageView);
 
-        Button participateButton = (Button) findViewById(R.id.participateButton);
+        participateButton = (Button) findViewById(R.id.participateButton);
         if(Constants.userId == null) {
             participateButton.setText("로그인 후 이용해주세요.");
             participateButton.setEnabled(false);
@@ -160,16 +164,15 @@ public class ItemDetail extends AppCompatActivity {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
 
-
-        //item delete method
-//        Button deleteButton = (Button) findViewById(R.id.deleteButton);
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).deleteItem(id)
-//                        .enqueue(MainRetrofitTool.getCallback(new ItemDetail.DeleteItemCallback()));
-//            }
-//        });
+        //item delete
+        deleteButton = (TextView) findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).deleteItem(itemId)
+                        .enqueue(MainRetrofitTool.getCallback(new ItemDetail.DeleteItemCallback()));
+            }
+        });
 
         //QNA dumidata
         qnacount = (TextView) findViewById(R.id.qaCount);
@@ -352,6 +355,15 @@ public class ItemDetail extends AppCompatActivity {
             sellerName.setText(response.body().getUsername());
             if(!response.body().getPicture().isEmpty()){
                 Glide.with(getApplicationContext()).load(response.body().getPicture()).into(sellerImageView);
+            }
+            //delete item
+            if(response.body().getUserId().equals(myId)) {
+                deleteButton.setVisibility(View.VISIBLE);
+                //button inactivated
+                participateButton.setEnabled(false);
+                participateButton.setBackgroundColor(Color.GRAY);
+            }else {
+                deleteButton.setVisibility(View.GONE);
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
