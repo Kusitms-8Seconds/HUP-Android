@@ -23,6 +23,7 @@ import com.example.auctionapp.domain.home.view.Home;
 import com.example.auctionapp.domain.home.view.Mypage;
 import com.example.auctionapp.domain.home.view.UploadPage;
 import com.example.auctionapp.domain.item.view.ItemList;
+import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,14 +54,14 @@ public class MainActivity extends AppCompatActivity {
         
         mBottomNV.setSelectedItemId(R.id.home);
 
-//        dialog02 = new Dialog(MainActivity.this);
-//        dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog02.setContentView(R.layout.custom_dialog02);
+        dialog02 = new Dialog(MainActivity.this);
+        dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog02.setContentView(R.layout.custom_dialog02);
 //        showDialog();
 
-//        dialog03 = new Dialog(MainActivity.this);
-//        dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog03.setContentView(R.layout.custom_dialog03);
+        dialog03 = new Dialog(MainActivity.this);
+        dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog03.setContentView(R.layout.custom_dialog03);
     }
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
         String tag = String.valueOf(id);
@@ -104,6 +105,63 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commitNow();
+
+    }
+    // dialog02을 디자인하는 함수
+    public void showDialog(){
+        dialog02.show(); // 다이얼로그 띄우기
+
+        // 홈으로 돌아가기 버튼
+        ImageView goHome = dialog02.findViewById(R.id.refuseAuction);
+        goHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog02.dismiss();
+
+            }
+        });
+        // 참여내역 확인 버튼
+        dialog02.findViewById(R.id.ongoAuction).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, ChatRoom.class);
+//                startActivity(intent);
+                showFeesDialog();
+            }
+        });
+    }
+    // dialog03을 디자인하는 함수
+    public void showFeesDialog(){
+        dialog03.show(); // 다이얼로그 띄우기
+
+        ImageView timer = dialog03.findViewById(R.id.iv_timer);
+        Glide.with(this).load(R.raw.timer).into(timer);
+
+        tv_timer = (TextView) dialog03.findViewById(R.id.tv_timer);
+        class MyTimer extends CountDownTimer
+        {
+            public MyTimer(long millisInFuture, long countDownInterval)
+            {
+                super(millisInFuture, countDownInterval);
+            }
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tv_timer.setText(millisUntilFinished/1000 + 1 + "");
+            }
+
+            @Override
+            public void onFinish() {
+                Intent tt = new Intent(MainActivity.this, FeesPage.class);
+                tt.putExtra("itemId", 2);
+                tt.putExtra("participantId", 1);
+                tt.putExtra("finalPrice", 123123);
+                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(tt);
+            }
+        }
+        MyTimer myTimer = new MyTimer(3000, 1000);
+        myTimer.start();
 
     }
 

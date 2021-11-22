@@ -40,11 +40,20 @@ public class FeesPage extends AppCompatActivity {
     private TextView chattingItemDetailCategory;
     private TextView chattingItemDetailPrice;
 
+    //뒤로가기
+    @Override
+    public void onBackPressed() {
+        Intent tt = new Intent(getApplicationContext(), MainActivity.class);    //임시
+        tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(tt);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fees_page);
 
+        //뒤로가기
         ImageView goBack = (ImageView) findViewById(R.id.goback);
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +63,7 @@ public class FeesPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         // 결제할 상품 수수료 detail
         chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
         chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
@@ -62,14 +72,26 @@ public class FeesPage extends AppCompatActivity {
 
         Intent intent = getIntent();
         Long EndItemId = intent.getLongExtra("itemId", 0);
+        Long participantId = intent.getLongExtra("participantId", 0);
         finalPrice = intent.getIntExtra("finalPrice", 0);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
                 .enqueue(MainRetrofitTool.getCallback(new FeesPage.getItemDetailsCallback()));
-
         // 최종 결제 수수료 가격
         int feesPrice = finalPrice * 5 / 100;
         TextView tv_fees = (TextView) findViewById(R.id.tv_fees);
         tv_fees.setText(feesPrice+"");
+        TextView goChatting = (TextView) findViewById(R.id.goChatting);
+        goChatting.setText(feesPrice+"원 결제하기");
+        goChatting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tt = new Intent(getApplicationContext(), ChatRoom.class);
+                tt.putExtra("itemId", EndItemId);
+                tt.putExtra("participantId", participantId);
+                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(tt);
+            }
+        });
 
         //item detail click
         ImageView goSeeItemDetail = (ImageView) findViewById(R.id.goSeeItemDetail);
@@ -181,7 +203,7 @@ public class FeesPage extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
-            chattingItemDetailPrice.setText(finalPrice);    //낙찰가 출력(임시)
+            chattingItemDetailPrice.setText(finalPrice+"");    //낙찰가 출력(임시)
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override

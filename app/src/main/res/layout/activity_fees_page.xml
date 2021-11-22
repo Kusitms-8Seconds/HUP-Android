@@ -373,6 +373,7 @@
     </ScrollView>
 
     <TextView
+        android:id="@+id/goChatting"
         android:layout_width="match_parent"
         android:layout_height="178px"
         android:text="00원 결제하기"
