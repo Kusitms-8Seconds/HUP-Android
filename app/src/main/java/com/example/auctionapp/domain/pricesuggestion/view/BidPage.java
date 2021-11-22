@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.pricesuggestion.view;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ShareCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +59,7 @@ public class BidPage extends AppCompatActivity {
     Long itemId;
     Long participantId;
     int finalPrice;
+    Long myId = Constants.userId;
 
     TextView highPrice;
     TextView participants;
@@ -64,6 +67,7 @@ public class BidPage extends AppCompatActivity {
     ImageView auctionState;
     ImageView bidImage;
     TextView tv_timer;
+    ConstraintLayout ly_editPrice;
 
     private int userCount;
     PTAdapter adapter;
@@ -74,6 +78,7 @@ public class BidPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_page);
+
         Intent intent = getIntent();
         String getItemId = intent.getExtras().getString("itemId");
         this.itemId = Long.valueOf(getItemId);
@@ -87,6 +92,8 @@ public class BidPage extends AppCompatActivity {
         participants = findViewById(R.id.participants);
         auctionState = findViewById(R.id.auctionState);
         bidImage = findViewById(R.id.bidImage);
+        ly_editPrice = findViewById(R.id.ly_editPrice);
+
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
@@ -336,6 +343,11 @@ public class BidPage extends AppCompatActivity {
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
             userCount++;
+            if(response.body().getUserId().equals(myId)) {
+                ly_editPrice.setVisibility(View.GONE);
+            }else {
+                ly_editPrice.setVisibility(View.VISIBLE);
+            }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
