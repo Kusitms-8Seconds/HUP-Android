@@ -15,8 +15,8 @@ import lombok.Getter;
 public class ScrapDetailsResponse {
 
     private Long id;
-    private Long UserId;
-    private Long ItemId;
+    private Long userId;
+    private Long itemId;
     private String itemName;
     private ItemConstants.EItemCategory category;
     private int initPrice;
@@ -25,5 +25,6 @@ public class ScrapDetailsResponse {
     private int itemStatePoint;
     private String description;
     private List<String> fileNames;
+    private LocalDateTime auctionClosingDate;
 
 }

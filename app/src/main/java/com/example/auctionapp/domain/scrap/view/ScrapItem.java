@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.scrap.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,48 +10,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ScrapItem {
-    int imageURL;       //나중에 수정 (int -> string url)
+    Long itemId;
+    String imageURL;       //나중에 수정 (int -> string url)
     String itemName;
     int itemPrice;
     String endTime;
 
-    public ScrapItem(int imageURL, String itemName, int itemPrice, String endTime){
+    public ScrapItem(Long itemId, String imageURL, String itemName, int itemPrice, String endTime){
+        this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.endTime = endTime;
-    }
-
-    public int getImage() {
-        return imageURL;
-    }
-    public void setImage(int imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getItemPrice() {
-        return itemPrice;
-    }
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }
@@ -58,6 +40,13 @@ public class ScrapItem {
 class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
     private ArrayList<ScrapItem> scrapData = new ArrayList<>();
+    Context context;
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
+    }
 
     @NonNull
     @Override
@@ -123,7 +112,9 @@ class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void onBind(ScrapItem data){
-            item_image.setImageResource(data.getImage());
+            //item_image.setImageResource(data.getImage());
+            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
+                    ,item_image.getHeight()).into(item_image);
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
             item_price.setText(data.getItemPrice()+"");

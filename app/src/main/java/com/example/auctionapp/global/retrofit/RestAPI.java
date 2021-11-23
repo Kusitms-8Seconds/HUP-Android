@@ -11,6 +11,7 @@ import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResp
 import com.example.auctionapp.domain.scrap.dto.ScrapCheckedRequest;
 import com.example.auctionapp.domain.scrap.dto.ScrapCheckedResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
+import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterRequest;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterResponse;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
@@ -81,6 +82,8 @@ public interface RestAPI {
     Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
     @DELETE("api/v1/scrap/{scrapId}")
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
+    @GET("api/v1/scrap/list/{userId}")
+    Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
     @GET("api/v1/items/{id}")
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
     @GET("api/v1/priceSuggestion/list/item/{id}")
