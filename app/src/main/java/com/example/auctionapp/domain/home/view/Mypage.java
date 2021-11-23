@@ -92,17 +92,12 @@ public class Mypage extends Fragment {
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                // 일반 로그인
-//                editor.putBoolean("checked", false);
-//                editor.commit();
-
                 // kakao logout
                 kakaoSignOut();
                 //google logout
                 googleSignOut();
                 //naver logout
                 naverSignOut();
-
             }
         });
         // 로그인하러 가기
@@ -119,8 +114,12 @@ public class Mypage extends Fragment {
         goAuctionHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AuctionHistory.class);
-                startActivity(intent);
+                if(Constants.userId == null) {
+                    Toast.makeText(getContext(), "로그인 후 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getContext(), AuctionHistory.class);
+                    startActivity(intent);
+                }
             }
         });
         // 판매 내역
@@ -128,8 +127,12 @@ public class Mypage extends Fragment {
         goSellHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SellHistory.class);
-                startActivity(intent);
+                if(Constants.userId == null) {
+                    Toast.makeText(getContext(), "로그인 후 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getContext(), SellHistory.class);
+                    startActivity(intent);
+                }
             }
         });
         // 스크랩 내역
@@ -137,8 +140,12 @@ public class Mypage extends Fragment {
         scrap_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), Scrap.class);
-                startActivity(intent);
+                if(Constants.userId == null) {
+                    Toast.makeText(getContext(), "로그인 후 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getContext(), Scrap.class);
+                    startActivity(intent);
+                }
             }
         });
         // 관심 카테고리
@@ -146,8 +153,12 @@ public class Mypage extends Fragment {
         interest_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), Interests.class);
-                startActivity(intent);
+                if(Constants.userId == null) {
+                    Toast.makeText(getContext(), "로그인 후 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getContext(), Interests.class);
+                    startActivity(intent);
+                }
             }
         });
         // 공지사항
