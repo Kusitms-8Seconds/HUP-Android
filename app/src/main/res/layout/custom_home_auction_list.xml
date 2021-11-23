@@ -11,7 +11,7 @@
         android:layout_width="203dp"
         android:layout_height="135dp"
         android:layout_margin="2dp"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/box_edge"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

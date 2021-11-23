@@ -49,6 +49,7 @@ public class EditQnA extends AppCompatActivity {
         chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
         chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
         chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
+        chattingItemImage.setClipToOutline(true);
 
         Intent intent = getIntent();
         EndItemId = intent.getLongExtra("itemId", 0);

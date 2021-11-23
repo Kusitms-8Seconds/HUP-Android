@@ -69,6 +69,7 @@ public class FeesPage extends AppCompatActivity {
         chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
         chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
         chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
+        chattingItemImage.setClipToOutline(true);
 
         Intent intent = getIntent();
         Long EndItemId = intent.getLongExtra("itemId", 0);

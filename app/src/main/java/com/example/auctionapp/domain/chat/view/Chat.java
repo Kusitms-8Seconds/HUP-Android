@@ -225,6 +225,7 @@ class chatListAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.custom_chatlist_listview, null);
 
         itemImageImageView = (ImageView) view.findViewById(R.id.iv_chatlist_itemImage);
+        itemImageImageView.setClipToOutline(true);
         Long itemIdL = data.get(position).getItemId();
         // 상품 이미지 load
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemIdL)
@@ -246,7 +247,7 @@ class chatListAdapter extends BaseAdapter {
                 for (int i=0; i<response.body().getFileNames().size(); i++) {
                     fileThumbNail = response.body().getFileNames().get(i);
                 }
-                Glide.with(itemImageImageView.getContext()).load(fileThumbNail).into(itemImageImageView);
+                Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+fileThumbNail).into(itemImageImageView);
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }

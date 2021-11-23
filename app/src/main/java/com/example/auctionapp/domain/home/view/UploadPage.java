@@ -200,13 +200,9 @@ public class UploadPage extends AppCompatActivity {
             public void onClick(View view) {
                 if(Constants.userId == null) {
                     Toast.makeText(getApplicationContext(), "로그인 후 상품 등록이 가능합니다.", Toast.LENGTH_SHORT).show();
-                    //go home
-                    Intent tt = new Intent(getApplicationContext(), MainActivity.class);
-                    tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(tt);
-                }
+                } else {
 
-                String itemName = editItemName.getText().toString();
+                    String itemName = editItemName.getText().toString();
 //                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
 //                while(iterator.hasNext()) {
 //                    EItemCategory next = iterator.next();
@@ -214,43 +210,44 @@ public class UploadPage extends AppCompatActivity {
 //                        selectedCategory = next; }
 //                }
 
-                choiceCategory(editCategory.getText().toString());
+                    choiceCategory(editCategory.getText().toString());
 
-                String initPriceStr = editPrice.getText().toString();
-                if(initPriceStr == null) {
-                    System.out.println("경매시작가 입력하세요");
-                    return;
+                    String initPriceStr = editPrice.getText().toString();
+                    if (initPriceStr == null) {
+                        System.out.println("경매시작가 입력하세요");
+                        return;
+                    }
+                    int initPrice = Integer.parseInt(initPriceStr);
+                    String buyDate = editBuyDate.getText().toString() + " 00:00:00";
+                    String auctionClosingDate = editEndDate.getText().toString() + " 00:00:00";
+                    String description = editContent.getText().toString();
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
+                    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
+
+                    RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Constants.userId));
+                    RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"), itemName);
+                    RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), selectedCategory);
+                    RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(initPrice));
+                    RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
+                    RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(itemStatePoint));
+                    RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
+                    RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"), description);
+
+                    makeMultiPart();
+                    System.out.println("files체크" + files.toString());
+                    RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
+                            itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
+                            auctionClosingDateR, descriptionR)
+                            .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
+                    //go home
+                    Toast.makeText(getApplicationContext(), "상품 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent tt = new Intent(getApplicationContext(), MainActivity.class);
+                    tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(tt);
                 }
-                int initPrice = Integer.parseInt(initPriceStr);
-                String buyDate = editBuyDate.getText().toString()+" 00:00:00";
-                String auctionClosingDate = editEndDate.getText().toString()+" 00:00:00";
-                String description = editContent.getText().toString();
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
-
-                RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(Constants.userId));
-                RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"),itemName);
-                RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), selectedCategory);
-                RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(initPrice));
-                RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
-                RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(itemStatePoint));
-                RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
-                RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"),description);
-
-                makeMultiPart();
-                System.out.println("files체크"+files.toString());
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
-                        itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
-                        auctionClosingDateR, descriptionR)
-                        .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
-                //go home
-                Toast.makeText(getApplicationContext(), "상품 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                Intent tt = new Intent(getApplicationContext(), MainActivity.class);
-                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(tt);
             }
 
             private void choiceCategory(String toString) {

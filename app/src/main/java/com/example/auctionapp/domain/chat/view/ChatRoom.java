@@ -92,7 +92,7 @@ public class ChatRoom extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = database.getReference();
 
-        myuid = "판매자";
+        myuid = String.valueOf(Constants.userId);
         Intent intent = getIntent();
         destUid = intent.getStringExtra("destUid");
         EndItemId = intent.getLongExtra("itemId", 0);
@@ -104,6 +104,7 @@ public class ChatRoom extends AppCompatActivity {
         chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
         chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
         chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
+        chattingItemImage.setClipToOutline(true);
 
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
                 .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
@@ -122,11 +123,15 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put("itemId", EndItemId);    //상품 id(임시) ?
+//                chatModel.itemId.put("itemId", EndItemId);    //상품 id(임시) ?
 
-                //push() 데이터가 쌓이기 위해 채팅방 key가 생성
+                User chatUser = new User();
+                chatUser.user.put("uid", chatUser.uid);
+                chatUser.user.put("name", chatUser.name);
+                chatUser.user.put("profile", chatUser.profileImgUrl);
+
+                //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
-                    Toast.makeText(ChatRoom.this, "채팅방 생성", Toast.LENGTH_SHORT).show();
                     button.setEnabled(false);
                     databaseReference.child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -134,6 +139,7 @@ public class ChatRoom extends AppCompatActivity {
                             checkChatRoom();
                         }
                     });
+                    databaseReference.child("User").push().setValue(chatUser);
                 } else {
                     sendMsgToDataBase();
                 }
@@ -395,6 +401,8 @@ class User {
     public String profileImgUrl;
     public String uid;
     public String pushToken;
+
+    public Map<String, String> user = new HashMap<>(); //채팅방 유저
 }
 class ItemId {
     public Long itemId;

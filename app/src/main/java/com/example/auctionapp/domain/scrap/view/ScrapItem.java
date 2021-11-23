@@ -111,7 +111,6 @@ class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void onBind(ScrapItem data){
-            //item_image.setImageResource(data.getImage());
             Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
                     ,item_image.getHeight()).into(item_image);
             item_image.setClipToOutline(true);  //item 테두리
