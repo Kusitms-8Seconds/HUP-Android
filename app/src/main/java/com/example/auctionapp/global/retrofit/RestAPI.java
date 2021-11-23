@@ -3,8 +3,10 @@ package com.example.auctionapp.global.retrofit;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
+import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.BidderResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
@@ -90,6 +92,10 @@ public interface RestAPI {
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
     @GET("api/v1/priceSuggestion/list/user/{id}")
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("id") Long id);
+    @POST("api/v1/items/list/status")
+    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
+    @GET("api/v1/priceSuggestion/bidder/{itemId}")
+    Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }
