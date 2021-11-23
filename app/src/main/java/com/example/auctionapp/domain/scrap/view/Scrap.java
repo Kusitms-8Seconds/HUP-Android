@@ -83,8 +83,8 @@ public class Scrap extends AppCompatActivity {
         adapter.setOnItemClickListener(new ScrapAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                // temp
                 Intent intent = new Intent(getApplicationContext(), ItemDetail.class);
+                intent.putExtra("itemId", scrapItemsList.get(position).getItemId());
                 startActivity(intent);
             }
         });
@@ -96,15 +96,6 @@ public class Scrap extends AppCompatActivity {
     }
 
     private void getData(){
-        //일단 레이아웃만
-//        ScrapItem data = new ScrapItem(R.drawable.rectangle, "아이폰 11 프로 256GB", 530000, "14:46");
-//        adapter.addItem(data);
-//        data = new ScrapItem(R.drawable.rectangle, "아이폰 11 프로 64GB", 500000, "82:33");
-//        adapter.addItem(data);
-//        data = new ScrapItem(R.drawable.rectangle, "아이폰 11 미니 A급 256GB", 420000, "34:07") ;
-//        adapter.addItem(data);
-//        data = new ScrapItem(R.drawable.rectangle, "아이폰 11 미니 256GB 레드 미개봉 중고", 552000, "34:04");
-//        adapter.addItem(data);
         scrapItemsList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllScrapsByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllScrapsCallback()));

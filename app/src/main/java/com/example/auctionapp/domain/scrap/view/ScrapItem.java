@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 public class ScrapItem {
     Long itemId;
-    String imageURL;       //나중에 수정 (int -> string url)
+    String imageURL;
     String itemName;
     int itemPrice;
     String endTime;
@@ -38,7 +38,6 @@ public class ScrapItem {
 }
 
 class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    // adapter에 들어갈 list 입니다.
     private ArrayList<ScrapItem> scrapData = new ArrayList<>();
     Context context;
 
