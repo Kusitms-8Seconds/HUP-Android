@@ -200,7 +200,7 @@ public class FeesPage extends AppCompatActivity {
                 for (int i=0; i<response.body().getFileNames().size(); i++) {
                     fileThumbNail = response.body().getFileNames().get(i);
                 }
-                Glide.with(getApplicationContext()).load(fileThumbNail).into(chattingItemImage);
+                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
             chattingItemDetailPrice.setText(finalPrice+"");    //낙찰가 출력(임시)

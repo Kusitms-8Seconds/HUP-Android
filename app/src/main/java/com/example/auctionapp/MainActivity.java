@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         dialog02 = new Dialog(MainActivity.this);
         dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog02.setContentView(R.layout.custom_dialog02);
-//        showDialog();
+        showDialog();
 
         dialog03 = new Dialog(MainActivity.this);
         dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);

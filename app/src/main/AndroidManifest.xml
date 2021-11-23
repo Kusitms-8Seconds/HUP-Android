@@ -31,7 +31,7 @@
         <activity android:name=".domain.item.view.ItemDetail" />
         <activity android:name=".domain.pricesuggestion.view.BidPage" />
         <activity android:name=".domain.home.view.UploadPage" />
-        <activity android:name=".domain.item.view.SelectCategory" />
+        <activity android:name=".domain.home.view.SelectCategory" />
         <activity android:name=".domain.item.view.Search" />
         <activity android:name=".domain.pricesuggestion.view.AuctionHistory" />
         <activity android:name=".domain.item.view.SellHistory" />

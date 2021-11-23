@@ -64,7 +64,7 @@ public class EditQnA extends AppCompatActivity {
                 for (int i=0; i<response.body().getFileNames().size(); i++) {
                     fileThumbNail = response.body().getFileNames().get(i);
                 }
-                Glide.with(getApplicationContext()).load(fileThumbNail).into(chattingItemImage);
+                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());

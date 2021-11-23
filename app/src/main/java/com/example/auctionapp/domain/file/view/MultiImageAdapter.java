@@ -18,13 +18,11 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     private ArrayList<Uri> mData = null ;
     private Context mContext = null ;
 
-    // 생성자에서 데이터 리스트 객체, Context를 전달받음.
     public MultiImageAdapter(ArrayList<Uri> list, Context context) {
         mData = list ;
         mContext = context;
     }
 
-    // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView selectedImage;
@@ -36,9 +34,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
         }
     }
 
-
-    // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
-    // LayoutInflater - XML에 정의된 Resource(자원) 들을 View의 형태로 반환.
     @Override
     public MultiImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
@@ -59,7 +54,6 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
                 .into(holder.selectedImage);
     }
 
-    // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
         return mData.size() ;

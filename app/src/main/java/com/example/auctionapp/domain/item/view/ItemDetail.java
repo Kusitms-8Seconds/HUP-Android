@@ -88,11 +88,10 @@ public class ItemDetail extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
 
         Intent intent = getIntent();
-        String getItemId = intent.getExtras().getString("itemId");
-        this.itemId = Long.valueOf(getItemId);
+//        String getItemId = intent.getExtras().getString("itemId");
+        this.itemId = intent.getLongExtra("itemId",0);
 
         sellerImageView = (ImageView) findViewById(R.id.sellerImage);
-        //Glide.with(this).load(R.drawable.testuserimage).circleCrop().into(sellerImageView);
 
         participateButton = (Button) findViewById(R.id.participateButton);
         if(Constants.userId == null) {

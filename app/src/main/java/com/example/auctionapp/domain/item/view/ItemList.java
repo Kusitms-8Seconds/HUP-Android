@@ -78,7 +78,7 @@ public class ItemList extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(getContext(), ItemDetail.class);
-                intent.putExtra("itemId", String.valueOf(adapter.getListData().get(position).getItemId()));
+                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
                 startActivity(intent);
             }
         });
@@ -99,21 +99,10 @@ public class ItemList extends Fragment {
     }
 
     private void getData(){
-        //일단 레이아웃만
-//        ItemData data = new ItemData(R.drawable.rectangle, "아이폰 11 프로 256GB", 530000, "14:46", 30, 4);
-//        adapter.addItem(data);
-//        data = new ItemData(R.drawable.rectangle, "아이폰 11 프로 64GB", 500000, "82:33", 32, 5);
-//        adapter.addItem(data);
-//        data = new ItemData(R.drawable.rectangle, "아이폰 11 미니 A급 256GB", 420000, "34:07", 23, 1);
-//        adapter.addItem(data);
-//        data = new ItemData(R.drawable.rectangle, "아이폰 11 미니 256GB 레드 미개봉 중고", 552000, "34:04", 27, 2);
-//        adapter.addItem(data);
-
         if(Constants.token!=null) {
             RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
                     .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
         }
-
     }
 
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
