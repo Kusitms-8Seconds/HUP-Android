@@ -157,6 +157,7 @@ public class Home extends Fragment {
                 bestItemDataList.add(bestItem);
                 RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
+                setBestItemAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
@@ -209,7 +210,7 @@ public class Home extends Fragment {
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
                 RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
-//                setAnimation();
+                setAuctionItemAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
@@ -305,9 +306,14 @@ public class Home extends Fragment {
             Log.e("연결실패", t.getMessage());
         }
     }
-    public void setAnimation() {
+    public void setAuctionItemAnimation() {
         Animation animation = new AlphaAnimation(0, 1);
         animation.setDuration(1500);
         AuctionNowRecyclerView.setAnimation(animation);
+    }
+    public void setBestItemAnimation() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1500);
+        bestItemViewPager.setAnimation(animation);
     }
 }
