@@ -88,6 +88,8 @@ public interface RestAPI {
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
     @GET("api/v1/priceSuggestion/list/item/{id}")
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
+    @GET("api/v1/priceSuggestion/list/user/{id}")
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("id") Long id);
     @DELETE("/api/v1/items/{id}")
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }
