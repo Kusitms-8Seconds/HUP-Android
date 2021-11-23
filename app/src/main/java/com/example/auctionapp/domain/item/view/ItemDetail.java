@@ -129,6 +129,10 @@ public class ItemDetail extends AppCompatActivity {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token)
                 .isCheckedHeart(ScrapCheckedRequest.of(Constants.userId, itemId))
                 .enqueue(MainRetrofitTool.getCallback(new isCheckedHeartCallback()));
+        //로긘 않 해쓷ㄹ대
+        if(Constants.userId==null) {
+            heart.setVisibility(View.GONE);
+        }
         heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
