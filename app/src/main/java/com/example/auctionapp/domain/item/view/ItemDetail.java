@@ -202,6 +202,7 @@ public class ItemDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent t = new Intent(getApplicationContext(), QnA.class);
+                t.putExtra("itemId", itemId);
                 startActivity(t);
             }
         });
@@ -223,6 +224,7 @@ public class ItemDetail extends AppCompatActivity {
         qnaList.add(new qnaData("자전거 브랜드 궁금합니다.", "2021.11.26", "우왕***", true, true));
 
         qnacount.setText("(" + String.valueOf(qnaList.size()-1) + ")");
+        adapter.notifyDataSetChanged();
     }
 
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
@@ -393,8 +395,10 @@ public class ItemDetail extends AppCompatActivity {
             category.setText(response.body().getCategory().getName());
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
-            itemLeftTime.setText(minutes+"분 전");
+            String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+            String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
+            itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override

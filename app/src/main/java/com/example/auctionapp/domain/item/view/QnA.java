@@ -57,12 +57,15 @@ public class QnA extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        Long itemId = intent.getLongExtra("itemId", 0);
         //go edit qna
         TextView goEditQNA = (TextView) findViewById(R.id.goEditQNA);
         goEditQNA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), EditQnA.class);
+                intent.putExtra("itemId", itemId);
                 startActivity(intent);
             }
         });

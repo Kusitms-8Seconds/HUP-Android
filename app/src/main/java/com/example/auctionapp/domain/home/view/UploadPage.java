@@ -252,6 +252,7 @@ public class UploadPage extends AppCompatActivity {
                         .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
                 //go home
                 Intent tt = new Intent(getApplicationContext(), MainActivity.class);
+                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tt);
             }
 

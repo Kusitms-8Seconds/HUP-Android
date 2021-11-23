@@ -127,7 +127,7 @@ public class ItemList extends Fragment {
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
                 String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
                 String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
 
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     data = new ItemData(response.body().getData().get(i).getId(),

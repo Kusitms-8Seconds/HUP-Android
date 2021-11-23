@@ -135,7 +135,7 @@
                         android:layout_marginTop="20px"
                         android:fontFamily="sans-serif-black"
                         android:text="로그아웃 > "
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@+id/userNameLayout"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/userNameLayout"

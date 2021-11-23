@@ -41,6 +41,7 @@
         <activity android:name=".domain.item.view.Interests" />
         <activity android:name=".domain.chat.view.ChatRoom" />
         <activity android:name=".domain.pricesuggestion.view.FeesPage" />
+        <activity android:name=".domain.item.view.EditQnA" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

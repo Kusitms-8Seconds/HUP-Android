@@ -253,7 +253,8 @@
                     android:layout_weight="0"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ligula sapien, rutrum sed vestibulum eget, rhoncus ac erat. Aliquam erat volutpat. Sed convallis scelerisque enim at fermentum. Aliquam consectetur, est ac auctor iaculis, odio mi bibendum leo, in congue neque velit vel enim. Nullam vitae justo at mauris sodales feugiat. Praesent pellentesque ipsum eget tellus imperdiet ultrices. Sed ultricies nisi nec diam sodales fringilla. Quisque adipiscing cursus porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum scelerisque elit, eu pharetra dui pulvinar eget. Nam mollis mauris id tellus ultricies at porttitor neque vulputate. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
                     android:textColor="#000000"
-                    android:textSize="44px" />
+                    android:textSize="44px"
+                    android:layout_marginBottom="50px"/>
 
                 <View
                     android:id="@+id/view"
@@ -278,6 +279,8 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="50dp"
                         android:layout_height="20dp"
+                        android:layout_marginTop="50px"
+                        android:layout_marginBottom="50px"
                         android:src="@drawable/qna" />
 
                     <TextView
@@ -285,6 +288,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
+                        android:layout_marginTop="50px"
+                        android:layout_marginBottom="50px"
                         android:text="(3)"
                         android:textColor="#6C6C6C" />
 
@@ -294,6 +299,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="3dp"
                         android:layout_weight="1"
+                        android:layout_marginTop="50px"
+                        android:layout_marginBottom="50px"
                         android:text="전체보기"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -302,7 +309,8 @@
                     android:id="@+id/itemDetail_qnaList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0" >
+                    android:layout_weight="0"
+                    android:paddingBottom="80px">
 
                 </ListView>
 
