@@ -21,10 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.home.view.Mypage;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -36,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -93,6 +97,7 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = String.valueOf(Constants.userId);
+//        destUid = "상대방2";
         Intent intent = getIntent();
         destUid = intent.getStringExtra("destUid");
         EndItemId = intent.getLongExtra("itemId", 0);
@@ -106,6 +111,7 @@ public class ChatRoom extends AppCompatActivity {
         chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
         chattingItemImage.setClipToOutline(true);
 
+        //상품 정보 가져오기
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
                 .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
 
@@ -123,12 +129,7 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-//                chatModel.itemId.put("itemId", EndItemId);    //상품 id(임시) ?
-
-                User chatUser = new User();
-                chatUser.user.put("uid", chatUser.uid);
-                chatUser.user.put("name", chatUser.name);
-                chatUser.user.put("profile", chatUser.profileImgUrl);
+                chatModel.itemId.put("itemId", EndItemId);    //상품 id ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
@@ -139,12 +140,23 @@ public class ChatRoom extends AppCompatActivity {
                             checkChatRoom();
                         }
                     });
-                    databaseReference.child("User").push().setValue(chatUser);
+                    insertUserInfo(Long.valueOf(myuid));
+                    insertUserInfo(Long.valueOf(destUid));
+//                    databaseReference.child("User").push().child("uid").setValue(myuid);
+//                    databaseReference.child("User").push().child("uid").setValue(destUid);
                 } else {
                     sendMsgToDataBase();
                 }
             }
         });
+    }
+
+    public void insertUserInfo(Long chatUserId) {
+
+        UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(chatUserId);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
+                .enqueue(MainRetrofitTool.getCallback(new ChatRoom.UserDetailsInfoCallback()));
+
     }
 
     //작성한 메시지를 데이터베이스에 보낸다.
@@ -374,10 +386,7 @@ public class ChatRoom extends AppCompatActivity {
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             chattingItemDetailName.setText(response.body().getItemName());
             if(response.body().getFileNames().size()!=0){
-                String fileThumbNail = "";
-                for (int i=0; i<response.body().getFileNames().size(); i++) {
-                    fileThumbNail = response.body().getFileNames().get(i);
-                }
+                String fileThumbNail = response.body().getFileNames().get(0);
                 Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
@@ -395,14 +404,44 @@ public class ChatRoom extends AppCompatActivity {
             Log.e("연결실패", t.getMessage());
         }
     }
+    private class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+        @Override
+        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+            String userProfile = response.body().getPicture();
+            Long chatUserId = response.body().getUserId();
+            String userName = response.body().getUsername();
+            User userInfo = new User(userName, userProfile, chatUserId);
+            databaseReference.child("User").push().setValue(userInfo);
+
+            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
 }
 class User {
     public String name;
     public String profileImgUrl;
-    public String uid;
-    public String pushToken;
+    public Long uid;
 
-    public Map<String, String> user = new HashMap<>(); //채팅방 유저
+    public User() { }
+
+    public User(String name, String profileImgUrl, Long uid) {
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
+        this.uid = uid;
+    }
 }
 class ItemId {
     public Long itemId;

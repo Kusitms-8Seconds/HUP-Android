@@ -105,6 +105,7 @@ public class Chat extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatroomList.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
                     ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
@@ -114,14 +115,14 @@ public class Chat extends Fragment {
                     String [] array = temp.split("=true");
                     for(int i=0; i<array.length; i++) {
                         // 내가 들어가 있는 채팅방의 상대방유저 id 가져오기
-                        String usersStr = array[i];
-                        if(usersStr.contains(myuid)) continue;
-                        usersStr = usersStr.replace("{","");
-                        usersStr = usersStr.replace("}","");
-                        usersStr = usersStr.replace(",","");
-                        usersStr = usersStr.replace(" ","");
-                        if(!usersStr.equals(myuid) && !usersStr.equals("")) {
-                            setChatList(chatRoomUid, usersStr, itemId);
+                        String usersIdStr = array[i];
+                        if(usersIdStr.contains(myuid)) continue;
+                        usersIdStr = usersIdStr.replace("{","");
+                        usersIdStr = usersIdStr.replace("}","");
+                        usersIdStr = usersIdStr.replace(",","");
+                        usersIdStr = usersIdStr.replace(" ","");
+                        if(!usersIdStr.equals(myuid) && !usersIdStr.equals("")) {
+                            setChatList(chatRoomUid, usersIdStr, itemId);
                         }
                     }
 
@@ -134,7 +135,7 @@ public class Chat extends Fragment {
             }
         });
     }
-    public void setChatList(String chatRoomUid, String oppName, Long itemIdL) {
+    public void setChatList(String chatRoomUid, String oppId, Long itemIdL) {
         databaseReference.child("chatrooms/" + chatRoomUid + "/comments").addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -152,7 +153,7 @@ public class Chat extends Fragment {
                 String [] array2 = array[2].split("T");
                 String [] array3 = array2[1].split(":");
                 lastChatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
-                chatroomList.add(new chatListData(itemIdL, oppName, lastChatTime, lastChat));
+                chatroomList.add(new chatListData(itemIdL, oppId, lastChatTime, lastChat));
                 chatListAdapter.notifyDataSetChanged();
             }
             @Override

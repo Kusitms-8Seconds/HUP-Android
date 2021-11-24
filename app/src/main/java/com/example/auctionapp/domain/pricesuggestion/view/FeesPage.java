@@ -197,10 +197,7 @@ public class FeesPage extends AppCompatActivity {
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             chattingItemDetailName.setText(response.body().getItemName());
             if(response.body().getFileNames().size()!=0){
-                String fileThumbNail = "";
-                for (int i=0; i<response.body().getFileNames().size(); i++) {
-                    fileThumbNail = response.body().getFileNames().get(i);
-                }
+                String fileThumbNail = response.body().getFileNames().get(0);
                 Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
