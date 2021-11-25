@@ -114,10 +114,6 @@ public class Home extends Fragment {
     {
         bestItemDataList = new ArrayList();
 
-//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "1", "1", 1));
-//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "2", "2", 2));
-//        bestItemArrayList.add(new BestItem(R.drawable.testitemimage, "3", "3", 3));
-
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getBestItems(ItemConstants.EItemSoldStatus.eOnGoing)
                 .enqueue(MainRetrofitTool.getCallback(new getBestItemsCallback()));
 
