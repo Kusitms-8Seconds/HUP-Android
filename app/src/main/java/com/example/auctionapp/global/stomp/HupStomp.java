@@ -8,26 +8,37 @@ import android.text.Editable;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.view.BidParticipants;
 import com.example.auctionapp.domain.pricesuggestion.view.PTAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
+import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompCommand;
 import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
+
+import static android.content.ContentValues.TAG;
 
 
 public class HupStomp {
@@ -43,6 +54,9 @@ public class HupStomp {
     private ArrayList<BidParticipants> bidParticipants;
     TextView participants;
     TextView highPrice;
+    BidParticipants data;
+
+    int count;
 
     @SuppressLint("CheckResult")
     public void initStomp(PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants){
@@ -121,6 +135,7 @@ public class HupStomp {
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, sendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.pricesuggestion.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,13 @@ public class PTAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // adapter에 들어갈 list 입니다.
     private ArrayList<BidParticipants> listData = new ArrayList<>();
+    Context context;
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        context = recyclerView.getContext();
+    }
 
     @NonNull
     @Override
@@ -69,7 +79,8 @@ public class PTAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void onBind(BidParticipants data) {
-            pt_image.setImageResource(data.getPtImage());
+            Glide.with(context).load(data.getPtImage()).into(pt_image);
+           // pt_image.setImageResource(data.getPtImage());
             pt_name.setText(data.getPtName());
             pt_price.setText(data.getPtPrice() + "원");
         }

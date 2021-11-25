@@ -46,6 +46,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,13 +145,15 @@ public class Home extends Fragment {
                 if(response.body().get(i).getFileNames().size()!=0) {
                     bestItem = new BestItem(response.body().get(i).getFileNames().get(0),
                             response.body().get(i).getItemName(),
-                            minutes+"분",
+                            response.body().get(i).getBuyDate().getYear()+"년"+
+                                    response.body().get(i).getBuyDate().getMonth().getValue()+"월",
                             0
                             );
                 } else{
                     bestItem = new BestItem(null,
                             response.body().get(i).getItemName(),
-                            minutes+"분",
+                            response.body().get(i).getBuyDate().getYear()+"년"+
+                                    response.body().get(i).getBuyDate().getMonth().getValue()+"월",
                             0
                     );
                 }
@@ -194,22 +197,20 @@ public class Home extends Fragment {
                     data = new AuctionNow(response.body().getData().get(i).getId(),
                             response.body().getData().get(i).getFileNames().get(0),
                             response.body().getData().get(i).getItemName(),
-                            0,
+                            response.body().getData().get(i).getInitPrice(),
                             minutes+"분",
                             response.body().getData().get(i).getDescription(), null);
                 } else{
                     data = new AuctionNow(response.body().getData().get(i).getId(),
                             null,
                             response.body().getData().get(i).getItemName(),
-                            0,
+                            response.body().getData().get(i).getInitPrice(),
                             minutes+"분",
                             response.body().getData().get(i).getDescription(), null);
                 }
                 auctionDataList.add(data);
                 RetrofitTool.getAPIWithNullConverter().getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
-                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
                 setAuctionItemAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
@@ -236,6 +237,8 @@ public class Home extends Fragment {
         public void onSuccessResponse(Response<ScrapCountResponse> response) {
 
             auctionDataList.get(heartCount).setHeart(response.body().getHeart());
+            adapter.addItem(auctionDataList.get(heartCount));
+            adapter.notifyDataSetChanged();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             heartCount++;
         }
@@ -254,31 +257,31 @@ public class Home extends Fragment {
         }
     }
 
-    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            auctionDataList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
-            adapter.addItem(auctionDataList.get(maximumPriceCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            maximumPriceCount++;
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
+//    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
+//
+//        @Override
+//        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
+//
+//            auctionDataList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
+//            adapter.addItem(auctionDataList.get(maximumPriceCount));
+//            adapter.notifyDataSetChanged();
+//            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+//            maximumPriceCount++;
+//        }
+//        @Override
+//        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+//            System.out.println("errorBody"+response.errorBody().string());
+//            try {
+//                JSONObject jObjError = new JSONObject(response.errorBody().string());
+//                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+//            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+//            Log.d(TAG, "onFailResponse");
+//        }
+//        @Override
+//        public void onConnectionFail(Throwable t) {
+//            Log.e("연결실패", t.getMessage());
+//        }
+//    }
 
     private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
 
