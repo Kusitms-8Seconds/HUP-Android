@@ -97,10 +97,10 @@ public class ChatRoom extends AppCompatActivity {
         databaseReference = database.getReference();
 
         myuid = String.valueOf(Constants.userId);
-//        destUid = "상대방2";
-        Intent intent = getIntent();
-        destUid = intent.getStringExtra("destUid");
-        EndItemId = intent.getLongExtra("itemId", 0);
+        destUid = "상대방";
+//        Intent intent = getIntent();
+//        destUid = intent.getStringExtra("destUid");
+//        EndItemId = intent.getLongExtra("itemId", 0);
 
         recyclerView = (RecyclerView) findViewById(R.id.chattingRecyclerView);
         button = (ImageView) findViewById(R.id.sendbutton);
@@ -129,7 +129,7 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put("itemId", EndItemId);    //상품 id ?
+                chatModel.itemId.put("itemId", Long.valueOf(5));    //상품 id ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
@@ -140,8 +140,8 @@ public class ChatRoom extends AppCompatActivity {
                             checkChatRoom();
                         }
                     });
-                    insertUserInfo(Long.valueOf(myuid));
-                    insertUserInfo(Long.valueOf(destUid));
+//                    insertUserInfo(Long.valueOf(myuid));
+//                    insertUserInfo(Long.valueOf(destUid));
 //                    databaseReference.child("User").push().child("uid").setValue(myuid);
 //                    databaseReference.child("User").push().child("uid").setValue(destUid);
                 } else {

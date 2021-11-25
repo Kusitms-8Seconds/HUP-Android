@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,19 +46,36 @@ import static android.content.ContentValues.TAG;
 public class ItemList extends Fragment {
 
     ViewGroup viewGroup;
-    ItemDataAdapter adapter;
+    ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
     List<ItemData> itemDataList = new ArrayList<>();
     int heartCount;
     int participantCount;
+    RecyclerView recyclerView;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("itemList 시작");
+
+//        adapter.notifyDataSetChanged();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_itemlist, container, false);
+
+        recyclerView = viewGroup.findViewById(R.id.recyclerView);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+
         init();
         getData();
+
         return viewGroup;
     }
     @Override
@@ -66,13 +84,8 @@ public class ItemList extends Fragment {
     }
 
     private void init(){
-        RecyclerView recyclerView = viewGroup.findViewById(R.id.recyclerView);
+        itemDataList.clear();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        adapter = new ItemDataAdapter();
-        recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
             @Override
@@ -136,6 +149,7 @@ public class ItemList extends Fragment {
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
+                adapter.notifyDataSetChanged();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
@@ -163,6 +177,7 @@ public class ItemList extends Fragment {
             itemDataList.get(heartCount).setHeart(response.body().getHeart());
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             heartCount++;
+            adapter.notifyDataSetChanged();
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
@@ -204,4 +219,5 @@ public class ItemList extends Fragment {
             Log.e("연결실패", t.getMessage());
         }
     }
+
     }

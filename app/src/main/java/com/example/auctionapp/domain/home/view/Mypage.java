@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintAttribute;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
@@ -80,6 +83,7 @@ public class Mypage extends Fragment {
                     .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
         }
 
+        Fragment fragment = new Mypage();
         // google 객체
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail() // email addresses도 요청함
@@ -98,6 +102,15 @@ public class Mypage extends Fragment {
                 googleSignOut();
                 //naver logout
                 naverSignOut();
+
+                Constants.token = null;
+                Constants.userId = null;
+
+                myName.setText("로그인하기");
+                Glide.with(getContext()).load(R.drawable.profile).into(profileImg);
+                ImageView loginIcon = viewGroup.findViewById(R.id.loginIcon);
+                loginIcon.setVisibility(View.VISIBLE);
+
             }
         });
         // 로그인하러 가기

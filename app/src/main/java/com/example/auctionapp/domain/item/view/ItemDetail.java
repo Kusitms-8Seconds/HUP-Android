@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.home.view.Home;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
@@ -81,6 +82,15 @@ public class ItemDetail extends AppCompatActivity {
     ArrayList<qnaData> qnaList = new ArrayList<qnaData>();
     qnaAdapter adapter;
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

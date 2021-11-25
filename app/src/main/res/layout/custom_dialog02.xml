@@ -14,7 +14,7 @@
         android:layout_marginTop="157px"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:text="[실내자전거]\n경매가 종료되었습니다!"
+        android:text="[아이폰 11프로 64GB]\n경매가 종료되었습니다!"
         android:textColor="#000000"
         android:textSize="50px"
         app:layout_constraintEnd_toEndOf="parent"

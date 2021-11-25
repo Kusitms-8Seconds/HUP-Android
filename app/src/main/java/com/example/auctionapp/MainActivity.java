@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent tt = new Intent(MainActivity.this, FeesPage.class);
-                tt.putExtra("itemId", 2);
+                tt.putExtra("itemId", 5);
                 tt.putExtra("participantId", 1);
-                tt.putExtra("finalPrice", 123123);
+                tt.putExtra("finalPrice", 1200000);
                 tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tt);
             }
