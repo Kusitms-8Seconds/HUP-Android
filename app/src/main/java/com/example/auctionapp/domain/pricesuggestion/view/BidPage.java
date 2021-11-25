@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -324,6 +326,7 @@ public class BidPage extends AppCompatActivity {
                 bidParticipants.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(response.body().getData().get(i).getUserId()))
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
+                setAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
@@ -364,9 +367,20 @@ public class BidPage extends AppCompatActivity {
             Log.e("연결실패", t.getMessage());
         }
     }
+
     public void setAnimation() {
-        Animation animation = new AlphaAnimation(0, 1);
-        animation.setDuration(1500);
+        TranslateAnimation translateAnimation = new TranslateAnimation(200, 0, 0, 0);
+        Animation alphaAnimation = new AlphaAnimation(0, 1);
+        translateAnimation.setDuration(500);
+        alphaAnimation.setDuration(1300);
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(translateAnimation);
+        animation.addAnimation(alphaAnimation);
         ptRecyclerView.setAnimation(animation);
+
+
+//        Animation animation = new AlphaAnimation(0, 1);
+//        animation.setDuration(1500);
+//        recyclerView.setAnimation(animation);
     }
 }
