@@ -175,8 +175,6 @@ public class Home extends Fragment {
             Log.e("연결실패", t.getMessage());
         }
     }
-
-
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
