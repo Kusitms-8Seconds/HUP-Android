@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -361,5 +363,10 @@ public class BidPage extends AppCompatActivity {
         public void onConnectionFail(Throwable t) {
             Log.e("연결실패", t.getMessage());
         }
+    }
+    public void setAnimation() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1500);
+        ptRecyclerView.setAnimation(animation);
     }
 }

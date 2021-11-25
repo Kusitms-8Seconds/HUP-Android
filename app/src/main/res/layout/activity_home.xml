@@ -47,8 +47,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="50px"
-        android:layout_marginEnd="50px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -95,14 +93,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <com.rd.PageIndicatorView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="40px"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/bestItemViewPager"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:piv_viewPager="@id/bestItemViewPager" />-->
+            <!--            <com.rd.PageIndicatorView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginBottom="40px"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@id/bestItemViewPager"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:piv_viewPager="@id/bestItemViewPager" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
