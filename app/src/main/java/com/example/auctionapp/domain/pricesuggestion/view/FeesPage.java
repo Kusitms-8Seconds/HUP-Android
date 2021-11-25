@@ -86,7 +86,7 @@ public class FeesPage extends AppCompatActivity {
         goChatting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent(getApplicationContext(), ChatRoom.class);
+                Intent tt = new Intent(getApplicationContext(), GoChat.class);
                 tt.putExtra("itemId", EndItemId);
                 tt.putExtra("participantId", participantId);
                 tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
