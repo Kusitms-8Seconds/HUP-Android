@@ -131,8 +131,8 @@ public class ItemList extends Fragment {
 //                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
 //                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
 
-                long tmpMinute = ChronoUnit.MINUTES.between(startDateTime, endDateTime); // 시작시간 ~ 끝나는 시간을 minute으로 환산
-//                long tmpMinute = 0;
+                long tmp = ChronoUnit.MINUTES.between(startDateTime, endDateTime); // 시작시간 ~ 끝나는 시간을 minute으로 환산
+                long tmpMinute = 0;
                 long tmpHour = 0;
                 long tmpDay = 0;
 //
@@ -141,13 +141,19 @@ public class ItemList extends Fragment {
 //                tmp = tmp / 60;
 //                tmpHour = tmp % 60
 
+                tmpMinute = tmp % 60;
+                tmpHour = tmp / 60;
+
+                tmpDay = tmpHour/24;
+                tmpHour = tmpHour%24;
 
 
 
-                tmpHour = tmpMinute % 60;
-                tmpMinute = tmpMinute / 60;
-                tmpDay = tmpMinute % 24;
-                tmpMinute = tmpMinute / 24;
+
+//                tmpHour = tmpMinute % 60;
+//                tmpMinute = tmpMinute / 60;
+//                tmpDay = tmpMinute % 24;
+//                tmpMinute = tmpMinute / 24;
 
                 String days = String.valueOf(tmpDay);
                 String hours = String.valueOf(tmpHour);
