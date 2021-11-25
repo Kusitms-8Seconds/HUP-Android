@@ -362,14 +362,6 @@ public class ItemDetail extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(response.body().getPicture()).into(sellerImageView);
             }
             //delete item
-            if(response.body().getUserId().equals(myId)) {
-                deleteButton.setVisibility(View.VISIBLE);
-                //button inactivated
-                participateButton.setEnabled(false);
-                participateButton.setBackgroundColor(Color.GRAY);
-            }else {
-                deleteButton.setVisibility(View.GONE);
-            }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -402,6 +394,16 @@ public class ItemDetail extends AppCompatActivity {
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
             String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
             itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
+
+            if(response.body().getUserId().equals(myId)) {
+
+                deleteButton.setVisibility(View.VISIBLE);
+                //button inactivated
+                participateButton.setEnabled(false);
+                participateButton.setBackgroundColor(Color.GRAY);
+            }else {
+                deleteButton.setVisibility(View.GONE);
+            }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
