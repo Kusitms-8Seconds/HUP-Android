@@ -63,6 +63,13 @@ public class AuctionHistoryEnd extends Fragment {
 
         return viewGroup;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -15,6 +15,7 @@ import lombok.Getter;
 public class BestItemResponse {
 
     private Long id;
+    private Long userId;
     private String itemName;
     private ItemConstants.EItemCategory category;
     private int initPrice;

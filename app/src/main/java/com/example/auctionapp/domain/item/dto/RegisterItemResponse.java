@@ -15,7 +15,7 @@ import lombok.Getter;
 public class RegisterItemResponse {
 
     private Long id;
-
+     private Long userId;
     private final String itemName;
     private ItemConstants.EItemCategory category;
     private int initPrice;
