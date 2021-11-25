@@ -289,7 +289,7 @@
 
             <RatingBar
                 android:id="@+id/itemStateRatingBar"
-                style="@style/Widget.AppCompat.RatingBar.Small"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -314,16 +314,18 @@
 
             <EditText
                 android:id="@+id/editItemContent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:gravity="start"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="70dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="제품을 소개해주세요."
                 android:inputType="textPersonName"
                 android:paddingLeft="39px"
-                android:layout_marginBottom="70dp"
+                android:paddingTop="39px"
                 android:textSize="44px" />
 
         </LinearLayout>
