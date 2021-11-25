@@ -35,8 +35,8 @@ public class BestItemAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_layout_home_bestitem, null);
         ImageView viewPagerImageView = view.findViewById(R.id.bt_image);
-        Glide.with(context).load(Constants.imageBaseUrl+listData.get(position).getBtImage()).override(viewPagerImageView.getWidth()
-                ,viewPagerImageView.getHeight()).into(viewPagerImageView);
+//        Glide.with(context).load(Constants.imageBaseUrl+listData.get(position).getBtImage()).override(viewPagerImageView.getWidth()
+//                ,viewPagerImageView.getHeight()).into(viewPagerImageView);
         TextView bt_item_name = view.findViewById(R.id.bt_item_name);
         bt_item_name.setText(listData.get(position).getBtName());
         TextView bt_purchase_date = view.findViewById(R.id.bt_purchase_date);

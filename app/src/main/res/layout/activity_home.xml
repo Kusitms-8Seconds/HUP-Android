@@ -57,6 +57,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/bt_image"
+                android:layout_width="772px"
+                android:layout_height="772px"
+                android:layout_gravity="center"
+                android:layout_marginStart="403px"
+                android:layout_marginTop="110px"
+                android:layout_marginBottom="151px"
+                android:background="@android:color/transparent"
+                android:src="@drawable/testitemimage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:layout_width="183dp"
