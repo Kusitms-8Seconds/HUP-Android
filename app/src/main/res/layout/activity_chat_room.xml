@@ -87,7 +87,7 @@
             android:layout_marginStart="44px"
             android:layout_marginTop="66px"
             android:fontFamily="sans-serif-black"
-            android:text="item_name"
+            android:text="아이폰 11PRO 64GB "
             android:textAllCaps="true"
             android:textColor="#000000"
             android:textSize="40px"
@@ -101,7 +101,7 @@
             android:layout_marginStart="44px"
             android:layout_marginTop="66px"
             android:fontFamily="sans-serif-black"
-            android:text="item_category"
+            android:text="디지털 기"
             app:layout_constraintStart_toEndOf="@id/chattingItemDetailName"
             app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout
@@ -123,7 +123,7 @@
                 android:id="@+id/chattingItemDetailPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="item_price"
+                android:text="500000"
                 android:fontFamily="sans-serif-black"
                 android:textColor="@color/Hup"
                 android:textSize="40px" />
