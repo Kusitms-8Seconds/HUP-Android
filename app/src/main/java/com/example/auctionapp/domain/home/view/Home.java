@@ -74,8 +74,6 @@ public class Home extends Fragment {
     ImageView bt_image;
 
     RecyclerView AuctionNowRecyclerView;
-    ArrayList<String> bestImageUrl;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,8 +90,6 @@ public class Home extends Fragment {
         bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
         bestItemViewPager.setAdapter(bestItemAdapter);
 
-        setBestItemImage(bestItemViewPager.getCurrentItem() - 1);
-
         return viewGroup;
     }
     @Override
@@ -101,10 +97,6 @@ public class Home extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void setBestItemImage(int i) {
-        Glide.with(getActivity()).load(bestImageUrl.get(i)).override(bt_image.getWidth()
-                ,bt_image.getHeight()).into(bt_image);
-    }
     private void init(){
         AuctionNowRecyclerView = viewGroup.findViewById(R.id.AuctionNowView);
 
@@ -112,8 +104,6 @@ public class Home extends Fragment {
         AuctionNowRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new AuctionNowAdapter();
         AuctionNowRecyclerView.setAdapter(adapter);
-
-        bestImageUrl = new ArrayList<String>();
 
         adapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
@@ -150,25 +140,19 @@ public class Home extends Fragment {
                 LocalDateTime endDateTime = response.body().get(i).getAuctionClosingDate();
 
                 if(response.body().get(i).getFileNames().size()!=0) {
-                    bestItem = new BestItem(
+                    bestItem = new BestItem(Constants.imageBaseUrl+response.body().get(i).getFileNames().get(0),
                             response.body().get(i).getItemName(),
                             response.body().get(i).getBuyDate().getYear()+"년"+
                                     response.body().get(i).getBuyDate().getMonth().getValue()+"월",
                             0
                             );
-                    bestImageUrl.add(Constants.imageBaseUrl+response.body().get(i).getFileNames().get(0));
-//                    setBestItemImage();
-//                    Glide.with(getActivity()).load(Constants.imageBaseUrl+response.body().get(i).getFileNames().get(0)).override(bt_image.getWidth()
-//                ,bt_image.getHeight()).into(bt_image);
                 } else{
-                    bestItem = new BestItem(
+                    bestItem = new BestItem(null,
                             response.body().get(i).getItemName(),
                             response.body().get(i).getBuyDate().getYear()+"년"+
                                     response.body().get(i).getBuyDate().getMonth().getValue()+"월",
                             0
                     );
-                    bestImageUrl.add("");
-//                    setBestItemImage("");
 //                    Glide.with(getActivity()).load("").override(bt_image.getWidth()
 //                            ,bt_image.getHeight()).into(bt_image); //?
                 }
@@ -176,7 +160,6 @@ public class Home extends Fragment {
                 RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
                 setBestItemAnimation();
-
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
