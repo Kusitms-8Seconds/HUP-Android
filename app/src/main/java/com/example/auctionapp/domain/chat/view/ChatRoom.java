@@ -112,7 +112,7 @@ public class ChatRoom extends AppCompatActivity {
         chattingItemImage.setClipToOutline(true);
 
         //상품 정보 가져오기
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(5))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
                 .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
 
         if (editText.getText().toString() == null) button.setEnabled(false);
@@ -129,7 +129,7 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put("itemId", Long.valueOf(5));    //상품 id ?
+                chatModel.itemId.put("itemId", Long.valueOf(7));    //상품 id ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
@@ -390,7 +390,7 @@ public class ChatRoom extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
             }
             chattingItemDetailCategory.setText(response.body().getCategory().getName());
-            chattingItemDetailPrice.setText("1200000");    //낙찰가 출력(임시)
+            chattingItemDetailPrice.setText("500000");    //낙찰가 출력(임시)
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override

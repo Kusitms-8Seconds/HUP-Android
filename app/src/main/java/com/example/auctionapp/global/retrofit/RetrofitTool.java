@@ -20,8 +20,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitTool {
-//    private static final String BASE_URL = "http://192.168.2.2:8080/"; // 내부IP(안드로이드휴대폰사용, cmd -> ipconfig IPv4주소)
-    private static final String BASE_URL = "http://10.0.2.2:8080/"; // 안드로이드에뮬레이터IP
+//    private static final String BASE_URL = "http://172.16.101.94:8080/"; // 내부IP(안드로이드휴대폰사용, cmd -> ipconfig IPv4주소)
+    private static final String BASE_URL = "http://10.0.2.2:8080/"; // 안드로이드에뮬레이터I
 
     public static RestAPI getAPI(){
         return new Retrofit.Builder()

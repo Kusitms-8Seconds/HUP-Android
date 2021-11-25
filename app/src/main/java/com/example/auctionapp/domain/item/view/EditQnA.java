@@ -50,10 +50,9 @@ public class EditQnA extends AppCompatActivity {
         chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
         chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
         chattingItemImage.setClipToOutline(true);
-
         Intent intent = getIntent();
         EndItemId = intent.getLongExtra("itemId", 0);
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(EndItemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
                 .enqueue(MainRetrofitTool.getCallback(new EditQnA.getItemDetailsCallback()));
     }
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
