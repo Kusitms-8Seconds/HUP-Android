@@ -113,7 +113,7 @@ public class HupStomp {
                 public void run() {
                     highPrice.setText(String.valueOf(maximumPrice));
                     participants.setText(String.valueOf(theNumberOfParticipants));
-                    BidParticipants data = new BidParticipants(Long.valueOf(userId), R.drawable.hearto, username, Integer.valueOf(suggestionPrice), "11");
+                    BidParticipants data = new BidParticipants(Long.valueOf(userId), R.drawable.profile, username, Integer.valueOf(suggestionPrice), "11");
                     bidParticipants.add(data);
                     ptAdapter.validationAndDeleteItem(data.getUserId());
                     ptAdapter.addItem(data);
