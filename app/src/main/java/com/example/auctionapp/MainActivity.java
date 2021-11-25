@@ -25,6 +25,7 @@ import com.example.auctionapp.domain.home.view.UploadPage;
 import com.example.auctionapp.domain.item.view.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -57,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         dialog02 = new Dialog(MainActivity.this);
         dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog02.setContentView(R.layout.custom_dialog02);
-        showDialog();
+
+        if(!(Constants.userId == null))
+            showDialog();
 
         dialog03 = new Dialog(MainActivity.this);
         dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
