@@ -263,9 +263,20 @@ public class BidPage extends AppCompatActivity {
                         .into(bidImage); }
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
-            String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-            String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
+            long tmp = ChronoUnit.MINUTES.between(startDateTime, endDateTime); // 시작시간 ~ 끝나는 시간을 minute으로 환산
+            long tmpMinute = 0;
+            long tmpHour = 0;
+            long tmpDay = 0;
+
+            tmpMinute = tmp % 60;
+            tmpHour = tmp / 60;
+
+            tmpDay = tmpHour/24;
+            tmpHour = tmpHour%24;
+
+            String days = String.valueOf(tmpDay);
+            String hours = String.valueOf(tmpHour);
+            String minutes = String.valueOf(tmpMinute);
             itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
