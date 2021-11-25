@@ -227,9 +227,9 @@ class chatListAdapter extends BaseAdapter {
 
         itemImageImageView = (ImageView) view.findViewById(R.id.iv_chatlist_itemImage);
         itemImageImageView.setClipToOutline(true);
-        Long itemIdL = data.get(position).getItemId();
-        // 상품 이미지 load
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemIdL)
+//        Long itemIdL = data.get(position).getItemId();
+        // 상품 이미지 load  //임시
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(5))
                 .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
         profileNameTextView.setText(data.get(position).getProfileName());
@@ -244,10 +244,7 @@ class chatListAdapter extends BaseAdapter {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             if(response.body().getFileNames().size()!=0){
-                String fileThumbNail = "";
-                for (int i=0; i<response.body().getFileNames().size(); i++) {
-                    fileThumbNail = response.body().getFileNames().get(i);
-                }
+                String fileThumbNail = response.body().getFileNames().get(0);
                 Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+fileThumbNail).into(itemImageImageView);
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
