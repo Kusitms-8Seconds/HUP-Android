@@ -156,11 +156,11 @@ public class Scrap extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+//            System.out.println("errorBody"+response.errorBody().string());
+//            try {
+//                JSONObject jObjError = new JSONObject(response.errorBody().string());
+//                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+//            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -182,11 +182,11 @@ public class Scrap extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+//            System.out.println("errorBody"+response.errorBody().string());
+//            try {
+//                JSONObject jObjError = new JSONObject(response.errorBody().string());
+//                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
+//            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
             Log.d(TAG, "onFailResponse");
         }
         @Override

@@ -66,8 +66,21 @@ public class ItemDetail extends AppCompatActivity {
     private Long scrapId;
 
     public Boolean isHeart = false;
+    private ImageView heart;
+    TextView highPrice;
+    TextView participants;
+    TextView sellerName;
+    ImageView sellerImageView;
+    TextView itemName;
+    TextView itemContent;
+    TextView category;
+    TextView itemLeftTime;
+    TextView qnacount;
+    TextView deleteButton;
+    Button participateButton;
 
     ItemDetailViewPagerAdapter itemDetailViewPagerAdapter;
+    ViewPager viewPager;
 
     ArrayList<qnaData> qnaList = new ArrayList<qnaData>();
     qnaAdapter adapter;
@@ -93,6 +106,9 @@ public class ItemDetail extends AppCompatActivity {
 //        String getItemId = intent.getExtras().getString("itemId");
         this.itemId = intent.getLongExtra("itemId",0);
 
+        sellerImageView = (ImageView) findViewById(R.id.sellerImage);
+
+        participateButton = (Button) findViewById(R.id.participateButton);
         if(Constants.userId == null) {
             binding.participateButton.setText("로그인 후 이용해주세요.");
             binding.participateButton.setEnabled(false);
@@ -118,10 +134,12 @@ public class ItemDetail extends AppCompatActivity {
         // viewpager
         this.initializeImageData();
 
+        viewPager = findViewById(R.id.itemDetailViewPager);
         itemDetailViewPagerAdapter = new ItemDetailViewPagerAdapter(this, itemImageList);
         binding.itemDetailViewPager.setAdapter(itemDetailViewPagerAdapter);
 
         //나중에 수정필요
+        heart = (ImageView) findViewById(R.id.isheart);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token)
                 .isCheckedHeart(ScrapCheckedRequest.of(Constants.userId, itemId))
                 .enqueue(MainRetrofitTool.getCallback(new isCheckedHeartCallback()));
@@ -144,15 +162,22 @@ public class ItemDetail extends AppCompatActivity {
             }
         });
 
+        highPrice = findViewById(R.id.highPrice);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
 
+        participants = findViewById(R.id.participants);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
 
+        sellerName = findViewById(R.id.sellerName);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(Constants.userId))
                 .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
 
+        itemName = findViewById(R.id.itemName);
+        itemContent = findViewById(R.id.itemContent);
+        category = findViewById(R.id.category);
+        itemLeftTime = findViewById(R.id.itemLeftTime);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
 
@@ -166,6 +191,8 @@ public class ItemDetail extends AppCompatActivity {
         });
 
         //QNA dumidata
+        qnacount = (TextView) findViewById(R.id.qaCount);
+        ListView qnaListView = (ListView) findViewById(R.id.itemDetail_qnaList);
         adapter = new qnaAdapter(this.getApplicationContext(), qnaList);
         binding.itemDetailQnaList.setAdapter(adapter);
         initializeQnAData();

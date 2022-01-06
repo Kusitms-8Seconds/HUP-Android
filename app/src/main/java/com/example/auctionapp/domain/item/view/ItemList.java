@@ -48,6 +48,7 @@ import static android.content.ContentValues.TAG;
 public class ItemList extends Fragment {
     private ActivityItemlistBinding binding;
 
+    ViewGroup viewGroup;
     ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
     List<ItemData> itemDataList = new ArrayList<>();
@@ -86,6 +87,7 @@ public class ItemList extends Fragment {
 
     private void init(){
         itemDataList.clear();
+
 
         adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
             @Override
