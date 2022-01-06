@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.databinding.ActivityUploadPageBinding;
 import com.example.auctionapp.domain.file.view.MultiImageAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -45,10 +47,10 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class UploadPage extends AppCompatActivity {
+    private ActivityUploadPageBinding binding;
 
     // DatePickerDialog
     Calendar myCalendar = Calendar.getInstance();
-    TextView editBuyDate;
     String selectedCategory;
 
     DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
@@ -60,10 +62,9 @@ public class UploadPage extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
             String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            editBuyDate.setText(formatDate.toString());
+            binding.editAuctionBuyDate.setText(formatDate.toString());
         }
     };
-    TextView editEndDate;
     DatePickerDialog.OnDateSetListener datePickerEndDate = new DatePickerDialog.OnDateSetListener() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -73,27 +74,26 @@ public class UploadPage extends AppCompatActivity {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
             String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            editEndDate.setText(formatDate.toString());
+            binding.editAuctionFinalDate.setText(formatDate.toString());
         }
     };
 
-    private RatingBar ratingbar;
     private static final String TAG = "UploadPage";
     ArrayList<Uri> uriList;   // 이미지의 uri를 담을 ArrayList 객체
     ArrayList<File> fileList;
-    RecyclerView selectedImageRecyclerView;  // 이미지를 보여줄 리사이클러뷰
+//    RecyclerView selectedImageRecyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
-    TextView selectedImageCount;
     int itemStatePoint; //item rating
     ArrayList<MultipartBody.Part> files = new ArrayList<>(); // 여러 file들을 담아줄 ArrayList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_page);
+        binding = ActivityUploadPageBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent tt = new Intent(UploadPage.this, MainActivity.class);
@@ -103,10 +103,9 @@ public class UploadPage extends AppCompatActivity {
         });
 
         // 구매 일자
-        editBuyDate = findViewById(R.id.editAuctionBuyDate);
         Calendar calender = Calendar.getInstance();
-        editBuyDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
-        editBuyDate.setOnClickListener(new View.OnClickListener() {
+        binding.editAuctionBuyDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
+        binding.editAuctionBuyDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerBuyDate,
@@ -117,9 +116,8 @@ public class UploadPage extends AppCompatActivity {
         });
 
         // 경매 종료 일자
-        editEndDate = findViewById(R.id.editAuctionFinalDate);
-        editEndDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
-        editEndDate.setOnClickListener(new View.OnClickListener() {
+        binding.editAuctionFinalDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
+        binding.editAuctionFinalDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(UploadPage.this, datePickerEndDate,
@@ -130,8 +128,7 @@ public class UploadPage extends AppCompatActivity {
         });
 
         // 물건 상태
-        ratingbar = findViewById(R.id.itemStateRatingBar);
-        ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        binding.itemStateRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Toast.makeText(getApplicationContext(),"New Rating: "+ rating, Toast.LENGTH_SHORT).show();
@@ -140,10 +137,7 @@ public class UploadPage extends AppCompatActivity {
         });
 
         // 이미지 업로드
-        selectedImageRecyclerView = (RecyclerView) findViewById(R.id.selectedImageRecyclerView);
-        selectedImageCount = (TextView) findViewById(R.id.selectedImageCount);
-        ImageView chooseImage = (ImageView) findViewById(R.id.chooseImage);
-        chooseImage.setOnClickListener(new View.OnClickListener() {
+        binding.chooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 앨범으로 이동
@@ -155,27 +149,21 @@ public class UploadPage extends AppCompatActivity {
             }
         });
 
-        EditText editItemName = (EditText) findViewById(R.id.editItemName);
-        TextView editCategory = (TextView) findViewById(R.id.selectItemCategory);
-        EditText editPrice = (EditText)findViewById(R.id.editItemStartPrice);
-        EditText editContent = (EditText) findViewById(R.id.editItemContent);
-
         // category
         LinearLayout selectCategory = (LinearLayout) findViewById(R.id.selectCategoryLayout);
         selectCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent tt = new Intent(UploadPage.this, SelectCategory.class);
-                tt.putExtra("itemName", editItemName.getText().toString());
-                tt.putExtra("itemPrice", editPrice.getText().toString());
-                tt.putExtra("itemContent", editContent.getText().toString());
-                tt.putExtra("itemBuyDate", editBuyDate.getText().toString());
-                tt.putExtra("itemEndDate", editEndDate.getText().toString());
+                tt.putExtra("itemName", binding.editItemName.getText().toString());
+                tt.putExtra("itemPrice", binding.editItemStartPrice.getText().toString());
+                tt.putExtra("itemContent", binding.editItemContent.getText().toString());
+                tt.putExtra("itemBuyDate", binding.editAuctionBuyDate.getText().toString());
+                tt.putExtra("itemEndDate", binding.editAuctionFinalDate.getText().toString());
                 tt.putExtra("itemStatePoint", itemStatePoint);
                 startActivity(tt);
             }
         });
-        TextView itemCategory = (TextView) findViewById(R.id.selectItemCategory);
         Intent getCategoryIntent = getIntent();
         String itemCT = getCategoryIntent.getStringExtra("itemCategory");
         String ii = getCategoryIntent.getStringExtra("itemName");
@@ -184,43 +172,40 @@ public class UploadPage extends AppCompatActivity {
         String ii4 = getCategoryIntent.getStringExtra("itemBuyDate");
         String ii5 = getCategoryIntent.getStringExtra("itemEndDate");
         int ii6 = getCategoryIntent.getIntExtra("itemStatePoint", 0);
-        editItemName.setText(ii);
-        itemCategory.setText(itemCT);
-        editPrice.setText(ii2);
-        editContent.setText(ii3);
-        editBuyDate.setText(ii4);
-        editEndDate.setText(ii5);
-        ratingbar.setRating(ii6);
+        binding.editItemName.setText(ii);
+        binding.selectItemCategory.setText(itemCT);
+        binding.editItemStartPrice.setText(ii2);
+        binding.editItemContent.setText(ii3);
+        binding.editAuctionBuyDate.setText(ii4);
+        binding.editAuctionFinalDate.setText(ii5);
+        binding.itemStateRatingBar.setRating(ii6);
 
         // 완료 버튼
-        TextView uploadButton = (TextView) findViewById(R.id.uploadButton);
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        binding.uploadButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
                     Toast.makeText(getApplicationContext(), "로그인 후 상품 등록이 가능합니다.", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    String itemName = editItemName.getText().toString();
+                    String itemName = binding.editItemName.getText().toString();
 //                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
 //                while(iterator.hasNext()) {
 //                    EItemCategory next = iterator.next();
 //                    if(next.getName().equals(editCategory.getText().toString())){
 //                        selectedCategory = next; }
 //                }
+                    choiceCategory(binding.selectItemCategory.getText().toString());
 
-                    choiceCategory(editCategory.getText().toString());
-
-                    String initPriceStr = editPrice.getText().toString();
+                    String initPriceStr = binding.editItemStartPrice.getText().toString();
                     if (initPriceStr == null) {
                         System.out.println("경매시작가 입력하세요");
                         return;
                     }
                     int initPrice = Integer.parseInt(initPriceStr);
-                    String buyDate = editBuyDate.getText().toString() + " 00:00:00";
-                    String auctionClosingDate = editEndDate.getText().toString() + " 00:00:00";
-                    String description = editContent.getText().toString();
+                    String buyDate = binding.editAuctionBuyDate.getText().toString() + " 00:00:00";
+                    String auctionClosingDate = binding.editAuctionFinalDate.getText().toString() + " 00:00:00";
+                    String description = binding.editItemContent.getText().toString();
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
@@ -319,19 +304,19 @@ public class UploadPage extends AppCompatActivity {
             else{   // 이미지를 하나라도 선택한 경우
                 if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
                     Log.e("single choice: ", String.valueOf(data.getData()));
-                    selectedImageCount.setText("1/10");
+                    binding.selectedImageCount.setText("1/10");
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
                     String imagePath = getRealpath(imageUri);
                     File destFile = new File(imagePath);
                     fileList.add(destFile);
                     adapter = new MultiImageAdapter(uriList, getApplicationContext());
-                    selectedImageRecyclerView.setAdapter(adapter);
-                    selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+                    binding.selectedImageRecyclerView.setAdapter(adapter);
+                    binding.selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
                 }
                 else{      // 이미지를 여러장 선택한 경우
                     ClipData clipData = data.getClipData();
-                    selectedImageCount.setText(String.valueOf(clipData.getItemCount()) + "/10");
+                    binding.selectedImageCount.setText(String.valueOf(clipData.getItemCount()) + "/10");
 
                     if(clipData.getItemCount() > 10){   // 선택한 이미지가 11장 이상인 경우
                         Toast.makeText(getApplicationContext(), "사진은 10장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
@@ -352,8 +337,8 @@ public class UploadPage extends AppCompatActivity {
                             }
                         }
                         adapter = new MultiImageAdapter(uriList, getApplicationContext());
-                        selectedImageRecyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
-                        selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
+                        binding.selectedImageRecyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
+                        binding.selectedImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
                     }
                 }
             }
