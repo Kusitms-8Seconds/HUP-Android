@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityChatRoomBinding;
+import com.example.auctionapp.databinding.ActivityMainBinding;
 import com.example.auctionapp.domain.home.view.Mypage;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.ItemDetail;
@@ -55,6 +57,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ChatRoom extends AppCompatActivity {
+    private ActivityChatRoomBinding binding;
+
     //uid
     private String chatRoomUid; //채팅방 하나 id
     private String myuid;       //나의 id
@@ -67,21 +71,14 @@ public class ChatRoom extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private RecyclerView recyclerView;
-    private ImageView button;   //보내기 버튼
-    private EditText editText;  //메세지 작성
-    private ImageView chattingItemImage;
-    private TextView chattingItemDetailName;
-    private TextView chattingItemDetailCategory;
-    private TextView chattingItemDetailPrice;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_room);
+        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -102,27 +99,20 @@ public class ChatRoom extends AppCompatActivity {
 //        destUid = intent.getStringExtra("destUid");
 //        EndItemId = intent.getLongExtra("itemId", 0);
 
-        recyclerView = (RecyclerView) findViewById(R.id.chattingRecyclerView);
-        button = (ImageView) findViewById(R.id.sendbutton);
-        editText = (EditText) findViewById(R.id.editText);
-        chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
-        chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
-        chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
-        chattingItemDetailPrice = (TextView) findViewById(R.id.chattingItemDetailPrice);
-        chattingItemImage.setClipToOutline(true);
+        binding.chattingItemImage.setClipToOutline(true);
 
         //상품 정보 가져오기
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(8))
                 .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
 
-        if (editText.getText().toString() == null) button.setEnabled(false);
-        else button.setEnabled(true);
+        if (binding.editText.getText().toString() == null) binding.sendbutton.setEnabled(false);
+        else binding.sendbutton.setEnabled(true);
 
         checkChatRoom();
     }
 
     private void sendMsg() {
-        button.setOnClickListener(new View.OnClickListener() {
+        binding.sendbutton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
@@ -133,7 +123,7 @@ public class ChatRoom extends AppCompatActivity {
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
-                    button.setEnabled(false);
+                    binding.sendbutton.setEnabled(false);
                     databaseReference.child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -162,17 +152,17 @@ public class ChatRoom extends AppCompatActivity {
     //작성한 메시지를 데이터베이스에 보낸다.
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void sendMsgToDataBase() {
-        if (!editText.getText().toString().equals("")) { // 이 안에서 한 번 더 나인지 상대방인지 체크해 주는게 필요할 듯
+        if (!binding.editText.getText().toString().equals("")) { // 이 안에서 한 번 더 나인지 상대방인지 체크해 주는게 필요할 듯
             // comment.uid 값이 myuid 여야 하는지, destuid여야 하는지 체크해야 함..
             LocalDateTime currentDate = LocalDateTime.now();
             ChatModel.Comment comment = new ChatModel.Comment();
             comment.uid = myuid;
-            comment.message = editText.getText().toString();
+            comment.message = binding.editText.getText().toString();
             comment.timestamp = String.valueOf(currentDate);
             databaseReference.child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    editText.setText("");
+                    binding.editText.setText("");
                 }
             });
         }
@@ -193,11 +183,11 @@ public class ChatRoom extends AppCompatActivity {
                     ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
                     if (chatModel.users.containsKey(destUid)) {           //상대방 id 포함돼 있을때 채팅방 key 가져옴
                         chatRoomUid = dataSnapshot.getKey();
-                        button.setEnabled(true);
+                        binding.sendbutton.setEnabled(true);
 
                         //동기화
-                        recyclerView.setLayoutManager(new LinearLayoutManager(ChatRoom.this));
-                        recyclerView.setAdapter(new RecyclerViewAdapter());
+                        binding.chattingRecyclerView.setLayoutManager(new LinearLayoutManager(ChatRoom.this));
+                        binding.chattingRecyclerView.setAdapter(new RecyclerViewAdapter());
 
                         //메시지 보내기
                         sendMsgToDataBase();
@@ -257,7 +247,7 @@ public class ChatRoom extends AppCompatActivity {
                         }
                     }
                     notifyDataSetChanged();
-                    recyclerView.scrollToPosition(comments.size() - 1);
+                    binding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
                 }
 
                 @Override
@@ -384,13 +374,13 @@ public class ChatRoom extends AppCompatActivity {
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
-            chattingItemDetailName.setText(response.body().getItemName());
+            binding.chattingItemDetailName.setText(response.body().getItemName());
             if(response.body().getFileNames().size()!=0){
                 String fileThumbNail = response.body().getFileNames().get(0);
-                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
+                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(binding.chattingItemImage);
             }
-            chattingItemDetailCategory.setText(response.body().getCategory().getName());
-            chattingItemDetailPrice.setText("500000");    //낙찰가 출력(임시)
+            binding.chattingItemDetailCategory.setText(response.body().getCategory().getName());
+            binding.chattingItemDetailPrice.setText("500000");    //낙찰가 출력(임시)
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -400,7 +390,7 @@ public class ChatRoom extends AppCompatActivity {
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            chattingItemDetailPrice.setText("?연결실패?");
+            binding.chattingItemDetailPrice.setText("?연결실패?");
             Log.e("연결실패", t.getMessage());
         }
     }

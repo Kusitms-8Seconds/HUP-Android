@@ -33,21 +33,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.sql.SQLOutput;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView mBottomNV;
+    private ActivityMainBinding binding;
+
     Dialog dialog02;    //경매 종료 알림 다이얼로그
     Dialog dialog03;    //경매 진행 버튼 클릭 후 수수료 타이머 다이얼로그
     TextView tv_timer;
 
-    private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-//        setContentView(R.layout.activity_main);
 
-//        mBottomNV = findViewById(R.id.nav_view);
         binding.navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -56,15 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-//        mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                BottomNavigate(menuItem.getItemId());
-//
-//                return true;
-//            }
-//        });
-
 
         binding.navView.setSelectedItemId(R.id.home);
 
