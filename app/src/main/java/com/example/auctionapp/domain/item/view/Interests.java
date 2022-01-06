@@ -15,42 +15,43 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityInterestsBinding;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 
 import java.util.ArrayList;
 
 public class Interests extends AppCompatActivity {
+    private ActivityInterestsBinding binding;
     CategoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_interests);
-
+        binding = ActivityInterestsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         // 뒤로가기 화살표
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
         // 완료txt
-        TextView completeB = (TextView) findViewById(R.id.completeB);
-        completeB.setOnClickListener(new View.OnClickListener() {
+        binding.completeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                onBackPressed();
             }
         });
 
-        GridView categoryView = (GridView) findViewById(R.id.interestCT);
         adapter = new CategoryAdapter();
-        categoryView.setAdapter(adapter);
+        binding.interestCT.setAdapter(adapter);
         init();
 
         // 이벤트 처리 리스너 설정
-        categoryView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.interestCT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Category item = (Category) adapter.getItem(position);
