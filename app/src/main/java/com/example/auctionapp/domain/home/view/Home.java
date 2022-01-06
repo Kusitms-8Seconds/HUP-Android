@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityHomeBinding;
+import com.example.auctionapp.databinding.ActivityMainBinding;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
@@ -72,21 +74,22 @@ public class Home extends Fragment {
 
     RecyclerView AuctionNowRecyclerView;
 
+    private ActivityHomeBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home, container, false);
+        binding = ActivityHomeBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         init();
         initializeAuctionNowData();
         initializeBestData();
 
-        bestItemViewPager = viewGroup.findViewById(R.id.bestItemViewPager);
         bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
-        bestItemViewPager.setAdapter(bestItemAdapter);
+        binding.bestItemViewPager.setAdapter(bestItemAdapter);
 
-        return viewGroup;
+        return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -94,12 +97,11 @@ public class Home extends Fragment {
     }
 
     private void init(){
-        AuctionNowRecyclerView = viewGroup.findViewById(R.id.AuctionNowView);
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
-        AuctionNowRecyclerView.setLayoutManager(linearLayoutManager);
+        binding.AuctionNowView.setLayoutManager(linearLayoutManager);
         adapter = new AuctionNowAdapter();
-        AuctionNowRecyclerView.setAdapter(adapter);
+        binding.AuctionNowView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
