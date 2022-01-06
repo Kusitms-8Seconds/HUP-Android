@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.MainActivity;
+import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
@@ -56,14 +58,15 @@ import com.nhn.android.naverlogin.OAuthLoginHandler;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
+    private ActivityLoginBinding binding;
 
-    ImageView loginBtn;
-    ImageView btn_kakao_login;
-    ImageView btn_google_login;
-    ImageView btn_naver_login;
-    EditText edit_id;
-    EditText edit_pw;
-    TextView signUp_tv;
+//    ImageView loginBtn;
+//    ImageView btn_kakao_login;
+//    ImageView btn_google_login;
+//    ImageView btn_naver_login;
+//    EditText edit_id;
+//    EditText edit_pw;
+//    TextView signUp_tv;
 
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
@@ -77,26 +80,24 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
-        LinearLayout goSignUp = (LinearLayout) findViewById(R.id.goSignUp);
-        goSignUp.setOnClickListener(new View.OnClickListener() {
+        binding.goSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
             }
         });
-        edit_id = findViewById(R.id.editID);
-        edit_pw = findViewById(R.id.editPW);
-
 
         // App 로그인
-        loginBtn = (ImageView)findViewById(R.id.loginButton);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginRequest loginRequest = LoginRequest.of(edit_id.getText().toString(), edit_pw.getText().toString());
+                LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
                 RetrofitTool.getAPIWithNullConverter().login(loginRequest)
                         .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
                 Intent intent = new Intent(Login.this, MainActivity.class);
@@ -107,8 +108,7 @@ public class Login extends AppCompatActivity {
 
 
         //카카오 로그인
-        btn_kakao_login = (ImageView)findViewById(R.id.btn_kakao_login);
-        btn_kakao_login.setOnClickListener(new View.OnClickListener() {
+        binding.btnKakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //kakao login
@@ -118,8 +118,7 @@ public class Login extends AppCompatActivity {
             }
         });
         //구글 로그인
-        btn_google_login = (ImageView) findViewById(R.id.btn_google_login);
-        btn_google_login.setOnClickListener(new View.OnClickListener() {
+        binding.btnGoogleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 앱에 필요한 사용자 데이터를 요청하도록 로그인 옵션을 설정한다.
@@ -149,9 +148,8 @@ public class Login extends AppCompatActivity {
             }
         });
         //네이버 로그인
-        btn_naver_login = (ImageView)findViewById(R.id.btn_naver_login);
         mContext = getApplicationContext();
-        btn_naver_login.setOnClickListener(new View.OnClickListener() {
+        binding.btnNaverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 naverSignIn();
@@ -159,8 +157,7 @@ public class Login extends AppCompatActivity {
         });
 
         // 앱 회원가입
-        signUp_tv = (TextView) findViewById(R.id.signUp_tv);
-        signUp_tv.setOnClickListener(new View.OnClickListener() {
+        binding.signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, SignUp.class);
