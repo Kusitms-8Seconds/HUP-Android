@@ -9,8 +9,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityNoticeBinding;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 
 public class NoticeDetail extends AppCompatActivity {
+    private ActivityNoticeDetailBinding binding;
 
     String temp = "안녕하세요, HUP!입니다.\n" +
             "\n" +
@@ -23,22 +26,20 @@ public class NoticeDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice_detail);
+        binding = ActivityNoticeDetailBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("noticeTitle");
         String date = intent.getStringExtra("noticeDate");
 
-        TextView noticeTitle = (TextView) findViewById(R.id.noticeTitle);
-        TextView noticeDate = (TextView) findViewById(R.id.noticeDate);
-        TextView noticeContent = (TextView) findViewById(R.id.noticeContent);
-        noticeTitle.setText(title);
-        noticeDate.setText(date);
-        noticeContent.setText(temp);    //dummy data
+        binding.noticeTitle.setText(title);
+        binding.noticeDate.setText(date);
+        binding.noticeContent.setText(temp);    //dummy data
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.bringToFront();
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
