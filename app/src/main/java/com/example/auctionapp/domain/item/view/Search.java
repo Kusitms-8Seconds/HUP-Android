@@ -15,19 +15,23 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.databinding.ActivitySearchBinding;
 import com.example.auctionapp.global.util.DBHelper;
 
 import java.util.ArrayList;
 
 public class Search extends AppCompatActivity {
+    private ActivitySearchBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        binding = ActivitySearchBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        ImageView goBack = (ImageView) findViewById(R.id.goBack);
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -41,8 +45,7 @@ public class Search extends AppCompatActivity {
         db = helper.getWritableDatabase();
         helper.onCreate(db);
 
-        SearchView searchView = (SearchView) findViewById(R.id.searchView2);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchView2.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 //                Toast.makeText(Search.this, "[검색버튼클릭] 검색어 = "+query, Toast.LENGTH_LONG).show();
@@ -68,8 +71,7 @@ public class Search extends AppCompatActivity {
         // 최근검색어 리스트뷰
         ArrayList searchwordList = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, searchwordList);
-        ListView listview = (ListView) findViewById(R.id.searchWordList);
-        listview.setAdapter(adapter);
+        binding.searchWordList.setAdapter(adapter);
 
         Cursor c = db.query("recentsearch",null,null,null,null,null,null,null);
         int total = c.getCount();
@@ -81,8 +83,7 @@ public class Search extends AppCompatActivity {
         }
 
         // 전체삭제
-        TextView removeAll = (TextView) findViewById(R.id.removeAll);
-        removeAll.setOnClickListener(new View.OnClickListener() {
+        binding.removeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String sql3 = "DELETE FROM recentsearch;";
