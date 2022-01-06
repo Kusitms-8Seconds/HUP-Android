@@ -23,6 +23,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityHomeBinding;
+import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
@@ -55,8 +57,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class Mypage extends Fragment {
-
-    ViewGroup viewGroup;
+    private ActivityMypageBinding binding;
 
     LinearLayout goLogin;
     TextView logout_button;
@@ -64,17 +65,15 @@ public class Mypage extends Fragment {
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
 
-    TextView myName;
-    ImageView profileImg;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_mypage, container, false);
-        myName = (TextView) viewGroup.findViewById(R.id.myPage_userName);
-        profileImg = (ImageView) viewGroup.findViewById(R.id.profileImg);
-        Glide.with(getContext()).load(R.drawable.profile).into(profileImg);
+        binding = ActivityMypageBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
+
+        Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
         if(Constants.userId!=null){
@@ -92,8 +91,7 @@ public class Mypage extends Fragment {
         // naver 객체
         mOAuthLoginModule = OAuthLogin.getInstance();
 
-        logout_button = (TextView) viewGroup.findViewById(R.id.logout_button);
-        logout_button.setOnClickListener(new View.OnClickListener() {
+        binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // kakao logout
@@ -106,16 +104,14 @@ public class Mypage extends Fragment {
                 Constants.token = null;
                 Constants.userId = null;
 
-                myName.setText("로그인하기");
-                Glide.with(getContext()).load(R.drawable.profile).into(profileImg);
-                ImageView loginIcon = viewGroup.findViewById(R.id.loginIcon);
-                loginIcon.setVisibility(View.VISIBLE);
+                binding.myPageUserName.setText("로그인하기");
+                Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
+                binding.loginIcon.setVisibility(View.VISIBLE);
 
             }
         });
         // 로그인하러 가기
-        goLogin = (LinearLayout) viewGroup.findViewById(R.id.userNameLayout);
-        goLogin.setOnClickListener(new View.OnClickListener() {
+        binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Login.class);
@@ -123,8 +119,7 @@ public class Mypage extends Fragment {
             }
         });
         // 경매 참여 내역
-        LinearLayout goAuctionHistory = (LinearLayout) viewGroup.findViewById(R.id.auc_history);
-        goAuctionHistory.setOnClickListener(new View.OnClickListener() {
+        binding.aucHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
@@ -136,8 +131,7 @@ public class Mypage extends Fragment {
             }
         });
         // 판매 내역
-        LinearLayout goSellHistory = (LinearLayout) viewGroup.findViewById(R.id.sell_history);
-        goSellHistory.setOnClickListener(new View.OnClickListener() {
+        binding.sellHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
@@ -149,8 +143,7 @@ public class Mypage extends Fragment {
             }
         });
         // 스크랩 내역
-        ConstraintLayout scrap_layout = (ConstraintLayout) viewGroup.findViewById(R.id.scrap_layout);
-        scrap_layout.setOnClickListener(new View.OnClickListener() {
+        binding.scrapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
@@ -162,8 +155,7 @@ public class Mypage extends Fragment {
             }
         });
         // 관심 카테고리
-        ConstraintLayout interest_layout = (ConstraintLayout) viewGroup.findViewById(R.id.interest_layout);
-        interest_layout.setOnClickListener(new View.OnClickListener() {
+        binding.interestLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
@@ -175,8 +167,7 @@ public class Mypage extends Fragment {
             }
         });
         // 공지사항
-        ConstraintLayout notify_layout = (ConstraintLayout) viewGroup.findViewById(R.id.notify_layout);
-        notify_layout.setOnClickListener(new View.OnClickListener() {
+        binding.notifyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Notice.class);
@@ -184,8 +175,7 @@ public class Mypage extends Fragment {
             }
         });
         // 안전거래설정
-        ConstraintLayout safety_layout = (ConstraintLayout) viewGroup.findViewById(R.id.safety_layout);
-        safety_layout.setOnClickListener(new View.OnClickListener() {
+        binding.safetyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Intent intent = new Intent(getContext(), Notice.class);
@@ -193,7 +183,7 @@ public class Mypage extends Fragment {
             }
         });
 
-        return viewGroup;
+        return view;
     }
 
     @Override
@@ -229,12 +219,11 @@ public class Mypage extends Fragment {
         @Override
         public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
             System.out.println("username"+response.body().getUsername());
-            myName.setText(response.body().getUsername());
+            binding.myPageUserName.setText(response.body().getUsername());
             if(response.body().getPicture()!=null){
-                Glide.with(getContext()).load(response.body().getPicture()).into(profileImg);
+                Glide.with(getContext()).load(response.body().getPicture()).into(binding.profileImg);
             }
-            ImageView loginIcon = viewGroup.findViewById(R.id.loginIcon);
-            loginIcon.setVisibility(View.INVISIBLE);
+            binding.loginIcon.setVisibility(View.INVISIBLE);
             logout_button.setVisibility(View.VISIBLE);
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 

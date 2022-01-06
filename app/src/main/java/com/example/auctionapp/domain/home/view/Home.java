@@ -59,7 +59,6 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class Home extends Fragment {
-    ViewGroup viewGroup;
     private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
 
     AuctionNowAdapter adapter;
