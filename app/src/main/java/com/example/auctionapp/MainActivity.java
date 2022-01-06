@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.databinding.ActivityMainBinding;
 import com.example.auctionapp.domain.chat.view.Chat;
 import com.example.auctionapp.domain.chat.view.ChatRoom;
 import com.example.auctionapp.domain.home.view.Home;
@@ -37,13 +38,17 @@ public class MainActivity extends AppCompatActivity {
     Dialog dialog03;    //경매 진행 버튼 클릭 후 수수료 타이머 다이얼로그
     TextView tv_timer;
 
+    private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+//        setContentView(R.layout.activity_main);
 
-        mBottomNV = findViewById(R.id.nav_view);
-        mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
+//        mBottomNV = findViewById(R.id.nav_view);
+        binding.navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 BottomNavigate(menuItem.getItemId());
@@ -51,9 +56,17 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        
-        
-        mBottomNV.setSelectedItemId(R.id.home);
+//        mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                BottomNavigate(menuItem.getItemId());
+//
+//                return true;
+//            }
+//        });
+
+
+        binding.navView.setSelectedItemId(R.id.home);
 
         dialog02 = new Dialog(MainActivity.this);
         dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -75,7 +75,7 @@ public class FeesPage extends AppCompatActivity {
         Long EndItemId = intent.getLongExtra("itemId", 0);
         Long participantId = intent.getLongExtra("participantId", 0);
         finalPrice = intent.getIntExtra("finalPrice", 0);
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(8))
                 .enqueue(MainRetrofitTool.getCallback(new FeesPage.getItemDetailsCallback()));
         // 최종 결제 수수료 가격
         int feesPrice = finalPrice * 5 / 100;
