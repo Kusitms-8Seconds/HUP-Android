@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityMakeQnaBinding;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 import com.example.auctionapp.domain.chat.view.ChatRoom;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -27,16 +29,16 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class EditQnA extends AppCompatActivity {
-    private ImageView chattingItemImage;
-    private TextView chattingItemDetailName;
-    private TextView chattingItemDetailCategory;
+    private ActivityMakeQnaBinding binding;
 
     private Long EndItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_qna);
+        binding = ActivityMakeQnaBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         ImageView goBack = (ImageView) findViewById(R.id.goback);
         goBack.setOnClickListener(new View.OnClickListener() {
@@ -46,10 +48,7 @@ public class EditQnA extends AppCompatActivity {
             }
         });
 
-        chattingItemImage = (ImageView) findViewById(R.id.chattingItemImage);
-        chattingItemDetailName = (TextView) findViewById(R.id.chattingItemDetailName);
-        chattingItemDetailCategory = (TextView) findViewById(R.id.chattingItemDetailCategory);
-        chattingItemImage.setClipToOutline(true);
+        binding.chattingItemImage.setClipToOutline(true);
         Intent intent = getIntent();
         EndItemId = intent.getLongExtra("itemId", 0);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
@@ -58,12 +57,12 @@ public class EditQnA extends AppCompatActivity {
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
-            chattingItemDetailName.setText(response.body().getItemName());
+            binding.chattingItemDetailName.setText(response.body().getItemName());
             if(response.body().getFileNames().size()!=0){
                 String fileThumbNail = response.body().getFileNames().get(0);
-                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(chattingItemImage);
+                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+fileThumbNail).into(binding.chattingItemImage);
             }
-            chattingItemDetailCategory.setText(response.body().getCategory().getName());
+            binding.chattingItemDetailCategory.setText(response.body().getCategory().getName());
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -73,7 +72,7 @@ public class EditQnA extends AppCompatActivity {
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            chattingItemDetailName.setText("?연결실패?");
+            binding.chattingItemDetailName.setText("?연결실패?");
             Log.e("연결실패", t.getMessage());
         }
     }
