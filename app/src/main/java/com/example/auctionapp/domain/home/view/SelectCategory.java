@@ -14,12 +14,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.databinding.ActivitySelectCategoryBinding;
 
 import java.util.ArrayList;
 
 import static android.graphics.Color.GRAY;
 
 public class SelectCategory extends AppCompatActivity {
+    private ActivitySelectCategoryBinding binding;
 
     static final String[] LIST_MENU = {"디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
             ,"유아도서", "스포츠/레저", "여성잡화", "여성의류", "남성패션/잡화", "게임/취미", "뷰티/미용",
@@ -28,11 +31,12 @@ public class SelectCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_category);
+        binding = ActivitySelectCategoryBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.bringToFront();
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -40,8 +44,7 @@ public class SelectCategory extends AppCompatActivity {
         });
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU);
-        ListView listview = (ListView) findViewById(R.id.selectCategoryList);
-        listview.setAdapter(adapter);
+        binding.selectCategoryList.setAdapter(adapter);
 
         Intent intent = getIntent();
         String itemName = intent.getStringExtra("itemName");
@@ -51,13 +54,12 @@ public class SelectCategory extends AppCompatActivity {
         String itemEndDate = intent.getStringExtra("itemEndDate");
         int itemStatePoint = intent.getIntExtra("itemStatePoint", 0);
 
-        TextView completeBut = (TextView) findViewById(R.id.completeB);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.selectCategoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                listview.setSelector(new PaintDrawable(GRAY));
+                binding.selectCategoryList.setSelector(new PaintDrawable(GRAY));
                 String category = (String) parent.getItemAtPosition(position);
-                completeBut.setOnClickListener(new View.OnClickListener() {
+                binding.completeB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(SelectCategory.this, UploadPage.class);
