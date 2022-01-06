@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.databinding.ActivityBidPageBinding;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
@@ -53,6 +55,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class BidPage extends AppCompatActivity {
+    private ActivityBidPageBinding binding;
 
     Dialog dialog01;
     Dialog dialog02;
@@ -65,13 +68,7 @@ public class BidPage extends AppCompatActivity {
     int finalPrice;
     Long myId = Constants.userId;
 
-    TextView highPrice;
-    TextView participants;
-    TextView itemLeftTime;
-    ImageView auctionState;
-    ImageView bidImage;
     TextView tv_timer;
-    ConstraintLayout ly_editPrice;
 
     private int userCount;
     PTAdapter adapter;
@@ -81,7 +78,9 @@ public class BidPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bid_page);
+        binding = ActivityBidPageBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         Intent intent = getIntent();
         String getItemId = intent.getExtras().getString("itemId");
@@ -91,13 +90,6 @@ public class BidPage extends AppCompatActivity {
 
         getData();
 
-        itemLeftTime = findViewById(R.id.itemLeftTime);
-        highPrice = findViewById(R.id.highPrice);
-        participants = findViewById(R.id.participants);
-        auctionState = findViewById(R.id.auctionState);
-        bidImage = findViewById(R.id.bidImage);
-        ly_editPrice = findViewById(R.id.ly_editPrice);
-
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
@@ -106,11 +98,10 @@ public class BidPage extends AppCompatActivity {
                 .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
 
         hupstomp = new HupStomp();
-        hupstomp.initStomp(adapter, bidParticipants, highPrice, participants);
+        hupstomp.initStomp(adapter, bidParticipants, binding.highPrice, binding.participants);
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.bringToFront();
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -121,14 +112,12 @@ public class BidPage extends AppCompatActivity {
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.custom_dialog01);
 
-        EditText editPrice = (EditText) findViewById(R.id.editPrice);
-        ImageView bidButton = (ImageView) findViewById(R.id.bidbutton);
-        bidButton.setOnClickListener(new View.OnClickListener() {
+        binding.bidbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    if(!editPrice.getText().toString().equals("")){
-                        hupstomp.sendMessage(itemId, Constants.userId, editPrice.getText().toString());
+                    if(!binding.editPrice.getText().toString().equals("")){
+                        hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     }
                 }catch(JSONException e) {
                     e.printStackTrace();
@@ -139,8 +128,8 @@ public class BidPage extends AppCompatActivity {
         });
 
         // -----------만약 낙찰되었을 때에----------(임시) //
-        finalPrice = Integer.parseInt(highPrice.getText().toString());
-        if(itemLeftTime.getText().toString().equals("0분 전")) {
+        finalPrice = Integer.parseInt(binding.highPrice.getText().toString());
+        if(binding.itemLeftTime.getText().toString().equals("0분 전")) {
             for (int i = 0; i < ptAdapter.getItemCount() - 1; i++) {
                 int maxprice = bidParticipants.get(i).getPtPrice();
                 if (maxprice == finalPrice) {
@@ -260,13 +249,13 @@ public class BidPage extends AppCompatActivity {
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             if(response.body().getFileNames().size()!=0){
                 Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
-                        .into(bidImage); }
+                        .into(binding.bidImage); }
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
             String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
+            binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -285,7 +274,7 @@ public class BidPage extends AppCompatActivity {
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
 
-            highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
+            binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -302,7 +291,7 @@ public class BidPage extends AppCompatActivity {
 
         @Override
         public void onSuccessResponse(Response<ParticipantsResponse> response) {
-            participants.setText(String.valueOf(response.body().getParticipantsCount()));
+            binding.participants.setText(String.valueOf(response.body().getParticipantsCount()));
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
@@ -351,9 +340,9 @@ public class BidPage extends AppCompatActivity {
             ptAdapter.notifyDataSetChanged();
             userCount++;
             if(response.body().getUserId().equals(myId)) {
-                ly_editPrice.setVisibility(View.GONE);
+                binding.lyEditPrice.setVisibility(View.GONE);
             }else {
-                ly_editPrice.setVisibility(View.VISIBLE);
+                binding.lyEditPrice.setVisibility(View.VISIBLE);
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
