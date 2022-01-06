@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityChatBinding;
+import com.example.auctionapp.databinding.ActivityItemlistBinding;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
@@ -44,14 +46,14 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ItemList extends Fragment {
+    private ActivityItemlistBinding binding;
 
-    ViewGroup viewGroup;
     ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
     List<ItemData> itemDataList = new ArrayList<>();
     int heartCount;
     int participantCount;
-    RecyclerView recyclerView;
+//    RecyclerView recyclerView;
 
     @Override
     public void onResume() {
@@ -65,18 +67,17 @@ public class ItemList extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_itemlist, container, false);
-
-        recyclerView = viewGroup.findViewById(R.id.recyclerView);
+        binding = ActivityItemlistBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setAdapter(adapter);
 
         init();
         getData();
 
-        return viewGroup;
+        return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -85,7 +86,6 @@ public class ItemList extends Fragment {
 
     private void init(){
         itemDataList.clear();
-
 
         adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
             @Override
@@ -97,11 +97,11 @@ public class ItemList extends Fragment {
         });
 
         //구분선
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
+        binding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-        ImageView searchView = (ImageView) viewGroup.findViewById(R.id.searchView);
-        searchView.setOnClickListener(new View.OnClickListener() {
+//        ImageView searchView = (ImageView) viewGroup.findViewById(R.id.searchView);
+        binding.searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Search.class);
@@ -140,9 +140,6 @@ public class ItemList extends Fragment {
 //                tmpMinute = tmp % 60;
 //                tmp = tmp / 60;
 //                tmpHour = tmp % 60
-
-
-
 
                 tmpHour = tmpMinute % 60;
                 tmpMinute = tmpMinute / 60;
