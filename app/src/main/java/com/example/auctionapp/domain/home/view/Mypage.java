@@ -59,7 +59,6 @@ import static android.content.ContentValues.TAG;
 public class Mypage extends Fragment {
     private ActivityMypageBinding binding;
 
-    LinearLayout goLogin;
     TextView logout_button;
 
     GoogleSignInClient mGoogleSignInClient;
