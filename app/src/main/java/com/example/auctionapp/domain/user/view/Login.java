@@ -60,14 +60,6 @@ import retrofit2.Response;
 public class Login extends AppCompatActivity {
     private ActivityLoginBinding binding;
 
-//    ImageView loginBtn;
-//    ImageView btn_kakao_login;
-//    ImageView btn_google_login;
-//    ImageView btn_naver_login;
-//    EditText edit_id;
-//    EditText edit_pw;
-//    TextView signUp_tv;
-
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
     GoogleSignInClient mGoogleSignInClient;
