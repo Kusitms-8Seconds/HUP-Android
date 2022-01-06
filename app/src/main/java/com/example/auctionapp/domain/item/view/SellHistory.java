@@ -8,9 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.databinding.ActivitySellHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 
 public class SellHistory extends AppCompatActivity {
+    private ActivitySellHistoryBinding binding;
 
     SellHistoryOngoing sellHistoryOngoing;
     SellHistoryEnd sellHistoryEnd;
@@ -18,15 +21,16 @@ public class SellHistory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sell_history);
+        binding = ActivitySellHistoryBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         sellHistoryOngoing = new SellHistoryOngoing();
         sellHistoryEnd = new SellHistoryEnd();
 
         getSupportFragmentManager().beginTransaction().add(R.id.sell_history_fragment, sellHistoryOngoing).commit();
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.sellhistory_tabs);
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.sellhistoryTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -49,9 +53,8 @@ public class SellHistory extends AppCompatActivity {
             }
         });
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.bringToFront();
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
