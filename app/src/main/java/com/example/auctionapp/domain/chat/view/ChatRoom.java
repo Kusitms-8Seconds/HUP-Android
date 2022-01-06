@@ -96,8 +96,8 @@ public class ChatRoom extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = database.getReference();
 
-        myuid = String.valueOf(Constants.userId);
-        destUid = "상대방";
+        myuid = "상대방";
+        destUid = "15";
 //        Intent intent = getIntent();
 //        destUid = intent.getStringExtra("destUid");
 //        EndItemId = intent.getLongExtra("itemId", 0);
@@ -112,7 +112,7 @@ public class ChatRoom extends AppCompatActivity {
         chattingItemImage.setClipToOutline(true);
 
         //상품 정보 가져오기
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(8))
                 .enqueue(MainRetrofitTool.getCallback(new ChatRoom.getItemDetailsCallback()));
 
         if (editText.getText().toString() == null) button.setEnabled(false);
@@ -129,7 +129,7 @@ public class ChatRoom extends AppCompatActivity {
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put("itemId", Long.valueOf(7));    //상품 id ?
+                chatModel.itemId.put("itemId", Long.valueOf(8));    //상품 id ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {

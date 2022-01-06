@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityChatBinding;
+import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
@@ -53,14 +55,13 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class Chat extends Fragment {
-
-    ViewGroup viewGroup;
+    private ActivityChatBinding binding;
 
     //firebase
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     //uid
-    String myuid = String.valueOf(Constants.userId);
+    String myuid = "상대방";
     String chatRoomUid;
     Long itemId;
     //chatting room list
@@ -71,17 +72,18 @@ public class Chat extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_chat, container, false);
+        binding = ActivityChatBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = database.getReference();
 
-        ListView chattingRoomListView = (ListView) viewGroup.findViewById(R.id.chattingRoomListView);
+//        ListView chattingRoomListView = (ListView) viewGroup.findViewById(R.id.chattingRoomListView);
         chatListAdapter = new chatListAdapter(this.getContext(), chatroomList);
-        chattingRoomListView.setAdapter(chatListAdapter);
+        binding.chattingRoomListView.setAdapter(chatListAdapter);
         getChatList();
 
-        chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
@@ -94,7 +96,7 @@ public class Chat extends Fragment {
             }
         });
 
-        return viewGroup;
+        return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -229,7 +231,7 @@ class chatListAdapter extends BaseAdapter {
         itemImageImageView.setClipToOutline(true);
 //        Long itemIdL = data.get(position).getItemId();
         // 상품 이미지 load  //임시
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(7))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(8))
                 .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
         profileNameTextView.setText(data.get(position).getProfileName());
