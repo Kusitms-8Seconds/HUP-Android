@@ -15,10 +15,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityChatRoomBinding;
+import com.example.auctionapp.databinding.ActivityNoticeBinding;
 
 import java.util.ArrayList;
 
 public class Notice extends AppCompatActivity {
+    private ActivityNoticeBinding binding;
 
     ArrayList<NoticeData> noticeList = new ArrayList<NoticeData>();
     NoticeAdapter noticeAdapter;
@@ -26,15 +29,16 @@ public class Notice extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice);
+        binding = ActivityNoticeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        ListView noticeListView = (ListView) findViewById(R.id.noticeListView);
         noticeAdapter = new NoticeAdapter(this.getApplicationContext(), noticeList);
-        noticeListView.setAdapter(noticeAdapter);
+        binding.noticeListView.setAdapter(noticeAdapter);
 
         init();
 
-        noticeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.noticeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String noticeTitle = noticeList.get(position).getNoticeTitle();
@@ -46,9 +50,8 @@ public class Notice extends AppCompatActivity {
             }
         });
 
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
+        binding.goback.bringToFront();
+        binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
