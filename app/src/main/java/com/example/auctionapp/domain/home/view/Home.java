@@ -1,7 +1,5 @@
 package com.example.auctionapp.domain.home.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,20 +19,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityHomeBinding;
-import com.example.auctionapp.databinding.ActivityMainBinding;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.view.BestItem;
-import com.example.auctionapp.domain.item.view.BestItemAdapter;
-import com.example.auctionapp.domain.item.view.ItemData;
+import com.example.auctionapp.domain.item.model.BestItem;
+import com.example.auctionapp.domain.item.controller.BestItemAdapter;
 import com.example.auctionapp.domain.item.view.ItemDetail;
-import com.example.auctionapp.domain.item.view.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
-import com.example.auctionapp.domain.pricesuggestion.view.AuctionNow;
-import com.example.auctionapp.domain.pricesuggestion.view.AuctionNowAdapter;
+import com.example.auctionapp.domain.item.model.AuctionNow;
+import com.example.auctionapp.domain.item.controller.AuctionNowAdapter;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -48,12 +41,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;

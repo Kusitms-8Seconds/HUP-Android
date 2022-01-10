@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,10 +23,11 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
-import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
-import com.example.auctionapp.domain.home.view.Home;
+import com.example.auctionapp.domain.item.controller.ItemDetailViewPagerAdapter;
+import com.example.auctionapp.domain.item.controller.qnaAdapter;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.item.model.qnaData;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
@@ -43,8 +43,6 @@ import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -429,122 +427,5 @@ public class ItemDetail extends AppCompatActivity {
         }
     }
 }
-class qnaData{
-    private String title;
-    private String date;
-    private String id;
-    private boolean state;  //true - 답변완료, false - 답변예정
-    private boolean isFolded;
-
-    public qnaData(){
-
-    }
-
-    public qnaData(String title, String date, String id, boolean state, boolean isFolded){
-        this.title = title;
-        this.date = date;
-        this.id = id;
-        this.state = state;
-        this.isFolded = isFolded;
-    }
-    public String getTitle() {
-        return this.title;
-    }
-    public String getDate(){
-        return this.date;
-    }
-    public String getId(){
-        return this.id;
-    }
-    public Boolean getState(){
-        return this.state;
-    }
-    public Boolean getFolded(){
-        return this.isFolded;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setDate(String date) {
-        this.date = date;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public void setState(Boolean state) {
-        this.state = state;
-    }
-    public void setFolded(Boolean isFolded) {
-        this.isFolded = isFolded;
-    }
-
-}
 
 
-
-class qnaAdapter extends BaseAdapter {
-    Context mContext = null;
-    LayoutInflater mLayoutInflater = null;
-    private ArrayList<qnaData> data;
-    private TextView titleTextView;
-    private TextView dateTextView;
-    private TextView idTextView;
-    private TextView stateTextView;
-    private  ImageView icon;
-    private ConstraintLayout ly_answer;
-
-
-    public qnaAdapter() {}
-    public qnaAdapter(Context context, ArrayList<qnaData> dataArray) {
-        mContext = context;
-        data = dataArray;
-        mLayoutInflater = LayoutInflater.from(mContext);
-    }
-
-
-    @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public qnaData getItem(int position) {
-        return data.get(position);
-    }
-
-
-    public View getView(int position, View converView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.custom_qna_list, null);
-
-        titleTextView = (TextView) view.findViewById(R.id.question_title);
-        titleTextView.setText(data.get(position).getTitle());
-        dateTextView = (TextView) view.findViewById(R.id.question_date);
-        dateTextView.setText(data.get(position).getDate());
-        idTextView = (TextView) view.findViewById(R.id.question_id);
-        idTextView.setText(data.get(position).getId());
-        stateTextView = (TextView) view.findViewById(R.id.qna_state);
-        if(data.get(position).getState()) {
-            stateTextView.setText("답변완료");
-            stateTextView.setTextColor(Color.BLUE);
-        }else {
-            stateTextView.setText("답변예정");
-        }
-        icon = (ImageView) view.findViewById(R.id.foldIcon);
-        ly_answer = (ConstraintLayout) view.findViewById(R.id.ly_answer);
-        if(!data.get(position).getFolded()) {
-            ly_answer.setVisibility(View.VISIBLE);
-            icon.setImageResource(R.drawable.down);
-        }else {
-            ly_answer.setVisibility(View.GONE);
-            icon.setImageResource(R.drawable.fold_up);
-        }
-
-        return view;
-    }
-
-}

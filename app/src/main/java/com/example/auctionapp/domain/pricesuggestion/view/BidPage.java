@@ -2,7 +2,6 @@ package com.example.auctionapp.domain.pricesuggestion.view;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -12,22 +11,20 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ShareCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
-import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.domain.item.controller.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.view.ItemDetail;
-import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
+import com.example.auctionapp.domain.item.model.BidParticipants;
+import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;

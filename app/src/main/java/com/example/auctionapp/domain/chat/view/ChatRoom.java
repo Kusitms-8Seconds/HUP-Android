@@ -1,14 +1,12 @@
 package com.example.auctionapp.domain.chat.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityChatRoomBinding;
-import com.example.auctionapp.databinding.ActivityMainBinding;
-import com.example.auctionapp.domain.home.view.Mypage;
+import com.example.auctionapp.domain.chat.model.ChatModel;
+import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.view.ItemDetail;
-import com.example.auctionapp.domain.item.view.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
@@ -44,9 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -420,56 +414,4 @@ public class ChatRoom extends AppCompatActivity {
         }
     }
 }
-class User {
-    public String name;
-    public String profileImgUrl;
-    public Long uid;
 
-    public User() { }
-
-    public User(String name, String profileImgUrl, Long uid) {
-        this.name = name;
-        this.profileImgUrl = profileImgUrl;
-        this.uid = uid;
-    }
-}
-class ItemId {
-    public Long itemId;
-//    public Long getItemId() {return itemId;}
-}
-
-class ChatModel {
-    public Map<String, Boolean> users = new HashMap<>(); //채팅방 유저
-    public Map<String, Long> itemId = new HashMap<>(); //채팅 아이템 id
-
-    public static class Comment {
-        public String uid;
-        public String message;
-        public String timestamp;
-        public int viewType;
-
-        public Comment() {
-
-        }
-
-        public Comment(String uid, String message, String timestamp, int viewType) {
-            this.uid = uid;
-            this.message = message;
-            this.timestamp = timestamp;
-            this.viewType = viewType;
-        }
-
-        public String getUid() {
-            return uid;
-        }
-        public String getMessage() {
-            return message;
-        }
-        public String getTimestamp() {
-            return timestamp;
-        }
-        public int getViewType() {
-            return viewType;
-        }
-    }
-}
