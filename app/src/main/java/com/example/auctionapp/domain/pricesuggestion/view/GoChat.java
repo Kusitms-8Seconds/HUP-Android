@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
-import com.example.auctionapp.domain.chat.view.ChatRoom;
+import com.example.auctionapp.domain.chat.vc.ChatRoom;
 
 public class GoChat extends AppCompatActivity {
     @Override

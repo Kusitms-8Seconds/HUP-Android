@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityMainBinding;
-import com.example.auctionapp.domain.chat.view.Chat;
+import com.example.auctionapp.domain.chat.vc.Chat;
 import com.example.auctionapp.domain.home.view.Home;
 import com.example.auctionapp.domain.mypage.vc.Mypage;
-import com.example.auctionapp.domain.upload.controller.UploadPage;
-import com.example.auctionapp.domain.item.view.ItemList;
+import com.example.auctionapp.domain.upload.vc.UploadPage;
+import com.example.auctionapp.domain.item.vc.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

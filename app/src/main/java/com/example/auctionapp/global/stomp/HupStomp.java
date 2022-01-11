@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.model.BidParticipants;
-import com.example.auctionapp.domain.item.controller.PTAdapter;
+import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;

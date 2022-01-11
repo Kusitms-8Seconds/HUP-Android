@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="50px"
     android:layout_marginRight="50px"
-    tools:context=".domain.item.view.ItemList">
+    tools:context=".domain.item.vc.ItemList">
 
     <ImageView
         android:id="@+id/searchView"
