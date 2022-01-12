@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.item.model;
+package com.example.auctionapp.domain.home.model;
 
 import android.view.LayoutInflater;
 import android.view.View;

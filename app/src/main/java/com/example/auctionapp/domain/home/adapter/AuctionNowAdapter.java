@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.item.adapter;
+package com.example.auctionapp.domain.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
-import com.example.auctionapp.domain.item.model.AuctionNow;
+import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;

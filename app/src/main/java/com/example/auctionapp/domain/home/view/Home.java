@@ -1,19 +1,15 @@
 package com.example.auctionapp.domain.home.view;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,28 +17,18 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.presenter.MainPresenter;
-import com.example.auctionapp.domain.item.constant.ItemConstants;
-import com.example.auctionapp.domain.item.dto.BestItemResponse;
-import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.model.BestItem;
-import com.example.auctionapp.domain.item.adapter.BestItemAdapter;
+import com.example.auctionapp.domain.home.model.BestItem;
+import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.item.vc.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
-import com.example.auctionapp.domain.item.model.AuctionNow;
-import com.example.auctionapp.domain.item.adapter.AuctionNowAdapter;
-import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
-import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.global.dto.PaginationDto;
+import com.example.auctionapp.domain.home.model.AuctionNow;
+import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 

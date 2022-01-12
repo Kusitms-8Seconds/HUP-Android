@@ -2,18 +2,16 @@ package com.example.auctionapp.domain.home.presenter;
 
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.auctionapp.domain.home.view.Home;
 import com.example.auctionapp.domain.home.view.MainView;
-import com.example.auctionapp.domain.item.adapter.AuctionNowAdapter;
+import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.model.AuctionNow;
-import com.example.auctionapp.domain.item.model.BestItem;
+import com.example.auctionapp.domain.home.model.AuctionNow;
+import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
