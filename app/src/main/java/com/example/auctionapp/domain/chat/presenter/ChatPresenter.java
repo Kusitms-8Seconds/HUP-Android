@@ -19,9 +19,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChatPresenter implements Presenter{
-    private ChatView view;
-    private chatListData model;
+public class ChatPresenter implements ChatPresenterInterface {
+    //firebase
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    //uid___수정필요
+    String myuid = "상대방";
+    String chatRoomUid;
+    Long itemId;
+    //chatting room list
+    ArrayList<chatListData> chatroomList = new ArrayList<chatListData>();
+    com.example.auctionapp.domain.chat.adapter.chatListAdapter chatListAdapter;
 
     // Attributes
     private ChatView chatView;
@@ -34,18 +42,6 @@ public class ChatPresenter implements Presenter{
         this.mBinding = mBinding;
         this.context = getApplicationContext;
     }
-
-    //firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-    //uid___수정필요
-    String myuid = "상대방";
-    String chatRoomUid;
-    Long itemId;
-    //chatting room list
-    ArrayList<chatListData> chatroomList = new ArrayList<chatListData>();
-    com.example.auctionapp.domain.chat.adapter.chatListAdapter chatListAdapter;
-
 
     @Override
     public void init() {
