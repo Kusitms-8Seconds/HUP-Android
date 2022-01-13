@@ -23,7 +23,7 @@ import com.example.auctionapp.domain.item.vc.Interests;
 import com.example.auctionapp.domain.item.vc.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
-import com.example.auctionapp.domain.user.vc.Login;
+import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

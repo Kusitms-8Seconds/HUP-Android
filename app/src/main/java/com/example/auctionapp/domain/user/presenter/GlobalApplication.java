@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.vc;
+package com.example.auctionapp.domain.user.presenter;
 
 import android.app.Application;
 import android.content.Context;

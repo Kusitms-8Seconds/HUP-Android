@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.vc;
+package com.example.auctionapp.domain.user.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,6 +20,7 @@ import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
+import com.example.auctionapp.domain.user.presenter.LoginPresenter;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
@@ -52,8 +53,9 @@ import com.nhn.android.naverlogin.OAuthLoginHandler;
 
 import retrofit2.Response;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements LoginView{
     private ActivityLoginBinding binding;
+    LoginPresenter presenter = new LoginPresenter(this);
 
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
@@ -85,8 +87,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
-                RetrofitTool.getAPIWithNullConverter().login(loginRequest)
-                        .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+                presenter.appLogin(loginRequest);
+
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -123,9 +125,8 @@ public class Login extends AppCompatActivity {
                 // 로그인 되어있는 경우
                 if (gsa != null) {
                     String idToken = gsa.getIdToken();
-                    OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-                    RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
-                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+                    presenter.googleLogin(idToken);
+
                     System.out.println("userId"+Constants.userId);
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -153,23 +154,7 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
-        @Override
-        public void onSuccessResponse(Response<LoginResponse> response) {
-            Constants.userId = response.body().getUserId();
-            Constants.token = response.body().getToken();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 
-        }
-        @Override
-        public void onFailResponse(Response<LoginResponse> response) {
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -224,34 +209,7 @@ public class Login extends AppCompatActivity {
                 Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
                 Log.d(TAG, "handleSignInResult:idToken "+idToken);
 
-                /* ---------retrofit 연습---------
-                Retrofit googleRetrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8000")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                RestAPI service1 = googleRetrofit.create(RestAPI.class);
-                Call<RetrofitClass> call = service1.getIDtoken();
-                call.enqueue(new Callback<RetrofitClass>() {
-                    @Override
-                    public void onResponse(Call<RetrofitClass> call, Response<RetrofitClass> response) {
-                        if(response.isSuccessful()) {
-                            //정상적으로 통신이 성공한 경우
-                            RetrofitClass idToken = response.body();
-                            Log.d(TAG, "onResponse: 성공, idToken: " + idToken.toString());
-                        }else {
-                            Log.d(TAG, "onResponse: 실패");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<RetrofitClass> call, Throwable t) {
-                        Log.d(TAG, "onFailure: " + t.getMessage());
-                    }
-                });
-                 --------------------------------- */
-                OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-                RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
-                        .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+                presenter.googleLogin(idToken);
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -330,9 +288,8 @@ public class Login extends AppCompatActivity {
                                     String accessToken = AuthApiClient.getInstance().getTokenManagerProvider()
                                             .getManager().getToken().getAccessToken();
                                     Log.d("KAKAO_API", "accessToken: "+ accessToken);
-                                    OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest = new OAuth2KakaoLoginRequest(accessToken);
-                                    RetrofitTool.getAPIWithNullConverter().kakaoAccessTokenValidation(oAuth2KakaoLoginRequest)
-                                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+
+                                    presenter.kakaoLogin(accessToken);
 
                                 } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 프로필 정보 획득 가능
@@ -350,6 +307,7 @@ public class Login extends AppCompatActivity {
         }
     }
     //naver login method
+    @Override
     public void naverSignIn() {
         mOAuthLoginModule = OAuthLogin.getInstance();
         mOAuthLoginModule.init(
@@ -376,12 +334,7 @@ public class Login extends AppCompatActivity {
                     Log.i("LoginData","expiresAt : "+ expiresAt);
                     Log.i("LoginData","tokenType : "+ tokenType);
 
-                    OAuth2NaverLoginRequest oAuth2NaverLoginRequest = new OAuth2NaverLoginRequest(accessToken);
-                    RetrofitTool.getAPIWithNullConverter().naverAccessTokenValidation(oAuth2NaverLoginRequest)
-                            .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-
-                    System.out.println("testnaver");
-
+                    presenter.naverLogin(accessToken);
                     onBackPressed();
 
                 } else {
