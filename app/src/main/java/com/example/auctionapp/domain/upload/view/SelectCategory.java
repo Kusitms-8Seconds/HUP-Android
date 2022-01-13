@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.upload.vc;
+package com.example.auctionapp.domain.upload.view;
 
 import android.content.Intent;
 import android.graphics.drawable.PaintDrawable;

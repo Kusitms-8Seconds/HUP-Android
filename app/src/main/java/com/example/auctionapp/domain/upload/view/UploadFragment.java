@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.upload.vc;
+package com.example.auctionapp.domain.upload.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.auctionapp.R;
-import com.example.auctionapp.domain.upload.vc.UploadPage;
 
 public class UploadFragment extends Fragment {
 

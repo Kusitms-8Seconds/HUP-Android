@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.upload.vc;
+package com.example.auctionapp.domain.upload.view;
 
 import android.app.DatePickerDialog;
 import android.content.ClipData;
@@ -24,6 +24,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityUploadPageBinding;
 import com.example.auctionapp.domain.upload.adapter.MultiImageAdapter;
+import com.example.auctionapp.domain.upload.presenter.UploadPresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -41,12 +42,12 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 
-public class UploadPage extends AppCompatActivity {
+public class UploadPage extends AppCompatActivity implements UploadView{
     private ActivityUploadPageBinding binding;
+    UploadPresenter presenter = new UploadPresenter(this);
 
     // DatePickerDialog
     Calendar myCalendar = Calendar.getInstance();
-    String selectedCategory;
 
     DatePickerDialog.OnDateSetListener datePickerBuyDate = new DatePickerDialog.OnDateSetListener() {
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -190,7 +191,6 @@ public class UploadPage extends AppCompatActivity {
 //                    if(next.getName().equals(editCategory.getText().toString())){
 //                        selectedCategory = next; }
 //                }
-                    choiceCategory(binding.selectItemCategory.getText().toString());
 
                     String initPriceStr = binding.editItemStartPrice.getText().toString();
                     if (initPriceStr == null) {
@@ -209,7 +209,7 @@ public class UploadPage extends AppCompatActivity {
 
                     RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Constants.userId));
                     RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"), itemName);
-                    RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), selectedCategory);
+                    RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), presenter.choiceCategory(binding.selectItemCategory.getText().toString()));
                     RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(initPrice));
                     RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
                     RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(itemStatePoint));
@@ -218,10 +218,9 @@ public class UploadPage extends AppCompatActivity {
 
                     makeMultiPart();
                     System.out.println("files체크" + files.toString());
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
+                    presenter.upload(files, userIdR,
                             itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
-                            auctionClosingDateR, descriptionR)
-                            .enqueue(MainRetrofitTool.getCallback(new UploadPage.RegisterItemCallback()));
+                            auctionClosingDateR, descriptionR);
                     //go home
                     Toast.makeText(getApplicationContext(), "상품 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);
@@ -230,56 +229,6 @@ public class UploadPage extends AppCompatActivity {
                 }
             }
 
-            private void choiceCategory(String toString) {
-                switch (toString){
-                    case "디지털 기기":
-                        selectedCategory = "eDigital";
-                        break;
-                    case "생활가전":
-                        selectedCategory = "eHouseHoldAppliance";
-                        break;
-                    case "가구/인테리어":
-                        selectedCategory = "eFurnitureAndInterior";
-                        break;
-                    case "유아동":
-                        selectedCategory = "eChildren";
-                        break;
-                    case "생활/가공식품":
-                        selectedCategory = "eDailyLifeAndProcessedFood";
-                        break;
-                    case "유아도서":
-                        selectedCategory = "eChildrenBooks";
-                        break;
-                    case "스포츠/레저":
-                        selectedCategory = "eSportsAndLeisure";
-                        break;
-                    case "여성잡화":
-                        selectedCategory = "eMerchandiseForWoman";
-                        break;
-                    case "여성의류":
-                        selectedCategory = "eWomenClothing";
-                        break;
-                    case "남성패션/잡화":
-                        selectedCategory = "eManFashionAndMerchandise";
-                        break;
-                    case "게임/취미":
-                        selectedCategory = "eGameAndHabit";
-                        break;
-                    case "뷰티/미용":
-                        selectedCategory = "eBeauty";
-                        break;
-                    case "반려동물용품":
-                        selectedCategory = "ePetProducts";
-                        break;
-                    case "도서/티켓/음반":
-                        selectedCategory = "eBookTicketAlbum";
-                        break;
-                    case "식물":
-                        selectedCategory = "ePlant";
-                        break;
-                    default:
-                }
-            }
         });
 
     }
@@ -339,6 +288,7 @@ public class UploadPage extends AppCompatActivity {
             }
         }
     }
+    @Override
     public void makeMultiPart() {
         for (int i = 0; i < fileList.size(); ++i) {
             // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
@@ -355,23 +305,8 @@ public class UploadPage extends AppCompatActivity {
         }
 
     }
-    private class RegisterItemCallback implements MainRetrofitCallback<RegisterItemResponse> {
-        @Override
-        public void onSuccessResponse(Response<RegisterItemResponse> response) {
-            RegisterItemResponse result = response.body();
-            Log.d(TAG, "retrofit success, idToken: " + result.toString());
 
-        }
-        @Override
-        public void onFailResponse(Response<RegisterItemResponse> response) {
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
+    @Override
     public String getRealpath(Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor c = managedQuery(uri, proj, null, null, null);

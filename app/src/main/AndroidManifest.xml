@@ -30,8 +30,8 @@
         <activity android:name=".domain.user.vc.Login" />
         <activity android:name=".domain.item.vc.ItemDetail" />
         <activity android:name=".domain.pricesuggestion.view.BidPage" />
-        <activity android:name=".domain.upload.vc.UploadPage" />
-        <activity android:name=".domain.upload.vc.SelectCategory" />
+        <activity android:name=".domain.upload.view.UploadPage" />
+        <activity android:name=".domain.upload.view.SelectCategory" />
         <activity android:name=".domain.item.vc.Search" />
         <activity android:name=".domain.item.vc.AuctionHistory" />
         <activity android:name=".domain.item.vc.SellHistory" />
