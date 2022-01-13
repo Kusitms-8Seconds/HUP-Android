@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.mypage.notice.view.Notice;
+import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
@@ -45,11 +46,7 @@ import static android.content.ContentValues.TAG;
 
 public class Mypage extends Fragment implements MypageView{
     private ActivityMypageBinding binding;
-
-    TextView logout_button;
-
-    GoogleSignInClient mGoogleSignInClient;
-    OAuthLogin mOAuthLoginModule;
+    private MypagePresenter presenter;
 
     @Nullable
     @Override
@@ -58,28 +55,19 @@ public class Mypage extends Fragment implements MypageView{
         binding = ActivityMypageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        presenter = new MypagePresenter(this, binding, getActivity());
 
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
-//        if(Constants.userId!=null){
-//            UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
-//            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
-//                    .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
-//        }
 
-        // google 객체
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail() // email addresses도 요청함
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
-        // naver 객체
-        mOAuthLoginModule = OAuthLogin.getInstance();
+        presenter.init();
+        presenter.getUserInfo();
 
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                socialLogOut();
+                presenter.socialLogOut();
                 Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
 
                 Constants.token = null;
@@ -171,55 +159,6 @@ public class Mypage extends Fragment implements MypageView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
-    @Override
-    public void socialLogOut() {
-        //kakao
-        UserManagement.getInstance()
-                .requestLogout(new LogoutResponseCallback() {
-                    @Override
-                    public void onCompleteLogout() {
-                    }
-                });
-        //google
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-        //naver
-        mOAuthLoginModule.logout(getContext());
-    }
-
-    public class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
-        @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
-            System.out.println("username"+response.body().getUsername());
-            binding.myPageUserName.setText(response.body().getUsername());
-            if(response.body().getPicture()!=null){
-                Glide.with(getContext()).load(response.body().getPicture()).into(binding.profileImg);
-            }
-            binding.loginIcon.setVisibility(View.INVISIBLE);
-            logout_button.setVisibility(View.VISIBLE);
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-
-        }
-        @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
 
 
 }
