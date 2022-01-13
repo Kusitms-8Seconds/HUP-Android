@@ -46,7 +46,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class Mypage extends Fragment {
+public class Mypage extends Fragment implements MypageView{
     private ActivityMypageBinding binding;
 
     TextView logout_button;
@@ -65,11 +65,11 @@ public class Mypage extends Fragment {
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId"+Constants.userId);
         System.out.println("userToken"+Constants.token);
-        if(Constants.userId!=null){
-            UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
-                    .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
-        }
+//        if(Constants.userId!=null){
+//            UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
+//            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
+//                    .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
+//        }
 
         // google 객체
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -175,13 +175,13 @@ public class Mypage extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void socialLogOut() {
+    @Override
+    public void socialLogOut() {
         //kakao
         UserManagement.getInstance()
                 .requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
-                        Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
         //google
@@ -189,15 +189,13 @@ public class Mypage extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
         //naver
         mOAuthLoginModule.logout(getContext());
-        Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+    public class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
         @Override
         public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
             System.out.println("username"+response.body().getUsername());
