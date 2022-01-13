@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.mypage.notice.vc;
+package com.example.auctionapp.domain.mypage.notice.view;
 
 import android.content.Intent;
 import android.os.Bundle;

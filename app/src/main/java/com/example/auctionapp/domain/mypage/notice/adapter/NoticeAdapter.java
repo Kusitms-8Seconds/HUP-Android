@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.mypage.notice.vc;
+package com.example.auctionapp.domain.mypage.notice.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

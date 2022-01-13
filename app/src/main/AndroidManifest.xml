@@ -35,8 +35,8 @@
         <activity android:name=".domain.item.vc.Search" />
         <activity android:name=".domain.item.vc.AuctionHistory" />
         <activity android:name=".domain.item.vc.SellHistory" />
-        <activity android:name=".domain.mypage.notice.vc.Notice" />
-        <activity android:name=".domain.mypage.notice.vc.NoticeDetail" />
+        <activity android:name=".domain.mypage.notice.view.Notice" />
+        <activity android:name=".domain.mypage.notice.view.NoticeDetail" />
         <activity android:name=".domain.scrap.vc.Scrap" />
         <activity android:name=".domain.item.vc.Interests" />
         <activity android:name=".domain.chat.view.ChatRoom" />

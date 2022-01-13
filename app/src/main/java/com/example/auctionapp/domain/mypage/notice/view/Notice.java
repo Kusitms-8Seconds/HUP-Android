@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.mypage.notice.vc;
+package com.example.auctionapp.domain.mypage.notice.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import android.widget.AdapterView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.databinding.ActivityNoticeBinding;
+import com.example.auctionapp.domain.mypage.notice.adapter.NoticeAdapter;
 import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
 
 import java.util.ArrayList;
 
-public class Notice extends AppCompatActivity {
+public class Notice extends AppCompatActivity implements NoticeView{
     private ActivityNoticeBinding binding;
 
     ArrayList<NoticeData> noticeList = new ArrayList<NoticeData>();
@@ -51,6 +52,7 @@ public class Notice extends AppCompatActivity {
         });
 
     }
+    @Override
     public void init() {
         noticeList.add(new NoticeData("[점검] 서비스 점검 예정 안내 ", "2021.11.24"));
         noticeList.add(new NoticeData("개인정보 처리방침 안내", "2021.11.20"));

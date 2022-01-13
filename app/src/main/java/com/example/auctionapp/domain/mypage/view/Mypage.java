@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.mypage.vc;
+package com.example.auctionapp.domain.mypage.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
-import com.example.auctionapp.domain.mypage.notice.vc.Notice;
+import com.example.auctionapp.domain.mypage.notice.view.Notice;
 import com.example.auctionapp.domain.scrap.vc.Scrap;
 import com.example.auctionapp.domain.item.vc.SellHistory;
 import com.example.auctionapp.domain.item.vc.Interests;

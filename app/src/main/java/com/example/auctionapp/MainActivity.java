@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityMainBinding;
 import com.example.auctionapp.domain.chat.view.Chat;
 import com.example.auctionapp.domain.home.view.Home;
-import com.example.auctionapp.domain.mypage.vc.Mypage;
+import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.upload.vc.UploadPage;
 import com.example.auctionapp.domain.item.vc.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
