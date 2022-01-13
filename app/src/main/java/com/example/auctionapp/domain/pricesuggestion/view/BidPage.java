@@ -93,12 +93,12 @@ public class BidPage extends AppCompatActivity {
 
         getData();
 
-        itemLeftTime = findViewById(R.id.itemLeftTime);
-        highPrice = findViewById(R.id.highPrice);
-        participants = findViewById(R.id.participants);
-        auctionState = findViewById(R.id.auctionState);
-        bidImage = findViewById(R.id.bidImage);
-        ly_editPrice = findViewById(R.id.ly_editPrice);
+//        itemLeftTime = findViewById(R.id.itemLeftTime);
+//        highPrice = findViewById(R.id.highPrice);
+//        participants = findViewById(R.id.participants);
+//        auctionState = findViewById(R.id.auctionState);
+//        bidImage = findViewById(R.id.bidImage);
+//        ly_editPrice = findViewById(R.id.ly_editPrice);
 
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
@@ -265,7 +265,7 @@ public class BidPage extends AppCompatActivity {
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
             String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
+            binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override

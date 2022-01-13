@@ -37,7 +37,7 @@
         <activity android:name=".domain.item.vc.SellHistory" />
         <activity android:name=".domain.mypage.notice.view.Notice" />
         <activity android:name=".domain.mypage.notice.view.NoticeDetail" />
-        <activity android:name=".domain.scrap.vc.Scrap" />
+        <activity android:name=".domain.scrap.view.Scrap" />
         <activity android:name=".domain.item.vc.Interests" />
         <activity android:name=".domain.chat.view.ChatRoom" />
         <activity android:name=".domain.pricesuggestion.view.FeesPage" />

@@ -1,28 +1,17 @@
-package com.example.auctionapp.domain.scrap.vc;
+package com.example.auctionapp.domain.scrap.presenter;
 
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.auctionapp.R;
-import com.example.auctionapp.domain.item.vc.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.adapter.ScrapAdapter;
-import com.example.auctionapp.domain.scrap.model.ScrapItem;
 import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
+import com.example.auctionapp.domain.scrap.model.ScrapItem;
+import com.example.auctionapp.domain.scrap.view.Scrap;
+import com.example.auctionapp.domain.scrap.view.ScrapView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -41,76 +30,25 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class Scrap extends AppCompatActivity {
+public class ScrapPresenter implements Presenter{
+    private final ScrapView view;
+    private final ScrapItem model;
 
     ScrapAdapter adapter;
-    RecyclerView recyclerView;
     ScrapItem data;
     List<ScrapItem> scrapItemsList = new ArrayList<>();
     int maximumPriceCount;
 
+    public ScrapPresenter(ScrapView view){
+        this.view = view;
+        this.model = new ScrapItem();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrap);
-
-        init();
-        getData();
-
-        ImageView goBack = (ImageView) findViewById(R.id.goback);
-        goBack.bringToFront();
-        goBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-    private void init(){
-        recyclerView = findViewById(R.id.scrapRecyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        adapter = new ScrapAdapter();
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new ScrapAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), ItemDetail.class);
-                intent.putExtra("itemId", scrapItemsList.get(position).getItemId());
-                startActivity(intent);
-            }
-        });
-
-        //구분선
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getApplicationContext()).getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-    }
-
-    private void getData(){
+    public void getData() {
         scrapItemsList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllScrapsByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllScrapsCallback()));
-
-//        setAnimation();
-    }
-    public void setAnimation() {
-        TranslateAnimation translateAnimation = new TranslateAnimation(200, 0, 200, 0);
-        Animation alphaAnimation = new AlphaAnimation(0, 1);
-        translateAnimation.setDuration(500);
-        alphaAnimation.setDuration(1300);
-        AnimationSet animation = new AnimationSet(true);
-        animation.addAnimation(translateAnimation);
-        animation.addAnimation(alphaAnimation);
-        recyclerView.setAnimation(animation);
-
-
-//        Animation animation = new AlphaAnimation(0, 1);
-//        animation.setDuration(1500);
-//        recyclerView.setAnimation(animation);
     }
 
     private class getAllScrapsCallback implements MainRetrofitCallback<PaginationDto<List<ScrapDetailsResponse>>> {

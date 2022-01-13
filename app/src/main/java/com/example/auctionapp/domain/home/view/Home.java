@@ -37,8 +37,10 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class Home extends Fragment implements MainView{
-    private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
+    private ActivityHomeBinding binding;
+    MainPresenter presenter = new MainPresenter(this);
 
+    private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
     AuctionNowAdapter adapter;
     AuctionNow data;
     BestItem bestItem;
@@ -50,9 +52,6 @@ public class Home extends Fragment implements MainView{
     ViewPager bestItemViewPager;
 
     RecyclerView AuctionNowRecyclerView;
-
-    private ActivityHomeBinding binding;
-    MainPresenter presenter = new MainPresenter(this);
 
     @Nullable
     @Override
