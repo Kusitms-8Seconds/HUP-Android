@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.chat.vc;
+package com.example.auctionapp.domain.chat.view;
 
 import android.content.Context;
 import android.os.Build;

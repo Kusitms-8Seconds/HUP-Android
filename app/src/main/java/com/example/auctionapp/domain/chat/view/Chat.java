@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.chat.vc;
+package com.example.auctionapp.domain.chat.view;
 
 import android.content.Intent;
 import android.os.Build;
@@ -17,6 +17,7 @@ import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.adapter.chatListAdapter;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
+import com.example.auctionapp.domain.chat.presenter.ChatPresenter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Chat extends Fragment {
+public class Chat extends Fragment implements ChatView {
     private ActivityChatBinding binding;
 
     //firebase
@@ -39,6 +40,7 @@ public class Chat extends Fragment {
     ArrayList<chatListData> chatroomList = new ArrayList<chatListData>();
     com.example.auctionapp.domain.chat.adapter.chatListAdapter chatListAdapter;
 
+    ChatPresenter presenter = new ChatPresenter(this);
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,13 +48,13 @@ public class Chat extends Fragment {
         binding = ActivityChatBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        databaseReference = database.getReference();
+        init();
 
-//        ListView chattingRoomListView = (ListView) viewGroup.findViewById(R.id.chattingRoomListView);
         chatListAdapter = new chatListAdapter(this.getContext(), chatroomList);
         binding.chattingRoomListView.setAdapter(chatListAdapter);
+
         getChatList();
+        chatListAdapter.notifyDataSetChanged();
 
         binding.chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,6 +75,12 @@ public class Chat extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+    public void init() {
+        database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        databaseReference = database.getReference();
+    }
+
     public void getChatList() {
         databaseReference.child("chatrooms").orderByChild("users/"+myuid).equalTo(true).addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -108,6 +116,8 @@ public class Chat extends Fragment {
             }
         });
     }
+
+
     public void setChatList(String chatRoomUid, String oppId, Long itemIdL) {
         databaseReference.child("chatrooms/" + chatRoomUid + "/comments").addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -134,5 +144,7 @@ public class Chat extends Fragment {
             }
         });
     }
+
+
 }
 
