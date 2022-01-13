@@ -19,7 +19,7 @@ import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.presenter.MainPresenter;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
-import com.example.auctionapp.domain.item.vc.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;

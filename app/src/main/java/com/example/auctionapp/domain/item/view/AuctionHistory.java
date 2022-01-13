@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.item.vc;
+package com.example.auctionapp.domain.item.view;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,39 +7,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.auctionapp.R;
-import com.example.auctionapp.databinding.ActivitySellHistoryBinding;
+import com.example.auctionapp.databinding.ActivityAuctionHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 
-public class SellHistory extends AppCompatActivity {
-    private ActivitySellHistoryBinding binding;
+public class AuctionHistory extends AppCompatActivity {
+    private ActivityAuctionHistoryBinding binding;
 
-    SellHistoryOngoing sellHistoryOngoing;
-    SellHistoryEnd sellHistoryEnd;
+    AuctionHistoryOngoing auctionHistoryOngoing;
+    AuctionHistoryEnd auctionHistoryEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySellHistoryBinding.inflate(getLayoutInflater());
+        binding = ActivityAuctionHistoryBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-        sellHistoryOngoing = new SellHistoryOngoing();
-        sellHistoryEnd = new SellHistoryEnd();
+        auctionHistoryOngoing = new AuctionHistoryOngoing();
+        auctionHistoryEnd = new AuctionHistoryEnd();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.sell_history_fragment, sellHistoryOngoing).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.auction_history_fragment, auctionHistoryOngoing).commit();
 
-        binding.sellhistoryTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 Fragment selected = null;
                 if(position == 0){
-                    selected = sellHistoryOngoing;
+                    selected = auctionHistoryOngoing;
                 }else if (position == 1){
-                    selected = sellHistoryEnd;
+                    selected = auctionHistoryEnd;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.sell_history_fragment, selected).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.auction_history_fragment, selected).commit();
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {

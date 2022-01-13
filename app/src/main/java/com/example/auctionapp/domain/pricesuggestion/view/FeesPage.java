@@ -14,7 +14,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityFeesPageBinding;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
-import com.example.auctionapp.domain.item.vc.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;

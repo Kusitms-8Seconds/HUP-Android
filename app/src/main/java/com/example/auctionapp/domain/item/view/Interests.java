@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.item.vc;
+package com.example.auctionapp.domain.item.view;
 
 import android.os.Bundle;
 import android.view.View;

@@ -22,7 +22,7 @@ import com.example.auctionapp.domain.chat.view.Chat;
 import com.example.auctionapp.domain.home.view.Home;
 import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.upload.view.UploadPage;
-import com.example.auctionapp.domain.item.vc.ItemList;
+import com.example.auctionapp.domain.item.view.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

@@ -24,7 +24,7 @@ import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
-import com.example.auctionapp.domain.item.vc.AuctionHistory;
+import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;

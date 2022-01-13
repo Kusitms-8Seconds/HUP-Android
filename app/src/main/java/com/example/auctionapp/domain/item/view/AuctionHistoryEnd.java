@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.item.vc;
+package com.example.auctionapp.domain.item.view;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -6,18 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.R;
-import com.example.auctionapp.domain.item.adapter.AuctionHistoryOngoingAdapter;
-import com.example.auctionapp.domain.item.model.AuctionHistoryOngoingData;
-import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
+import com.example.auctionapp.domain.item.adapter.AuctionHistoryEndAdapter;
+import com.example.auctionapp.domain.item.model.AuctionHistoryEndData;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -37,51 +37,65 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class AuctionHistoryOngoing extends Fragment {
+public class AuctionHistoryEnd extends Fragment {
 
     ViewGroup viewGroup;
-    AuctionHistoryOngoingAdapter adapter;
-    AuctionHistoryOngoingData data;
-    List<AuctionHistoryOngoingData> auctionHistoryOngoingDataList;
+    AuctionHistoryEndAdapter adapter;
+    AuctionHistoryEndData data;
+    List<AuctionHistoryEndData> auctionHistoryEndDataList = new ArrayList<>();
     int maximumPriceCount;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_auction_history_ongoing, container, false);
-        auctionHistoryOngoingDataList = new ArrayList<>();
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_auction_history_end, container, false);
+
         init();
         getData();
 
         return viewGroup;
     }
-    
-    
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
     private void init(){
-        GridView gridView = (GridView) viewGroup.findViewById(R.id.auctionHistoryOngoingRecyclerView);
-        adapter = new AuctionHistoryOngoingAdapter();
-        gridView.setAdapter(adapter);
+        RecyclerView recyclerView = viewGroup.findViewById(R.id.auctionHistoryEndRecyclerView);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        adapter = new AuctionHistoryEndAdapter();
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new AuctionHistoryEndAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                AuctionHistoryOngoingData item = (AuctionHistoryOngoingData) adapter.getItem(position);
+            public void onItemClick(View v, int position) {
+//                Intent intent = new Intent(getContext(), ItemDetail.class);
+//                startActivity(intent);
             }
         });
+
+        //구분선
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
     private void getData(){
         //일단 레이아웃만
-//        AuctionHistoryOngoingData data = new AuctionHistoryOngoingData(R.drawable.rectangle, "맥북 에어 M1 실버", 200000, 270000, "12:21");
+//        AuctionHistoryEndData data = new AuctionHistoryEndData(R.drawable.rectangle, "스타벅스 리유저블 컵", 70000, "뽀로로");
 //        adapter.addItem(data);
-//        data = new AuctionHistoryOngoingData(R.drawable.rectangle, "맥북 에어 M1 실버", 200000, 270000, "12:21");
+//        data = new AuctionHistoryEndData(R.drawable.rectangle, "스타벅스 리유저블 컵", 70000, "뽀로로");
 //        adapter.addItem(data);
         maximumPriceCount = 0;
-        auctionHistoryOngoingDataList = new ArrayList<>();
+        auctionHistoryEndDataList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionByUserIdCallback()));
     }
@@ -92,7 +106,7 @@ public class AuctionHistoryOngoing extends Fragment {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                if(response.body().getData().get(i).isAcceptState()==false) {
+                if(response.body().getData().get(i).isAcceptState()==true) {
                     LocalDateTime startDateTime = LocalDateTime.now();
                     LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
                     String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
@@ -102,24 +116,21 @@ public class AuctionHistoryOngoing extends Fragment {
                     String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                     String itemName = response.body().getData().get(i).getItemName();
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
+                    String userName = response.body().getData().get(i).getUserName();
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
-                        data = new AuctionHistoryOngoingData(itemId,
+                        data = new AuctionHistoryEndData(itemId,
                                 fileNameMajor,
                                 itemName,
                                 suggestionPrice,
-                                0,
-                                minutes + "분");
+                                userName);
                     } else {
-                        data = new AuctionHistoryOngoingData(itemId,
-                                null,
+                        data = new AuctionHistoryEndData(itemId,
+                                fileNameMajor,
                                 itemName,
                                 suggestionPrice,
-                                0,
-                                minutes + "분");
+                                userName);
                     }
-                    auctionHistoryOngoingDataList.add(data);
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
-                            .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
+                    auctionHistoryEndDataList.add(data);
                 }
 //                setAnimation();
             }
@@ -137,26 +148,5 @@ public class AuctionHistoryOngoing extends Fragment {
         }
     }
 
-    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            auctionHistoryOngoingDataList.get(maximumPriceCount).setMaxPrice(response.body().getMaximumPrice());
-            adapter.addItem(auctionHistoryOngoingDataList.get(maximumPriceCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            maximumPriceCount++;
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
 }
 

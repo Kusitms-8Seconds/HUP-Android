@@ -1,11 +1,18 @@
 package com.example.auctionapp.domain.scrap.presenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.auctionapp.databinding.ActivityScrapBinding;
+import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.adapter.ScrapAdapter;
 import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
@@ -31,17 +38,43 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ScrapPresenter implements Presenter{
-    private final ScrapView view;
-    private final ScrapItem model;
-
     ScrapAdapter adapter;
     ScrapItem data;
     List<ScrapItem> scrapItemsList = new ArrayList<>();
     int maximumPriceCount;
 
-    public ScrapPresenter(ScrapView view){
-        this.view = view;
-        this.model = new ScrapItem();
+    // Attributes
+    private ScrapView scrapView;
+    private ActivityScrapBinding mBinding;
+    private Context context;
+
+    // Constructor
+    public ScrapPresenter(ScrapView scrapView, ActivityScrapBinding mBinding, Context getApplicationContext){
+        this.scrapView = scrapView;
+        this.mBinding = mBinding;
+        this.context = getApplicationContext;
+    }
+
+    @Override
+    public void init() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        mBinding.scrapRecyclerView.setLayoutManager(linearLayoutManager);
+
+        adapter = new ScrapAdapter();
+        mBinding.scrapRecyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new ScrapAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(context, ItemDetail.class);
+                intent.putExtra("itemId", scrapItemsList.get(position).getItemId());
+                context.startActivity(intent);
+            }
+        });
+
+        //구분선
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mBinding.scrapRecyclerView.getContext(), new LinearLayoutManager(context).getOrientation());
+        mBinding.scrapRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
