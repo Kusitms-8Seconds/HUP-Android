@@ -55,13 +55,9 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements LoginView{
     private ActivityLoginBinding binding;
-    LoginPresenter presenter = new LoginPresenter(this);
+    LoginPresenter presenter;
 
-    private SessionCallback sessionCallback = new SessionCallback();
-    Session session;
-    GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 0116;  //google login request code
-    OAuthLogin mOAuthLoginModule;
     Context mContext;
 
     //private String userId;
@@ -72,6 +68,8 @@ public class Login extends AppCompatActivity implements LoginView{
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        presenter = new LoginPresenter(this, binding, getApplicationContext(), Login.this);
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
         binding.goSignUp.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +85,7 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
-                presenter.appLogin(loginRequest);
+                presenter.appLoginCallback(loginRequest);
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -95,44 +93,18 @@ public class Login extends AppCompatActivity implements LoginView{
             }
         });
 
-
         //카카오 로그인
         binding.btnKakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //kakao login
-                session = Session.getCurrentSession();
-                session.addCallback(sessionCallback);
-                session.open(AuthType.KAKAO_LOGIN_ALL, Login.this);
+                presenter.kakaoLogin();
             }
         });
         //구글 로그인
         binding.btnGoogleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 앱에 필요한 사용자 데이터를 요청하도록 로그인 옵션을 설정한다.
-                // DEFAULT_SIGN_IN parameter는 유저의 ID와 기본적인 프로필 정보를 요청하는데 사용된다.
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com")
-                        .requestEmail() // email addresses도 요청함
-                        .build();
-
-                // 위에서 만든 GoogleSignInOptions을 사용해 GoogleSignInClient 객체를 만듬
-                mGoogleSignInClient = GoogleSignIn.getClient(Login.this, gso);
-
-                // 기존에 로그인 했던 계정을 확인한다.
-                GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(Login.this);
-                // 로그인 되어있는 경우
-                if (gsa != null) {
-                    String idToken = gsa.getIdToken();
-                    presenter.googleLogin(idToken);
-
-                    System.out.println("userId"+Constants.userId);
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                } else
-                    googleSignIn();
+                presenter.googleLogin();
             }
         });
         //네이버 로그인
@@ -140,7 +112,7 @@ public class Login extends AppCompatActivity implements LoginView{
         binding.btnNaverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                naverSignIn();
+                presenter.naverSignIn();
             }
         });
 
@@ -155,13 +127,10 @@ public class Login extends AppCompatActivity implements LoginView{
 
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // 세션 콜백 삭제
-        Session.getCurrentSession().removeCallback(sessionCallback);
+        presenter.onDestroy();
     }
 
     @Override
@@ -182,11 +151,6 @@ public class Login extends AppCompatActivity implements LoginView{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // google login method
-    private void googleSignIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
     // google login method
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
@@ -209,7 +173,7 @@ public class Login extends AppCompatActivity implements LoginView{
                 Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
                 Log.d(TAG, "handleSignInResult:idToken "+idToken);
 
-                presenter.googleLogin(idToken);
+                presenter.googleLoginCallback(idToken);
 
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -221,132 +185,6 @@ public class Login extends AppCompatActivity implements LoginView{
             Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
 
         }
-    }
-    //kakao session callback
-    public class SessionCallback implements ISessionCallback {
-
-        // 로그인에 성공한 상태
-        @Override
-        public void onSessionOpened() {
-            requestMe();
-        }
-
-        // 로그인에 실패한 상태
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
-        }
-
-        // 사용자 정보 요청
-        public void requestMe() {
-            UserManagement.getInstance()
-                    .me(new MeV2ResponseCallback() {
-                        @Override
-                        public void onSessionClosed(ErrorResult errorResult) {
-                            Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
-                        }
-
-                        @Override
-                        public void onFailure(ErrorResult errorResult) {
-                            Log.e("KAKAO_API", "사용자 정보 요청 실패: " + errorResult);
-                        }
-
-                        @Override
-                        public void onSuccess(MeV2Response result) {
-//                            onBackPressed();
-                            // kakao id token?
-                            Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
-//                            Log.i("KAKAO_API", "사용자 토큰: " + );
-
-
-                            UserAccount kakaoAccount = result.getKakaoAccount();
-                            if (kakaoAccount != null) {
-
-                                // 이메일
-                                String email = kakaoAccount.getEmail();
-
-                                if (email != null) {
-                                    Log.i("KAKAO_API", "email: " + email);
-
-                                } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
-                                    // 동의 요청 후 이메일 획득 가능
-                                    // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
-
-                                } else {
-                                    // 이메일 획득 불가
-                                }
-
-                                // 프로필
-                                Profile profile = kakaoAccount.getProfile();
-
-
-                                if (profile != null) {
-
-                                    Log.d("KAKAO_API", "nickname: " + profile.getNickname());
-                                    Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
-                                    Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
-                                    String accessToken = AuthApiClient.getInstance().getTokenManagerProvider()
-                                            .getManager().getToken().getAccessToken();
-                                    Log.d("KAKAO_API", "accessToken: "+ accessToken);
-
-                                    presenter.kakaoLogin(accessToken);
-
-                                } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
-                                    // 동의 요청 후 프로필 정보 획득 가능
-
-                                } else {
-                                    // 프로필 획득 불가
-                                }
-
-                            }
-                            Intent intent = new Intent(Login.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                        }
-                    });
-        }
-    }
-    //naver login method
-    @Override
-    public void naverSignIn() {
-        mOAuthLoginModule = OAuthLogin.getInstance();
-        mOAuthLoginModule.init(
-                mContext
-                ,getString(R.string.naver_client_id)
-                ,getString(R.string.naver_client_secret)
-                ,getString(R.string.naver_client_name)
-                //,OAUTH_CALLBACK_INTENT
-                // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
-        );
-
-        @SuppressLint("HandlerLeak")
-        OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
-            @Override
-            public void run(boolean success) {
-                if (success) {
-                    String accessToken = mOAuthLoginModule.getAccessToken(mContext);
-                    String refreshToken = mOAuthLoginModule.getRefreshToken(mContext);
-                    long expiresAt = mOAuthLoginModule.getExpiresAt(mContext);
-                    String tokenType = mOAuthLoginModule.getTokenType(mContext);
-
-                    Log.i("LoginData","accessToken : "+ accessToken);
-                    Log.i("LoginData","refreshToken : "+ refreshToken);
-                    Log.i("LoginData","expiresAt : "+ expiresAt);
-                    Log.i("LoginData","tokenType : "+ tokenType);
-
-                    presenter.naverLogin(accessToken);
-                    onBackPressed();
-
-                } else {
-                    String errorCode = mOAuthLoginModule
-                            .getLastErrorCode(mContext).getCode();
-                    String errorDesc = mOAuthLoginModule.getLastErrorDesc(mContext);
-                    Toast.makeText(mContext, "errorCode:" + errorCode
-                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
-                }
-            };
-        };
-        mOAuthLoginModule.startOauthLoginActivity(Login.this, mOAuthLoginHandler);
     }
 
 
