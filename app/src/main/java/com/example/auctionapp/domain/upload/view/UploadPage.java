@@ -24,6 +24,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityUploadPageBinding;
 import com.example.auctionapp.domain.upload.adapter.MultiImageAdapter;
+import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.domain.upload.presenter.UploadPresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -57,7 +58,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
-            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern(UploadConstants.EDate.datePattern.getText()));
             binding.editAuctionBuyDate.setText(formatDate.toString());
         }
     };
@@ -69,7 +70,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
-            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String formatDate = endDateTime.format(DateTimeFormatter.ofPattern(UploadConstants.EDate.datePattern.getText()));
             binding.editAuctionFinalDate.setText(formatDate.toString());
         }
     };
@@ -77,7 +78,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
     private static final String TAG = "UploadPage";
     ArrayList<Uri> uriList;   // 이미지의 uri를 담을 ArrayList 객체
     ArrayList<File> fileList;
-//    RecyclerView selectedImageRecyclerView;  // 이미지를 보여줄 리사이클러뷰
+
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
     int itemStatePoint; //item rating
     ArrayList<MultipartBody.Part> files = new ArrayList<>(); // 여러 file들을 담아줄 ArrayList
@@ -182,7 +183,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             @Override
             public void onClick(View view) {
                 if(Constants.userId == null) {
-                    Toast.makeText(getApplicationContext(), "로그인 후 상품 등록이 가능합니다.", Toast.LENGTH_SHORT).show();
+                    showToast(UploadConstants.EUploadToast.afterLogin.getText());
                 } else {
                     String itemName = binding.editItemName.getText().toString();
 //                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
@@ -194,17 +195,17 @@ public class UploadPage extends AppCompatActivity implements UploadView{
 
                     String initPriceStr = binding.editItemStartPrice.getText().toString();
                     if (initPriceStr == null) {
-                        System.out.println("경매시작가 입력하세요");
+                        showToast(UploadConstants.EUploadToast.editInitPrice.getText());
                         return;
                     }
                     int initPrice = Integer.parseInt(initPriceStr);
-                    String buyDate = binding.editAuctionBuyDate.getText().toString() + " 00:00:00";
-                    String auctionClosingDate = binding.editAuctionFinalDate.getText().toString() + " 00:00:00";
+                    String buyDate = binding.editAuctionBuyDate.getText().toString() + UploadConstants.EDate.dateZero.getText();
+                    String auctionClosingDate = binding.editAuctionFinalDate.getText().toString() + UploadConstants.EDate.dateZero.getText();
                     String description = binding.editItemContent.getText().toString();
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(UploadConstants.EDate.dateTimePattern.getText());
                     LocalDateTime buyDateTime = LocalDateTime.parse(buyDate, formatter);
-                    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern(UploadConstants.EDate.dateTimePattern.getText());
                     LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
 
                     RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Constants.userId));
@@ -222,7 +223,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                             itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                             auctionClosingDateR, descriptionR);
                     //go home
-                    Toast.makeText(getApplicationContext(), "상품 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    showToast(UploadConstants.EUploadToast.uploadComplete.getText());
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);
                     tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(tt);
@@ -243,7 +244,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         fileList = new ArrayList<>();
         if(requestCode == 2222){
             if(data == null){   // 어떤 이미지도 선택하지 않은 경우
-                Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
+                showToast(UploadConstants.EUploadToast.unselectImage.getText());
             }
             else{   // 이미지를 하나라도 선택한 경우
                 if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
@@ -263,7 +264,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                     binding.selectedImageCount.setText(String.valueOf(clipData.getItemCount()) + "/10");
 
                     if(clipData.getItemCount() > 10){   // 선택한 이미지가 11장 이상인 경우
-                        Toast.makeText(getApplicationContext(), "사진은 10장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
+                        showToast(UploadConstants.EUploadToast.imageSelectOver.getText());
                     }
                     else{   // 선택한 이미지가 1장 이상 10장 이하인 경우
                         Log.e(TAG, "multiple choice");
@@ -288,6 +289,12 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             }
         }
     }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void makeMultiPart() {
         for (int i = 0; i < fileList.size(); ++i) {

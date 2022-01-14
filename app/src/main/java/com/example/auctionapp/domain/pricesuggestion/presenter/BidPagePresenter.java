@@ -60,13 +60,6 @@ public class BidPagePresenter implements Presenter{
     int finalPrice;
     Long myId = Constants.userId;
 
-    TextView highPrice;
-    TextView participants;
-    TextView itemLeftTime;
-    ImageView auctionState;
-    ImageView bidImage;
-    TextView tv_timer;
-    ConstraintLayout ly_editPrice;
 
     private int userCount;
     PTAdapter adapter;
