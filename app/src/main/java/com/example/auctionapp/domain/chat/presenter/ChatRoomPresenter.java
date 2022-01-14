@@ -164,7 +164,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
 
                         //동기화
                         mBinding.chattingRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-                        mBinding.chattingRecyclerView.setAdapter(new ChattingViewAdapter());
+                        mBinding.chattingRecyclerView.setAdapter(new ChattingViewAdapter(chatRoomView, mBinding, context, chatRoomUid, myuid, destUid));
 
                         //메시지 보내기
                         sendMsgToDataBase();

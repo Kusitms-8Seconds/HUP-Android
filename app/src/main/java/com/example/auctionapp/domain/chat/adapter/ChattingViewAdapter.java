@@ -46,17 +46,30 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ActivityChatRoomBinding mBinding;
     private Context context;
 
-    public ChattingViewAdapter() {
+    public void initFirebase() {
         comments = new ArrayList<>();
 
         database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = database.getReference();
+    }
 
-        myuid = "상대방";
-        destUid = "15";
-//        Intent intent = getIntent();
-//        destUid = intent.getStringExtra("destUid");
-//        EndItemId = intent.getLongExtra("itemId", 0);
+    public ChattingViewAdapter() {
+        initFirebase();
+        myuid = null;
+        destUid = null;
+
+        getDestUid();
+    }
+
+    public ChattingViewAdapter(ChatRoomView chatRoomView, ActivityChatRoomBinding mBinding, Context getApplicationContext, String chatRoomUid, String myuid, String destUid) {
+        initFirebase();
+
+        this.chatRoomView = chatRoomView;
+        this.mBinding = mBinding;
+        this.context = getApplicationContext;
+        this.chatRoomUid = chatRoomUid;
+        this.myuid = myuid;
+        this.destUid = destUid;
 
         getDestUid();
     }
@@ -97,7 +110,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 }
                 notifyDataSetChanged();
-                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
+//                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
             }
 
             @Override

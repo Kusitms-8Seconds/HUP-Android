@@ -55,7 +55,6 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     private Long scrapId;
     public Boolean isHeart = false;
     ItemDetailViewPagerAdapter itemDetailViewPagerAdapter;
-    ViewPager viewPager;
     ArrayList<qnaData> qnaList = new ArrayList<qnaData>();
     qnaAdapter adapter;
 
