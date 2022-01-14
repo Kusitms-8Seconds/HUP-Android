@@ -28,6 +28,7 @@ import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
+import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
@@ -47,12 +48,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Builder;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class BidPage extends AppCompatActivity {
+public class BidPage extends AppCompatActivity implements BidPageView {
     private ActivityBidPageBinding binding;
+    private BidPagePresenter presenter;
 
     Dialog dialog01;
     Dialog dialog02;
@@ -65,11 +68,6 @@ public class BidPage extends AppCompatActivity {
     int finalPrice;
     Long myId = Constants.userId;
 
-    TextView highPrice;
-    TextView participants;
-    TextView itemLeftTime;
-    ImageView auctionState;
-    ImageView bidImage;
     TextView tv_timer;
     ConstraintLayout ly_editPrice;
 
@@ -85,27 +83,14 @@ public class BidPage extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        presenter = new BidPagePresenter(this, binding, getApplicationContext());
+
         Intent intent = getIntent();
         String getItemId = intent.getExtras().getString("itemId");
         this.itemId = Long.valueOf(getItemId);
-        bidParticipants = new ArrayList<>();
-        adapter = init();
 
-        getData();
-
-//        itemLeftTime = findViewById(R.id.itemLeftTime);
-//        highPrice = findViewById(R.id.highPrice);
-//        participants = findViewById(R.id.participants);
-//        auctionState = findViewById(R.id.auctionState);
-//        bidImage = findViewById(R.id.bidImage);
-//        ly_editPrice = findViewById(R.id.ly_editPrice);
-
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
-                .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
-                .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(itemId)
-                .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
+        presenter.init();
+        presenter.initializeData(itemId);
 
         hupstomp = new HupStomp();
         hupstomp.initStomp(adapter, bidParticipants, binding.highPrice, binding.participants);
@@ -157,12 +142,12 @@ public class BidPage extends AppCompatActivity {
         }
     }
     // dialog01을 디자인하는 함수
+    @Override
     public void showDialog01(){
         dialog01.show(); // 다이얼로그 띄우기
 
         // 홈으로 돌아가기 버튼
-        ImageView goHome = dialog01.findViewById(R.id.goHome);
-        goHome.setOnClickListener(new View.OnClickListener() {
+        dialog01.findViewById(R.id.goHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog01.dismiss();
@@ -183,6 +168,7 @@ public class BidPage extends AppCompatActivity {
         });
     }
     // dialog02을 디자인하는 함수
+    @Override
     public void showDialog02(){
         dialog02.show(); // 다이얼로그 띄우기
 
@@ -203,6 +189,7 @@ public class BidPage extends AppCompatActivity {
         });
     }
     // dialog03을 디자인하는 함수
+    @Override
     public void showFeesDialog(){
         dialog03.show(); // 다이얼로그 띄우기
 
@@ -234,152 +221,5 @@ public class BidPage extends AppCompatActivity {
         }
         MyTimer myTimer = new MyTimer(3000, 1000);
         myTimer.start();
-
-    }
-
-    private PTAdapter init(){
-        ptRecyclerView = findViewById(R.id.participants_recyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        ptRecyclerView.setLayoutManager(linearLayoutManager);
-
-        ptAdapter = new PTAdapter();
-        ptRecyclerView.setAdapter(ptAdapter);
-        return ptAdapter;
-    }
-
-    private void getData(){
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByItemId(itemId)
-                .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionCallback()));
-    }
-
-    private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
-            if(response.body().getFileNames().size()!=0){
-                Glide.with(getApplicationContext()).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
-                        .into(binding.bidImage); }
-            LocalDateTime startDateTime = LocalDateTime.now();
-            LocalDateTime endDateTime = response.body().getAuctionClosingDate();
-            String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-            String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getParticipantsCallback implements MainRetrofitCallback<ParticipantsResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ParticipantsResponse> response) {
-            binding.participants.setText(String.valueOf(response.body().getParticipantsCount()));
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getAllPriceSuggestionCallback implements MainRetrofitCallback<PaginationDto<List<PriceSuggestionListResponse>>> {
-
-        @Override
-        public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
-            for(int i=0; i<response.body().getData().size(); i++){
-                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), R.drawable.hearto, null,
-                        response.body().getData().get(i).getSuggestionPrice(), "12:46");
-                bidParticipants.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(response.body().getData().get(i).getUserId()))
-                        .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
-                setAnimation();
-            }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getUserDetailsCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
-
-            bidParticipants.get(userCount).setPtName(response.body().getUsername());
-            ptAdapter.addItem(bidParticipants.get(userCount));
-            ptAdapter.notifyDataSetChanged();
-            userCount++;
-            if(response.body().getUserId().equals(myId)) {
-                binding.lyEditPrice.setVisibility(View.GONE);
-            }else {
-                binding.lyEditPrice.setVisibility(View.VISIBLE);
-            }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    public void setAnimation() {
-        TranslateAnimation translateAnimation = new TranslateAnimation(200, 0, 0, 0);
-        Animation alphaAnimation = new AlphaAnimation(0, 1);
-        translateAnimation.setDuration(500);
-        alphaAnimation.setDuration(1300);
-        AnimationSet animation = new AnimationSet(true);
-        animation.addAnimation(translateAnimation);
-        animation.addAnimation(alphaAnimation);
-        ptRecyclerView.setAnimation(animation);
-
-
-//        Animation animation = new AlphaAnimation(0, 1);
-//        animation.setDuration(1500);
-//        recyclerView.setAnimation(animation);
     }
 }
