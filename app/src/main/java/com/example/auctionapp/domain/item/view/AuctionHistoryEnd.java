@@ -89,11 +89,6 @@ public class AuctionHistoryEnd extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
     private void getData(){
-        //일단 레이아웃만
-//        AuctionHistoryEndData data = new AuctionHistoryEndData(R.drawable.rectangle, "스타벅스 리유저블 컵", 70000, "뽀로로");
-//        adapter.addItem(data);
-//        data = new AuctionHistoryEndData(R.drawable.rectangle, "스타벅스 리유저블 컵", 70000, "뽀로로");
-//        adapter.addItem(data);
         maximumPriceCount = 0;
         auctionHistoryEndDataList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByUserId(Constants.userId)
