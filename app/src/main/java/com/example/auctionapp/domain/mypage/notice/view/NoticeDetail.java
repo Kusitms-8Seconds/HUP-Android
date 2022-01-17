@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
 
 public class NoticeDetail extends AppCompatActivity {
     private ActivityNoticeDetailBinding binding;
@@ -27,8 +28,8 @@ public class NoticeDetail extends AppCompatActivity {
         setContentView(view);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra("noticeTitle");
-        String date = intent.getStringExtra("noticeDate");
+        String title = intent.getStringExtra(NoticeConstants.ENoticeDetails.noticeTitle.getText());
+        String date = intent.getStringExtra(NoticeConstants.ENoticeDetails.noticeDate.getText());
 
         binding.noticeTitle.setText(title);
         binding.noticeDate.setText(date);

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.databinding.ActivityNoticeBinding;
 import com.example.auctionapp.domain.mypage.notice.adapter.NoticeAdapter;
+import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
 import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
 
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ public class Notice extends AppCompatActivity implements NoticeView{
                 String noticeTitle = noticeList.get(position).getNoticeTitle();
                 String noticeDate = noticeList.get(position).getNoticeDate();
                 Intent intent = new Intent(getApplicationContext(), NoticeDetail.class);
-                intent.putExtra("noticeTitle", noticeTitle);
-                intent.putExtra("noticeDate", noticeDate);
+                intent.putExtra(NoticeConstants.ENoticeDetails.noticeTitle.getText(), noticeTitle);
+                intent.putExtra(NoticeConstants.ENoticeDetails.noticeDate.getText(), noticeDate);
                 startActivity(intent);
             }
         });
