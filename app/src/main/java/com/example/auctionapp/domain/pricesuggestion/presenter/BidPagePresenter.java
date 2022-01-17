@@ -20,6 +20,7 @@ import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.mypage.view.MypageView;
+import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
@@ -113,17 +114,18 @@ public class BidPagePresenter implements Presenter{
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
             String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            binding.itemLeftTime.setText(days + PriceConstants.EPriceCallback.dpDay.getText() + hours +
+                    PriceConstants.EPriceCallback.dpHour.getText() + minutes + PriceConstants.EPriceCallback.dpMinute.getText());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
+            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 
@@ -133,15 +135,15 @@ public class BidPagePresenter implements Presenter{
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
 
             binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 
@@ -150,16 +152,16 @@ public class BidPagePresenter implements Presenter{
         @Override
         public void onSuccessResponse(Response<ParticipantsResponse> response) {
             binding.participants.setText(String.valueOf(response.body().getParticipantsCount()));
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
+            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 
@@ -175,16 +177,16 @@ public class BidPagePresenter implements Presenter{
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
 //                setAnimation();
             }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
+            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 
@@ -202,16 +204,16 @@ public class BidPagePresenter implements Presenter{
             }else {
                 binding.lyEditPrice.setVisibility(View.VISIBLE);
             }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
+            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
