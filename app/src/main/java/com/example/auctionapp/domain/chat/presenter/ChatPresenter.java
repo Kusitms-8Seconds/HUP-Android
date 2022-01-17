@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.adapter.chatListAdapter;
+import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatView;
@@ -45,7 +46,7 @@ public class ChatPresenter implements ChatPresenterInterface {
 
     @Override
     public void init() {
-        database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        database = FirebaseDatabase.getInstance(ChatConstants.EChatFirebase.firebaseUrl.getText());
         databaseReference = database.getReference();
 
         chatListAdapter = new chatListAdapter(context, chatroomList);
@@ -54,7 +55,8 @@ public class ChatPresenter implements ChatPresenterInterface {
 
     @Override
     public void getChatList() {
-        databaseReference.child("chatrooms").orderByChild("users/"+myuid).equalTo(true).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).orderByChild(ChatConstants.EChatFirebase.users.getText() +
+                ChatConstants.EChatFirebase.slash.getText()+myuid).equalTo(true).addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -63,7 +65,8 @@ public class ChatPresenter implements ChatPresenterInterface {
                 {
                     ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
                     chatRoomUid = dataSnapshot.getKey();
-                    itemId = dataSnapshot.child("itemId/itemId").getValue(Long.class);
+                    itemId = dataSnapshot.child(ChatConstants.EChatFirebase.itemId.getText() + ChatConstants.EChatFirebase.slash.getText()
+                            + ChatConstants.EChatFirebase.itemId.getText()).getValue(Long.class);
                     String temp = chatModel.users.toString();
                     String [] array = temp.split("=true");
                     for(int i=0; i<array.length; i++) {
@@ -91,7 +94,9 @@ public class ChatPresenter implements ChatPresenterInterface {
 
     @Override
     public void setChatList(String chatRoomUid, String oppId, Long itemIdL) {
-        databaseReference.child("chatrooms/" + chatRoomUid + "/comments").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()+ChatConstants.EChatFirebase.slash.getText() + chatRoomUid +
+                ChatConstants.EChatFirebase.slash.getText() + ChatConstants.EChatFirebase.comments.getText())
+                .addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -100,8 +105,8 @@ public class ChatPresenter implements ChatPresenterInterface {
                 String lastChatTimeStr = "";
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()) //마지막 채팅, 시간 가져오기
                 {
-                    lastChat = dataSnapshot.child("message").getValue(String.class);
-                    lastChatTimeStr = dataSnapshot.child("timestamp").getValue(String.class);
+                    lastChat = dataSnapshot.child(ChatConstants.EChatFirebase.message.getText()).getValue(String.class);
+                    lastChatTimeStr = dataSnapshot.child(ChatConstants.EChatFirebase.timestamp.getText()).getValue(String.class);
                 }
                 String [] array = lastChatTimeStr.split("-");
                 String month = array[1];

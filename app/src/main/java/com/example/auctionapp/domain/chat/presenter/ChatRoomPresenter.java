@@ -152,7 +152,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         public Map<String,Boolean> users = new HashMap<>(); //채팅방 유저
         public Map<String, ChatModel.Comment> comments = new HashMap<>(); //채팅 메시지
         */
-        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).orderByChild(ChatConstants.EChatFirebase.userUrl.getText() + myuid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).orderByChild(ChatConstants.EChatFirebase.users.getText()+ ChatConstants.EChatFirebase.slash.getText() + myuid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

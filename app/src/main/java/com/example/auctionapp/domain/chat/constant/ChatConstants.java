@@ -23,7 +23,10 @@ public class ChatConstants {
         chatrooms("chatrooms"),
         comments("comments"),
         User("User"),
-        userUrl("users/"),
+        users("users"),
+        slash("/"),
+        message("message"),
+        timestamp("timestamp"),
         ;
 
 
