@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
+import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.domain.upload.view.UploadPage;
 import com.example.auctionapp.domain.upload.view.UploadView;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -31,49 +32,49 @@ public class UploadPresenter implements Presenter{
     public String choiceCategory(String category) {
         switch (category){
             case "디지털 기기":
-                selectedCategory = "eDigital";
+                selectedCategory = UploadConstants.ECategory.eDigital.getText();
                 break;
             case "생활가전":
-                selectedCategory = "eHouseHoldAppliance";
+                selectedCategory = UploadConstants.ECategory.eHouseHoldAppliance.getText();
                 break;
             case "가구/인테리어":
-                selectedCategory = "eFurnitureAndInterior";
+                selectedCategory = UploadConstants.ECategory.eFurnitureAndInterior.getText();
                 break;
             case "유아동":
-                selectedCategory = "eChildren";
+                selectedCategory = UploadConstants.ECategory.eChildren.getText();
                 break;
             case "생활/가공식품":
-                selectedCategory = "eDailyLifeAndProcessedFood";
+                selectedCategory = UploadConstants.ECategory.eDailyLifeAndProcessedFood.getText();
                 break;
             case "유아도서":
-                selectedCategory = "eChildrenBooks";
+                selectedCategory = UploadConstants.ECategory.eChildrenBooks.getText();
                 break;
             case "스포츠/레저":
-                selectedCategory = "eSportsAndLeisure";
+                selectedCategory = UploadConstants.ECategory.eSportsAndLeisure.getText();
                 break;
             case "여성잡화":
-                selectedCategory = "eMerchandiseForWoman";
+                selectedCategory = UploadConstants.ECategory.eMerchandiseForWoman.getText();
                 break;
             case "여성의류":
-                selectedCategory = "eWomenClothing";
+                selectedCategory = UploadConstants.ECategory.eWomenClothing.getText();
                 break;
             case "남성패션/잡화":
-                selectedCategory = "eManFashionAndMerchandise";
+                selectedCategory = UploadConstants.ECategory.eManFashionAndMerchandise.getText();
                 break;
             case "게임/취미":
-                selectedCategory = "eGameAndHabit";
+                selectedCategory = UploadConstants.ECategory.eGameAndHabit.getText();
                 break;
             case "뷰티/미용":
-                selectedCategory = "eBeauty";
+                selectedCategory = UploadConstants.ECategory.eBeauty.getText();
                 break;
             case "반려동물용품":
-                selectedCategory = "ePetProducts";
+                selectedCategory = UploadConstants.ECategory.ePetProducts.getText();
                 break;
             case "도서/티켓/음반":
-                selectedCategory = "eBookTicketAlbum";
+                selectedCategory = UploadConstants.ECategory.eBookTicketAlbum.getText();
                 break;
             case "식물":
-                selectedCategory = "ePlant";
+                selectedCategory = UploadConstants.ECategory.ePlant.getText();
                 break;
             default:
         }
@@ -91,16 +92,16 @@ public class UploadPresenter implements Presenter{
         @Override
         public void onSuccessResponse(Response<RegisterItemResponse> response) {
             RegisterItemResponse result = response.body();
-            Log.d("UploadPage", "retrofit success, idToken: " + result.toString());
+            Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtSuccessResponse.getText() + result.toString());
 
         }
         @Override
         public void onFailResponse(Response<RegisterItemResponse> response) {
-            Log.d("UploadPage", "onFailResponse");
+            Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(UploadConstants.EUploadCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
