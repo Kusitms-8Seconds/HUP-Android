@@ -10,4 +10,13 @@ public class MypageConstants {
         ELogin(String text) { this.text = text; }
         public String getText() { return this.text; }
     }
+    public enum ELoginCallback {
+        rtSuccessResponse("retrofit success, idToken: "),
+        rtFailResponse("onFailResponse"),
+        rtConnectionFail("연결실패");
+
+        String text;
+        ELoginCallback(String text) { this.text = text; }
+        public String getText() { return  this.text;}
+    }
 }

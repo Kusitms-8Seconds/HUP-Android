@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.chat.view.ChatView;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
@@ -103,7 +104,7 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, MypageConstants.ELoginCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
@@ -113,11 +114,11 @@ public class MypagePresenter implements Presenter{
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, MypageConstants.ELoginCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e( MypageConstants.ELoginCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
