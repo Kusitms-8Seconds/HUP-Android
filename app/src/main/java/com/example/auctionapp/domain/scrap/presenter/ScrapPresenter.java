@@ -15,6 +15,7 @@ import com.example.auctionapp.databinding.ActivityScrapBinding;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.adapter.ScrapAdapter;
+import com.example.auctionapp.domain.scrap.constant.ScrapConstants;
 import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
 import com.example.auctionapp.domain.scrap.model.ScrapItem;
 import com.example.auctionapp.domain.scrap.view.Scrap;
@@ -103,21 +104,21 @@ public class ScrapPresenter implements Presenter{
                             fileNameMajor,
                             itemName,
                             0,
-                            minutes+"분");
+                            minutes + ScrapConstants.EScrapCallback.dpMinute.getText());
                 } else{
                     data = new ScrapItem(itemId,
                             null,
                             itemName,
                             0,
-                            minutes+"분");
+                            minutes + ScrapConstants.EScrapCallback.dpMinute.getText());
                 }
                 scrapItemsList.add(data);
-                System.out.println("itemId"+itemId);
+                System.out.println(ScrapConstants.EScrapCallback.logItemId.getText()+itemId);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
 //                setAnimation();
             }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, ScrapConstants.EScrapCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
@@ -127,11 +128,11 @@ public class ScrapPresenter implements Presenter{
 //                JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
 //            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(ScrapConstants.EScrapCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 
@@ -143,7 +144,7 @@ public class ScrapPresenter implements Presenter{
             scrapItemsList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
             adapter.addItem(scrapItemsList.get(maximumPriceCount));
             adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, ScrapConstants.EScrapCallback.rtSuccessResponse.getText() + response.body().toString());
             maximumPriceCount++;
         }
         @Override
@@ -153,11 +154,11 @@ public class ScrapPresenter implements Presenter{
 //                JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
 //            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(ScrapConstants.EScrapCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }

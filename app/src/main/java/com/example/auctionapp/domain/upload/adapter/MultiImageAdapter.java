@@ -38,7 +38,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.Vi
     public MultiImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;    // context에서 LayoutInflater 객체를 얻는다.
-        View view = inflater.inflate(R.layout.choosing_item_image, parent, false) ;	// 리사이클러뷰에 들어갈 아이템뷰의 레이아웃을 inflate.
+        View view = inflater.inflate(R.layout.custom_recyclerview_choose_item_image, parent, false) ;	// 리사이클러뷰에 들어갈 아이템뷰의 레이아웃을 inflate.
         MultiImageAdapter.ViewHolder vh = new MultiImageAdapter.ViewHolder(view) ;
 
         return vh ;
