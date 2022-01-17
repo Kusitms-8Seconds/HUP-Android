@@ -128,7 +128,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         binding.itemStateRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(getApplicationContext(),"New Rating: "+ rating, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), UploadConstants.EUploadLog.newRating.getText() + rating, Toast.LENGTH_SHORT).show();
                 itemStatePoint = Math.round(rating);
             }
         });
@@ -152,23 +152,23 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             @Override
             public void onClick(View v) {
                 Intent tt = new Intent(UploadPage.this, SelectCategory.class);
-                tt.putExtra("itemName", binding.editItemName.getText().toString());
-                tt.putExtra("itemPrice", binding.editItemStartPrice.getText().toString());
-                tt.putExtra("itemContent", binding.editItemContent.getText().toString());
-                tt.putExtra("itemBuyDate", binding.editAuctionBuyDate.getText().toString());
-                tt.putExtra("itemEndDate", binding.editAuctionFinalDate.getText().toString());
-                tt.putExtra("itemStatePoint", itemStatePoint);
+                tt.putExtra(UploadConstants.ECategory.itemName.getText(), binding.editItemName.getText().toString());
+                tt.putExtra(UploadConstants.ECategory.itemPrice.getText(), binding.editItemStartPrice.getText().toString());
+                tt.putExtra(UploadConstants.ECategory.itemContent.getText(), binding.editItemContent.getText().toString());
+                tt.putExtra(UploadConstants.ECategory.itemBuyDate.getText(), binding.editAuctionBuyDate.getText().toString());
+                tt.putExtra(UploadConstants.ECategory.itemEndDate.getText(), binding.editAuctionFinalDate.getText().toString());
+                tt.putExtra(UploadConstants.ECategory.itemStatePoint.getText(), itemStatePoint);
                 startActivity(tt);
             }
         });
         Intent getCategoryIntent = getIntent();
-        String itemCT = getCategoryIntent.getStringExtra("itemCategory");
-        String ii = getCategoryIntent.getStringExtra("itemName");
-        String ii2 = getCategoryIntent.getStringExtra("itemPrice");
-        String ii3 = getCategoryIntent.getStringExtra("itemContent");
-        String ii4 = getCategoryIntent.getStringExtra("itemBuyDate");
-        String ii5 = getCategoryIntent.getStringExtra("itemEndDate");
-        int ii6 = getCategoryIntent.getIntExtra("itemStatePoint", 0);
+        String itemCT = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemCategory.getText());
+        String ii = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemName.getText());
+        String ii2 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemPrice.getText());
+        String ii3 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemContent.getText());
+        String ii4 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemBuyDate.getText());
+        String ii5 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemEndDate.getText());
+        int ii6 = getCategoryIntent.getIntExtra(UploadConstants.ECategory.itemStatePoint.getText(), 0);
         binding.editItemName.setText(ii);
         binding.selectItemCategory.setText(itemCT);
         binding.editItemStartPrice.setText(ii2);
@@ -208,17 +208,17 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern(UploadConstants.EDate.dateTimePattern.getText());
                     LocalDateTime auctionClosingDateTime = LocalDateTime.parse(auctionClosingDate, formatter2);
 
-                    RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Constants.userId));
-                    RequestBody itemNameR = RequestBody.create(MediaType.parse("text/plain"), itemName);
-                    RequestBody categoryR = RequestBody.create(MediaType.parse("text/plain"), presenter.choiceCategory(binding.selectItemCategory.getText().toString()));
-                    RequestBody initPriceR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(initPrice));
-                    RequestBody buyDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(buyDateTime));
-                    RequestBody itemStatePointR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(itemStatePoint));
-                    RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(auctionClosingDateTime));
-                    RequestBody descriptionR = RequestBody.create(MediaType.parse("text/plain"), description);
+                    RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
+                    RequestBody itemNameR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), itemName);
+                    RequestBody categoryR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), presenter.choiceCategory(binding.selectItemCategory.getText().toString()));
+                    RequestBody initPriceR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(initPrice));
+                    RequestBody buyDateR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(buyDateTime));
+                    RequestBody itemStatePointR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(itemStatePoint));
+                    RequestBody auctionClosingDateR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(auctionClosingDateTime));
+                    RequestBody descriptionR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), description);
 
                     makeMultiPart();
-                    System.out.println("files체크" + files.toString());
+                    System.out.println(UploadConstants.EUploadLog.fileCheck.getText() + files.toString());
                     presenter.upload(files, userIdR,
                             itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                             auctionClosingDateR, descriptionR);
@@ -248,7 +248,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             }
             else{   // 이미지를 하나라도 선택한 경우
                 if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
-                    Log.e("single choice: ", String.valueOf(data.getData()));
+                    Log.e(UploadConstants.EUploadLog.singleChoice.getText(), String.valueOf(data.getData()));
                     binding.selectedImageCount.setText("1/10");
                     Uri imageUri = data.getData();
                     uriList.add(imageUri);
@@ -267,7 +267,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                         showToast(UploadConstants.EUploadToast.imageSelectOver.getText());
                     }
                     else{   // 선택한 이미지가 1장 이상 10장 이하인 경우
-                        Log.e(TAG, "multiple choice");
+                        Log.e(TAG, UploadConstants.EUploadLog.multiChoice.getText());
 
                         for (int i = 0; i < clipData.getItemCount(); i++){
                             Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
@@ -278,7 +278,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                                 File destFile = new File(imagePath);
                                 fileList.add(destFile);
                             } catch (Exception e) {
-                                Log.e(TAG, "File select error", e);
+                                Log.e(TAG, UploadConstants.EUploadLog.fileSelectError.getText(), e);
                             }
                         }
                         adapter = new MultiImageAdapter(uriList, getApplicationContext());
@@ -300,13 +300,13 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         for (int i = 0; i < fileList.size(); ++i) {
             // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
 
-            System.out.println("fileList.get(0)"+fileList.get(0).toString());
-            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), fileList.get(0));
+//            System.out.println("fileList.get(0)"+fileList.get(0).toString());
+            RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
             // 사진 파일 이름
             LocalDateTime localDateTime = LocalDateTime.now();
             String fileName = "photo" + localDateTime + ".jpg";
             // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("files", fileName, fileBody);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData(UploadConstants.EMultiPart.files.getText(), fileName, fileBody);
             // 추가
             files.add(filePart);
         }

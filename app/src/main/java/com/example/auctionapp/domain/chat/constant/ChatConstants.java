@@ -5,17 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class ChatConstants {
-//    public enum EChatId {
-//        myuid,
-//        destUid,
-//        chatRoomUid,
-//        itemId;
-//
-//        String text;
-//        public String getText(){
-//            return this.text;
-//        }
-//    }
 
     public enum EChatFirebase {
         firebaseUrl("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/"),
@@ -26,8 +15,7 @@ public class ChatConstants {
         users("users"),
         slash("/"),
         message("message"),
-        timestamp("timestamp"),
-        ;
+        timestamp("timestamp");
 
 
         String text;

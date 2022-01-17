@@ -49,11 +49,41 @@ public class UploadConstants {
         eBeauty("eBeauty"),
         ePetProducts("ePetProducts"),
         eBookTicketAlbum("eBookTicketAlbum"),
-        ePlant("ePlant")
-        ;
+        ePlant("ePlant"),
+
+        itemCategory("itemCategory"),
+        itemName("itemName"),
+        itemPrice("itemPrice"),
+        itemContent("itemContent"),
+        itemBuyDate("itemBuyDate"),
+        itemEndDate("itemEndDate"),
+        itemStatePoint("itemStatePoint");
 
         String text;
         ECategory(String text) { this.text = text; }
+        public String getText() { return  this.text;}
+    }
+
+    public enum EUploadLog {
+        newRating("New Rating: "),
+        singleChoice("single choice: "),
+        multiChoice("multiple choice"),
+        fileSelectError("File select error"),
+        fileCheck("files체크: ");
+
+        String text;
+        EUploadLog(String text) { this.text = text; }
+        public String getText() { return  this.text;}
+    }
+
+    public enum EMultiPart {
+        mediaTypePlain("text/plain"),
+        mediaTypeImage("image/jpeg"),
+        files("files")
+        ;
+
+        String text;
+        EMultiPart(String text) { this.text = text; }
         public String getText() { return  this.text;}
     }
 }
