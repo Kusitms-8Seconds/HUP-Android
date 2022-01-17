@@ -5,18 +5,42 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class ChatConstants {
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public enum EChatId {
-        myuid,
-        destUid,
-        chatRoomUid,
-        itemId;
+//    public enum EChatId {
+//        myuid,
+//        destUid,
+//        chatRoomUid,
+//        itemId;
+//
+//        String text;
+//        public String getText(){
+//            return this.text;
+//        }
+//    }
+
+    public enum EChatFirebase {
+        firebaseUrl("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/"),
+        itemId("itemId"),
+        chatrooms("chatrooms"),
+        comments("comments"),
+        User("User"),
+        userUrl("users/"),
+        ;
+
 
         String text;
-        public String getText(){
-            return this.text;
-        }
+        EChatFirebase(String text) { this.text = text; }
+        public String getText() { return  this.text;}
     }
+
+    public enum EChatCallback {
+        rtSuccessResponse("retrofit success, idToken: "),
+        rtFailResponse("onFailResponse"),
+        rtConnectionFail("연결실패"),
+        errorBody("errorBody");
+
+        String text;
+        EChatCallback(String text) { this.text = text; }
+        public String getText() { return  this.text;}
+    }
+
 }

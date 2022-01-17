@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.adapter.ChattingViewAdapter;
+import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
@@ -67,7 +68,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
 
     @Override
     public void init() {
-        database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        database = FirebaseDatabase.getInstance(ChatConstants.EChatFirebase.firebaseUrl.getText());
         databaseReference = database.getReference();
 
         myuid = "상대방";
@@ -97,12 +98,12 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put("itemId", Long.valueOf(8));    //상품 id ?
+                chatModel.itemId.put(ChatConstants.EChatFirebase.itemId.getText(), Long.valueOf(8));    //상품 id ?
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
                     mBinding.sendbutton.setEnabled(false);
-                    databaseReference.child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             checkChatRoom();
@@ -135,7 +136,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             comment.uid = myuid;
             comment.message = mBinding.editText.getText().toString();
             comment.timestamp = String.valueOf(currentDate);
-            databaseReference.child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+            databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).child(chatRoomUid).child(ChatConstants.EChatFirebase.comments.getText()).push().setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     mBinding.editText.setText("");
@@ -151,7 +152,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         public Map<String,Boolean> users = new HashMap<>(); //채팅방 유저
         public Map<String, ChatModel.Comment> comments = new HashMap<>(); //채팅 메시지
         */
-        databaseReference.child("chatrooms").orderByChild("users/" + myuid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).orderByChild(ChatConstants.EChatFirebase.userUrl.getText() + myuid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -188,17 +189,17 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             }
             mBinding.chattingItemDetailCategory.setText(response.body().getCategory().getName());
             mBinding.chattingItemDetailPrice.setText("500000");    //낙찰가 출력(임시)
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
+            System.out.println(ChatConstants.EChatCallback.errorBody.getText()+response.errorBody().string());
+            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            mBinding.chattingItemDetailPrice.setText("?연결실패?");
-            Log.e("연결실패", t.getMessage());
+            mBinding.chattingItemDetailPrice.setText(ChatConstants.EChatCallback.rtConnectionFail.getText());
+            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
     private class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
@@ -208,22 +209,22 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             Long chatUserId = response.body().getUserId();
             String userName = response.body().getUsername();
             User userInfo = new User(userName, userProfile, chatUserId);
-            databaseReference.child("User").push().setValue(userInfo);
+            databaseReference.child(ChatConstants.EChatFirebase.User.getText()).push().setValue(userInfo);
 
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            System.out.println(ChatConstants.EChatCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
