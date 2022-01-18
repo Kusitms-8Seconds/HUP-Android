@@ -50,11 +50,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class BidPagePresenter implements Presenter{
-    Dialog dialog01;
-    Dialog dialog02;
-    Dialog dialog03;
+
     PTAdapter ptAdapter;
-    private HupStomp hupstomp;
 
     Long itemId;
     Long participantId;

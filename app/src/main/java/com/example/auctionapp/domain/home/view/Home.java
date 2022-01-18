@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.databinding.ActivityHomeBinding;
+import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.domain.home.presenter.MainPresenter;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
@@ -128,21 +129,21 @@ public class Home extends Fragment implements MainView{
             bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
             //bestItemAdapter.notifyDataSetChanged();
             bestItemViewPager.setAdapter(bestItemAdapter);
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             maximumPriceCount2++;
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }

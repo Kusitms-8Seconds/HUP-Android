@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.domain.home.view.MainView;
 import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
@@ -75,15 +76,15 @@ public class MainPresenter implements Presenter{
                 if(response.body().get(i).getFileNames().size()!=0) {
                     bestItem = new BestItem(response.body().get(i).getFileNames().get(0),
                             response.body().get(i).getItemName(),
-                            response.body().get(i).getBuyDate().getYear()+"년"+
-                                    response.body().get(i).getBuyDate().getMonth().getValue()+"월",
+                            response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() +
+                                    response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
                             0
                     );
                 } else{
                     bestItem = new BestItem(null,
                             response.body().get(i).getItemName(),
-                            response.body().get(i).getBuyDate().getYear()+"년"+
-                                    response.body().get(i).getBuyDate().getMonth().getValue()+"월",
+                            response.body().get(i).getBuyDate().getYear()+HomeConstants.EDate.dpYear.getText()+
+                                    response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
                             0
                     );
                 }
@@ -91,23 +92,23 @@ public class MainPresenter implements Presenter{
 //                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
 //                        .enqueue(MainRetrofitTool.getCallback(new Home.getMaximumPriceBestItemCallback()));
             }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
         public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) { 
 //                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); 
             }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
     // item info callback
@@ -128,37 +129,37 @@ public class MainPresenter implements Presenter{
                             response.body().getData().get(i).getFileNames().get(0),
                             response.body().getData().get(i).getItemName(),
                             response.body().getData().get(i).getInitPrice(),
-                            minutes+"분",
+                            minutes+HomeConstants.EDate.dpMinute.getText(),
                             response.body().getData().get(i).getDescription(), null);
                 } else{
                     data = new AuctionNow(response.body().getData().get(i).getId(),
                             null,
                             response.body().getData().get(i).getItemName(),
                             response.body().getData().get(i).getInitPrice(),
-                            minutes+"분",
+                            minutes+HomeConstants.EDate.dpMinute.getText(),
                             response.body().getData().get(i).getDescription(), null);
                 }
                 auctionDataList.add(data);
                 RetrofitTool.getAPIWithNullConverter().getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
             }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 //                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
     // heart callback
@@ -170,23 +171,23 @@ public class MainPresenter implements Presenter{
             auctionDataList.get(heartCount).setHeart(response.body().getHeart());
             adapter.addItem(auctionDataList.get(heartCount));
             adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             heartCount++;
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 //                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
