@@ -42,17 +42,17 @@ import retrofit2.http.Path;
 
 public interface RestAPI {
 
-    @POST("signup")
+    @POST("api/v1/users")   //사용자 생성
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
-    @POST("login")
+    @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
-    @POST("api/v1/user/details")
+    @POST("api/v1/users/{id}")      //사용자 정보 조회
     Call<UserDetailsInfoResponse> userDetails(@Body UserDetailsInfoRequest userDetailsInfoRequest);
-    @POST("oauth2/google/validation")
+    @POST("api/v1/users/google-login")      //구글 로그인
     Call<LoginResponse> googleIdTokenValidation(@Body OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
-    @POST("oauth2/kakao/validation")
+    @POST("api/v1/users/kakao-login")       //카카오 로그인
     Call<LoginResponse> kakaoAccessTokenValidation(@Body OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest);
-    @POST("oauth2/naver/validation")
+    @POST("api/v1/users/naver-login")       //네이버 로그인
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
     @GET("api/v1/items/list/status/{itemSoldStatus}")
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
