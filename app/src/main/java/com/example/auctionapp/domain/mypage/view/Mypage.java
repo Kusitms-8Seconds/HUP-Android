@@ -38,8 +38,8 @@ public class Mypage extends Fragment implements MypageView{
         presenter = new MypagePresenter(this, binding, getActivity());
 
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
-        System.out.println("userId"+Constants.userId);
-        System.out.println("userToken"+Constants.token);
+        System.out.println("userId: "+Constants.userId);
+        System.out.println("userToken: "+Constants.token);
 
         presenter.init();
         presenter.getUserInfo();
