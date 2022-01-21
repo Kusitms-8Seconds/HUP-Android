@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class LoginLoginPresenterInterface implements LoginPresenterInterface {
+public class LoginPresenter implements LoginPresenterInterface {
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
     GoogleSignInClient mGoogleSignInClient;
@@ -57,7 +57,7 @@ public class LoginLoginPresenterInterface implements LoginPresenterInterface {
     private Activity activity;
 
     // Constructor
-    public LoginLoginPresenterInterface(LoginView loginView, ActivityLoginBinding binding, Context context, Activity activity){
+    public LoginPresenter(LoginView loginView, ActivityLoginBinding binding, Context context, Activity activity){
         this.loginView = loginView;
         this.binding = binding;
         this.context = context;

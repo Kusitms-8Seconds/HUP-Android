@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
-import com.example.auctionapp.domain.user.presenter.LoginLoginPresenterInterface;
+import com.example.auctionapp.domain.user.presenter.LoginPresenter;
 import com.example.auctionapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,7 +26,7 @@ import static android.content.ContentValues.TAG;
 
 public class Login extends AppCompatActivity implements LoginView{
     private ActivityLoginBinding binding;
-    LoginLoginPresenterInterface presenter;
+    LoginPresenter presenter;
 
     private int RC_SIGN_IN = 0116;  //google login request code
     Context mContext;
@@ -40,7 +40,7 @@ public class Login extends AppCompatActivity implements LoginView{
         View view = binding.getRoot();
         setContentView(view);
 
-        presenter = new LoginLoginPresenterInterface(this, binding, getApplicationContext(), Login.this);
+        presenter = new LoginPresenter(this, binding, getApplicationContext(), Login.this);
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
         binding.goSignUp.setOnClickListener(new View.OnClickListener() {
