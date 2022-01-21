@@ -9,8 +9,7 @@ public class Constants {
 
     public static Long userId = null;
     public static String token = null;
-//    public static String imageBaseUrl = "http://192.168.1.2:8080/image/";
-    public static String imageBaseUrl = "http://10.0.2.2:8080/image/";
+    public static final String imageBaseUrl = "http://52.78.175.27:8080/image/";
 
     @Getter
     @NoArgsConstructor
@@ -47,5 +46,24 @@ public class Constants {
             return this.text;
         }
 
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public enum ELoginType{
+        eGoogle("구글"),
+        eNaver("네이버"),
+        eKakao("카카오"),
+        eApp("앱");
+
+//        private final String name;
+
+        private String text;
+        private ELoginType(String text){
+            this.text=text;
+        }
+        public String getText(){
+            return this.text;
+        }
     }
 }

@@ -4,54 +4,29 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
-import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
-import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
-import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
-import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
 import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
-import com.example.auctionapp.global.dto.PaginationDto;
-import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.stomp.HupStomp;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 
 import org.json.JSONException;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.List;
-
-import lombok.Builder;
-import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class BidPage extends AppCompatActivity implements BidPageView {
     private ActivityBidPageBinding binding;

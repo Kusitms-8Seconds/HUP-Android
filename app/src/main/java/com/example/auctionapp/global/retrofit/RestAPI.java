@@ -23,8 +23,7 @@ import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
 import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.SignUpResponse;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 
 import java.util.List;
@@ -39,6 +38,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RestAPI {
 
@@ -46,8 +46,8 @@ public interface RestAPI {
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
-    @POST("api/v1/users/{id}")      //사용자 정보 조회
-    Call<UserDetailsInfoResponse> userDetails(@Body UserDetailsInfoRequest userDetailsInfoRequest);
+    @GET("api/v1/users/{id}")      //사용자 정보 조회
+    Call<UserInfoResponse> userDetails(@Query("userId") Long userId);
     @POST("api/v1/users/google-login")      //구글 로그인
     Call<LoginResponse> googleIdTokenValidation(@Body OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
     @POST("api/v1/users/kakao-login")       //카카오 로그인

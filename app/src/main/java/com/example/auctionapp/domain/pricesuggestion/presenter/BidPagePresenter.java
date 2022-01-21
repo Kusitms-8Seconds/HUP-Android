@@ -1,41 +1,29 @@
 package com.example.auctionapp.domain.pricesuggestion.presenter;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
-import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
-import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
-import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
-import com.example.auctionapp.global.stomp.HupStomp;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.nhn.android.naverlogin.OAuthLogin;
 
 import org.json.JSONException;
 
@@ -170,7 +158,7 @@ public class BidPagePresenter implements Presenter{
                 BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), R.drawable.hearto, null,
                         response.body().getData().get(i).getSuggestionPrice(), "12:46");
                 bidParticipants.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(response.body().getData().get(i).getUserId()))
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(response.body().getData().get(i).getUserId())
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
 //                setAnimation();
             }
@@ -187,10 +175,10 @@ public class BidPagePresenter implements Presenter{
         }
     }
 
-    private class getUserDetailsCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+    private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
 
         @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
 
             bidParticipants.get(userCount).setPtName(response.body().getUsername());
             ptAdapter.addItem(bidParticipants.get(userCount));
@@ -204,7 +192,7 @@ public class BidPagePresenter implements Presenter{
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }

@@ -1,7 +1,6 @@
 package com.example.auctionapp.domain.mypage.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -9,14 +8,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
-import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
-import com.example.auctionapp.domain.chat.view.ChatView;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -69,7 +66,7 @@ public class MypagePresenter implements Presenter{
     public void getUserInfo() {
         if(Constants.userId!=null){
             UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(Constants.userId)
                     .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
         }
     }
@@ -94,9 +91,9 @@ public class MypagePresenter implements Presenter{
         mOAuthLoginModule.logout(activity);
     }
 
-    public class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+    public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
             System.out.println("username"+response.body().getUsername());
             binding.myPageUserName.setText(response.body().getUsername());
             if(response.body().getPicture()!=null){
@@ -108,7 +105,7 @@ public class MypagePresenter implements Presenter{
 
         }
         @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             System.out.println("errorBody"+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());

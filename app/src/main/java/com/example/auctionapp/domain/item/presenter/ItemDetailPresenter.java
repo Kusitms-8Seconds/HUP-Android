@@ -1,25 +1,19 @@
 package com.example.auctionapp.domain.item.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 
-import androidx.viewpager.widget.ViewPager;
-
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
-import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.item.adapter.qnaAdapter;
 import com.example.auctionapp.domain.item.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.qnaData;
-import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.item.view.ItemDetailView;
-import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCheckedRequest;
@@ -27,13 +21,10 @@ import com.example.auctionapp.domain.scrap.dto.ScrapCheckedResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterRequest;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.nhn.android.naverlogin.OAuthLogin;
 
 import org.json.JSONException;
 
@@ -125,7 +116,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
     @Override
     public void getUserInfoCallback(Long userId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(UserDetailsInfoRequest.of(userId))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userId)
                 .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
     }
 
@@ -255,10 +246,10 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
     }
 
-    private class getUserDetailsCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+    private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
 
         @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
             binding.sellerName.setText(response.body().getUsername());
             if(!response.body().getPicture().isEmpty()){
                 Glide.with(context).load(response.body().getPicture()).into(binding.sellerImage);
@@ -267,7 +258,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             System.out.println("errorBody"+response.errorBody().string());
             Log.d(TAG, "onFailResponse");
         }

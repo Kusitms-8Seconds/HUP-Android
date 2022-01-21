@@ -2,11 +2,9 @@ package com.example.auctionapp.domain.mypage.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,26 +22,7 @@ import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
 import com.example.auctionapp.domain.user.view.Login;
-import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
-import com.nhn.android.naverlogin.OAuthLogin;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class Mypage extends Fragment implements MypageView{
     private ActivityMypageBinding binding;

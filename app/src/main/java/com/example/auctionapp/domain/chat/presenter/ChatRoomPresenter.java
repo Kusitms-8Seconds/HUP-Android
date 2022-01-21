@@ -19,8 +19,7 @@ import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -122,8 +121,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
 
     @Override
     public void insertUserInfo(Long chatUserId) {
-        UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(chatUserId);
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userDetailsInfoRequest)
+//        UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(chatUserId);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(chatUserId)
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
     }
 
@@ -202,9 +201,9 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
-    private class UserDetailsInfoCallback implements MainRetrofitCallback<UserDetailsInfoResponse> {
+    private class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
-        public void onSuccessResponse(Response<UserDetailsInfoResponse> response) {
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
             String userProfile = response.body().getPicture();
             Long chatUserId = response.body().getUserId();
             String userName = response.body().getUsername();
@@ -214,7 +213,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<UserDetailsInfoResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             System.out.println(ChatConstants.EChatCallback.errorBody.getText()+response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());

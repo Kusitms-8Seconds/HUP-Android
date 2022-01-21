@@ -3,51 +3,17 @@ package com.example.auctionapp.domain.item.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
-import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
-import com.example.auctionapp.domain.item.adapter.ItemDetailViewPagerAdapter;
-import com.example.auctionapp.domain.item.adapter.qnaAdapter;
-import com.example.auctionapp.domain.item.dto.DefaultResponse;
-import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.qnaData;
 import com.example.auctionapp.domain.item.presenter.ItemDetailPresenter;
-import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
-import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
-import com.example.auctionapp.domain.scrap.dto.ScrapCheckedRequest;
-import com.example.auctionapp.domain.scrap.dto.ScrapCheckedResponse;
-import com.example.auctionapp.domain.scrap.dto.ScrapRegisterRequest;
-import com.example.auctionapp.domain.scrap.dto.ScrapRegisterResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
-import com.example.auctionapp.domain.user.dto.UserDetailsInfoResponse;
-import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitTool;
-
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-
-import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class ItemDetail extends AppCompatActivity implements ItemDetailView {
     private ActivityItemDetailBinding binding;
