@@ -16,6 +16,8 @@ import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterRequest;
 import com.example.auctionapp.domain.scrap.dto.ScrapRegisterResponse;
+import com.example.auctionapp.domain.user.dto.CheckAuthCodeRequest;
+import com.example.auctionapp.domain.user.dto.EmailAuthCodeRequest;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
@@ -44,6 +46,11 @@ public interface RestAPI {
 
     @POST("api/v1/users")   //사용자 생성
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
+    @POST("api/v1/email/send")   //회원가입 시 이메일 인증
+    Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
+    @POST("api/v1/email/verify")   //인증코드 확인
+    Call<DefaultResponse> checkAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
+
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
     @GET("api/v1/users/{id}")      //사용자 정보 조회
@@ -54,6 +61,7 @@ public interface RestAPI {
     Call<LoginResponse> kakaoAccessTokenValidation(@Body OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest);
     @POST("api/v1/users/naver-login")       //네이버 로그인
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
+
     @GET("api/v1/items/list/status/{itemSoldStatus}")
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/items/list/status/heart/{itemSoldStatus}")
@@ -62,8 +70,9 @@ public interface RestAPI {
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
     @POST("api/v1/scrap/{id}")
     Call<DefaultResponse> scrapItem(@Path("id") Long id);
+
     @Multipart
-    @POST("api/v1/items")
+    @POST("api/v1/items")   //아이템 생성
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
                                           @Part("userId") RequestBody userId,
                                           @Part("itemName") RequestBody itemName,
@@ -86,7 +95,7 @@ public interface RestAPI {
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/scrap/list/{userId}")
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
-    @GET("api/v1/items/{id}")
+    @GET("api/v1/items/{id}")   //아이템 조회
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
     @GET("api/v1/priceSuggestion/list/item/{id}")
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
@@ -96,6 +105,6 @@ public interface RestAPI {
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
     @GET("api/v1/priceSuggestion/bidder/{itemId}")
     Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
-    @DELETE("/api/v1/items/{id}")
+    @DELETE("/api/v1/items/{id}")   //아이템 삭제
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 }

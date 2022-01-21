@@ -2,7 +2,7 @@ package com.example.auctionapp.domain.user.presenter;
 
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 
-public interface Presenter {
+public interface LoginPresenterInterface {
     void appLoginCallback(LoginRequest loginRequest);
     void kakaoLoginCallback(String accessToken);
     void googleLoginCallback(String idToken);

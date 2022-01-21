@@ -1,6 +1,5 @@
 package com.example.auctionapp.domain.user.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,54 +7,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
-import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
-import com.example.auctionapp.domain.user.dto.LoginResponse;
-import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
-import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
-import com.example.auctionapp.domain.user.presenter.LoginPresenter;
-import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
+import com.example.auctionapp.domain.user.presenter.LoginLoginPresenterInterface;
 import com.example.auctionapp.R;
-import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.kakao.auth.AuthType;
-import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.sdk.auth.AuthApiClient;
 import com.kakao.sdk.common.KakaoSdk;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.usermgmt.response.model.Profile;
-import com.kakao.usermgmt.response.model.UserAccount;
-import com.kakao.util.OptionalBoolean;
-import com.kakao.util.exception.KakaoException;
 
 import static android.content.ContentValues.TAG;
 
-import com.nhn.android.naverlogin.OAuthLogin;
-import com.nhn.android.naverlogin.OAuthLoginHandler;
-
-import retrofit2.Response;
-
 public class Login extends AppCompatActivity implements LoginView{
     private ActivityLoginBinding binding;
-    LoginPresenter presenter;
+    LoginLoginPresenterInterface presenter;
 
     private int RC_SIGN_IN = 0116;  //google login request code
     Context mContext;
@@ -69,7 +40,7 @@ public class Login extends AppCompatActivity implements LoginView{
         View view = binding.getRoot();
         setContentView(view);
 
-        presenter = new LoginPresenter(this, binding, getApplicationContext(), Login.this);
+        presenter = new LoginLoginPresenterInterface(this, binding, getApplicationContext(), Login.this);
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
         binding.goSignUp.setOnClickListener(new View.OnClickListener() {

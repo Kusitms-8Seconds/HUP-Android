@@ -10,15 +10,12 @@ import android.widget.Toast;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
-import com.example.auctionapp.databinding.ActivityMypageBinding;
-import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
-import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -46,7 +43,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class LoginPresenter implements Presenter{
+public class LoginLoginPresenterInterface implements LoginPresenterInterface {
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
     GoogleSignInClient mGoogleSignInClient;
@@ -60,7 +57,7 @@ public class LoginPresenter implements Presenter{
     private Activity activity;
 
     // Constructor
-    public LoginPresenter(LoginView loginView, ActivityLoginBinding binding, Context context, Activity activity){
+    public LoginLoginPresenterInterface(LoginView loginView, ActivityLoginBinding binding, Context context, Activity activity){
         this.loginView = loginView;
         this.binding = binding;
         this.context = context;
