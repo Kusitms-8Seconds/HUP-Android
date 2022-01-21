@@ -10,7 +10,7 @@ import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.item.adapter.qnaAdapter;
-import com.example.auctionapp.domain.item.dto.DefaultResponse;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.qnaData;
 import com.example.auctionapp.domain.item.view.ItemDetailView;

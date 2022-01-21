@@ -20,6 +20,7 @@ public class Constants {
         emailLetterCountError("이메일을 10~20자로 입력해주세요."),
         emailFormat("\\w+@\\w+\\.\\w+(\\.\\w+)?"),
         pwEnglishNumberFormat("^.*(?=^.{8,16}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"),
+        idWarningMessage("아이디는 최소 5글자 이상 10글자 이하여야 합니다."),
         pwInputMessage("비밀번호창에 비밀번호를 입력해주세요."),
         pwWarningMessage("비밀번호는 영어, 숫자, 특수문자를 조합해 8~12자리로 입력해주세요."),
         pwNotMatchMessage("비밀번호가 서로 일치하지 않습니다."),

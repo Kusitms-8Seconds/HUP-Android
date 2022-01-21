@@ -2,7 +2,7 @@ package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
-import com.example.auctionapp.domain.item.dto.DefaultResponse;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
@@ -40,7 +40,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface RestAPI {
 

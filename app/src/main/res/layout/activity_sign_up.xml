@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -183,36 +184,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
             <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="69px"
-                android:text="인증번호"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edt_phoneNum"
-                app:layout_constraintTop_toBottomOf="@+id/btn_sendSms" />
-
-            <EditText
-                android:id="@+id/edt_smsCheck"
-                android:layout_width="0dp"
-                android:layout_height="140px"
-                android:layout_marginTop="32px"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/box_edge"
-                android:ems="10"
-                android:hint="인증번호를 입력해주세요."
-                android:inputType="number"
-                android:paddingLeft="30px"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -222,15 +193,14 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edt_smsCheck"
-                app:layout_constraintTop_toBottomOf="@+id/btn_phoneCheck" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edt_phoneNum"/>
 
             <EditText
                 android:id="@+id/edt_email"
                 android:layout_width="0dp"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
-                android:layout_marginEnd="16dp"
                 android:background="@drawable/box_edge"
                 android:ems="10"
                 android:hint="이메일 주소를 입력해주세요."
@@ -242,28 +212,6 @@
                 app:layout_constraintStart_toStartOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
-            <Button
-                android:id="@+id/btn_sendSms"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="35px"
-                android:backgroundTint="@color/Hup"
-                android:text="인증문자 받기"
-                app:layout_constraintEnd_toEndOf="@+id/edt_phoneNum"
-                app:layout_constraintStart_toStartOf="@+id/edt_phoneNum"
-                app:layout_constraintTop_toBottomOf="@+id/edt_phoneNum" />
-
-            <Button
-                android:id="@+id/btn_phoneCheck"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:backgroundTint="@color/Hup"
-                android:text="인증 확인"
-                app:layout_constraintEnd_toEndOf="@+id/edt_smsCheck"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edt_smsCheck"
-                app:layout_constraintTop_toBottomOf="@+id/edt_smsCheck" />
-
             <ImageView
                 android:id="@+id/button3"
                 android:layout_width="230px"
@@ -272,6 +220,7 @@
                 android:src="@drawable/id_check"
                 android:text="중복확인"
                 android:textSize="40px"
+                android:layout_marginStart="30px"
                 app:layout_constraintBottom_toBottomOf="@+id/edt_userId"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -287,8 +236,8 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edt_email"
-                app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_email"
+                app:layout_constraintStart_toStartOf="@id/edt_phoneNum"/>
 
             <CheckBox
                 android:id="@+id/radioButton5"

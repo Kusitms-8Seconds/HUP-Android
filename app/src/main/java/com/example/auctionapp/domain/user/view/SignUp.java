@@ -77,16 +77,6 @@ public class SignUp extends AppCompatActivity implements SignUpView {
 //        }return true;
 //    }
 
-
-    public boolean agreeCheck(){
-        if((!binding.radioButton.isChecked())||(!binding.radioButton2.isChecked())||(!binding.radioButton3.isChecked())
-                ||(!binding.radioButton4.isChecked())){
-            showToast(ESignUp.agreeCheckMessage.getText());
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

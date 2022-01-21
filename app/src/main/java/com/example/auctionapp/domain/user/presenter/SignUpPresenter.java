@@ -12,6 +12,7 @@ import com.example.auctionapp.databinding.ActivitySignUpBinding;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.SignUpResponse;
+import com.example.auctionapp.domain.user.view.Email;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.domain.user.view.SignUp;
 import com.example.auctionapp.domain.user.view.SignUpView;
@@ -63,7 +64,8 @@ public class SignUpPresenter implements SignUpPresenterInterface{
             RetrofitTool.getAPIWithNullConverter().signup(signUpRequest)
                     .enqueue(MainRetrofitTool.getCallback(new SignUpCallback()));
 
-            Intent intent = new Intent(context, MainActivity.class);
+            Intent intent = new Intent(context, Email.class);
+            intent.putExtra("email", binding.edtEmail.getText().toString());
             return intent;
         }
     }
@@ -72,7 +74,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     public boolean validLoginIdCheck() {
         String inputId = binding.edtUserId.getText().toString();
         if(inputId.length() < 5 || inputId.length() > 11){
-            showToast("아이디는 최소 5글자 이상 10글자 이하여야 합니다.");
+            showToast(Constants.ESignUp.idWarningMessage.getText());
             return false; }
         return true;
     }
@@ -143,7 +145,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         @Override
         public void onSuccessResponse(Response<SignUpResponse> response) {
             Constants.userId = response.body().getUserId();
-            System.out.println("userId"+Constants.userId);
+            System.out.println("SignUp_userId: "+Constants.userId);
         }
         @Override
         public void onFailResponse(Response<SignUpResponse> response) {
@@ -157,8 +159,6 @@ public class SignUpPresenter implements SignUpPresenterInterface{
 
             }
             Log.d(TAG, "onFailResponse");
-        }
-        private void showToast(String message) {
         }
 
         @Override
