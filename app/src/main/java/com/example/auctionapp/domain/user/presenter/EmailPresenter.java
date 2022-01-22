@@ -50,7 +50,7 @@ public class EmailPresenter implements EmailPresenterInterface{
 
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, "sending email success, idToken: " + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) {
@@ -76,7 +76,7 @@ public class EmailPresenter implements EmailPresenterInterface{
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
             showToast("이메일인증성공");
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, "checking code success, idToken: " + response.body().toString());
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,7 +87,7 @@ public class EmailPresenter implements EmailPresenterInterface{
             try {
                 showToast("이메일인증실패");
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
+                Log.d("fail error", jObjError.getString("message"));
                 showToast(jObjError.getString("message"));
             } catch (Exception e) {
                 Log.d("error", e.getMessage());

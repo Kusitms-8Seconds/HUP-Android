@@ -70,7 +70,7 @@
 
     <Button
         android:id="@+id/btn_sendEmail"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:backgroundTint="@color/Hup"
         android:layout_marginTop="30px"
@@ -100,33 +100,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edt_codeCheck"
-            android:layout_width="200dp"
-            android:layout_height="140px"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/box_edge"
-            android:ems="10"
-            android:hint="인증코드 입력"
-            android:inputType="number"
-            android:paddingLeft="30px"
-            android:textSize="14sp"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/textView17">
 
-        <Button
-            android:id="@+id/btn_codeCheck"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_margin="15px"
-            android:backgroundTint="@color/Hup"
-            android:text="인증코드 확인"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/edt_codeCheck"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            <EditText
+                android:id="@+id/edt_codeCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="140px"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="인증코드 입력"
+                android:paddingLeft="30px"
+                android:textSize="14sp" />
 
+            <Button
+                android:id="@+id/btn_codeCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:backgroundTint="@color/Hup"
+                android:text="인증코드 확인" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

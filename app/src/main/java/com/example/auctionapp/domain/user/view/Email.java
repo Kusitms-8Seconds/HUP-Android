@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.user.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,6 +33,9 @@ public class Email extends AppCompatActivity implements EmailView {
         binding.btnSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.btnSendEmail.setEnabled(false);
+                binding.btnSendEmail.setText("발송되었습니다");
+                binding.btnSendEmail.setTextColor(Color.WHITE);
                 binding.lyCheckAuthcode.setVisibility(View.VISIBLE);
                 presenter.sendEmail(email);
             }
