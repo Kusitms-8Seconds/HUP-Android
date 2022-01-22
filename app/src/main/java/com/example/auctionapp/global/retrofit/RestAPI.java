@@ -61,12 +61,6 @@ public interface RestAPI {
     @POST("api/v1/users/naver-login")       //네이버 로그인
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
 
-
-    @GET("api/v1/scrap/heart/{id}")
-    Call<ScrapCountResponse> getHeart(@Path("id") Long id);
-    @POST("api/v1/scrap/{id}")
-    Call<DefaultResponse> scrapItem(@Path("id") Long id);
-
     @Multipart
     @POST("api/v1/items")   //아이템 생성
     Call<RegisterItemResponse> uploadItem(@Part List<MultipartBody.Part> files,
@@ -78,9 +72,21 @@ public interface RestAPI {
                                           @Part("itemStatePoint") RequestBody itemStatePoint,
                                           @Part("auctionClosingDate") RequestBody auctionClosingDate,
                                           @Part("description") RequestBody description);
+    @GET("api/v1/items/{id}")   //아이템 조회
+    Call<ItemDetailsResponse> getItem(@Path("id") Long id);
+    @GET("api/v1/items/statuses/{itemSoldStatus}")     //아이템 판매상태별 조회
+    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/statuses/hearts/{itemSoldStatus}")  //아이템 판매상태별, 스크랩 많은 순 조회
+    Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
+    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
+    @DELETE("/api/v1/items/{id}")   //아이템 삭제
+    Call<DefaultResponse> deleteItem(@Path("id") Long id);
 
-
-
+    @GET("api/v1/scrap/heart/{id}")
+    Call<ScrapCountResponse> getHeart(@Path("id") Long id);
+    @POST("api/v1/scrap/{id}")
+    Call<DefaultResponse> scrapItem(@Path("id") Long id);
     @POST("api/v1/scrap")
     Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
     @POST("api/v1/scrap/heart/check")
@@ -89,17 +95,6 @@ public interface RestAPI {
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/scrap/list/{userId}")
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
-
-    @GET("api/v1/items/{id}")   //아이템 조회
-    Call<ItemDetailsResponse> getItem(@Path("id") Long id);
-    @GET("api/v1/items/list/statuses/{itemSoldStatus}")     //아이템 판매상태별 조회
-    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
-    @GET("api/v1/items/list/statuses/hearts/{itemSoldStatus}")  //아이템 판매상태별, 스크랩 많은 순 조회
-    Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
-    @GET("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
-    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
-    @DELETE("/api/v1/items/{id}")   //아이템 삭제
-    Call<DefaultResponse> deleteItem(@Path("id") Long id);
 
     @GET("api/v1/priceSuggestion/bidder/{itemId}")      //getBidder
     Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
@@ -111,7 +106,5 @@ public interface RestAPI {
     Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
     @GET("api/v1/priceSuggestion/participant/{itemId}")     //find participants
     Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
-
-
 
 }

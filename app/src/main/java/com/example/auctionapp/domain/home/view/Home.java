@@ -39,20 +39,7 @@ import static android.content.ContentValues.TAG;
 
 public class Home extends Fragment implements MainView{
     private ActivityHomeBinding binding;
-    MainPresenter presenter = new MainPresenter(this);
-
-    private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
-    AuctionNowAdapter adapter;
-    AuctionNow data;
-    BestItem bestItem;
-    List<AuctionNow> auctionDataList = new ArrayList<>();
-    int heartCount;
-    int maximumPriceCount;
-    int maximumPriceCount2;
-    BestItemAdapter bestItemAdapter;
-    ViewPager bestItemViewPager;
-
-    RecyclerView AuctionNowRecyclerView;
+    MainPresenter presenter;
 
     @Nullable
     @Override
@@ -61,36 +48,17 @@ public class Home extends Fragment implements MainView{
         binding = ActivityHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        init();
+        presenter = new MainPresenter(this, binding, getContext(), getActivity());
+
+        presenter.init();
         presenter.initializeAuctionNowData();
         presenter.initializeBestData();
-
-        bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
-        binding.bestItemViewPager.setAdapter(bestItemAdapter);
 
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void init(){
-
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
-        binding.AuctionNowView.setLayoutManager(linearLayoutManager);
-        adapter = new AuctionNowAdapter();
-        binding.AuctionNowView.setAdapter(adapter);
-
-        bestItemDataList = new ArrayList();
-
-        adapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(getContext(), ItemDetail.class);
-                startActivity(intent); }
-        });
     }
 
 
@@ -120,30 +88,5 @@ public class Home extends Fragment implements MainView{
 //        }
 //    }
 
-    private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
 
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
-            bestItemAdapter = new BestItemAdapter(getContext(), bestItemDataList);
-            //bestItemAdapter.notifyDataSetChanged();
-            bestItemViewPager.setAdapter(bestItemAdapter);
-            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
-            maximumPriceCount2++;
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
 }

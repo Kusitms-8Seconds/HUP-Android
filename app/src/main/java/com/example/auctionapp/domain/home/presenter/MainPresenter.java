@@ -1,10 +1,20 @@
 package com.example.auctionapp.domain.home.presenter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
+import com.example.auctionapp.databinding.ActivityBidPageBinding;
+import com.example.auctionapp.databinding.ActivityHomeBinding;
+import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.domain.home.view.MainView;
 import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;
@@ -13,6 +23,9 @@ import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.home.model.BestItem;
+import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
+import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -36,15 +49,53 @@ import static android.content.ContentValues.TAG;
 public class MainPresenter implements Presenter{
     private MainView view;
 
-    private ArrayList<BestItem> bestItemDataList = new ArrayList<>();
+    private ArrayList<BestItem> bestItemDataList;
     private BestItem bestItem;
+    BestItemAdapter bestItemAdapter;
+    ViewPager bestItemViewPager;
+
     private AuctionNow data;
     List<AuctionNow> auctionDataList = new ArrayList<>();
     int heartCount;
     AuctionNowAdapter adapter;
 
-    public MainPresenter(MainView view){
-        this.view = view;
+    int maximumPriceCount;
+    int maximumPriceCount2;
+
+    // Attributes
+    private MainView mainView;
+    private ActivityHomeBinding binding;
+    private Context context;
+    private Activity activity;
+
+    // Constructor
+    public MainPresenter(MainView mainView, ActivityHomeBinding binding, Context context, Activity activity){
+        this.mainView = mainView;
+        this.binding = binding;
+        this.context = context;
+        this.activity = activity;
+    }
+
+    @Override
+    public void init() {
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(context,2);
+        binding.AuctionNowView.setLayoutManager(linearLayoutManager);
+        adapter = new AuctionNowAdapter();
+        binding.AuctionNowView.setAdapter(adapter);
+
+        bestItemDataList = new ArrayList();
+
+        adapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(context, ItemDetail.class);
+                context.startActivity(intent);
+            }
+        });
+
+        bestItemDataList = new ArrayList<>();
+        bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+        binding.bestItemViewPager.setAdapter(bestItemAdapter);
     }
 
     @Override
@@ -183,6 +234,32 @@ public class MainPresenter implements Presenter{
             } catch (Exception e) {
 //                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
+    private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
+
+            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
+            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+            //bestItemAdapter.notifyDataSetChanged();
+            bestItemViewPager.setAdapter(bestItemAdapter);
+            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
+            maximumPriceCount2++;
+        }
+        @Override
+        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
             Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
