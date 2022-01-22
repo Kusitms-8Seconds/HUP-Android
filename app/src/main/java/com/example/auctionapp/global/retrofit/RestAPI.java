@@ -61,10 +61,7 @@ public interface RestAPI {
     @POST("api/v1/users/naver-login")       //네이버 로그인
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
 
-    @GET("api/v1/items/list/status/{itemSoldStatus}")
-    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
-    @GET("api/v1/items/list/status/heart/{itemSoldStatus}")
-    Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+
     @GET("api/v1/scrap/heart/{id}")
     Call<ScrapCountResponse> getHeart(@Path("id") Long id);
     @POST("api/v1/scrap/{id}")
@@ -82,10 +79,8 @@ public interface RestAPI {
                                           @Part("auctionClosingDate") RequestBody auctionClosingDate,
                                           @Part("description") RequestBody description);
 
-    @GET("api/v1/priceSuggestion/maximumPrice/{itemId}")
-    Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
-    @GET("api/v1/priceSuggestion/participant/{itemId}")
-    Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
+
+
     @POST("api/v1/scrap")
     Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
     @POST("api/v1/scrap/heart/check")
@@ -94,16 +89,29 @@ public interface RestAPI {
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/scrap/list/{userId}")
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
+
     @GET("api/v1/items/{id}")   //아이템 조회
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
-    @GET("api/v1/priceSuggestion/list/item/{id}")
-    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
-    @GET("api/v1/priceSuggestion/list/user/{id}")
-    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("id") Long id);
-    @POST("api/v1/items/list/status")
+    @GET("api/v1/items/list/statuses/{itemSoldStatus}")     //아이템 판매상태별 조회
+    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/list/statuses/hearts/{itemSoldStatus}")  //아이템 판매상태별, 스크랩 많은 순 조회
+    Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
-    @GET("api/v1/priceSuggestion/bidder/{itemId}")
-    Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
     @DELETE("/api/v1/items/{id}")   //아이템 삭제
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
+
+    @GET("api/v1/priceSuggestion/bidder/{itemId}")      //getBidder
+    Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestion/list/item/{id}")   //find All by itemId
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
+    @GET("api/v1/priceSuggestion/list/user/{id}")   //find All by userId
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("id") Long id);
+    @GET("api/v1/priceSuggestion/maximumPrice/{itemId}")    //find maximum price
+    Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestion/participant/{itemId}")     //find participants
+    Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
+
+
+
 }
