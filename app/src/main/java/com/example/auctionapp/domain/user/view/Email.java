@@ -35,7 +35,7 @@ public class Email extends AppCompatActivity implements EmailView {
             public void onClick(View view) {
                 binding.btnSendEmail.setEnabled(false);
                 binding.btnSendEmail.setText("발송되었습니다");
-                binding.btnSendEmail.setTextColor(Color.WHITE);
+                binding.btnSendEmail.setBackgroundColor(Color.GRAY);
                 binding.lyCheckAuthcode.setVisibility(View.VISIBLE);
                 presenter.sendEmail(email);
             }

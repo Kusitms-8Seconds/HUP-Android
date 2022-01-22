@@ -4,18 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
+import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -24,6 +29,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -38,6 +45,11 @@ import com.kakao.util.OptionalBoolean;
 import com.kakao.util.exception.KakaoException;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Response;
 
@@ -78,8 +90,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void googleLoginCallback(String idToken) {
-        OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+    public void googleLoginCallback(OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest) {
+//        OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
     }
@@ -116,9 +128,10 @@ public class LoginPresenter implements LoginPresenterInterface {
         // 로그인 되어있는 경우
         if (gsa != null) {
             String idToken = gsa.getIdToken();
-            googleLoginCallback(idToken);
+            OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+            googleLoginCallback(oAuth2GoogleLoginRequest);
 
-            System.out.println("userId"+Constants.userId);
+            System.out.println("google_userId: "+Constants.userId);
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -181,6 +194,59 @@ public class LoginPresenter implements LoginPresenterInterface {
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // 카카오톡|스토리 간편로그인 실행 결과를 받아서 SDK로 전달
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+        // google
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+        if (requestCode == 12501) { return; }   // google account 선택 안 했을 때
+    }
+
+    @Override
+    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+
+            if (acct != null) {
+                String personName = acct.getDisplayName();
+                String personGivenName = acct.getGivenName();
+                String personFamilyName = acct.getFamilyName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+                String idToken = acct.getIdToken();
+
+                Log.d(TAG, "googleLogin:personName: "+personName);
+                Log.d(TAG, "googleLogin:personGivenName: "+personGivenName);
+                Log.d(TAG, "googleLogin:personEmail: "+personEmail);
+                Log.d(TAG, "googleLogin:personId: "+personId);
+                Log.d(TAG, "googleLogin:personFamilyName: "+personFamilyName);
+                Log.d(TAG, "googleLogin:personPhoto: "+personPhoto);
+                Log.d(TAG, "googleLogin:idToken: "+idToken);
+
+                OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+                googleLoginCallback(oAuth2GoogleLoginRequest);
+
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
+
+        }
+    }
 
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
         @Override
@@ -188,10 +254,16 @@ public class LoginPresenter implements LoginPresenterInterface {
             Constants.userId = response.body().getUserId();
             Constants.token = response.body().getToken();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-
         }
         @Override
-        public void onFailResponse(Response<LoginResponse> response) {
+        public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
+            System.out.println("login error: "+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Log.d(TAG, jObjError.getString("error"));
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -202,64 +274,46 @@ public class LoginPresenter implements LoginPresenterInterface {
     
     //kakao session callback
     public class SessionCallback implements ISessionCallback {
-
         // 로그인에 성공한 상태
         @Override
         public void onSessionOpened() {
             requestMe();
         }
-
         // 로그인에 실패한 상태
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
             Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
         }
-
         // 사용자 정보 요청
         public void requestMe() {
             UserManagement.getInstance()
                     .me(new MeV2ResponseCallback() {
                         @Override
-                        public void onSessionClosed(ErrorResult errorResult) {
-                            Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
-                        }
-
+                        public void onSessionClosed(ErrorResult errorResult) { Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult); }
                         @Override
-                        public void onFailure(ErrorResult errorResult) {
-                            Log.e("KAKAO_API", "사용자 정보 요청 실패: " + errorResult);
-                        }
-
+                        public void onFailure(ErrorResult errorResult) { Log.e("KAKAO_API", "사용자 정보 요청 실패: " + errorResult); }
                         @Override
                         public void onSuccess(MeV2Response result) {
 //                            onBackPressed();
-                            // kakao id token?
-                            Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
-//                            Log.i("KAKAO_API", "사용자 토큰: " + );
 
+                            Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
 
                             UserAccount kakaoAccount = result.getKakaoAccount();
                             if (kakaoAccount != null) {
-
                                 // 이메일
                                 String email = kakaoAccount.getEmail();
-
                                 if (email != null) {
                                     Log.i("KAKAO_API", "email: " + email);
-
                                 } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 이메일 획득 가능
                                     // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
-
                                 } else {
                                     // 이메일 획득 불가
                                 }
-
                                 // 프로필
                                 Profile profile = kakaoAccount.getProfile();
 
-
                                 if (profile != null) {
-
                                     Log.d("KAKAO_API", "nickname: " + profile.getNickname());
                                     Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
                                     Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
@@ -271,14 +325,13 @@ public class LoginPresenter implements LoginPresenterInterface {
 
                                 } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 프로필 정보 획득 가능
-
                                 } else {
                                     // 프로필 획득 불가
                                 }
-
                             }
                             Intent intent = new Intent(context, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
                         }
                     });

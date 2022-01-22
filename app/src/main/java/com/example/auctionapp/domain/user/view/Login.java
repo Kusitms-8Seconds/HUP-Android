@@ -9,9 +9,11 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.presenter.LoginPresenter;
 import com.example.auctionapp.R;
@@ -106,56 +108,8 @@ public class Login extends AppCompatActivity implements LoginView{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // 카카오톡|스토리 간편로그인 실행 결과를 받아서 SDK로 전달
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-        // google
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-        if (requestCode == 12501) { return; }   // google account 선택 안 했을 때
-
+        presenter.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    // google login method
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-
-            if (acct != null) {
-                String personName = acct.getDisplayName();
-                String personGivenName = acct.getGivenName();
-                String personFamilyName = acct.getFamilyName();
-                String personEmail = acct.getEmail();
-                String personId = acct.getId();
-                Uri personPhoto = acct.getPhotoUrl();
-                String idToken = acct.getIdToken();
-
-                Log.d(TAG, "handleSignInResult:personName "+personName);
-                Log.d(TAG, "handleSignInResult:personGivenName "+personGivenName);
-                Log.d(TAG, "handleSignInResult:personEmail "+personEmail);
-                Log.d(TAG, "handleSignInResult:personId "+personId);
-                Log.d(TAG, "handleSignInResult:personFamilyName "+personFamilyName);
-                Log.d(TAG, "handleSignInResult:personPhoto "+personPhoto);
-                Log.d(TAG, "handleSignInResult:idToken "+idToken);
-
-                presenter.googleLoginCallback(idToken);
-
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
-
-        }
     }
 
 
