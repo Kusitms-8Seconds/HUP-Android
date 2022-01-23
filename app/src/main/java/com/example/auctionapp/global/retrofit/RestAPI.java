@@ -83,25 +83,23 @@ public interface RestAPI {
     @DELETE("/api/v1/items/{id}")   //아이템 삭제
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 
-    @GET("api/v1/scrap/heart/{id}")
-    Call<ScrapCountResponse> getHeart(@Path("id") Long id);
-    @POST("api/v1/scrap/{id}")
-    Call<DefaultResponse> scrapItem(@Path("id") Long id);
-    @POST("api/v1/scrap")
+    @POST("api/v1/scrap")   //scrap create
     Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
-    @POST("api/v1/scrap/heart/check")
-    Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
-    @DELETE("api/v1/scrap/{scrapId}")
+    @DELETE("api/v1/scrap/{scrapId}")   //scrap delete
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
-    @GET("api/v1/scrap/list/{userId}")
+    @GET("api/v1/scrap/heart/{itemId}")     //get heart
+    Call<ScrapCountResponse> getHeart(@Path("itemId") Long itemId);
+    @POST("api/v1/scrap/heart/check")   //check scrap
+    Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
+    @GET("api/v1/scrap/list/{userId}")      //list
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
 
     @GET("api/v1/priceSuggestion/bidder/{itemId}")      //getBidder
     Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
-    @GET("api/v1/priceSuggestion/list/item/{id}")   //find All by itemId
-    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("id") Long id);
-    @GET("api/v1/priceSuggestion/list/user/{id}")   //find All by userId
-    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("id") Long id);
+    @GET("api/v1/priceSuggestion/list/item/{itemId}")   //find All by itemId
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestion/list/user/{userId}")   //find All by userId
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("userId") Long userId);
     @GET("api/v1/priceSuggestion/maximumPrice/{itemId}")    //find maximum price
     Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
     @GET("api/v1/priceSuggestion/participant/{itemId}")     //find participants

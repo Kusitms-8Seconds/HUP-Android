@@ -50,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Response;
 
@@ -248,6 +249,17 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
     }
 
+    @Override
+    public void exceptionToast(String errorBody) {
+        String[] status = errorBody.split("status");
+        String [] statusMessageStr = status[1].split(":");
+        String statusMessageStr2 = statusMessageStr[1];
+        int comma = statusMessageStr2.indexOf(",");
+        String statusMessage = statusMessageStr2.substring(0, comma);
+        System.out.println("statusMessage: "+statusMessage);
+        Toast.makeText(context, statusMessage, Toast.LENGTH_SHORT).show();
+    }
+
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
         @Override
         public void onSuccessResponse(Response<LoginResponse> response) {
@@ -257,7 +269,8 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
-            System.out.println("login error: "+response.errorBody().string());
+//            System.out.println("login error: "+response.errorBody().string());
+            exceptionToast(response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Log.d(TAG, jObjError.getString("error"));
@@ -337,4 +350,5 @@ public class LoginPresenter implements LoginPresenterInterface {
                     });
         }
     }
+
 }
