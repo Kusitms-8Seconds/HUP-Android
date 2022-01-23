@@ -43,7 +43,7 @@
         <activity android:name=".domain.pricesuggestion.view.FeesPage" />
         <activity android:name=".domain.pricesuggestion.view.GoChat"/>
         <activity android:name=".domain.item.view.EditQnA" />
-        <activity android:name=".domain.user.view.Email"/>
+        <activity android:name=".domain.email.view.Email"/>
 
 
         <meta-data

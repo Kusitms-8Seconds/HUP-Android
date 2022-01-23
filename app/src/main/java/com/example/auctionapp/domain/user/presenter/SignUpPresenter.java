@@ -1,20 +1,15 @@
 package com.example.auctionapp.domain.user.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.auctionapp.MainActivity;
-import com.example.auctionapp.databinding.ActivityLoginBinding;
 import com.example.auctionapp.databinding.ActivitySignUpBinding;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.SignUpResponse;
-import com.example.auctionapp.domain.user.view.Email;
-import com.example.auctionapp.domain.user.view.LoginView;
-import com.example.auctionapp.domain.user.view.SignUp;
+import com.example.auctionapp.domain.email.view.Email;
 import com.example.auctionapp.domain.user.view.SignUpView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;

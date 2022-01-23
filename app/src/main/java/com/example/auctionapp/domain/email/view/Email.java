@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.view;
+package com.example.auctionapp.domain.email.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,10 +7,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.auctionapp.databinding.ActivitySignUpBinding;
 import com.example.auctionapp.databinding.ActivitySignupEmailcheckBinding;
-import com.example.auctionapp.domain.user.presenter.EmailPresenter;
-import com.example.auctionapp.domain.user.presenter.SignUpPresenter;
+import com.example.auctionapp.domain.email.presenter.EmailPresenter;
 
 public class Email extends AppCompatActivity implements EmailView {
     private ActivitySignupEmailcheckBinding binding;

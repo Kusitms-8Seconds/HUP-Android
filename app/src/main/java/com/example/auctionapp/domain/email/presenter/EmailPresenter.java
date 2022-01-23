@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.presenter;
+package com.example.auctionapp.domain.email.presenter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +7,9 @@ import android.widget.Toast;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivitySignupEmailcheckBinding;
-import com.example.auctionapp.domain.user.dto.CheckAuthCodeRequest;
-import com.example.auctionapp.domain.user.dto.EmailAuthCodeRequest;
-import com.example.auctionapp.domain.user.view.EmailView;
+import com.example.auctionapp.domain.email.dto.CheckAuthCodeRequest;
+import com.example.auctionapp.domain.email.dto.EmailAuthCodeRequest;
+import com.example.auctionapp.domain.email.view.EmailView;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class EmailPresenter implements EmailPresenterInterface{
+public class EmailPresenter implements EmailPresenterInterface {
     // Attributes
     private EmailView emailView;
     private ActivitySignupEmailcheckBinding binding;

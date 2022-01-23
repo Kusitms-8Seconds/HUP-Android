@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.presenter;
+package com.example.auctionapp.domain.email.presenter;
 
 public interface EmailPresenterInterface {
     void sendEmail(String email);

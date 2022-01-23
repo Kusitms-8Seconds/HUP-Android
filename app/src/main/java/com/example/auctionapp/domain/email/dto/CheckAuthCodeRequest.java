@@ -1,4 +1,4 @@
-package com.example.auctionapp.domain.user.dto;
+package com.example.auctionapp.domain.email.dto;
 
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
