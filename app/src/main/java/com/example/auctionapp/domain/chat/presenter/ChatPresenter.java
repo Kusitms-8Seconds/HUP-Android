@@ -124,15 +124,4 @@ public class ChatPresenter implements ChatPresenterInterface {
             }
         });
     }
-
-    @Override
-    public void exceptionToast(int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
 }

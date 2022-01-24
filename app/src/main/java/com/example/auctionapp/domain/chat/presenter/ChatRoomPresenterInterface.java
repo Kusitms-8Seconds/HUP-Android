@@ -10,5 +10,5 @@ public interface ChatRoomPresenterInterface {
 //    void getDestUid(); //상대방 uid 하나(single) 읽기
 //    void getMessageList(); //채팅 내용 읽어들임
 
-    void exceptionToast(int statusCode);
+    void exceptionToast(String TAG, int statusCode);
 }

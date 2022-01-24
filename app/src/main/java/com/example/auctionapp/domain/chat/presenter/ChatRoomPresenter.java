@@ -180,13 +180,13 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
+    public void exceptionToast(String Tag, int statusCode) {
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() +
+        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() + Tag + "::" +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -204,7 +204,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(ChatConstants.EChatCallback.eGetItemDetailsCallback.getText(),response.code());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
@@ -226,7 +226,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(ChatConstants.EChatCallback.eUserDetailsInfoCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
