@@ -1,17 +1,25 @@
 package com.example.auctionapp.domain.upload.presenter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.databinding.ActivityUploadPageBinding;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
+import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.domain.upload.view.UploadPage;
 import com.example.auctionapp.domain.upload.view.UploadView;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import java.util.ArrayList;
@@ -21,11 +29,18 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class UploadPresenter implements Presenter{
-    private final UploadView view;
     String selectedCategory;
 
-    public UploadPresenter(UploadView view) {
-        this.view = view;
+    // Attributes
+    private UploadView uploadView;
+    private ActivityUploadPageBinding binding;
+    private Context context;
+
+    // Constructor
+    public UploadPresenter(UploadView uploadView, ActivityUploadPageBinding binding, Context context){
+        this.uploadView = uploadView;
+        this.binding = binding;
+        this.context = context;
     }
 
     @Override
@@ -88,6 +103,18 @@ public class UploadPresenter implements Presenter{
                 auctionClosingDateR, descriptionR)
                 .enqueue(MainRetrofitTool.getCallback(new RegisterItemCallback()));
     }
+
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, UploadConstants.EUploadCallback.TAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     private class RegisterItemCallback implements MainRetrofitCallback<RegisterItemResponse> {
         @Override
         public void onSuccessResponse(Response<RegisterItemResponse> response) {
@@ -97,6 +124,7 @@ public class UploadPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<RegisterItemResponse> response) {
+            exceptionToast(response.code());
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override

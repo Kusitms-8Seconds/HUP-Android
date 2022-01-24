@@ -45,7 +45,7 @@ import retrofit2.Response;
 
 public class UploadPage extends AppCompatActivity implements UploadView{
     private ActivityUploadPageBinding binding;
-    UploadPresenter presenter = new UploadPresenter(this);
+    UploadPresenter presenter = new UploadPresenter(this, binding, getApplicationContext());
 
     // DatePickerDialog
     Calendar myCalendar = Calendar.getInstance();

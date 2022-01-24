@@ -11,4 +11,6 @@ public interface Presenter {
                 RequestBody itemNameR, RequestBody categoryR, RequestBody initPriceR,
                 RequestBody buyDateR, RequestBody itemStatePointR,
                 RequestBody auctionClosingDateR, RequestBody descriptionR);
+
+    void exceptionToast(int statusCode);
 }
