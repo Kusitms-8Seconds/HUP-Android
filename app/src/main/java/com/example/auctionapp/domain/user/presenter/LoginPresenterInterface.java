@@ -17,7 +17,7 @@ public interface LoginPresenterInterface {
 
     void appLoginCallback(LoginRequest loginRequest);
     void kakaoLoginCallback(String accessToken);
-    void googleLoginCallback(OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
+    void googleLoginCallback(String idToken);
     void naverLoginCallback(String accessToken);
 
     void kakaoLogin();
@@ -29,5 +29,5 @@ public interface LoginPresenterInterface {
     void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
     void handleSignInResult(Task<GoogleSignInAccount> completedTask);
 
-    void exceptionToast(String errorBody);
+    void exceptionToast(int statusCode);
 }

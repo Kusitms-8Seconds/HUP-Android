@@ -91,8 +91,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void googleLoginCallback(OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest) {
-//        OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
+    public void googleLoginCallback(String idToken) {
+        OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
     }
@@ -117,7 +117,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         // 앱에 필요한 사용자 데이터를 요청하도록 로그인 옵션을 설정한다.
         // DEFAULT_SIGN_IN parameter는 유저의 ID와 기본적인 프로필 정보를 요청하는데 사용된다.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com")
+                .requestIdToken(Constants.ELoginCallback.eGoogleRequestIdToken.getText())
                 .requestEmail() // email addresses도 요청함
                 .build();
 
@@ -129,10 +129,8 @@ public class LoginPresenter implements LoginPresenterInterface {
         // 로그인 되어있는 경우
         if (gsa != null) {
             String idToken = gsa.getIdToken();
-            OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-            googleLoginCallback(oAuth2GoogleLoginRequest);
+            googleLoginCallback(idToken);
 
-            System.out.println("google_userId: "+Constants.userId);
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -169,10 +167,10 @@ public class LoginPresenter implements LoginPresenterInterface {
                     long expiresAt = mOAuthLoginModule.getExpiresAt(context);
                     String tokenType = mOAuthLoginModule.getTokenType(context);
 
-                    Log.i("LoginData","accessToken : "+ accessToken);
-                    Log.i("LoginData","refreshToken : "+ refreshToken);
-                    Log.i("LoginData","expiresAt : "+ expiresAt);
-                    Log.i("LoginData","tokenType : "+ tokenType);
+                    Log.i(Constants.ELoginCallback.eNaverTAG.getText(),Constants.ELoginCallback.eAccessToken.getText()+ accessToken);
+                    Log.i(Constants.ELoginCallback.eNaverTAG.getText(),Constants.ELoginCallback.eRefreshToken.getText()+ refreshToken);
+                    Log.i(Constants.ELoginCallback.eNaverTAG.getText(),Constants.ELoginCallback.eExpiresAt.getText()+ expiresAt);
+                    Log.i(Constants.ELoginCallback.eNaverTAG.getText(),Constants.ELoginCallback.eTokenType.getText()+ tokenType);
 
                     naverLoginCallback(accessToken);
 //                    onBackPressed();
@@ -181,8 +179,7 @@ public class LoginPresenter implements LoginPresenterInterface {
                     String errorCode = mOAuthLoginModule
                             .getLastErrorCode(context).getCode();
                     String errorDesc = mOAuthLoginModule.getLastErrorDesc(context);
-                    Toast.makeText(context, "errorCode:" + errorCode
-                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                    Log.i(Constants.ELoginCallback.eNaverTAG.getText(),errorCode + errorDesc);
                 }
             };
         };
@@ -225,16 +222,15 @@ public class LoginPresenter implements LoginPresenterInterface {
                 Uri personPhoto = acct.getPhotoUrl();
                 String idToken = acct.getIdToken();
 
-                Log.d(TAG, "googleLogin:personName: "+personName);
-                Log.d(TAG, "googleLogin:personGivenName: "+personGivenName);
-                Log.d(TAG, "googleLogin:personEmail: "+personEmail);
-                Log.d(TAG, "googleLogin:personId: "+personId);
-                Log.d(TAG, "googleLogin:personFamilyName: "+personFamilyName);
-                Log.d(TAG, "googleLogin:personPhoto: "+personPhoto);
-                Log.d(TAG, "googleLogin:idToken: "+idToken);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eNickname.getText() +personName);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.ePersonGivenName.getText()+personGivenName);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eEmail.getText()+personEmail);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.ePersonId.getText()+personId);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.ePersonFamilynName.getText()+personFamilyName);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eProfilImg.getText()+personPhoto);
+                Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eAccessToken.getText()+idToken);
 
-                OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
-                googleLoginCallback(oAuth2GoogleLoginRequest);
+                googleLoginCallback(idToken);
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -244,20 +240,19 @@ public class LoginPresenter implements LoginPresenterInterface {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.e(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eGoogleErrorCode.getText() + e.getStatusCode());
 
         }
     }
 
     @Override
-    public void exceptionToast(String errorBody) {
-        String[] status = errorBody.split("status");
-        String [] statusMessageStr = status[1].split(":");
-        String statusMessageStr2 = statusMessageStr[1];
-        int comma = statusMessageStr2.indexOf(",");
-        String statusMessage = statusMessageStr2.substring(0, comma);
-        System.out.println("statusMessage: "+statusMessage);
-        Toast.makeText(context, statusMessage, Toast.LENGTH_SHORT).show();
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = Constants.ELoginCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = Constants.ELoginCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = Constants.ELoginCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, Constants.ELoginCallback.TAG + String.valueOf(statusCode) + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
@@ -265,23 +260,23 @@ public class LoginPresenter implements LoginPresenterInterface {
         public void onSuccessResponse(Response<LoginResponse> response) {
             Constants.userId = response.body().getUserId();
             Constants.token = response.body().getToken();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+            Log.d(TAG, Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
 //            System.out.println("login error: "+response.errorBody().string());
-            exceptionToast(response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Log.d(TAG, jObjError.getString("error"));
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
             }
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, Constants.ELoginCallback.eFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(Constants.ELoginCallback.eConnectionFail.getText(), t.getMessage());
         }
     }
     
@@ -295,28 +290,28 @@ public class LoginPresenter implements LoginPresenterInterface {
         // 로그인에 실패한 상태
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
-            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
+            Log.e(Constants.ELoginCallback.eKakaoSessionCallback.getText(), Constants.ELoginCallback.eSessionOpenFailed.getText() + exception.getMessage());
         }
         // 사용자 정보 요청
         public void requestMe() {
             UserManagement.getInstance()
                     .me(new MeV2ResponseCallback() {
                         @Override
-                        public void onSessionClosed(ErrorResult errorResult) { Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult); }
+                        public void onSessionClosed(ErrorResult errorResult) { Log.e(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eKakaoSessionError.getText()+ errorResult); }
                         @Override
-                        public void onFailure(ErrorResult errorResult) { Log.e("KAKAO_API", "사용자 정보 요청 실패: " + errorResult); }
+                        public void onFailure(ErrorResult errorResult) { Log.e(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eKakaoUserError.getText() + errorResult); }
                         @Override
                         public void onSuccess(MeV2Response result) {
 //                            onBackPressed();
 
-                            Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
+                            Log.i(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.ePersonId.getText() + result.getId());
 
                             UserAccount kakaoAccount = result.getKakaoAccount();
                             if (kakaoAccount != null) {
                                 // 이메일
                                 String email = kakaoAccount.getEmail();
                                 if (email != null) {
-                                    Log.i("KAKAO_API", "email: " + email);
+                                    Log.i(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eEmail.getText()  + email);
                                 } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
                                     // 동의 요청 후 이메일 획득 가능
                                     // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
@@ -327,12 +322,12 @@ public class LoginPresenter implements LoginPresenterInterface {
                                 Profile profile = kakaoAccount.getProfile();
 
                                 if (profile != null) {
-                                    Log.d("KAKAO_API", "nickname: " + profile.getNickname());
-                                    Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
-                                    Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
+                                    Log.d(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eNickname.getText()  + profile.getNickname());
+                                    Log.d(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eProfilImg.getText()  + profile.getProfileImageUrl());
+                                    Log.d(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eThumbnailImg.getText()  + profile.getThumbnailImageUrl());
                                     String accessToken = AuthApiClient.getInstance().getTokenManagerProvider()
                                             .getManager().getToken().getAccessToken();
-                                    Log.d("KAKAO_API", "accessToken: "+ accessToken);
+                                    Log.d(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eAccessToken.getText() + accessToken);
 
                                     kakaoLoginCallback(accessToken);
 

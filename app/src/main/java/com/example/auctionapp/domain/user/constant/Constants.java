@@ -67,4 +67,51 @@ public class Constants {
             return this.text;
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    public enum ELoginCallback{
+        TAG("LoginCallback:"),
+        eUnauthorized("Unauthorized"),
+        eForbidden("Forbidden"),
+        eNotFound("Not Found"),
+
+        eSuccessResponse("login retrofit success, idToken: "),
+        eFailResponse("onFailResponse"),
+        eConnectionFail("연결실패"),
+
+        eGoogleRequestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com"),
+
+        eKakaoTAG("KAKAO_API"),
+        eGoogleTAG("GOOGLE_API"),
+        eNaverTAG("NAVER_API"),
+
+        ePersonId("사용자 아이디: "),
+        eEmail("email: "),
+        eNickname("nickname: "),
+        ePersonGivenName("personGivenName: "),
+        ePersonFamilynName("personFamilynName: "),
+        eProfilImg("profile image: "),
+        eThumbnailImg("thumbnail image: "),
+        eAccessToken("accessToken: "),
+        eRefreshToken("refreshToken : "),
+        eExpiresAt("expiresAt: "),
+        eTokenType("tokenType : "),
+
+        eKakaoSessionCallback("SessionCallback :: "),
+        eSessionOpenFailed("onSessionOpenFailed: "),
+        eKakaoSessionError("세션이 닫혀 있음: "),
+        eKakaoUserError("사용자 정보 요청 실패: "),
+        eGoogleErrorCode("signInResult:failed code=");
+
+
+
+        private String text;
+        private ELoginCallback(String text){
+            this.text=text;
+        }
+        public String getText(){
+            return this.text;
+        }
+    }
 }
