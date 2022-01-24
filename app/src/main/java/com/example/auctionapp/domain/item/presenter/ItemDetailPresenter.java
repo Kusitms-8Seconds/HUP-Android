@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
@@ -24,6 +25,7 @@ import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
@@ -126,6 +128,17 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
                 .enqueue(MainRetrofitTool.getCallback(new DeleteItemCallback()));
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, "Item: " +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
@@ -134,6 +147,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) {
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -154,6 +168,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) {
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -174,6 +189,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<ScrapRegisterResponse> response) {
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -201,6 +217,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<ScrapCheckedResponse> response) {
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -220,6 +237,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -237,7 +255,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -259,7 +277,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -301,7 +319,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, "onFailResponse");
         }
         @Override
