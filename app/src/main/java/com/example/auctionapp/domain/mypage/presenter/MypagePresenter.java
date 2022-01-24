@@ -93,13 +93,13 @@ public class MypagePresenter implements Presenter{
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
+    public void exceptionToast(String tag, int statusCode) {
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(activity, MypageConstants.EMyPageCallback.eMypageTAG.getText() +
+        Toast.makeText(activity, MypageConstants.EMyPageCallback.eMypageTAG.getText() + tag+
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -118,7 +118,7 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();

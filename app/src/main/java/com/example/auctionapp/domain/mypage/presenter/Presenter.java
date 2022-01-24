@@ -5,5 +5,5 @@ public interface Presenter {
     void getUserInfo();
     void socialLogOut();
 
-    void exceptionToast(int statusCode);
+    void exceptionToast(String tag, int statusCode);
 }

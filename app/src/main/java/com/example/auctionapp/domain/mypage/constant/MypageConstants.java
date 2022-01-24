@@ -12,6 +12,8 @@ public class MypageConstants {
     }
     public enum EMyPageCallback {
         eMypageTAG("MyPage: "),
+        eUserDetailsInfoCallback("UserDetailsInfoCallback::"),
+
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패");
