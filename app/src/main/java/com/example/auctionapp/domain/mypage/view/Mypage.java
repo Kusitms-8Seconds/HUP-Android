@@ -49,10 +49,12 @@ public class Mypage extends Fragment implements MypageView{
             //로그인 되어있을 때
             binding.logoutButton.setVisibility(View.VISIBLE);
             binding.changeUserInfo.setVisibility(View.VISIBLE);
+            binding.userNameLayout.setEnabled(false);
         } else {
             //로그인 안 되어있을때
             binding.logoutButton.setVisibility(View.INVISIBLE);
             binding.changeUserInfo.setVisibility(View.INVISIBLE);
+            binding.userNameLayout.setEnabled(true);
         }
 
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +69,9 @@ public class Mypage extends Fragment implements MypageView{
                 binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
                 Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
                 binding.loginIcon.setVisibility(View.VISIBLE);
+                binding.logoutButton.setVisibility(View.INVISIBLE);
+                binding.changeUserInfo.setVisibility(View.INVISIBLE);
+                binding.userNameLayout.setEnabled(true);
 
             }
         });
