@@ -10,9 +10,11 @@ import com.example.auctionapp.databinding.ActivitySignupEmailcheckBinding;
 import com.example.auctionapp.domain.email.dto.CheckAuthCodeRequest;
 import com.example.auctionapp.domain.email.dto.EmailAuthCodeRequest;
 import com.example.auctionapp.domain.email.view.EmailView;
+import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONObject;
@@ -84,8 +86,8 @@ public class EmailPresenter implements EmailPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) {
+            exceptionToast(response.code());
             try {
-                showToast("이메일인증실패");
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Log.d("fail error", jObjError.getString("message"));
                 showToast(jObjError.getString("message"));
@@ -104,5 +106,16 @@ public class EmailPresenter implements EmailPresenterInterface {
     @Override
     public void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, "Email 인증 실패: " +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 }

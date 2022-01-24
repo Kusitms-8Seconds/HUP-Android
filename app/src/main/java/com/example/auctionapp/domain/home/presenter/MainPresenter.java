@@ -118,7 +118,8 @@ public class MainPresenter implements Presenter{
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, HomeConstants.EHomeCallback.eHomeTAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, HomeConstants.EHomeCallback.eHomeTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     // best items callback
