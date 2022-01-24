@@ -4,4 +4,6 @@ public interface Presenter {
     void init();
     void getUserInfo();
     void socialLogOut();
+
+    void exceptionToast(int statusCode);
 }

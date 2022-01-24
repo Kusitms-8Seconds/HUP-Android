@@ -16,6 +16,7 @@ import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -91,6 +92,17 @@ public class MypagePresenter implements Presenter{
         mOAuthLoginModule.logout(activity);
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(activity, MypageConstants.EMyPageCallback.eMypageTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
@@ -101,21 +113,21 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
-            Log.d(TAG, MypageConstants.ELoginCallback.rtSuccessResponse.getText() + response.body().toString());
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
             } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, MypageConstants.ELoginCallback.rtFailResponse.getText());
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e( MypageConstants.ELoginCallback.rtConnectionFail.getText(), t.getMessage());
+            Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }
