@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.scrap.constant;
 public class ScrapConstants {
 
     public enum EScrapCallback {
+        eScrapTAG("Scrap: "),
         dpMinute("분"),
         logItemId("itemId: "),
         rtSuccessResponse("retrofit success, idToken: "),

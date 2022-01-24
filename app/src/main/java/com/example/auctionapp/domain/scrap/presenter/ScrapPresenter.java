@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.databinding.ActivityScrapBinding;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.adapter.ScrapAdapter;
 import com.example.auctionapp.domain.scrap.constant.ScrapConstants;
@@ -24,6 +26,7 @@ import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
@@ -85,6 +88,17 @@ public class ScrapPresenter implements Presenter{
                 .enqueue(MainRetrofitTool.getCallback(new getAllScrapsCallback()));
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, ScrapConstants.EScrapCallback.eScrapTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     private class getAllScrapsCallback implements MainRetrofitCallback<PaginationDto<List<ScrapDetailsResponse>>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -123,11 +137,7 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-//            System.out.println("errorBody"+response.errorBody().string());
-//            try {
-//                JSONObject jObjError = new JSONObject(response.errorBody().string());
-//                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-//            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            exceptionToast(response.code());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
@@ -149,11 +159,7 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-//            System.out.println("errorBody"+response.errorBody().string());
-//            try {
-//                JSONObject jObjError = new JSONObject(response.errorBody().string());
-//                Toast.makeText(getApplicationContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-//            } catch (Exception e) { Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
+            exceptionToast(response.code());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
