@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.pricesuggestion.presenter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
@@ -23,6 +25,7 @@ import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
@@ -86,6 +89,17 @@ public class BidPagePresenter implements Presenter{
         ptRecyclerView.setAdapter(ptAdapter);
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, PriceConstants.EPriceCallback.ePriceTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
 
     private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
 
@@ -105,7 +119,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -124,6 +138,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
+            exceptionToast(response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -141,7 +156,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -166,7 +181,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -193,7 +208,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            System.out.println(PriceConstants.EPriceCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
