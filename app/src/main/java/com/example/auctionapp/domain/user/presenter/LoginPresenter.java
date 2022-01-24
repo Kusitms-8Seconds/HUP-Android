@@ -24,6 +24,7 @@ import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -248,11 +249,11 @@ public class LoginPresenter implements LoginPresenterInterface {
     @Override
     public void exceptionToast(int statusCode) {
         String errorMsg = "";
-        if(statusCode==401) errorMsg = Constants.ELoginCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = Constants.ELoginCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = Constants.ELoginCallback.eNotFound.getText();
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, Constants.ELoginCallback.TAG + String.valueOf(statusCode) + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, Constants.ELoginCallback.TAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
@@ -260,7 +261,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         public void onSuccessResponse(Response<LoginResponse> response) {
             Constants.userId = response.body().getUserId();
             Constants.token = response.body().getToken();
-            Log.d(TAG, Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
+            Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
@@ -268,11 +269,11 @@ public class LoginPresenter implements LoginPresenterInterface {
             exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d(TAG, jObjError.getString("error"));
+                Log.d(Constants.ELoginCallback.TAG.getText(), jObjError.getString("error"));
             } catch (Exception e) {
-                Log.d(TAG, e.getMessage());
+                Log.d(Constants.ELoginCallback.TAG.getText(), e.getMessage());
             }
-            Log.d(TAG, Constants.ELoginCallback.eFailResponse.getText());
+            Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {

@@ -4,4 +4,6 @@ public interface Presenter {
     void init();
     void initializeBestData();
     void initializeAuctionNowData();
+
+    void exceptionToast(int statusCode);
 }

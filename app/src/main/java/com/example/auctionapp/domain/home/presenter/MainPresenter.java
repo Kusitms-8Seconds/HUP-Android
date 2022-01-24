@@ -31,6 +31,7 @@ import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
@@ -110,6 +111,16 @@ public class MainPresenter implements Presenter{
                 .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, HomeConstants.EHomeCallback.eHomeTAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     // best items callback
     public class getBestItemsCallback implements MainRetrofitCallback<List<BestItemResponse>> {
 
@@ -148,7 +159,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
-            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -199,7 +210,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -227,7 +238,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -255,7 +266,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            System.out.println(HomeConstants.EHomeCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();

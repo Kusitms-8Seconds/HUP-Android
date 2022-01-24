@@ -72,15 +72,11 @@ public class Constants {
     @NoArgsConstructor
     public enum ELoginCallback{
         TAG("LoginCallback:"),
-        eUnauthorized("Unauthorized"),
-        eForbidden("Forbidden"),
-        eNotFound("Not Found"),
+        eGoogleRequestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com"),
 
         eSuccessResponse("login retrofit success, idToken: "),
         eFailResponse("onFailResponse"),
         eConnectionFail("연결실패"),
-
-        eGoogleRequestIdToken("221537301769-e1qd8130nulhheiqo68nv8upistikcp4.apps.googleusercontent.com"),
 
         eKakaoTAG("KAKAO_API"),
         eGoogleTAG("GOOGLE_API"),

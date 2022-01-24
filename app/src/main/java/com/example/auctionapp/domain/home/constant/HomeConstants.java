@@ -12,6 +12,7 @@ public class HomeConstants {
         public String getText() { return  this.text;}
     }
     public enum EHomeCallback {
+        eHomeTAG("Home: "),
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패"),
