@@ -160,7 +160,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
-            exceptionToast("best item callback", response.code());
+            exceptionToast(HomeConstants.EHomeCallback.egetBestItemsCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -211,7 +211,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            exceptionToast("get all item callback",response.code());
+            exceptionToast(HomeConstants.EHomeCallback.egetAllItemsInfoCallback.getText(),response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -239,7 +239,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            exceptionToast("get heart callback", response.code());
+            exceptionToast(HomeConstants.EHomeCallback.egetHeartCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -267,7 +267,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast("get maximum price callback", response.code());
+            exceptionToast(HomeConstants.EHomeCallback.egetMaximumPriceBestItemCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();

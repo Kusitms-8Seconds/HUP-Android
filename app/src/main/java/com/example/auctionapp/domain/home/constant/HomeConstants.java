@@ -13,6 +13,11 @@ public class HomeConstants {
     }
     public enum EHomeCallback {
         eHomeTAG("Home: "),
+        egetBestItemsCallback("getBestItemsCallback::"),
+        egetAllItemsInfoCallback("getAllItemsInfoCallback::"),
+        egetHeartCallback("getHeartCallback::"),
+        egetMaximumPriceBestItemCallback("getMaximumPriceBestItemCallback::"),
+
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패"),
