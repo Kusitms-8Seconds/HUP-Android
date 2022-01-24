@@ -4,6 +4,12 @@ public class PriceConstants {
 
     public enum EPriceCallback {
         ePriceTAG("PriceCallback: "),
+        egetItemDetailsCallback("getItemDetailsCallback::"),
+        egetMaximumPriceCallback("getMaximumPriceCallback::"),
+        egetParticipantsCallback("getParticipantsCallback::"),
+        egetAllPriceSuggestionCallback("getAllPriceSuggestionCallback::"),
+        egetUserDetailsCallback("getUserDetailsCallback::"),
+
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패"),

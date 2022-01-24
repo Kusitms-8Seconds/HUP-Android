@@ -90,13 +90,13 @@ public class BidPagePresenter implements Presenter{
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
+    public void exceptionToast(String tag, int statusCode) {
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, PriceConstants.EPriceCallback.ePriceTAG.getText() +
+        Toast.makeText(context, tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -119,7 +119,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(PriceConstants.EPriceCallback.egetItemDetailsCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -138,7 +138,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(PriceConstants.EPriceCallback.egetMaximumPriceCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -156,7 +156,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(PriceConstants.EPriceCallback.egetParticipantsCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -181,7 +181,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(PriceConstants.EPriceCallback.egetAllPriceSuggestionCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -208,7 +208,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
