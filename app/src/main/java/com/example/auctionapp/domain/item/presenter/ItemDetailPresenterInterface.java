@@ -13,5 +13,5 @@ public interface ItemDetailPresenterInterface {
     void getUserInfoCallback(Long userId);
     void deleteItem(Long itemId);
 
-    void exceptionToast(int statusCode);
+    void exceptionToast(String tag, int statusCode);
 }

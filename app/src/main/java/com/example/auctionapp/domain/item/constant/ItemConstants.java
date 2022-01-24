@@ -59,4 +59,25 @@ public class ItemConstants {
             return EItemSoldStatus.valueOf(s);
         }
     }
+
+    public enum EItemCallback {
+        eItemTAG("Item: "),
+        eDeleteItemCallback("DeleteItemCallback::"),
+        eDeleteScrapCallback("deleteScrapCallback::"),
+        eCreateScrapCallback("createScrapCallback::"),
+        eisCheckedHeartCallback("isCheckedHeartCallback::"),
+        egetMaximumPriceCallback("getMaximumPriceCallback::"),
+        egetParticipantsCallback("getParticipantsCallback::"),
+        egetUserDetailsCallback("getUserDetailsCallback::"),
+        egetItemDetailsCallback("getItemDetailsCallback::"),
+
+        rtSuccessResponse("retrofit success, idToken: "),
+        rtFailResponse("onFailResponse"),
+        rtConnectionFail("연결실패"),
+        errorBody("errorBody");
+
+        String text;
+        EItemCallback(String text) { this.text = text; }
+        public String getText() { return  this.text;}
+    }
 }
