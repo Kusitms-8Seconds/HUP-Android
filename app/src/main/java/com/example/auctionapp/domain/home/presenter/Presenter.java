@@ -5,5 +5,5 @@ public interface Presenter {
     void initializeBestData();
     void initializeAuctionNowData();
 
-    void exceptionToast(int statusCode);
+    void exceptionToast(String Tag, int statusCode);
 }

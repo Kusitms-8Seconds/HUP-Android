@@ -87,22 +87,22 @@ public interface RestAPI {
     Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
     @DELETE("api/v1/scrap/{scrapId}")   //scrap delete
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
-    @GET("api/v1/scrap/heart/{itemId}")     //get heart
+    @GET("api/v1/scraps/hearts/{itemId}")     //상품의 좋아요 수 조회
     Call<ScrapCountResponse> getHeart(@Path("itemId") Long itemId);
-    @POST("api/v1/scrap/heart/check")   //check scrap
+    @GET("api/v1/scraps/hearts")   //유저가 해당 상품을 스크랩 중인 지 조회
     Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
-    @GET("api/v1/scrap/list/{userId}")      //list
+    @GET("api/v1/scraps/users/{userId}")      //유저의 스크랩 내역 조회
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
 
-    @GET("api/v1/priceSuggestion/bidder/{itemId}")      //getBidder
-    Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
-    @GET("api/v1/priceSuggestion/list/item/{itemId}")   //find All by itemId
+    @GET("api/v1/priceSuggestions/{itemId}")   //해당 상품의 모든 입찰내역 조회
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByItemId(@Path("itemId") Long itemId);
-    @GET("api/v1/priceSuggestion/list/user/{userId}")   //find All by userId
-    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("userId") Long userId);
-    @GET("api/v1/priceSuggestion/maximumPrice/{itemId}")    //find maximum price
+    @GET("api/v1/priceSuggestions/bidders/{itemId}")      //해당 상품의 최고입찰 유저 조회
+    Call<BidderResponse> getBidder(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestions/maximumPrice/{itemId}")    //해당 상품의 최고입찰가격 조회
     Call<MaximumPriceResponse> getMaximumPrice(@Path("itemId") Long itemId);
-    @GET("api/v1/priceSuggestion/participant/{itemId}")     //find participants
+    @GET("api/v1/priceSuggestions/participants/{itemId}")     //해당 상품의 참여자수 조회
     Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
+    @GET("api/v1/priceSuggestions/users/{userId}")   //해당 유저의 경매 참여내역 조회
+    Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("userId") Long userId);
 
 }

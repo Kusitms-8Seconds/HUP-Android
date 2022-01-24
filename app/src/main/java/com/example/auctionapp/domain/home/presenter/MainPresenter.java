@@ -112,13 +112,13 @@ public class MainPresenter implements Presenter{
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
+    public void exceptionToast(String Tag, int statusCode) {
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, HomeConstants.EHomeCallback.eHomeTAG.getText() +
+        Toast.makeText(context, Tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -160,7 +160,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast("best item callback", response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -211,7 +211,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast("get all item callback",response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -239,7 +239,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast("get heart callback", response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
 //                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -267,7 +267,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast("get maximum price callback", response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
