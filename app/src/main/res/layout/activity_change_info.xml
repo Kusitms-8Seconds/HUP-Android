@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".domain.user.view.ChangeInfo">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50px"
+            android:layout_weight="0"
+            android:fontFamily="sans-serif-black"
+            android:text="회원정보 수정"
+            android:textColor="#000000"
+            android:textSize="48px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="300dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="318dp"
+                android:text="아이디"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edt_userId"
+                android:layout_width="730px"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="아이디 입력 (5~11자)"
+                android:inputType="textPersonName"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="69px"
+                android:text="비밀번호"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/edt_userId"
+                app:layout_constraintTop_toBottomOf="@+id/edt_userId" />
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="0dp"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="비밀번호 입력 (숫자, 영문, 대소문자 조합 8~16자)"
+                android:inputType="textPassword"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <EditText
+                android:id="@+id/edt_passwordCheck"
+                android:layout_width="0dp"
+                android:layout_height="140px"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="비밀번호 확인"
+                android:inputType="textPassword"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/edt_password"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="69px"
+                android:text="닉네임"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/edt_passwordCheck"
+                app:layout_constraintTop_toBottomOf="@+id/edt_passwordCheck" />
+
+            <EditText
+                android:id="@+id/edt_nickname"
+                android:layout_width="0dp"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="사용하실 닉네임을 입력해주세요."
+                android:inputType="textPersonName"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="69px"
+                android:text="휴대폰 인증"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_nickname" />
+
+            <EditText
+                android:id="@+id/edt_phoneNum"
+                android:layout_width="0dp"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="휴대폰 번호 (-없이 숫자만 입력)"
+                android:inputType="phone"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="69px"
+                android:layout_marginStart="50px"
+                android:text="이메일 주소"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edt_phoneNum"/>
+
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="0dp"
+                android:layout_height="140px"
+                android:layout_marginTop="32px"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/box_edge"
+                android:ems="10"
+                android:hint="이메일을 입력하세요"
+                android:inputType="phone"
+                android:paddingLeft="30px"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView18"
+                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+            <ImageView
+                android:id="@+id/button3"
+                android:layout_width="230px"
+                android:layout_height="140px"
+                android:backgroundTint="@color/Hup"
+                android:src="@drawable/id_check"
+                android:text="중복확인"
+                android:textSize="40px"
+                android:layout_marginStart="30px"
+                app:layout_constraintBottom_toBottomOf="@+id/edt_userId"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/edt_userId" />
+
+            <Button
+                android:id="@+id/btn_signUp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/Hup"
+                android:text="정보수정"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

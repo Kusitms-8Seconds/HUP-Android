@@ -44,6 +44,7 @@
         <activity android:name=".domain.pricesuggestion.view.GoChat"/>
         <activity android:name=".domain.item.view.EditQnA" />
         <activity android:name=".domain.email.view.Email"/>
+        <activity android:name=".domain.user.view.ChangeInfo"/>
 
 
         <meta-data

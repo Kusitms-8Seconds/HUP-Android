@@ -8,7 +8,6 @@ public class RetrofitConstants {
     @Getter
     @NoArgsConstructor
     public enum ERetrofitCallback{
-//        TAG("LoginCallback:"),
         eUnauthorized("Unauthorized"),
         eForbidden("Forbidden"),
         eNotFound("Not Found"),

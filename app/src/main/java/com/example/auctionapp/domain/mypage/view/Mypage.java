@@ -22,6 +22,7 @@ import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.view.ChangeInfo;
 import com.example.auctionapp.domain.user.view.Login;
 
 public class Mypage extends Fragment implements MypageView{
@@ -44,6 +45,16 @@ public class Mypage extends Fragment implements MypageView{
         presenter.init();
         presenter.getUserInfo();
 
+        if(Constants.userId != null) {
+            //로그인 되어있을 때
+            binding.logoutButton.setVisibility(View.VISIBLE);
+            binding.changeUserInfo.setVisibility(View.VISIBLE);
+        } else {
+            //로그인 안 되어있을때
+            binding.logoutButton.setVisibility(View.INVISIBLE);
+            binding.changeUserInfo.setVisibility(View.INVISIBLE);
+        }
+
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +75,14 @@ public class Mypage extends Fragment implements MypageView{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Login.class);
+                startActivity(intent);
+            }
+        });
+        // 정보수정하기
+        binding.changeUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ChangeInfo.class);
                 startActivity(intent);
             }
         });

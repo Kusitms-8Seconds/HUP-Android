@@ -93,6 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="69px"
+            android:layout_marginStart="50px"
             android:text="인증번호"
             android:textColor="#000000"
             android:textStyle="bold"
@@ -104,6 +105,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="50px"
+            android:layout_marginEnd="32px"
             app:layout_constraintStart_toStartOf="@+id/textView17"
             app:layout_constraintTop_toBottomOf="@+id/textView17">
 
