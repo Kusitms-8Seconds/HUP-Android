@@ -22,6 +22,7 @@ import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -178,6 +179,17 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         });
     }
 
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
@@ -192,7 +204,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println(ChatConstants.EChatCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
@@ -214,7 +226,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            System.out.println(ChatConstants.EChatCallback.errorBody.getText()+response.errorBody().string());
+            exceptionToast(response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();

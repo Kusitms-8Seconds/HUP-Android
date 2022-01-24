@@ -4,4 +4,6 @@ public interface ChatPresenterInterface {
     void init();
     void getChatList();
     void setChatList(String chatRoomUid, String oppId, Long itemIdL);
+
+    void exceptionToast(int statusCode);
 }

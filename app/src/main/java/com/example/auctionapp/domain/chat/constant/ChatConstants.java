@@ -24,6 +24,7 @@ public class ChatConstants {
     }
 
     public enum EChatCallback {
+        eChatTAG("Chat"),
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패"),

@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.chat.presenter;
 
 import android.content.Context;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -12,6 +13,8 @@ import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatView;
+import com.example.auctionapp.domain.home.constant.HomeConstants;
+import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -120,5 +123,16 @@ public class ChatPresenter implements ChatPresenterInterface {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    @Override
+    public void exceptionToast(int statusCode) {
+        String errorMsg = "";
+        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
+        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
+        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else errorMsg = String.valueOf(statusCode);
+        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() +
+                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 }
