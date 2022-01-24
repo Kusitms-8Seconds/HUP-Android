@@ -4,5 +4,5 @@ public interface Presenter {
     void init();
     void getData();
 
-    void exceptionToast(int statusCode);
+    void exceptionToast(String tag, int statusCode);
 }

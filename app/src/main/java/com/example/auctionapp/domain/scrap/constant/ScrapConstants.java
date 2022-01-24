@@ -4,6 +4,9 @@ public class ScrapConstants {
 
     public enum EScrapCallback {
         eScrapTAG("Scrap: "),
+        egetAllScrapsCallback("getAllScrapsCallback::"),
+        egetMaximumPriceCallback("getMaximumPriceCallback::"),
+
         dpMinute("분"),
         logItemId("itemId: "),
         rtSuccessResponse("retrofit success, idToken: "),

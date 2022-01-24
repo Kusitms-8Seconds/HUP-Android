@@ -89,13 +89,13 @@ public class ScrapPresenter implements Presenter{
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
+    public void exceptionToast(String tag, int statusCode) {
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, ScrapConstants.EScrapCallback.eScrapTAG.getText() +
+        Toast.makeText(context, ScrapConstants.EScrapCallback.eScrapTAG.getText() + tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -137,7 +137,7 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(ScrapConstants.EScrapCallback.egetAllScrapsCallback.getText(), response.code());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
@@ -159,7 +159,7 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
+            exceptionToast(ScrapConstants.EScrapCallback.egetMaximumPriceCallback.getText(), response.code());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
