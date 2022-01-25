@@ -58,6 +58,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
 
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             return intent;
         }
     }

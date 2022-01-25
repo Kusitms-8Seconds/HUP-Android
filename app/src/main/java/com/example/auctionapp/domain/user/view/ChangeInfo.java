@@ -1,8 +1,10 @@
 package com.example.auctionapp.domain.user.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,5 +23,14 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
         setContentView(view);
 
         presenter = new ChangeInfoPresenter(this, binding, getApplicationContext());
+
+        binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = presenter.UpdateCheck();
+                if(intent !=null){
+                    Toast.makeText(getApplicationContext(), "정보수정완료", Toast.LENGTH_SHORT).show();
+                    startActivity(intent); } }
+        });
     }
 }
