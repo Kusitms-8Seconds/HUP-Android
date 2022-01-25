@@ -24,6 +24,7 @@ import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.view.ChangeInfo;
 import com.example.auctionapp.domain.user.view.Login;
+import com.example.auctionapp.domain.user.view.MyInfo;
 
 public class Mypage extends Fragment implements MypageView{
     private ActivityMypageBinding binding;
@@ -49,12 +50,25 @@ public class Mypage extends Fragment implements MypageView{
             //로그인 되어있을 때
             binding.logoutButton.setVisibility(View.VISIBLE);
             binding.changeUserInfo.setVisibility(View.VISIBLE);
-            binding.userNameLayout.setEnabled(false);
+            binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), MyInfo.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             //로그인 안 되어있을때
             binding.logoutButton.setVisibility(View.INVISIBLE);
             binding.changeUserInfo.setVisibility(View.INVISIBLE);
-            binding.userNameLayout.setEnabled(true);
+            // 로그인하러 가기
+            binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), Login.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -76,13 +90,13 @@ public class Mypage extends Fragment implements MypageView{
             }
         });
         // 로그인하러 가기
-        binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), Login.class);
-                startActivity(intent);
-            }
-        });
+//        binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), Login.class);
+//                startActivity(intent);
+//            }
+//        });
         // 정보수정하기
         binding.changeUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
