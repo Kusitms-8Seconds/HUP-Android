@@ -29,7 +29,7 @@ import static android.content.ContentValues.TAG;
 
 public class MyInfo extends AppCompatActivity {
     private ActivityMypageMyinfoBinding binding;
-//    SignUpPresenter presenter;
+    String myLoginType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,16 @@ public class MyInfo extends AppCompatActivity {
 
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
+
         binding.editMyinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ChangeInfo.class);
-                startActivity(intent);
+                if(!myLoginType.equals("앱")) {
+                    Toast.makeText(getApplicationContext(), myLoginType +"로그인은 정보수정이 불가합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), ChangeInfo.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -53,8 +58,9 @@ public class MyInfo extends AppCompatActivity {
         public void onSuccessResponse(Response<UserInfoResponse> response) {
             binding.tvUsername.setText(response.body().getUsername());
             binding.tvLoginId.setText(response.body().getLoginId());
-            binding.tvUserId.setText(response.body().getUserId()+"");
+//            binding.tvUserId.setText(response.body().getUserId()+"");
             binding.tvPhoneNumber.setText(response.body().getPhoneNumber());
+            myLoginType = response.body().getLoginType().getText();
 
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 

@@ -18,8 +18,10 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import retrofit2.Response;
@@ -120,7 +122,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             System.out.println("UpdateUser: "+Constants.userId);
         }
         @Override
-        public void onFailResponse(Response<UpdateUserResponse> response) {
+        public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
             try {
 
                 JSONObject jObjError = new JSONObject(response.errorBody().string());

@@ -82,12 +82,12 @@ public class LoginPresenter implements LoginPresenterInterface {
     public void appLoginCallback(LoginRequest loginRequest) {
         RetrofitTool.getAPIWithNullConverter().login(loginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("userId", Constants.userId);
-        intent.putExtra("token", Constants.token);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.putExtra("userId", Constants.userId);
+//        intent.putExtra("token", Constants.token);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(intent);
     }
 
     @Override
@@ -138,10 +138,10 @@ public class LoginPresenter implements LoginPresenterInterface {
             String idToken = gsa.getIdToken();
             googleLoginCallback(idToken);
 
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+//            Intent intent = new Intent(context, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(intent);
         } else
             googleSignIn();
     }
@@ -239,10 +239,10 @@ public class LoginPresenter implements LoginPresenterInterface {
 
                 googleLoginCallback(idToken);
 
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, MainActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
             }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -344,10 +344,10 @@ public class LoginPresenter implements LoginPresenterInterface {
                                     // 프로필 획득 불가
                                 }
                             }
-                            Intent intent = new Intent(context, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+//                            Intent intent = new Intent(context, MainActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            context.startActivity(intent);
                         }
                     });
         }

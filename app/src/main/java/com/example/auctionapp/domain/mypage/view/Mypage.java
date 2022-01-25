@@ -49,7 +49,6 @@ public class Mypage extends Fragment implements MypageView{
         if(Constants.userId != null && Constants.token != null) {
             //로그인 되어있을 때
             binding.logoutButton.setVisibility(View.VISIBLE);
-            binding.changeUserInfo.setVisibility(View.VISIBLE);
             binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,7 +59,6 @@ public class Mypage extends Fragment implements MypageView{
         } else {
             //로그인 안 되어있을때
             binding.logoutButton.setVisibility(View.INVISIBLE);
-            binding.changeUserInfo.setVisibility(View.INVISIBLE);
             // 로그인하러 가기
             binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,7 +82,6 @@ public class Mypage extends Fragment implements MypageView{
                 Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
                 binding.loginIcon.setVisibility(View.VISIBLE);
                 binding.logoutButton.setVisibility(View.INVISIBLE);
-                binding.changeUserInfo.setVisibility(View.INVISIBLE);
                 binding.userNameLayout.setEnabled(true);
 
             }
@@ -97,14 +94,6 @@ public class Mypage extends Fragment implements MypageView{
 //                startActivity(intent);
 //            }
 //        });
-        // 정보수정하기
-        binding.changeUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ChangeInfo.class);
-                startActivity(intent);
-            }
-        });
         // 경매 참여 내역
         binding.aucHistory.setOnClickListener(new View.OnClickListener() {
             @Override

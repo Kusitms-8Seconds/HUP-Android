@@ -111,14 +111,6 @@
                             android:layout_gravity="center"
                             android:src="@drawable/gologin"/>
 
-                        <TextView
-                            android:id="@+id/changeUserInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30px"
-                            android:text="정보수정"
-                            android:textColor="@color/Hup"
-                            android:textSize="12sp" />
                     </LinearLayout>
 
 

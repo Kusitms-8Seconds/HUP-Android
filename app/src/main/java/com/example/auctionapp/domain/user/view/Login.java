@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.domain.mypage.view.Mypage;
+import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.presenter.LoginPresenter;
