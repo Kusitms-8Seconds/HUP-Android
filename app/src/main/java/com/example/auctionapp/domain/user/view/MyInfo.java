@@ -45,7 +45,7 @@ public class MyInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!myLoginType.equals("앱")) {
-                    Toast.makeText(getApplicationContext(), myLoginType +"로그인은 정보수정이 불가합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), myLoginType + "로그인은 정보수정이 불가합니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), ChangeInfo.class);
                     startActivity(intent);
@@ -61,6 +61,7 @@ public class MyInfo extends AppCompatActivity {
 //            binding.tvUserId.setText(response.body().getUserId()+"");
             binding.tvPhoneNumber.setText(response.body().getPhoneNumber());
             myLoginType = response.body().getLoginType().getText();
+            binding.tvLoginType.setText(myLoginType);
 
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
