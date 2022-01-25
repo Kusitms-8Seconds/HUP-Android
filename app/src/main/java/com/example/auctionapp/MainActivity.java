@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog02.setContentView(R.layout.custom_dialog02);
 
-        if(!(Constants.userId == null))
+        if (!(Constants.userId == null))
             showDialog();
 
         dialog03 = new Dialog(MainActivity.this);
         dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog03.setContentView(R.layout.custom_dialog03);
     }
+
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
         String tag = String.valueOf(id);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -75,30 +77,30 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         //if (fragment == null) {
-            if (id == R.id.home) {
-                fragment = new Home();
-                fragmentTransaction.add(R.id.content_layout, fragment, tag);
-                fragmentTransaction.show(fragment);
-            } else if (id == R.id.chat){
-                fragment = new Chat();
-                fragmentTransaction.add(R.id.content_layout, fragment, tag);
-                fragmentTransaction.show(fragment);
-            }else if (id == R.id.upload){
-                Intent intent = new Intent(MainActivity.this, UploadPage.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }else if (id == R.id.mypage){
-                fragment = new Mypage();
-                fragmentTransaction.add(R.id.content_layout, fragment, tag);
-                fragmentTransaction.show(fragment);
-            }else if (id == R.id.itemlist){
-                fragment = new ItemList();
-                fragmentTransaction.add(R.id.content_layout, fragment, tag);
-                fragmentTransaction.show(fragment);
-            }
+        if (id == R.id.home) {
+            fragment = new Home();
+            fragmentTransaction.add(R.id.content_layout, fragment, tag);
+            fragmentTransaction.show(fragment);
+        } else if (id == R.id.chat) {
+            fragment = new Chat();
+            fragmentTransaction.add(R.id.content_layout, fragment, tag);
+            fragmentTransaction.show(fragment);
+        } else if (id == R.id.upload) {
+            Intent intent = new Intent(MainActivity.this, UploadPage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else if (id == R.id.mypage) {
+            fragment = new Mypage();
+            fragmentTransaction.add(R.id.content_layout, fragment, tag);
+            fragmentTransaction.show(fragment);
+        } else if (id == R.id.itemlist) {
+            fragment = new ItemList();
+            fragmentTransaction.add(R.id.content_layout, fragment, tag);
+            fragmentTransaction.show(fragment);
+        }
 
 
-       // } else {
+        // } else {
 //        fragmentTransaction.show(fragment);
         //}
 
@@ -107,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitNow();
 
     }
+
     // dialog02을 디자인하는 함수
-    public void showDialog(){
+    public void showDialog() {
         dialog02.show(); // 다이얼로그 띄우기
 
         // 홈으로 돌아가기 버튼
@@ -130,24 +133,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     // dialog03을 디자인하는 함수
-    public void showFeesDialog(){
+    public void showFeesDialog() {
         dialog03.show(); // 다이얼로그 띄우기
 
         ImageView timer = dialog03.findViewById(R.id.iv_timer);
         Glide.with(this).load(R.raw.timer).into(timer);
 
         tv_timer = (TextView) dialog03.findViewById(R.id.tv_timer);
-        class MyTimer extends CountDownTimer
-        {
-            public MyTimer(long millisInFuture, long countDownInterval)
-            {
+        class MyTimer extends CountDownTimer {
+            public MyTimer(long millisInFuture, long countDownInterval) {
                 super(millisInFuture, countDownInterval);
             }
 
             @Override
             public void onTick(long millisUntilFinished) {
-                tv_timer.setText(millisUntilFinished/1000 + 1 + "");
+                tv_timer.setText(millisUntilFinished / 1000 + 1 + "");
             }
 
             @Override
@@ -164,5 +166,4 @@ public class MainActivity extends AppCompatActivity {
         myTimer.start();
 
     }
-
 }

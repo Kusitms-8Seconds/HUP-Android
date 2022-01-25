@@ -2,6 +2,8 @@ package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
+import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
+import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
@@ -38,6 +40,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -45,6 +48,8 @@ public interface RestAPI {
 
     @POST("api/v1/users")   //사용자 생성
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
+    @PUT("api/v1/users")    //사용자 정보 수정
+    Call<UpdateUserResponse> updateUser(@Body UpdateUserRequest updateUserRequest);
     @POST("api/v1/email/send")   //회원가입 시 이메일 인증
     Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
     @POST("api/v1/email/verify")   //인증코드 확인

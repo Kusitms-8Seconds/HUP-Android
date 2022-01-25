@@ -69,14 +69,6 @@ public class SignUp extends AppCompatActivity implements SignUpView {
 
     }
 
-//    public boolean phoneNumberCheck() {
-//        String inputPhoneNumber = binding.edtPhoneNum.getText().toString();
-//        if(inputPhoneNumber.length()==0){
-//            showToast(ESignUp.phoneNumberInputMessage.getText());
-//            return false;
-//        }return true;
-//    }
-
     @Override
     public void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

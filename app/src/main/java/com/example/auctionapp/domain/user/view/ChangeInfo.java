@@ -19,5 +19,7 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
         binding = ActivityChangeInfoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        presenter = new ChangeInfoPresenter(this, binding, getApplicationContext());
     }
 }

@@ -184,37 +184,6 @@
                 app:layout_constraintStart_toStartOf="@+id/textView16"
                 app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="69px"
-                android:layout_marginStart="50px"
-                android:text="이메일 주소"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edt_phoneNum"/>
-
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="0dp"
-                android:layout_height="140px"
-                android:layout_marginTop="32px"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/box_edge"
-                android:ems="10"
-                android:hint="이메일을 입력하세요"
-                android:inputType="phone"
-                android:paddingLeft="30px"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView18"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
             <ImageView
                 android:id="@+id/button3"
                 android:layout_width="230px"
@@ -230,11 +199,11 @@
                 app:layout_constraintStart_toEndOf="@+id/edt_userId" />
 
             <Button
-                android:id="@+id/btn_signUp"
+                android:id="@+id/btn_update"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/Hup"
@@ -242,7 +211,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_phoneNum" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
