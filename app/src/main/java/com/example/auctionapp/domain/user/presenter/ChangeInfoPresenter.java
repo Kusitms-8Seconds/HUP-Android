@@ -48,12 +48,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             return null;
         } else{
             UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
-                    .loginId(binding.edtUserId.getText().toString())
+                    .userId(Constants.userId)
+                    .loginId(binding.edtLoginId.getText().toString())
                     .username(binding.edtNickname.getText().toString())
                     .password(binding.edtPassword.getText().toString())
                     .phoneNumber(binding.edtPhoneNum.getText().toString())
                     .build();
-            RetrofitTool.getAPIWithNullConverter().updateUser(updateUserRequest)
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).updateUser(updateUserRequest)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateCallback()));
 
             Intent intent = new Intent(context, MainActivity.class);
@@ -65,7 +66,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
 
     @Override
     public boolean validLoginIdCheck() {
-        String inputId = binding.edtUserId.getText().toString();
+        String inputId = binding.edtLoginId.getText().toString();
         if(inputId.length() < 5 || inputId.length() > 11){
             showToast(Constants.ESignUp.idWarningMessage.getText());
             return false; }

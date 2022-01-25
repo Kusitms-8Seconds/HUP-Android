@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/edt_userId"
+                android:id="@+id/edt_loginId"
                 android:layout_width="730px"
                 android:layout_height="140px"
                 android:layout_marginTop="32px"
@@ -88,8 +88,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edt_userId"
-                app:layout_constraintTop_toBottomOf="@+id/edt_userId" />
+                app:layout_constraintStart_toStartOf="@+id/edt_loginId"
+                app:layout_constraintTop_toBottomOf="@+id/edt_loginId" />
 
             <EditText
                 android:id="@+id/edt_password"
@@ -193,10 +193,10 @@
                 android:text="중복확인"
                 android:textSize="40px"
                 android:layout_marginStart="30px"
-                app:layout_constraintBottom_toBottomOf="@+id/edt_userId"
+                app:layout_constraintBottom_toBottomOf="@+id/edt_loginId"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/edt_userId" />
+                app:layout_constraintStart_toEndOf="@+id/edt_loginId" />
 
             <Button
                 android:id="@+id/btn_update"
