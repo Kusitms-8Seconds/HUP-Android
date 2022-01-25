@@ -22,6 +22,9 @@ import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
@@ -123,8 +126,9 @@ public class UploadPresenter implements Presenter{
 
         }
         @Override
-        public void onFailResponse(Response<RegisterItemResponse> response) {
+        public void onFailResponse(Response<RegisterItemResponse> response) throws IOException, JSONException {
             exceptionToast(response.code());
+//            System.out.println(response.errorBody().string());
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override

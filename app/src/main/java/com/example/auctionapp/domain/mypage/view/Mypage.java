@@ -46,7 +46,7 @@ public class Mypage extends Fragment implements MypageView{
         presenter.init();
         presenter.getUserInfo();
 
-        if(Constants.userId != null) {
+        if(Constants.userId != null && Constants.token != null) {
             //로그인 되어있을 때
             binding.logoutButton.setVisibility(View.VISIBLE);
             binding.changeUserInfo.setVisibility(View.VISIBLE);

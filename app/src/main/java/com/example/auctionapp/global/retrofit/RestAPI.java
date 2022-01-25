@@ -94,7 +94,7 @@ public interface RestAPI {
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/scraps/hearts/{itemId}")     //상품의 좋아요 수 조회
     Call<ScrapCountResponse> getHeart(@Path("itemId") Long itemId);
-    @GET("api/v1/scraps/hearts")   //유저가 해당 상품을 스크랩 중인 지 조회
+    @POST("api/v1/scraps/hearts")   //유저가 해당 상품을 스크랩 중인 지 조회
     Call<ScrapCheckedResponse> isCheckedHeart(@Body ScrapCheckedRequest scrapCheckedRequest);
     @GET("api/v1/scraps/users/{userId}")      //유저의 스크랩 내역 조회
     Call<PaginationDto<List<ScrapDetailsResponse>>> getAllScrapsByUserId(@Path("userId") Long userId);
