@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
@@ -39,12 +40,41 @@ public class Mypage extends Fragment implements MypageView{
 
         presenter = new MypagePresenter(this, binding, getActivity());
 
+        init();
+        presenter.init();
+        presenter.getUserInfo();
+
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /* swipe 시 진행할 동작 */
+                presenter.init();
+                presenter.getUserInfo();
+                init();
+                /* 업데이트가 끝났음을 알림 */
+                binding.swipe.setRefreshing(false);
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void init() {
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId: "+Constants.userId);
         System.out.println("userToken: "+Constants.token);
-
-        presenter.init();
-        presenter.getUserInfo();
 
         if(Constants.userId != null && Constants.token != null) {
             //로그인 되어있을 때
@@ -86,14 +116,6 @@ public class Mypage extends Fragment implements MypageView{
 
             }
         });
-        // 로그인하러 가기
-//        binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), Login.class);
-//                startActivity(intent);
-//            }
-//        });
         // 경매 참여 내역
         binding.aucHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,18 +180,6 @@ public class Mypage extends Fragment implements MypageView{
 //                startActivity(intent);
             }
         });
-
-        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 }

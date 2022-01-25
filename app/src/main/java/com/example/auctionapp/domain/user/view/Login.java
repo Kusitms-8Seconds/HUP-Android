@@ -62,10 +62,7 @@ public class Login extends AppCompatActivity implements LoginView{
             public void onClick(View view) {
                 LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
                 presenter.appLoginCallback(loginRequest);
-
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                goMain();
             }
         });
 
@@ -74,6 +71,7 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.kakaoLogin();
+                goMain();
             }
         });
         //구글 로그인
@@ -81,6 +79,7 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.googleLogin();
+                goMain();
             }
         });
         //네이버 로그인
@@ -89,6 +88,7 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.naverSignIn();
+                goMain();
             }
         });
 
@@ -116,4 +116,10 @@ public class Login extends AppCompatActivity implements LoginView{
     }
 
 
+    @Override
+    public void goMain() {
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }
