@@ -62,7 +62,6 @@ public class Login extends AppCompatActivity implements LoginView{
             public void onClick(View view) {
                 LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
                 presenter.appLoginCallback(loginRequest);
-                goMain();
             }
         });
 
@@ -71,7 +70,6 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.kakaoLogin();
-                goMain();
             }
         });
         //구글 로그인
@@ -79,7 +77,6 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.googleLogin();
-                goMain();
             }
         });
         //네이버 로그인
@@ -88,7 +85,6 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.naverSignIn();
-                goMain();
             }
         });
 

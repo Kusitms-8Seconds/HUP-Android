@@ -30,4 +30,5 @@ public interface LoginPresenterInterface {
     void handleSignInResult(Task<GoogleSignInAccount> completedTask);
 
     void exceptionToast(int statusCode);
+    void goMain();
 }

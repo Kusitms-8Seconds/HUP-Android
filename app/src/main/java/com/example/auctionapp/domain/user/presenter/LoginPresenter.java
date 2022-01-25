@@ -14,6 +14,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
+import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
@@ -82,12 +83,9 @@ public class LoginPresenter implements LoginPresenterInterface {
     public void appLoginCallback(LoginRequest loginRequest) {
         RetrofitTool.getAPIWithNullConverter().login(loginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.putExtra("userId", Constants.userId);
-//        intent.putExtra("token", Constants.token);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(intent);
+        goMain();
+//        Mypage mypage = new Mypage();
+//        mypage.init();
     }
 
     @Override
@@ -95,6 +93,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest = new OAuth2KakaoLoginRequest(accessToken);
         RetrofitTool.getAPIWithNullConverter().kakaoAccessTokenValidation(oAuth2KakaoLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        goMain();
     }
 
     @Override
@@ -102,6 +101,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        goMain();
     }
 
     @Override
@@ -109,6 +109,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2NaverLoginRequest oAuth2NaverLoginRequest = new OAuth2NaverLoginRequest(accessToken);
         RetrofitTool.getAPIWithNullConverter().naverAccessTokenValidation(oAuth2NaverLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        goMain();
     }
 
     @Override
@@ -260,6 +261,14 @@ public class LoginPresenter implements LoginPresenterInterface {
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
         Toast.makeText(context, Constants.ELoginCallback.TAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goMain() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     private class LoginCallback implements MainRetrofitCallback<LoginResponse> {
