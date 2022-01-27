@@ -171,6 +171,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         String ii4 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemBuyDate.getText());
         String ii5 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemEndDate.getText());
         int ii6 = getCategoryIntent.getIntExtra(UploadConstants.ECategory.itemStatePoint.getText(), 0);
+        
         binding.editItemName.setText(ii);
         binding.selectItemCategory.setText(itemCT);
         binding.editItemStartPrice.setText(ii2);

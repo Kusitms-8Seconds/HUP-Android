@@ -9,7 +9,7 @@ public class Constants {
 
     public static Long userId = null;
     public static String token = null;
-    public static final String imageBaseUrl = "http://52.78.175.27:8080/image/";
+    public static final String imageBaseUrl = "http://52.78.175.27:8080/api/v1/files/";
 
     @Getter
     @NoArgsConstructor
@@ -109,5 +109,24 @@ public class Constants {
         public String getText(){
             return this.text;
         }
+    }
+
+    @Getter
+    public enum EUserServiceImpl{
+        eAlreadyRegisteredUserExceptionMessage("이미 가입되어 있는 유저입니다."),
+        eSuccessSignUpMessage("회원가입을 완료했습니다."),
+        eUsernameNotFoundException(" -> 유저 이름을 데이터베이스에서 찾을 수 없습니다."),
+        eUserNotActivatedException(" -> 유저가 활성화되어 있지 않습니다."),
+        eNotFoundUserException("해당 유저아이디로 유저를 찾을 수 없습니다."),
+        eNotActivatedEmailAuthException("이메일 인증이 완료되지 않았습니다."),
+        eTrue(true),
+        eAuthorityRoleUser("ROLE_USER");
+
+        private boolean check;
+        private String value;
+
+        EUserServiceImpl(boolean check) { this.check = check;}
+        EUserServiceImpl(String value) {this.value = value;}
+
     }
 }

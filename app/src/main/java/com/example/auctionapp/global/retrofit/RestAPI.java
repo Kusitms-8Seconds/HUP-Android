@@ -79,18 +79,22 @@ public interface RestAPI {
                                           @Part("description") RequestBody description);
     @GET("api/v1/items/{id}")   //아이템 조회
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
+//    @GET("api/v1/files/{name}")
+//    Call<FileImageResponse> getFileImage(@Path("name") String name);
     @GET("api/v1/items/statuses/{itemSoldStatus}")     //아이템 판매상태별 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/items/statuses/hearts/{itemSoldStatus}")  //아이템 판매상태별, 스크랩 많은 순 조회
     Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
+    @GET("api/v1/items/categories/{category}")      //아이템 카테고리별 조회
+    Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByCategory(@Path("category") String category);
     @GET("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
     @DELETE("/api/v1/items/{id}")   //아이템 삭제
     Call<DefaultResponse> deleteItem(@Path("id") Long id);
 
-    @POST("api/v1/scrap")   //scrap create
+    @POST("api/v1/scraps")   //scrap create
     Call<ScrapRegisterResponse> createScrap(@Body ScrapRegisterRequest scrapRegisterRequest);
-    @DELETE("api/v1/scrap/{scrapId}")   //scrap delete
+    @DELETE("api/v1/scraps/{scrapId}")   //scrap delete
     Call<DefaultResponse> deleteHeart(@Path("scrapId") Long scrapId);
     @GET("api/v1/scraps/hearts/{itemId}")     //상품의 좋아요 수 조회
     Call<ScrapCountResponse> getHeart(@Path("itemId") Long itemId);

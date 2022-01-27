@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
@@ -25,7 +24,6 @@ import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
-import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;

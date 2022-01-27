@@ -101,6 +101,8 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+//        Mypage mypage = new Mypage();
+//        mypage.init();
         goMain();
     }
 

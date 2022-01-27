@@ -1,5 +1,7 @@
 package com.example.auctionapp.domain.pricesuggestion.constant;
 
+import lombok.Getter;
+
 public class PriceConstants {
 
     public enum EPriceCallback {
@@ -25,4 +27,17 @@ public class PriceConstants {
         }
         public String getText() { return this.text; }
     }
+    @Getter
+    public enum EPriceSuggestionServiceImpl{
+        eZero(0),
+        eNotOnGoingExceptionMessage("경매 진행중인 상품이 아닙니다."),
+        eAlreadySoldOutExceptionMessage("이미 팔린 상품입니다."),
+        ePriorPriceSuggestionExceptionMessage("이전의 입찰가격이 지금의 입찰보다 높거나 같습니다.");
+        private int size;
+        private String value;
+
+        EPriceSuggestionServiceImpl(int size) {this.size = size;}
+        EPriceSuggestionServiceImpl(String value) {this.value = value;}
+    }
+
 }

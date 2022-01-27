@@ -110,6 +110,9 @@ public class Mypage extends Fragment implements MypageView{
 
                 binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
                 Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
+                presenter.init();
+                presenter.getUserInfo();
+                init();
                 binding.loginIcon.setVisibility(View.VISIBLE);
                 binding.logoutButton.setVisibility(View.INVISIBLE);
                 binding.userNameLayout.setEnabled(true);
