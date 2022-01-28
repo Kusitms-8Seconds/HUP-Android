@@ -149,8 +149,9 @@ public class MainPresenter implements Presenter{
                     );
                 }
                 bestItemDataList.add(bestItem);
-                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
+                bestItemAdapter.notifyDataSetChanged();
+//                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
+//                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
