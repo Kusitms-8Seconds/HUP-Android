@@ -290,6 +290,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+            getUserInfoCallback(response.body().getUserId());
             binding.itemName.setText(response.body().getItemName());
             binding.itemContent.setText(response.body().getDescription());
             if(response.body().getFileNames().size()!=0){
@@ -308,7 +309,6 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
             binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
 
             if(response.body().getUserId().equals(myId)) {
-
                 binding.deleteButton.setVisibility(View.VISIBLE);
                 //button inactivated
                 binding.participateButton.setEnabled(false);

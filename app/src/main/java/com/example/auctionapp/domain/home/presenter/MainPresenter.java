@@ -91,7 +91,7 @@ public class MainPresenter implements Presenter{
             }
         });
 
-        bestItemDataList = new ArrayList();
+//        bestItemDataList = new ArrayList();
         bestItemDataList = new ArrayList<>();
         bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
         binding.bestItemViewPager.setAdapter(bestItemAdapter);
@@ -116,7 +116,7 @@ public class MainPresenter implements Presenter{
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, Tag +
+        Toast.makeText(context,  Tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -126,7 +126,6 @@ public class MainPresenter implements Presenter{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<List<BestItemResponse>> response) {
-            bestItemDataList = new ArrayList<>();
             for(int i=0; i<response.body().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().get(i).getAuctionClosingDate();
@@ -255,10 +254,9 @@ public class MainPresenter implements Presenter{
 
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
             bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
-            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
-            //bestItemAdapter.notifyDataSetChanged();
+//            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+            bestItemAdapter.notifyDataSetChanged();
             bestItemViewPager.setAdapter(bestItemAdapter);
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             maximumPriceCount2++;

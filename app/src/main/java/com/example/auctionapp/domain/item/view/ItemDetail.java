@@ -86,7 +86,7 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
         });
 
         presenter.getItemInfoCallback(itemId);  //item info
-        presenter.getUserInfoCallback(Constants.userId);    //user info
+//        presenter.getUserInfoCallback(Constants.userId);    //user info
 
         //item delete
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
