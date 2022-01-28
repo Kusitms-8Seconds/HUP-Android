@@ -8,7 +8,7 @@ import lombok.Setter;
 public class ItemData {
 
     Long itemId;
-    String imageURL;       //나중에 수정 (int -> string url)
+    String imageURL;
     String itemName;
     int itemPrice;
     String endTime;

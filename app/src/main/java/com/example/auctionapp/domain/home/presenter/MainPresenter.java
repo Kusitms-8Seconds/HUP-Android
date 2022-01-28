@@ -56,7 +56,7 @@ public class MainPresenter implements Presenter{
     private AuctionNow data;
     List<AuctionNow> auctionDataList = new ArrayList<>();
     int heartCount;
-    AuctionNowAdapter adapter;
+    AuctionNowAdapter auctionNowAdapter;
 
     int maximumPriceCount;
     int maximumPriceCount2;
@@ -79,19 +79,19 @@ public class MainPresenter implements Presenter{
     public void init() {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(context,2);
         binding.AuctionNowView.setLayoutManager(linearLayoutManager);
-        adapter = new AuctionNowAdapter();
-        binding.AuctionNowView.setAdapter(adapter);
+        auctionNowAdapter = new AuctionNowAdapter();
+        binding.AuctionNowView.setAdapter(auctionNowAdapter);
 
-        bestItemDataList = new ArrayList();
-
-        adapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
+        auctionNowAdapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(context, ItemDetail.class);
+                intent.putExtra("itemId", auctionNowAdapter.getAuctionNowData().get(position).getItemId());
                 context.startActivity(intent);
             }
         });
 
+        bestItemDataList = new ArrayList();
         bestItemDataList = new ArrayList<>();
         bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
         binding.bestItemViewPager.setAdapter(bestItemAdapter);
@@ -139,19 +139,19 @@ public class MainPresenter implements Presenter{
                             response.body().get(i).getItemName(),
                             response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() +
                                     response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
-                            0
+                            response.body().get(i).getInitPrice()
                     );
                 } else{
                     bestItem = new BestItem(null,
                             response.body().get(i).getItemName(),
                             response.body().get(i).getBuyDate().getYear()+HomeConstants.EDate.dpYear.getText()+
                                     response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
-                            0
+                            response.body().get(i).getInitPrice()
                     );
                 }
                 bestItemDataList.add(bestItem);
-//                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
-//                        .enqueue(MainRetrofitTool.getCallback(new Home.getMaximumPriceBestItemCallback()));
+                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -230,8 +230,8 @@ public class MainPresenter implements Presenter{
         public void onSuccessResponse(Response<ScrapCountResponse> response) {
 
             auctionDataList.get(heartCount).setHeart(response.body().getHeart());
-            adapter.addItem(auctionDataList.get(heartCount));
-            adapter.notifyDataSetChanged();
+            auctionNowAdapter.addItem(auctionDataList.get(heartCount));
+            auctionNowAdapter.notifyDataSetChanged();
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             heartCount++;
         }

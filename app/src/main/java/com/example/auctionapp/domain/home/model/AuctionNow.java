@@ -21,7 +21,7 @@ import lombok.Setter;
 public class AuctionNow {
 
     Long itemId;
-    String imageURL;  //url 수정하기
+    String imageURL;
     String itemName;
     int itemPrice;
     String date;

@@ -45,20 +45,15 @@ import static android.content.ContentValues.TAG;
 public class ItemList extends Fragment {
     private ActivityItemlistBinding binding;
 
-    ViewGroup viewGroup;
     ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
     List<ItemData> itemDataList = new ArrayList<>();
     int heartCount;
     int participantCount;
-//    RecyclerView recyclerView;
 
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("itemList 시작");
-
-//        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -84,7 +79,6 @@ public class ItemList extends Fragment {
 
     private void init(){
         itemDataList.clear();
-
 
         adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
             @Override

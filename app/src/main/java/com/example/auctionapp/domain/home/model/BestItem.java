@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BestItem {
-    String btImage;    //나중에 수정
+    String btImage;
     String btName;
     String btTime;
     int btTempMax;

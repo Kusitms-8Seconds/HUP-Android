@@ -43,13 +43,13 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
         presenter = new ItemDetailPresenter(this, binding, getApplicationContext());
 
         Intent intent = getIntent();
-//        String getItemId = intent.getExtras().getString("itemId");
         this.itemId = intent.getLongExtra("itemId",0);
 
         if(Constants.userId == null) {
             binding.participateButton.setText("로그인 후 이용해주세요.");
             binding.participateButton.setEnabled(false);
             binding.participateButton.setBackgroundColor(Color.GRAY);
+            binding.isheart.setVisibility(View.GONE);
         }
         binding.participateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,10 +73,6 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
         //heart check
         presenter.heartCheckCallback(Constants.userId, itemId);
 
-        //로긘 않 해쓷ㄹ대
-        if(Constants.userId==null) {
-            binding.isheart.setVisibility(View.GONE);
-        }
         binding.isheart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
