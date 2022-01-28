@@ -261,6 +261,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else if(statusCode==500) errorMsg = Constants.EUserServiceImpl.eNotFoundUserException.getValue();
         else errorMsg = String.valueOf(statusCode);
         Toast.makeText(context, Constants.ELoginCallback.TAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }

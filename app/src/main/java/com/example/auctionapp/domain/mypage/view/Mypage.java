@@ -86,6 +86,17 @@ public class Mypage extends Fragment implements MypageView{
                     startActivity(intent);
                 }
             });
+        } else if(Constants.userId != null && Constants.token == null){
+            //이메일 인증이 되어있지 않을 때
+            showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthException.getValue());
+            binding.logoutButton.setVisibility(View.VISIBLE);
+            binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), MyInfo.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             //로그인 안 되어있을때
             binding.logoutButton.setVisibility(View.INVISIBLE);

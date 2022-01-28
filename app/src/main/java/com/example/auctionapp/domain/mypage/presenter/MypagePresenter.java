@@ -113,6 +113,9 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
+            if(!response.body().isActivated()) {
+                Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedException.getValue(), Toast.LENGTH_SHORT).show();
+            }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
