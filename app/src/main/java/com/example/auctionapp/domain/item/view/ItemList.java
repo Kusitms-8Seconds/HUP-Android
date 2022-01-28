@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.auctionapp.databinding.ActivityItemlistBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDataAdapter;
@@ -69,6 +70,17 @@ public class ItemList extends Fragment {
 
         init();
         getData();
+
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /* swipe 시 진행할 동작 */
+                init();
+                getData();
+                /* 업데이트가 끝났음을 알림 */
+                binding.swipe.setRefreshing(false);
+            }
+        });
 
         return view;
     }
