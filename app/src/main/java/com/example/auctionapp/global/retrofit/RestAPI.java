@@ -87,7 +87,7 @@ public interface RestAPI {
     Call<List<BestItemResponse>> getBestItems(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/items/categories/{category}")      //아이템 카테고리별 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByCategory(@Path("category") String category);
-    @GET("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
+    @POST("api/v1/items/users")      //유저가 등록한 상품을 상태별로 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsByUserIdAndStatus(@Body GetAllItemsByStatusRequest getAllItemsByStatusRequest);
     @DELETE("/api/v1/items/{id}")   //아이템 삭제
     Call<DefaultResponse> deleteItem(@Path("id") Long id);

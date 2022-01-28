@@ -134,7 +134,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else if(statusCode==404) errorMsg = ItemConstants.EItemServiceImpl.eNotFoundItemExceptionForDefaultMessage.toString();
         else errorMsg = String.valueOf(statusCode);
         Toast.makeText(context, tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
