@@ -72,21 +72,8 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
         presenter.initializeImageData();
         //heart check
         presenter.heartCheckCallback(Constants.userId, itemId);
-
-        binding.isheart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isHeart) {
-                    presenter.deleteHeartCallback(scrapId);
-                }else {
-                    presenter.createHeartCallback(Constants.userId, itemId);
-
-                }
-            }
-        });
-
+        presenter.init(itemId);
         presenter.getItemInfoCallback(itemId);  //item info
-//        presenter.getUserInfoCallback(Constants.userId);    //user info
 
         //item delete
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {

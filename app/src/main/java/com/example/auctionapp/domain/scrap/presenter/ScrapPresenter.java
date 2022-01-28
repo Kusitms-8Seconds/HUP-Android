@@ -72,6 +72,7 @@ public class ScrapPresenter implements Presenter{
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(context, ItemDetail.class);
                 intent.putExtra("itemId", scrapItemsList.get(position).getItemId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -93,7 +94,7 @@ public class ScrapPresenter implements Presenter{
         String errorMsg = "";
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else if(statusCode==404) errorMsg = ScrapConstants.EScrapServiceImpl.eNotExistingScrapOfUserExceptionMessage.getValue();
         else errorMsg = String.valueOf(statusCode);
         Toast.makeText(context, ScrapConstants.EScrapCallback.eScrapTAG.getText() + tag +
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();

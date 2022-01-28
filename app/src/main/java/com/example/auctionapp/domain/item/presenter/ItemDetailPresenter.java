@@ -65,6 +65,18 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     }
 
     @Override
+    public void init(Long id) {
+        itemId = id;
+        binding.isheart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isHeart) { deleteHeartCallback(scrapId); }
+                else { createHeartCallback(Constants.userId, itemId); }
+            }
+        });
+    }
+
+    @Override
     public void initializeImageData() {
         itemImageList = new ArrayList();
         itemDetailViewPagerAdapter = new ItemDetailViewPagerAdapter(context, itemImageList);
