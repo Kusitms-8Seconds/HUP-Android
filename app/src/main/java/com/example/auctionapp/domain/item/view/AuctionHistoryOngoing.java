@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.adapter.AuctionHistoryOngoingAdapter;
 import com.example.auctionapp.domain.item.model.AuctionHistoryOngoingData;
+import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -70,7 +72,10 @@ public class AuctionHistoryOngoing extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                AuctionHistoryOngoingData item = (AuctionHistoryOngoingData) adapter.getItem(position);
+                AuctionHistoryOngoingData item = (AuctionHistoryOngoingData) adapter.getItem(position);
+                Intent intent = new Intent(view.getContext(), ItemDetail.class);
+                intent.putExtra("itemId", item.getItemId());
+                startActivity(intent);
             }
         });
     }

@@ -17,6 +17,9 @@ import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+
+@Getter
 public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // adapter에 들어갈 list 입니다.
     private ArrayList<AuctionHistoryEndData> listData = new ArrayList<>();

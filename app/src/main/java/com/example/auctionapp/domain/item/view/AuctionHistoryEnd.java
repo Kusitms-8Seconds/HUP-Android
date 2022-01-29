@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,8 +80,9 @@ public class AuctionHistoryEnd extends Fragment {
         adapter.setOnItemClickListener(new AuctionHistoryEndAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                Intent intent = new Intent(getContext(), ItemDetail.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), ItemDetail.class);
+                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
+                startActivity(intent);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.example.auctionapp.domain.item.adapter.SellHistoryEndAdapter;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.SellHistoryEndData;
+import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.pricesuggestion.dto.BidderResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -75,8 +77,9 @@ public class SellHistoryEnd extends Fragment {
         adapter.setOnItemClickListener(new SellHistoryEndAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                Intent intent = new Intent(getContext(), ItemDetail.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), ItemDetail.class);
+                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
+                startActivity(intent);
             }
         });
 

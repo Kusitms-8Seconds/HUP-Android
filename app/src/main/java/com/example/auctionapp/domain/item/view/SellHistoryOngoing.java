@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.item.view;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,16 +69,15 @@ public class SellHistoryOngoing extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                AuctionHistoryOngoingData item = (AuctionHistoryOngoingData) adapter.getItem(position);
+                SellHistoryOngoingData item = (SellHistoryOngoingData) adapter.getItem(position);
+                Intent intent = new Intent(view.getContext(), ItemDetail.class);
+                intent.putExtra("itemId", item.getItemId());
+                startActivity(intent);
             }
         });
     }
     private void getData(){
         //일단 레이아웃만
-//        SellHistoryOngoingData data = new SellHistoryOngoingData(R.drawable.rectangle, "나이키 데이브레이크", 200000, "12:21");
-//        adapter.addItem(data);
-//        data = new SellHistoryOngoingData(R.drawable.rectangle, "맥북 에어 M1 실버", 270000, "12:21");
-//        adapter.addItem(data);
         sellHistoryOngoingDataList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId,
                 ItemConstants.EItemSoldStatus.eOnGoing))

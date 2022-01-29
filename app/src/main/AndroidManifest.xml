@@ -31,7 +31,6 @@
         <activity android:name=".domain.item.view.ItemDetail" />
         <activity android:name=".domain.pricesuggestion.view.BidPage" />
         <activity android:name=".domain.upload.view.UploadPage" />
-        <activity android:name=".domain.upload.view.SelectCategory" />
         <activity android:name=".domain.item.view.Search" />
         <activity android:name=".domain.item.view.AuctionHistory" />
         <activity android:name=".domain.item.view.SellHistory" />
