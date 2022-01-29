@@ -65,6 +65,8 @@ public interface RestAPI {
     Call<LoginResponse> kakaoAccessTokenValidation(@Body OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest);
     @POST("api/v1/users/naver-login")       //네이버 로그인
     Call<LoginResponse> naverAccessTokenValidation(@Body OAuth2NaverLoginRequest oAuth2NaverLoginRequest);
+    @GET("api/v1/users/check/{loginId}")       //아이디 중복체크
+    Call<DefaultResponse> checkDuplicateId(@Path("loginId") String loginId);
 
     @Multipart
     @POST("api/v1/items")   //아이템 생성

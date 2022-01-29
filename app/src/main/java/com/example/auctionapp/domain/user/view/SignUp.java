@@ -57,7 +57,12 @@ public class SignUp extends AppCompatActivity implements SignUpView {
                 }
             }
         });
-
+        binding.checkId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.duplicateLoginIdCheck(binding.edtUserId.getText().toString());
+            }
+        });
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
