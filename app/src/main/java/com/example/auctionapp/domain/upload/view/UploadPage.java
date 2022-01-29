@@ -1,7 +1,9 @@
 package com.example.auctionapp.domain.upload.view;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -83,6 +85,10 @@ public class UploadPage extends AppCompatActivity implements UploadView{
     int itemStatePoint; //item rating
     ArrayList<MultipartBody.Part> files = new ArrayList<>(); // 여러 file들을 담아줄 ArrayList
 
+    static final String[] LIST_MENU = {"디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
+            ,"유아도서", "스포츠/레저", "여성잡화", "여성의류", "남성패션/잡화", "게임/취미", "뷰티/미용",
+            "반려동물용품", "도서/티켓/음반", "식물"} ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,32 +159,19 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         selectCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tt = new Intent(UploadPage.this, SelectCategory.class);
-                tt.putExtra(UploadConstants.ECategory.itemName.getText(), binding.editItemName.getText().toString());
-                tt.putExtra(UploadConstants.ECategory.itemPrice.getText(), binding.editItemStartPrice.getText().toString());
-                tt.putExtra(UploadConstants.ECategory.itemContent.getText(), binding.editItemContent.getText().toString());
-                tt.putExtra(UploadConstants.ECategory.itemBuyDate.getText(), binding.editAuctionBuyDate.getText().toString());
-                tt.putExtra(UploadConstants.ECategory.itemEndDate.getText(), binding.editAuctionFinalDate.getText().toString());
-                tt.putExtra(UploadConstants.ECategory.itemStatePoint.getText(), itemStatePoint);
-                startActivity(tt);
+                AlertDialog.Builder dlg = new AlertDialog.Builder(UploadPage.this);
+                dlg.setTitle("카테고리 선택"); //제목
+                dlg.setIcon(R.drawable.interest); // 아이콘 설정
+
+                dlg.setItems(LIST_MENU, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        binding.selectItemCategory.setText(LIST_MENU[which]);
+                    }
+                });
+                dlg.show();
             }
         });
-        Intent getCategoryIntent = getIntent();
-        String itemCT = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemCategory.getText());
-        String ii = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemName.getText());
-        String ii2 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemPrice.getText());
-        String ii3 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemContent.getText());
-        String ii4 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemBuyDate.getText());
-        String ii5 = getCategoryIntent.getStringExtra(UploadConstants.ECategory.itemEndDate.getText());
-        int ii6 = getCategoryIntent.getIntExtra(UploadConstants.ECategory.itemStatePoint.getText(), 0);
-        
-        binding.editItemName.setText(ii);
-        binding.selectItemCategory.setText(itemCT);
-        binding.editItemStartPrice.setText(ii2);
-        binding.editItemContent.setText(ii3);
-        binding.editAuctionBuyDate.setText(ii4);
-        binding.editAuctionFinalDate.setText(ii5);
-        binding.itemStateRatingBar.setRating(ii6);
 
         // 완료 버튼
         binding.uploadButton.setOnClickListener(new View.OnClickListener() {
