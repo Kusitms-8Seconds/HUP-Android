@@ -79,8 +79,6 @@ public interface RestAPI {
                                           @Part("description") RequestBody description);
     @GET("api/v1/items/{id}")   //아이템 조회
     Call<ItemDetailsResponse> getItem(@Path("id") Long id);
-//    @GET("api/v1/files/{name}")
-//    Call<FileImageResponse> getFileImage(@Path("name") String name);
     @GET("api/v1/items/statuses/{itemSoldStatus}")     //아이템 판매상태별 조회
     Call<PaginationDto<List<ItemDetailsResponse>>> getAllItemsInfo(@Path("itemSoldStatus") ItemConstants.EItemSoldStatus itemSoldStatus);
     @GET("api/v1/items/statuses/hearts/{itemSoldStatus}")  //아이템 판매상태별, 스크랩 많은 순 조회

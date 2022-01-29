@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.item.presenter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -159,8 +161,13 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
 
         @Override
-        public void onFailResponse(Response<DefaultResponse> response) {
-            exceptionToast(ItemConstants.EItemCallback.eDeleteItemCallback.getText(), response.code());
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            System.out.println("delete: "+ response.errorBody().string());
+//            exceptionToast(ItemConstants.EItemCallback.eDeleteItemCallback.getText(), response.code());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
             Log.d(TAG, "onFailResponse");
         }
 
