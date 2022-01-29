@@ -2,6 +2,8 @@ package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
+import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.global.dto.DefaultResponse;
@@ -113,5 +115,7 @@ public interface RestAPI {
     Call<ParticipantsResponse> getParticipants(@Path("itemId") Long itemId);
     @GET("api/v1/priceSuggestions/users/{userId}")   //해당 유저의 경매 참여내역 조회
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("userId") Long userId);
+    @POST("api/v1/priceSuggestions/priceSuggestionTest")   //입찰하기
+    Call<PriceSuggestionResponse> priceSuggest(@Body PriceSuggestionRequest priceSuggestionRequest);
 
 }

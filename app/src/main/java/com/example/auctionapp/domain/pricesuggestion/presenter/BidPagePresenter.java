@@ -53,7 +53,6 @@ public class BidPagePresenter implements Presenter{
     private int userCount;
     PTAdapter adapter;
     private ArrayList<BidParticipants> bidParticipants;
-    RecyclerView ptRecyclerView;
 
     // Attributes
     private BidPageView bidPageView;
@@ -86,7 +85,7 @@ public class BidPagePresenter implements Presenter{
         binding.participantsRecyclerView.setLayoutManager(linearLayoutManager);
 
         ptAdapter = new PTAdapter();
-        ptRecyclerView.setAdapter(ptAdapter);
+        binding.participantsRecyclerView.setAdapter(ptAdapter);
     }
 
     @Override
