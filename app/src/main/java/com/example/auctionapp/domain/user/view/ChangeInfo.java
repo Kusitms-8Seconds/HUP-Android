@@ -32,5 +32,11 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
                     Toast.makeText(getApplicationContext(), "정보수정완료", Toast.LENGTH_SHORT).show();
                     startActivity(intent); } }
         });
+        binding.checkId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.duplicateLoginIdCheck(binding.edtLoginId.getText().toString());
+            }
+        });
     }
 }

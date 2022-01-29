@@ -14,6 +14,7 @@ import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.domain.user.view.ChangeInfoView;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -29,6 +30,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
+    boolean isValidId;
     // Attributes
     private ChangeInfoView changeInfoView;
     private ActivityChangeInfoBinding binding;
@@ -47,6 +49,8 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         } else if(validPasswordCheck()==false){
             return null;
         } else if(validNameCheck()==false){
+            return null;
+        } else if(!isValidId){
             return null;
         } else{
             UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
@@ -73,6 +77,15 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             showToast(Constants.ESignUp.idWarningMessage.getText());
             return false; }
         return true;
+    }
+
+    @Override
+    public void duplicateLoginIdCheck(String loginId) {
+        RetrofitTool.getAPIWithNullConverter().checkDuplicateId(loginId)
+                .enqueue(MainRetrofitTool.getCallback(new checkDuplicateIdCheck()));
+        if(!isValidId) {
+            showToast(Constants.ESignUp.idDuplicateMessage.getText());
+        }
     }
 
     @Override
@@ -125,6 +138,34 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
             try {
 
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Log.d("error", jObjError.getString("message"));
+                showToast(jObjError.getString("message"));
+            } catch (Exception e) {
+                Log.d("error", e.getMessage());
+
+            }
+            Log.d(TAG, "onFailResponse");
+        }
+
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+    class checkDuplicateIdCheck implements MainRetrofitCallback<DefaultResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<DefaultResponse> response) {
+            showToast(response.body().getMessage());
+            isValidId = true;
+        }
+        @Override
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            try {
+//                System.out.println(response.errorBody().string());
+                showToast(response.errorBody().string());
+                isValidId = false;
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Log.d("error", jObjError.getString("message"));
                 showToast(jObjError.getString("message"));
