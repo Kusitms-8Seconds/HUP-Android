@@ -48,7 +48,7 @@ public class ItemList extends Fragment {
 
     ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
-    List<ItemData> itemDataList = new ArrayList<>();
+    List<ItemData> itemDataList;
     int heartCount;
     int participantCount;
 
@@ -90,7 +90,11 @@ public class ItemList extends Fragment {
     }
 
     private void init(){
+
+        itemDataList = new ArrayList<>();
         itemDataList.clear();
+        heartCount = 0;
+        participantCount = 0;
 
         adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
             @Override
@@ -105,7 +109,6 @@ public class ItemList extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
 
-//        ImageView searchView = (ImageView) viewGroup.findViewById(R.id.searchView);
         binding.searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,7 +116,7 @@ public class ItemList extends Fragment {
                 startActivity(intent);
             }
         });
-
+        adapter.notifyDataSetChanged();
     }
 
     private void getData(){

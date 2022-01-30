@@ -50,7 +50,6 @@ public class MainPresenter implements Presenter{
     private ArrayList<BestItem> bestItemDataList;
     private BestItem bestItem;
     BestItemAdapter bestItemAdapter;
-    ViewPager bestItemViewPager;
 
     private AuctionNow data;
     List<AuctionNow> auctionDataList = new ArrayList<>();
@@ -279,7 +278,7 @@ public class MainPresenter implements Presenter{
             bestItem = new BestItem(btImage[maximumPriceCount2], btName[maximumPriceCount2], btTime[maximumPriceCount2], btTempMax[maximumPriceCount2]);
             bestItemDataList.add(bestItem);
             bestItemAdapter.notifyDataSetChanged();
-            bestItemViewPager.setAdapter(bestItemAdapter);
+            binding.bestItemViewPager.setAdapter(bestItemAdapter);
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             maximumPriceCount2++;
         }
