@@ -46,7 +46,6 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class MainPresenter implements Presenter{
-    private MainView view;
 
     private ArrayList<BestItem> bestItemDataList;
     private BestItem bestItem;
@@ -57,6 +56,20 @@ public class MainPresenter implements Presenter{
     List<AuctionNow> auctionDataList = new ArrayList<>();
     int heartCount;
     AuctionNowAdapter auctionNowAdapter;
+
+    //AuctionNow Attributes
+    Long[] itemId;
+    String[] imageURL;
+    String[] itemName;
+    int[] itemPrice;
+    String[] date;
+    String[] itemInfo;
+    Long[] heart;
+    //BestItem Attributes
+    String[] btImage;
+    String[] btName;
+    String[] btTime;
+    int[] btTempMax;
 
     int maximumPriceCount;
     int maximumPriceCount2;
@@ -91,7 +104,6 @@ public class MainPresenter implements Presenter{
             }
         });
 
-//        bestItemDataList = new ArrayList();
         bestItemDataList = new ArrayList<>();
         bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
         binding.bestItemViewPager.setAdapter(bestItemAdapter);
@@ -126,6 +138,10 @@ public class MainPresenter implements Presenter{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<List<BestItemResponse>> response) {
+            btImage = new String[response.body().size()];
+            btName = new String[response.body().size()];
+            btTime = new String[response.body().size()];
+            btTempMax = new int[response.body().size()];
             for(int i=0; i<response.body().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().get(i).getAuctionClosingDate();
@@ -133,25 +149,21 @@ public class MainPresenter implements Presenter{
                 String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
                 String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
 
+                btName[i] = response.body().get(i).getItemName();
+                btTime[i] = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() +
+                        response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText();
+                btTempMax[i] = response.body().get(i).getInitPrice();
+
                 if(response.body().get(i).getFileNames().size()!=0) {
-                    bestItem = new BestItem(response.body().get(i).getFileNames().get(0),
-                            response.body().get(i).getItemName(),
-                            response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() +
-                                    response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
-                            response.body().get(i).getInitPrice()
-                    );
+                    btImage[i] = response.body().get(i).getFileNames().get(0);
                 } else{
-                    bestItem = new BestItem(null,
-                            response.body().get(i).getItemName(),
-                            response.body().get(i).getBuyDate().getYear()+HomeConstants.EDate.dpYear.getText()+
-                                    response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText(),
-                            response.body().get(i).getInitPrice()
-                    );
+                    btImage[i] = null;
                 }
-                bestItemDataList.add(bestItem);
-                bestItemAdapter.notifyDataSetChanged();
-//                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
-//                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
+//                bestItem = new BestItem(btImage, btName, btTime, btTempMax);
+//                bestItemDataList.add(bestItem);
+//                bestItemAdapter.notifyDataSetChanged();
+                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
+                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -178,6 +190,13 @@ public class MainPresenter implements Presenter{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
+            itemId = new Long[response.body().getData().size()];
+            itemName = new String[response.body().getData().size()];
+            itemPrice = new int[response.body().getData().size()];
+            date = new String[response.body().getData().size()];
+            itemInfo = new String[response.body().getData().size()];
+            heart = new Long[response.body().getData().size()];
+            imageURL = new String[response.body().getData().size()];
             for(int i=0; i<response.body().getData().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
@@ -185,22 +204,18 @@ public class MainPresenter implements Presenter{
                 String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
                 String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
 
+                itemId[i] = response.body().getData().get(i).getId();
+                itemName[i] = response.body().getData().get(i).getItemName();
+                itemPrice[i] = response.body().getData().get(i).getInitPrice();
+                date[i] = minutes+HomeConstants.EDate.dpMinute.getText();
+                itemInfo[i] = response.body().getData().get(i).getDescription();
+                heart[i] = null;
+
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
-                    data = new AuctionNow(response.body().getData().get(i).getId(),
-                            response.body().getData().get(i).getFileNames().get(0),
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            minutes+HomeConstants.EDate.dpMinute.getText(),
-                            response.body().getData().get(i).getDescription(), null);
+                    imageURL[i] = response.body().getData().get(i).getFileNames().get(0);
                 } else{
-                    data = new AuctionNow(response.body().getData().get(i).getId(),
-                            null,
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            minutes+HomeConstants.EDate.dpMinute.getText(),
-                            response.body().getData().get(i).getDescription(), null);
+                    imageURL[i] = null;
                 }
-                auctionDataList.add(data);
                 RetrofitTool.getAPIWithNullConverter().getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
             }
@@ -228,8 +243,11 @@ public class MainPresenter implements Presenter{
 
         @Override
         public void onSuccessResponse(Response<ScrapCountResponse> response) {
-
-            auctionDataList.get(heartCount).setHeart(response.body().getHeart());
+            heart[heartCount] = response.body().getHeart();
+//            auctionDataList.get(heartCount).setHeart(response.body().getHeart());
+            data = new AuctionNow(itemId[heartCount], imageURL[heartCount], itemName[heartCount], itemPrice[heartCount],
+                    date[heartCount], itemInfo[heartCount], heart[heartCount]);
+            auctionDataList.add(data);
             auctionNowAdapter.addItem(auctionDataList.get(heartCount));
             auctionNowAdapter.notifyDataSetChanged();
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
@@ -255,8 +273,11 @@ public class MainPresenter implements Presenter{
 
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
+            btTempMax[maximumPriceCount2] = response.body().getMaximumPrice();
+//            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
 //            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+            bestItem = new BestItem(btImage[maximumPriceCount2], btName[maximumPriceCount2], btTime[maximumPriceCount2], btTempMax[maximumPriceCount2]);
+            bestItemDataList.add(bestItem);
             bestItemAdapter.notifyDataSetChanged();
             bestItemViewPager.setAdapter(bestItemAdapter);
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
@@ -264,7 +285,8 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(HomeConstants.EHomeCallback.egetMaximumPriceBestItemCallback.getText(), response.code());
+//            exceptionToast(HomeConstants.EHomeCallback.egetMaximumPriceBestItemCallback.getText(), ));
+            System.out.println("maximum callback: " + response.errorBody().string());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
