@@ -22,6 +22,7 @@ import com.example.auctionapp.domain.item.adapter.ItemDataAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.ItemData;
+import com.example.auctionapp.domain.item.presenter.ItemListPresenter;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -43,8 +44,9 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ItemList extends Fragment {
+public class ItemList extends Fragment implements ItemListView {
     private ActivityItemlistBinding binding;
+    ItemListPresenter presenter;
 
     ItemDataAdapter adapter = new ItemDataAdapter();
     ItemData data;
@@ -64,50 +66,25 @@ public class ItemList extends Fragment {
         binding = ActivityItemlistBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.setAdapter(adapter);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        binding.recyclerView.setLayoutManager(linearLayoutManager);
+//        binding.recyclerView.setAdapter(adapter);
 
-        init();
-        getData();
+        presenter = new ItemListPresenter(this, binding, getActivity());
 
-        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                /* swipe 시 진행할 동작 */
-                init();
-                getData();
-                /* 업데이트가 끝났음을 알림 */
-                binding.swipe.setRefreshing(false);
-            }
-        });
+        presenter.init();
+        presenter.getData();
 
-        return view;
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    private void init(){
-
-        itemDataList = new ArrayList<>();
-        itemDataList.clear();
-        heartCount = 0;
-        participantCount = 0;
-
-        adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(getContext(), ItemDetail.class);
-                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
-                startActivity(intent);
-            }
-        });
-
-        //구분선
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        binding.recyclerView.addItemDecoration(dividerItemDecoration);
+//        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                /* swipe 시 진행할 동작 */
+//                init();
+//                getData();
+//                /* 업데이트가 끝났음을 알림 */
+//                binding.swipe.setRefreshing(false);
+//            }
+//        });
 
         binding.searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,135 +93,12 @@ public class ItemList extends Fragment {
                 startActivity(intent);
             }
         });
-        adapter.notifyDataSetChanged();
+
+        return view;
     }
 
-    private void getData(){
-        if(Constants.token!=null) {
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
-                    .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
-        }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
-
-    private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
-            itemDataList = new ArrayList<>();
-            for(int i=0; i<response.body().getData().size(); i++){
-                LocalDateTime startDateTime = LocalDateTime.now();
-                LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
-//                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-//                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-//                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-
-                long tmpMinute = ChronoUnit.MINUTES.between(startDateTime, endDateTime); // 시작시간 ~ 끝나는 시간을 minute으로 환산
-//                long tmpMinute = 0;
-                long tmpHour = 0;
-                long tmpDay = 0;
-//
-//                tmpMinute = tmp / 60;
-//                tmpMinute = tmp % 60;
-//                tmp = tmp / 60;
-//                tmpHour = tmp % 60
-
-                tmpHour = tmpMinute % 60;
-                tmpMinute = tmpMinute / 60;
-                tmpDay = tmpMinute % 24;
-                tmpMinute = tmpMinute / 24;
-
-                String days = String.valueOf(tmpDay);
-                String hours = String.valueOf(tmpHour);
-                String minutes = String.valueOf(tmpMinute);
-
-                if(response.body().getData().get(i).getFileNames().size()!=0) {
-                    data = new ItemData(response.body().getData().get(i).getId(),
-                            response.body().getData().get(i).getFileNames().get(0),
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            days+"일 "+hours+"시간 "+minutes+"분", 0, null);
-                } else{
-                    data = new ItemData(response.body().getData().get(i).getId(),
-                            null,
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            days+"일 "+hours+"시간 "+minutes+"분", 0, null);
-                }
-                itemDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getHeart(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
-                adapter.notifyDataSetChanged();
-            }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-
-        }
-        @Override
-        public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getHeartCallback implements MainRetrofitCallback<ScrapCountResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ScrapCountResponse> response) {
-
-            itemDataList.get(heartCount).setHeart(response.body().getHeart());
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            heartCount++;
-            adapter.notifyDataSetChanged();
-        }
-        @Override
-        public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getParticipantsCallback implements MainRetrofitCallback<ParticipantsResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ParticipantsResponse> response) {
-
-            itemDataList.get(participantCount).setViews(response.body().getParticipantsCount());
-            adapter.addItem(itemDataList.get(participantCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            participantCount++;
-        }
-        @Override
-        public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    }
+}
