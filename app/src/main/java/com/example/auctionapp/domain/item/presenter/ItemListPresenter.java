@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -42,11 +43,20 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ItemListPresenter implements ItemListPresenterInterface {
-    ItemDataAdapter adapter = new ItemDataAdapter();
+    ItemDataAdapter adapter;
     ItemData data;
-    List<ItemData> itemDataList;
+    ArrayList<ItemData> itemDataList;
     int heartCount;
     int participantCount;
+
+    // itemData Attributes
+    Long itemId;
+    String imageURL;
+    String itemName;
+    int itemPrice;
+    String endTime;
+    int views;
+    Long heart;
 
     // Attributes
     private ItemListView itemListView;
@@ -62,27 +72,22 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
     @Override
     public void init() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.setAdapter(adapter);
-
         itemDataList = new ArrayList<>();
+        adapter = new ItemDataAdapter(activity, itemDataList);
+        binding.itemListLv.setAdapter(adapter);
+
         itemDataList.clear();
         heartCount = 0;
         participantCount = 0;
 
-        adapter.setOnItemClickListener(new ItemDataAdapter.OnItemClickListener() {
+        binding.itemListLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(View v, int position) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(activity, ItemDetail.class);
-                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
+                intent.putExtra("itemId", itemDataList.get(position).getItemId());
                 activity.startActivity(intent);
             }
         });
-        //구분선
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), new LinearLayoutManager(activity).getOrientation());
-        binding.recyclerView.addItemDecoration(dividerItemDecoration);
-
         adapter.notifyDataSetChanged();
     }
 
@@ -99,7 +104,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
-            itemDataList = new ArrayList<>();
             for(int i=0; i<response.body().getData().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
@@ -126,19 +130,18 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 String hours = String.valueOf(tmpHour);
                 String minutes = String.valueOf(tmpMinute);
 
+                itemId = response.body().getData().get(i).getId();
+                itemName = response.body().getData().get(i).getItemName();
+                itemPrice = response.body().getData().get(i).getInitPrice();
+                endTime = days+"일 "+hours+"시간 "+minutes+"분";
+                views = 0;
+                heart = null;
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
-                    data = new ItemData(response.body().getData().get(i).getId(),
-                            response.body().getData().get(i).getFileNames().get(0),
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            days+"일 "+hours+"시간 "+minutes+"분", 0, null);
+                    imageURL = response.body().getData().get(i).getFileNames().get(0);
                 } else{
-                    data = new ItemData(response.body().getData().get(i).getId(),
-                            null,
-                            response.body().getData().get(i).getItemName(),
-                            response.body().getData().get(i).getInitPrice(),
-                            days+"일 "+hours+"시간 "+minutes+"분", 0, null);
+                    imageURL = null;
                 }
+                data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
                 itemDataList.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
@@ -195,7 +198,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         public void onSuccessResponse(Response<ParticipantsResponse> response) {
 
             itemDataList.get(participantCount).setViews(response.body().getParticipantsCount());
-            adapter.addItem(itemDataList.get(participantCount));
+//            adapter.addItem(itemDataList.get(participantCount));
             adapter.notifyDataSetChanged();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
             participantCount++;

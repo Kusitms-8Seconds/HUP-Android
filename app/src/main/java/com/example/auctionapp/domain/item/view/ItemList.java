@@ -48,11 +48,11 @@ public class ItemList extends Fragment implements ItemListView {
     private ActivityItemlistBinding binding;
     ItemListPresenter presenter;
 
-    ItemDataAdapter adapter = new ItemDataAdapter();
-    ItemData data;
-    List<ItemData> itemDataList;
-    int heartCount;
-    int participantCount;
+//    ItemDataAdapter adapter;
+//    ItemData data;
+//    List<ItemData> itemDataList;
+//    int heartCount;
+//    int participantCount;
 
     @Override
     public void onResume() {
@@ -66,25 +66,21 @@ public class ItemList extends Fragment implements ItemListView {
         binding = ActivityItemlistBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        binding.recyclerView.setLayoutManager(linearLayoutManager);
-//        binding.recyclerView.setAdapter(adapter);
-
         presenter = new ItemListPresenter(this, binding, getActivity());
 
         presenter.init();
         presenter.getData();
 
-//        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                /* swipe 시 진행할 동작 */
-//                init();
-//                getData();
-//                /* 업데이트가 끝났음을 알림 */
-//                binding.swipe.setRefreshing(false);
-//            }
-//        });
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /* swipe 시 진행할 동작 */
+                presenter.init();
+                presenter.getData();
+                /* 업데이트가 끝났음을 알림 */
+                binding.swipe.setRefreshing(false);
+            }
+        });
 
         binding.searchView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -54,8 +54,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchfilter">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <ListView
+            android:id="@+id/itemList_lv"
+            tools:listitem="@layout/custom_itemlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
