@@ -16,6 +16,7 @@ import com.google.gson.JsonParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class HupStomp {
 
-    private static final String url = "http://52.78.175.27:8080/";
+    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
@@ -43,7 +44,7 @@ public class HupStomp {
     int count;
 
     @SuppressLint("CheckResult")
-    public void initStomp(PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants){
+    public void initStomp(PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants) throws IOException, JSONException {
         this.ptAdapter = adapter;
         this.bidParticipants = bidParticipants;
         this.participants = participants;
@@ -72,7 +73,7 @@ public class HupStomp {
         stompClient.connect(connectHeaderList);
     }
 
-    public void topicSTOMP(){
+    public void topicSTOMP() throws IOException, JSONException {
         topicHeaderList=new ArrayList<>();
         topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
         stompClient.topic("/topic/priceSuggestion", topicHeaderList).subscribe(topicMessage -> {
