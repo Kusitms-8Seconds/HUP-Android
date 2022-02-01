@@ -22,7 +22,6 @@ import com.example.auctionapp.domain.item.adapter.SellHistoryEndAdapter;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.SellHistoryEndData;
-import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.pricesuggestion.dto.BidderResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -95,7 +94,7 @@ public class SellHistoryEnd extends Fragment {
 //        adapter.addItem(data);
         bidderCount = 0;
         sellHistoryEndDataList = new ArrayList<>();
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId, ItemConstants.EItemSoldStatus.eSoldOut))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId, ItemConstants.EItemSoldStatus.eSoldOut))
                 .enqueue(MainRetrofitTool.getCallback(new getAllItemsByUserIdAndStatusCallback()));
     }
 
@@ -129,7 +128,7 @@ public class SellHistoryEnd extends Fragment {
                             null);
                 }
                 sellHistoryEndDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getBidder(itemId)
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getBidder(itemId)
                         .enqueue(MainRetrofitTool.getCallback(new getBidderCallback()));
             }
 //                setAnimation();

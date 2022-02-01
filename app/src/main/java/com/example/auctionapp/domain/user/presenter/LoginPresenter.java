@@ -13,15 +13,12 @@ import androidx.annotation.Nullable;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
-import com.example.auctionapp.domain.home.constant.HomeConstants;
-import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
-import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
@@ -52,11 +49,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class LoginPresenter implements LoginPresenterInterface {
     private SessionCallback sessionCallback = new SessionCallback();
@@ -278,7 +272,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         @Override
         public void onSuccessResponse(Response<LoginResponse> response) {
             Constants.userId = response.body().getUserId();
-            Constants.token = response.body().getToken();
+            Constants.accessToken = response.body().getAccessToken();
             Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
         }
         @Override

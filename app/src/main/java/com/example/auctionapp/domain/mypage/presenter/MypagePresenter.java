@@ -67,7 +67,7 @@ public class MypagePresenter implements Presenter{
     public void getUserInfo() {
         if(Constants.userId!=null){
             UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(Constants.userId)
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Constants.userId)
                     .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
         }
     }

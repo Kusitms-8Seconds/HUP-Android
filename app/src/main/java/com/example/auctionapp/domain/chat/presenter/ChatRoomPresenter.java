@@ -80,7 +80,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         mBinding.chattingItemImage.setClipToOutline(true);
 
         //상품 정보 가져오기
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(Long.valueOf(8))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(Long.valueOf(8))
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
 
         if (mBinding.editText.getText().toString() == null) mBinding.sendbutton.setEnabled(false);
@@ -123,7 +123,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
     @Override
     public void insertUserInfo(Long chatUserId) {
 //        UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(chatUserId);
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(chatUserId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(chatUserId)
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
     }
 

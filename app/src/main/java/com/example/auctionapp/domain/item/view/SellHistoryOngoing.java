@@ -79,7 +79,7 @@ public class SellHistoryOngoing extends Fragment {
     private void getData(){
         //일단 레이아웃만
         sellHistoryOngoingDataList = new ArrayList<>();
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId,
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId,
                 ItemConstants.EItemSoldStatus.eOnGoing))
                 .enqueue(MainRetrofitTool.getCallback(new getAllItemsByUserIdAndStatusCallback()));
     }

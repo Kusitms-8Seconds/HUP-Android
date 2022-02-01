@@ -8,10 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityMypageMyinfoBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
-import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -38,7 +36,7 @@ public class MyInfo extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(Constants.userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
 
         binding.editMyinfo.setOnClickListener(new View.OnClickListener() {

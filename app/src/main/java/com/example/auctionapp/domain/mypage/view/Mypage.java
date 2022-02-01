@@ -23,7 +23,6 @@ import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.view.ChangeInfo;
 import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.MyInfo;
 
@@ -74,9 +73,9 @@ public class Mypage extends Fragment implements MypageView{
     public void init() {
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId: "+Constants.userId);
-        System.out.println("userToken: "+Constants.token);
+        System.out.println("userToken: "+Constants.accessToken);
 
-        if(Constants.userId != null && Constants.token != null) {
+        if(Constants.userId != null && Constants.accessToken != null) {
             //로그인 되어있을 때
             binding.logoutButton.setVisibility(View.VISIBLE);
             binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +85,7 @@ public class Mypage extends Fragment implements MypageView{
                     startActivity(intent);
                 }
             });
-        } else if(Constants.userId != null && Constants.token == null){
+        } else if(Constants.userId != null && Constants.accessToken == null){
             //이메일 인증이 되어있지 않을 때
             showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthException.getValue());
             binding.logoutButton.setVisibility(View.VISIBLE);
@@ -116,7 +115,7 @@ public class Mypage extends Fragment implements MypageView{
                 presenter.socialLogOut();
                 showToast(MypageConstants.ELogin.logout.getText());
 
-                Constants.token = null;
+                Constants.accessToken = null;
                 Constants.userId = null;
 
                 binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());

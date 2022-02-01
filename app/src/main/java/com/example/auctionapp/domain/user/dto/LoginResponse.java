@@ -11,13 +11,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
 
-    private String token;
-    private Long userId;
+//    private String token;
+//    private Long userId;
+//
+//    public static LoginResponse from(String token, Long userId) {
+//        return LoginResponse.builder()
+//                .token(token)
+//                .userId(userId)
+//                .build();
+//    }
 
-    public static LoginResponse from(String token, Long userId) {
+    private Long userId;
+    private String accessToken;
+    private String refreshToken;
+
+    public static LoginResponse from(Long userId, TokenInfoResponse tokenInfoResponse) {
         return LoginResponse.builder()
-                .token(token)
                 .userId(userId)
+                .accessToken(tokenInfoResponse.getAccessToken())
+                .refreshToken(tokenInfoResponse.getRefreshToken())
                 .build();
     }
 

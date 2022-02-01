@@ -1,22 +1,14 @@
 package com.example.auctionapp.domain.upload.presenter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.auctionapp.databinding.ActivityLoginBinding;
 import com.example.auctionapp.databinding.ActivityUploadPageBinding;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
-import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.upload.constant.UploadConstants;
-import com.example.auctionapp.domain.upload.view.UploadPage;
 import com.example.auctionapp.domain.upload.view.UploadView;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
@@ -101,7 +93,7 @@ public class UploadPresenter implements Presenter{
 
     @Override
     public void upload(ArrayList<MultipartBody.Part> files, RequestBody userIdR, RequestBody itemNameR, RequestBody categoryR, RequestBody initPriceR, RequestBody buyDateR, RequestBody itemStatePointR, RequestBody auctionClosingDateR, RequestBody descriptionR) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).uploadItem(files, userIdR,
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadItem(files, userIdR,
                 itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                 auctionClosingDateR, descriptionR)
                 .enqueue(MainRetrofitTool.getCallback(new RegisterItemCallback()));

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
@@ -14,7 +13,6 @@ import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
-import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
@@ -68,13 +66,13 @@ public class BidPagePresenter implements Presenter{
 
     @Override
     public void initializeData(Long itemId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByItemId(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllPriceSuggestionByItemId(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionCallback()));
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getParticipants(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
     }
 
@@ -172,7 +170,7 @@ public class BidPagePresenter implements Presenter{
                 BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), R.drawable.hearto, null,
                         response.body().getData().get(i).getSuggestionPrice(), "12:46");
                 bidParticipants.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(response.body().getData().get(i).getUserId())
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(response.body().getData().get(i).getUserId())
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
 //                setAnimation();
             }

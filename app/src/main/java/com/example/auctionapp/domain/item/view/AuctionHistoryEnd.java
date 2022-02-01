@@ -93,7 +93,7 @@ public class AuctionHistoryEnd extends Fragment {
     private void getData(){
         maximumPriceCount = 0;
         auctionHistoryEndDataList = new ArrayList<>();
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByUserId(Constants.userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllPriceSuggestionByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionByUserIdCallback()));
     }
 

@@ -10,17 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.databinding.ActivityScrapBinding;
 import com.example.auctionapp.domain.item.view.ItemDetail;
-import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.adapter.ScrapAdapter;
 import com.example.auctionapp.domain.scrap.constant.ScrapConstants;
 import com.example.auctionapp.domain.scrap.dto.ScrapDetailsResponse;
 import com.example.auctionapp.domain.scrap.model.ScrapItem;
-import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.scrap.view.ScrapView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -85,7 +82,7 @@ public class ScrapPresenter implements Presenter{
     @Override
     public void getData() {
         scrapItemsList = new ArrayList<>();
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllScrapsByUserId(Constants.userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllScrapsByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllScrapsCallback()));
     }
 
@@ -129,7 +126,7 @@ public class ScrapPresenter implements Presenter{
                 }
                 scrapItemsList.add(data);
                 System.out.println(ScrapConstants.EScrapCallback.logItemId.getText()+itemId);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
 //                setAnimation();
             }

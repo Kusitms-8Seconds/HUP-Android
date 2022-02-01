@@ -68,13 +68,13 @@ public class HupStomp {
             }
         });
         connectHeaderList=new ArrayList<>();
-        connectHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.token));
+        connectHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
         stompClient.connect(connectHeaderList);
     }
 
     public void topicSTOMP(){
         topicHeaderList=new ArrayList<>();
-        topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.token));
+        topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
         stompClient.topic("/topic/priceSuggestion", topicHeaderList).subscribe(topicMessage -> {
               JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
@@ -110,7 +110,7 @@ public class HupStomp {
 
     public void sendMessage(Long itemId, Long userId, String suggestionPrice) throws JSONException{
         sendHeaderList = new ArrayList<>();
-        sendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.token));
+        sendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
         sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/priceSuggestion"));
         JSONObject json = new JSONObject();
         json.put("itemId", itemId);

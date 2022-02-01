@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 public class Constants {
 
     public static Long userId = null;
-    public static String token = null;
+    public static String accessToken = null;
+    public static String refreshToken = null;
     public static final String imageBaseUrl = "http://52.78.175.27:8080/api/v1/files/";
 
     @Getter

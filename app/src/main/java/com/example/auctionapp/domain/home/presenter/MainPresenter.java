@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
@@ -110,13 +109,13 @@ public class MainPresenter implements Presenter{
 
     @Override
     public void initializeBestData() {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getBestItems(ItemConstants.EItemSoldStatus.eOnGoing)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getBestItems(ItemConstants.EItemSoldStatus.eOnGoing)
                 .enqueue(MainRetrofitTool.getCallback(new getBestItemsCallback()));
     }
 
     @Override
     public void initializeAuctionNowData() {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
                 .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
     }
 

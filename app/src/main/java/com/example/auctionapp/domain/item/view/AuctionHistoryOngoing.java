@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.adapter.AuctionHistoryOngoingAdapter;
 import com.example.auctionapp.domain.item.model.AuctionHistoryOngoingData;
-import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -87,7 +86,7 @@ public class AuctionHistoryOngoing extends Fragment {
 //        adapter.addItem(data);
         maximumPriceCount = 0;
         auctionHistoryOngoingDataList = new ArrayList<>();
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllPriceSuggestionByUserId(Constants.userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllPriceSuggestionByUserId(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionByUserIdCallback()));
     }
 
@@ -123,7 +122,7 @@ public class AuctionHistoryOngoing extends Fragment {
                                 minutes + "분");
                     }
                     auctionHistoryOngoingDataList.add(data);
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
+                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                             .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
                 }
 //                setAnimation();

@@ -1,6 +1,5 @@
 package com.example.auctionapp.domain.user.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -8,9 +7,7 @@ import android.widget.Toast;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityChangeInfoBinding;
-import com.example.auctionapp.domain.email.view.Email;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.domain.user.view.ChangeInfoView;
@@ -60,7 +57,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
                     .password(binding.edtPassword.getText().toString())
                     .phoneNumber(binding.edtPhoneNum.getText().toString())
                     .build();
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).updateUser(updateUserRequest)
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUser(updateUserRequest)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateCallback()));
 
             Intent intent = new Intent(context, MainActivity.class);

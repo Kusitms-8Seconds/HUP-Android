@@ -2,7 +2,6 @@ package com.example.auctionapp.domain.item.presenter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -100,46 +99,46 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
     @Override
     public void heartCheckCallback(Long userId, Long itemId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken)
                 .isCheckedHeart(ScrapCheckedRequest.of(userId, itemId))
                 .enqueue(MainRetrofitTool.getCallback(new isCheckedHeartCallback()));
     }
 
     @Override
     public void deleteHeartCallback(Long scrapId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken)
                 .deleteHeart(scrapId)
                 .enqueue(MainRetrofitTool.getCallback(new deleteScrapCallback()));
     }
 
     @Override
     public void createHeartCallback(Long userId, Long itemId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken)
                 .createScrap(ScrapRegisterRequest.of(userId, itemId))
                 .enqueue(MainRetrofitTool.getCallback(new createScrapCallback()));
     }
 
     @Override
     public void getItemInfoCallback(Long itemId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getMaximumPrice(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
 
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getParticipants(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
 
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getItem(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
     }
 
     @Override
     public void getUserInfoCallback(Long userId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).userDetails(userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(userId)
                 .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
     }
 
     @Override
     public void deleteItem(Long itemId) {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.token).deleteItem(itemId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).deleteItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new DeleteItemCallback()));
     }
 

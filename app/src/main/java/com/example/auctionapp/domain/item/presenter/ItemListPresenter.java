@@ -9,10 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.auctionapp.databinding.ActivityItemDetailBinding;
 import com.example.auctionapp.databinding.ActivityItemlistBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDataAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
@@ -20,7 +17,6 @@ import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.ItemData;
 import com.example.auctionapp.domain.item.view.ItemDetail;
 import com.example.auctionapp.domain.item.view.ItemListView;
-import com.example.auctionapp.domain.item.view.Search;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -93,8 +89,8 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
     @Override
     public void getData() {
-        if (Constants.token != null) {
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
+        if (Constants.accessToken != null) {
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
                     .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
         }
     }
@@ -143,9 +139,9 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 }
                 data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
                 itemDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getHeart(response.body().getData().get(i).getId())
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getHeart(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.token).getParticipants(response.body().getData().get(i).getId())
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getParticipants(response.body().getData().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
                 adapter.notifyDataSetChanged();
             }
