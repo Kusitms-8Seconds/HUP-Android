@@ -112,20 +112,16 @@ public class Mypage extends Fragment implements MypageView{
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.socialLogOut();
-                showToast(MypageConstants.ELogin.logout.getText());
+                presenter.logout();
 
-                Constants.accessToken = null;
-                Constants.userId = null;
-
-                binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
-                Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
+//                binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
+//                Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
                 presenter.init();
                 presenter.getUserInfo();
                 init();
-                binding.loginIcon.setVisibility(View.VISIBLE);
-                binding.logoutButton.setVisibility(View.INVISIBLE);
-                binding.userNameLayout.setEnabled(true);
+//                binding.loginIcon.setVisibility(View.VISIBLE);
+//                binding.logoutButton.setVisibility(View.INVISIBLE);
+//                binding.userNameLayout.setEnabled(true);
 
             }
         });

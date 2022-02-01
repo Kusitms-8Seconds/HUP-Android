@@ -4,6 +4,7 @@ import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
+import com.example.auctionapp.domain.user.dto.LogoutRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.global.dto.DefaultResponse;
@@ -59,6 +60,8 @@ public interface RestAPI {
 
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    @POST("api/v1/users/login") //로그아웃
+    Call<DefaultResponse> logout(@Body LogoutRequest logoutRequest);
     @GET("api/v1/users/{id}")      //사용자 정보 조회
     Call<UserInfoResponse> userDetails(@Path("id") Long userId);
     @POST("api/v1/users/google-login")      //구글 로그인

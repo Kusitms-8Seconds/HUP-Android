@@ -8,12 +8,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.LogoutRequest;
 import com.example.auctionapp.domain.user.dto.UserDetailsInfoRequest;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
@@ -66,10 +69,25 @@ public class MypagePresenter implements Presenter{
     @Override
     public void getUserInfo() {
         if(Constants.userId!=null){
-            UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(Constants.userId);
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Constants.userId)
                     .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
         }
+    }
+
+    @Override
+    public void logout() {
+        socialLogOut();     //소셜로그아웃
+
+        //앱 로그아웃
+        LogoutRequest logoutRequest = new LogoutRequest(Constants.accessToken, Constants.refreshToken);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).logout(logoutRequest)
+                .enqueue(MainRetrofitTool.getCallback(new LogoutCallback()));
+
+        Constants.userId = null;
+        Constants.accessToken = null;
+        Constants.refreshToken = null;
+
+        showToast(MypageConstants.ELogin.logout.getText());
     }
 
     @Override
@@ -103,6 +121,11 @@ public class MypagePresenter implements Presenter{
                 statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    }
+
     public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
@@ -121,6 +144,34 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
+            exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
+    public class LogoutCallback implements MainRetrofitCallback<DefaultResponse> {
+        @Override
+        public void onSuccessResponse(Response<DefaultResponse> response) {
+            showToast(response.body().getMessage().toString());
+
+            binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
+            Glide.with(activity).load(R.drawable.profile).into(binding.profileImg);
+            binding.loginIcon.setVisibility(View.VISIBLE);
+            binding.logoutButton.setVisibility(View.INVISIBLE);
+            binding.userNameLayout.setEnabled(true);
+
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
             exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
