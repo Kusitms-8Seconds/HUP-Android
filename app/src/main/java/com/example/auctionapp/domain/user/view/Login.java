@@ -27,13 +27,14 @@ import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
 import com.kakao.sdk.common.KakaoSdk;
 
+import lombok.SneakyThrows;
+
 import static android.content.ContentValues.TAG;
 
 public class Login extends AppCompatActivity implements LoginView{
     private ActivityLoginBinding binding;
     LoginPresenter presenter;
 
-    private int RC_SIGN_IN = 0116;  //google login request code
     Context mContext;
 
     //private String userId;
@@ -58,6 +59,7 @@ public class Login extends AppCompatActivity implements LoginView{
 
         // App 로그인
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
             @Override
             public void onClick(View view) {
                 LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
@@ -74,9 +76,11 @@ public class Login extends AppCompatActivity implements LoginView{
         });
         //구글 로그인
         binding.btnGoogleLogin.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
             @Override
             public void onClick(View view) {
                 presenter.googleLogin();
+                onBackPressed();
             }
         });
         //네이버 로그인

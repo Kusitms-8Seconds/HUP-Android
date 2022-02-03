@@ -5,14 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
+import com.example.auctionapp.databinding.ActivityMypageBinding;
+import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
+import com.example.auctionapp.domain.mypage.view.Mypage;
+import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
@@ -50,9 +56,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import lombok.SneakyThrows;
 import retrofit2.Response;
 
 public class LoginPresenter implements LoginPresenterInterface {
+    private static Mypage mypage;
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
     GoogleSignInClient mGoogleSignInClient;
@@ -74,37 +82,37 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void appLoginCallback(LoginRequest loginRequest) {
+    public void appLoginCallback(LoginRequest loginRequest) throws InterruptedException {
         RetrofitTool.getAPIWithNullConverter().login(loginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        Thread.sleep(500);
         goMain();
-//        Mypage mypage = new Mypage();
-//        mypage.init();
     }
 
     @Override
-    public void kakaoLoginCallback(String accessToken) {
+    public void kakaoLoginCallback(String accessToken) throws InterruptedException {
         OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest = new OAuth2KakaoLoginRequest(accessToken);
         RetrofitTool.getAPIWithNullConverter().kakaoAccessTokenValidation(oAuth2KakaoLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        Thread.sleep(500);
         goMain();
     }
 
     @Override
-    public void googleLoginCallback(String idToken) {
+    public void googleLoginCallback(String idToken) throws InterruptedException {
         OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-//        Mypage mypage = new Mypage();
-//        mypage.init();
+        Thread.sleep(500);
         goMain();
     }
 
     @Override
-    public void naverLoginCallback(String accessToken) {
+    public void naverLoginCallback(String accessToken) throws InterruptedException {
         OAuth2NaverLoginRequest oAuth2NaverLoginRequest = new OAuth2NaverLoginRequest(accessToken);
         RetrofitTool.getAPIWithNullConverter().naverAccessTokenValidation(oAuth2NaverLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
+        Thread.sleep(500);
         goMain();
     }
 
@@ -117,7 +125,7 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void googleLogin() {
+    public void googleLogin() throws InterruptedException {
         // 앱에 필요한 사용자 데이터를 요청하도록 로그인 옵션을 설정한다.
         // DEFAULT_SIGN_IN parameter는 유저의 ID와 기본적인 프로필 정보를 요청하는데 사용된다.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -134,11 +142,6 @@ public class LoginPresenter implements LoginPresenterInterface {
         if (gsa != null) {
             String idToken = gsa.getIdToken();
             googleLoginCallback(idToken);
-
-//            Intent intent = new Intent(context, MainActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(intent);
         } else
             googleSignIn();
     }
@@ -163,6 +166,7 @@ public class LoginPresenter implements LoginPresenterInterface {
 
         @SuppressLint("HandlerLeak")
         OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
+            @SneakyThrows
             @Override
             public void run(boolean success) {
                 if (success) {
@@ -177,7 +181,6 @@ public class LoginPresenter implements LoginPresenterInterface {
                     Log.i(Constants.ELoginCallback.eNaverTAG.getText(),Constants.ELoginCallback.eTokenType.getText()+ tokenType);
 
                     naverLoginCallback(accessToken);
-//                    onBackPressed();
 
                 } else {
                     String errorCode = mOAuthLoginModule
@@ -235,16 +238,11 @@ public class LoginPresenter implements LoginPresenterInterface {
                 Log.d(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eAccessToken.getText()+idToken);
 
                 googleLoginCallback(idToken);
-
-//                Intent intent = new Intent(context, MainActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
             }
-        } catch (ApiException e) {
+        } catch (ApiException | InterruptedException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.e(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eGoogleErrorCode.getText() + e.getStatusCode());
+            Log.e(Constants.ELoginCallback.eGoogleTAG.getText(), Constants.ELoginCallback.eGoogleErrorCode.getText() + e.getMessage());
 
         }
     }
@@ -265,6 +263,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         context.startActivity(intent);
     }
 
@@ -313,6 +312,7 @@ public class LoginPresenter implements LoginPresenterInterface {
                         public void onSessionClosed(ErrorResult errorResult) { Log.e(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eKakaoSessionError.getText()+ errorResult); }
                         @Override
                         public void onFailure(ErrorResult errorResult) { Log.e(Constants.ELoginCallback.eKakaoTAG.getText(), Constants.ELoginCallback.eKakaoUserError.getText() + errorResult); }
+                        @SneakyThrows
                         @Override
                         public void onSuccess(MeV2Response result) {
 //                            onBackPressed();
@@ -350,13 +350,10 @@ public class LoginPresenter implements LoginPresenterInterface {
                                     // 프로필 획득 불가
                                 }
                             }
-//                            Intent intent = new Intent(context, MainActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            context.startActivity(intent);
                         }
                     });
         }
     }
+
 
 }

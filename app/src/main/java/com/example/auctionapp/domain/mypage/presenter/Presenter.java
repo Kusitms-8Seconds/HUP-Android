@@ -8,4 +8,5 @@ public interface Presenter {
     void showToast(String message);
 
     void exceptionToast(String tag, int statusCode);
+    void onStart();
 }

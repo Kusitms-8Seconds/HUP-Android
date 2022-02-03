@@ -23,12 +23,23 @@ import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.presenter.LoginPresenter;
 import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.MyInfo;
+
+import lombok.SneakyThrows;
 
 public class Mypage extends Fragment implements MypageView{
     private ActivityMypageBinding binding;
     private MypagePresenter presenter;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        init();
+        presenter.init();
+        presenter.getUserInfo();
+    }
 
     @Nullable
     @Override
@@ -71,6 +82,7 @@ public class Mypage extends Fragment implements MypageView{
 
     @Override
     public void init() {
+        binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId: "+Constants.userId);
         System.out.println("userToken: "+Constants.accessToken);
@@ -116,9 +128,10 @@ public class Mypage extends Fragment implements MypageView{
 
 //                binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
 //                Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
+                init();
                 presenter.init();
                 presenter.getUserInfo();
-                init();
+
 //                binding.loginIcon.setVisibility(View.VISIBLE);
 //                binding.logoutButton.setVisibility(View.INVISIBLE);
 //                binding.userNameLayout.setEnabled(true);
@@ -190,5 +203,6 @@ public class Mypage extends Fragment implements MypageView{
             }
         });
     }
+
 
 }

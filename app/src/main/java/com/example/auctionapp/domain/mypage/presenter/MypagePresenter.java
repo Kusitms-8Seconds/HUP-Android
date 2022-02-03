@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.mypage.presenter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
+import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
@@ -45,6 +47,7 @@ public class MypagePresenter implements Presenter{
     private ActivityMypageBinding binding;
     private Activity activity;
 
+    public static  Mypage mypage = null;
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
 
@@ -122,6 +125,12 @@ public class MypagePresenter implements Presenter{
     }
 
     @Override
+    public void onStart() {
+//        Bundle bundle =
+//        Long userId = bundle.getLong("userId");
+    }
+
+    @Override
     public void showToast(String message) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
@@ -183,5 +192,15 @@ public class MypagePresenter implements Presenter{
         public void onConnectionFail(Throwable t) {
             Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
+    }
+    public static Mypage newInstance() {
+        if(mypage == null) {
+            mypage = new Mypage();
+        }
+//        Mypage mypage = new Mypage();
+//        Bundle bundle = new Bundle();
+//        bundle.putLong("userId", Long.valueOf(2));
+//        mypage.setArguments(bundle);
+        return mypage;
     }
 }

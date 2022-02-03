@@ -15,13 +15,13 @@ import java.io.IOException;
 
 public interface LoginPresenterInterface {
 
-    void appLoginCallback(LoginRequest loginRequest);
-    void kakaoLoginCallback(String accessToken);
-    void googleLoginCallback(String idToken);
-    void naverLoginCallback(String accessToken);
+    void appLoginCallback(LoginRequest loginRequest) throws InterruptedException;
+    void kakaoLoginCallback(String accessToken) throws InterruptedException;
+    void googleLoginCallback(String idToken) throws InterruptedException;
+    void naverLoginCallback(String accessToken) throws InterruptedException;
 
     void kakaoLogin();
-    void googleLogin();
+    void googleLogin() throws InterruptedException;
     void googleSignIn();
     void naverSignIn();
 
