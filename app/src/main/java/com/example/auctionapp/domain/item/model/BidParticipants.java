@@ -20,12 +20,12 @@ import lombok.Setter;
 @Setter
 public class BidParticipants {
     Long userId;
-    int ptImage;    //나중에 url로 수정
+    String ptImage;
     String ptName;
     int ptPrice;
     String ptTime;
 
-    public BidParticipants(Long userId, int ptImage, String ptName, int ptPrice, String ptTime) {
+    public BidParticipants(Long userId, String ptImage, String ptName, int ptPrice, String ptTime) {
         this.userId = userId;
         this.ptImage = ptImage;
         this.ptName = ptName;

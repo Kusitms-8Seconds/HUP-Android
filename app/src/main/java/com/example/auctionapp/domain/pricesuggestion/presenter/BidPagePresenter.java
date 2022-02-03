@@ -3,9 +3,12 @@ package com.example.auctionapp.domain.pricesuggestion.presenter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
@@ -17,7 +20,10 @@ import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
+import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
+import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
+import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -25,8 +31,10 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.stomp.HupStomp;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -34,22 +42,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
 public class BidPagePresenter implements Presenter{
-
     PTAdapter ptAdapter;
+    private HupStomp hupstomp;
 
     Long itemId;
-    Long participantId;
-    int finalPrice;
     Long myId = Constants.userId;
 
-
     private int userCount;
-    PTAdapter adapter;
     private ArrayList<BidParticipants> bidParticipants;
 
     // Attributes
@@ -66,6 +71,7 @@ public class BidPagePresenter implements Presenter{
 
     @Override
     public void initializeData(Long itemId) {
+        userCount = 0;
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllPriceSuggestionByItemId(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getAllPriceSuggestionCallback()));
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
@@ -77,13 +83,34 @@ public class BidPagePresenter implements Presenter{
     }
 
     @Override
-    public void init() {
+    public void init(Long id) throws IOException, JSONException {
+        itemId = id;
+
         bidParticipants = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         binding.participantsRecyclerView.setLayoutManager(linearLayoutManager);
 
         ptAdapter = new PTAdapter();
         binding.participantsRecyclerView.setAdapter(ptAdapter);
+
+        hupstomp = new HupStomp();
+        hupstomp.initStomp(ptAdapter, bidParticipants, binding.highPrice, binding.participants);
+
+        binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
+            @Override
+            public void onClick(View view) {
+                if(!binding.editPrice.getText().toString().equals("")){
+                    hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                    ptAdapter.notifyDataSetChanged();
+//                    PriceSuggestionRequest priceSuggestionRequest = new PriceSuggestionRequest(itemId, Constants.userId, Integer.parseInt(binding.editPrice.getText().toString()));
+//                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).priceSuggest(priceSuggestionRequest)
+//                            .enqueue(MainRetrofitTool.getCallback(new priceSuggestCallback()));
+                }
+                //                showDialog01();
+//                String price = editPrice.getText().toString();
+            }
+        });
     }
 
     @Override
@@ -167,12 +194,11 @@ public class BidPagePresenter implements Presenter{
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), R.drawable.hearto, null,
+                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), "", null,
                         response.body().getData().get(i).getSuggestionPrice(), "12:46");
                 bidParticipants.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(response.body().getData().get(i).getUserId())
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
-//                setAnimation();
             }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
@@ -191,16 +217,18 @@ public class BidPagePresenter implements Presenter{
 
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
-
             bidParticipants.get(userCount).setPtName(response.body().getUsername());
+            if(response.body().getPicture()!=null){
+                bidParticipants.get(userCount).setPtImage(response.body().getPicture());
+            }
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
             userCount++;
-            if(response.body().getUserId().equals(myId)) {
-                binding.lyEditPrice.setVisibility(View.GONE);
-            }else {
-                binding.lyEditPrice.setVisibility(View.VISIBLE);
-            }
+//            if(response.body().getUserId().equals(myId)) {
+//                binding.lyEditPrice.setVisibility(View.GONE);
+//            }else {
+//                binding.lyEditPrice.setVisibility(View.VISIBLE);
+//            }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -211,6 +239,29 @@ public class BidPagePresenter implements Presenter{
         @Override
         public void onConnectionFail(Throwable t) {
             Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
+    private class priceSuggestCallback implements MainRetrofitCallback<PriceSuggestionResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<PriceSuggestionResponse> response) {
+            
+            ptAdapter.notifyDataSetChanged();
+//            init(itemId);
+//            initializeData(itemId);
+        }
+        @Override
+        public void onFailResponse(Response<PriceSuggestionResponse> response) throws IOException, JSONException {
+            System.out.println("errorBody"+response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
         }
     }
 }

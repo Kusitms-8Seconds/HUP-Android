@@ -28,6 +28,8 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import lombok.SneakyThrows;
+
 public class BidPage extends AppCompatActivity implements BidPageView {
     private ActivityBidPageBinding binding;
     private BidPagePresenter presenter;
@@ -51,6 +53,7 @@ public class BidPage extends AppCompatActivity implements BidPageView {
     private ArrayList<BidParticipants> bidParticipants;
     RecyclerView ptRecyclerView;
 
+    @SneakyThrows
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +67,11 @@ public class BidPage extends AppCompatActivity implements BidPageView {
         String getItemId = intent.getExtras().getString("itemId");
         this.itemId = Long.valueOf(getItemId);
 
-        presenter.init();
+        presenter.init(itemId);
         presenter.initializeData(itemId);
 
-        hupstomp = new HupStomp();
-        hupstomp.initStomp(adapter, bidParticipants, binding.highPrice, binding.participants);
+//        hupstomp = new HupStomp();
+//        hupstomp.initStomp(adapter, bidParticipants, binding.highPrice, binding.participants);
 
         binding.goback.bringToFront();
         binding.goback.setOnClickListener(new View.OnClickListener() {
@@ -82,20 +85,6 @@ public class BidPage extends AppCompatActivity implements BidPageView {
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.custom_dialog01);
 
-        binding.bidbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    if(!binding.editPrice.getText().toString().equals("")){
-                        hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
-                    }
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-                showDialog01();
-//                String price = editPrice.getText().toString();
-            }
-        });
 
         // -----------만약 낙찰되었을 때에----------(임시) //
         finalPrice = Integer.parseInt(binding.highPrice.getText().toString());

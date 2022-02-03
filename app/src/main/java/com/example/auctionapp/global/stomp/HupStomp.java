@@ -9,7 +9,13 @@ import android.widget.TextView;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
+import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
+import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -20,11 +26,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompCommand;
 import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
+
+import static android.content.ContentValues.TAG;
 
 
 public class HupStomp {
@@ -40,6 +49,12 @@ public class HupStomp {
     TextView participants;
     TextView highPrice;
     BidParticipants data;
+
+    String username;
+    String suggestionPrice;
+    String maximumPrice;
+    String theNumberOfParticipants;
+    String userId;
 
     int count;
 
@@ -76,14 +91,14 @@ public class HupStomp {
     public void topicSTOMP() throws IOException, JSONException {
         topicHeaderList=new ArrayList<>();
         topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
-        stompClient.topic("/topic/priceSuggestion", topicHeaderList).subscribe(topicMessage -> {
+        stompClient.topic("/topic/priceSuggestions", topicHeaderList).subscribe(topicMessage -> {
               JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
-            String username = element.getAsJsonObject().get("username").getAsString();
-            String suggestionPrice = element.getAsJsonObject().get("suggestionPrice").getAsString();
-            String maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
-            String theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
-            String userId = element.getAsJsonObject().get("userId").getAsString();
+            username = element.getAsJsonObject().get("username").getAsString();
+            suggestionPrice = element.getAsJsonObject().get("suggestionPrice").getAsString();
+            maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
+            theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
+            userId = element.getAsJsonObject().get("userId").getAsString();
             System.out.println("userId"+userId );
             System.out.println("username"+username );
             System.out.println("suggestionPrice"+suggestionPrice );
@@ -98,11 +113,15 @@ public class HupStomp {
                 public void run() {
                     highPrice.setText(String.valueOf(maximumPrice));
                     participants.setText(String.valueOf(theNumberOfParticipants));
-                    BidParticipants data = new BidParticipants(Long.valueOf(userId), R.drawable.profile, username, Integer.valueOf(suggestionPrice), "11");
-                    bidParticipants.add(data);
-                    ptAdapter.validationAndDeleteItem(data.getUserId());
-                    ptAdapter.addItem(data);
-                    ptAdapter.notifyDataSetChanged();} // This is your code
+//                    BidParticipants data = new BidParticipants(Long.valueOf(userId), "", username, Integer.valueOf(suggestionPrice), "11");
+//                    bidParticipants.add(data);
+//                    ptAdapter.validationAndDeleteItem(data.getUserId());
+//                    ptAdapter.addItem(data);
+//                    ptAdapter.notifyDataSetChanged();
+
+                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(userId))
+                            .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
+                } // This is your code
             };
             mainHandler.post(myRunnable);
 
@@ -112,7 +131,7 @@ public class HupStomp {
     public void sendMessage(Long itemId, Long userId, String suggestionPrice) throws JSONException{
         sendHeaderList = new ArrayList<>();
         sendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
-        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/priceSuggestion"));
+        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/priceSuggestions"));
         JSONObject json = new JSONObject();
         json.put("itemId", itemId);
         json.put("userId", userId);
@@ -120,7 +139,31 @@ public class HupStomp {
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, sendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }
+    private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
 
+        @Override
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
+            String ptImage = "";
+            if(response.body().getPicture()!=null){
+                ptImage = response.body().getPicture();
+            }
+            BidParticipants data = new BidParticipants(Long.valueOf(userId), ptImage, username, Integer.valueOf(suggestionPrice), "11");
+            bidParticipants.add(data);
+            ptAdapter.validationAndDeleteItem(data.getUserId());
+            ptAdapter.addItem(data);
+            ptAdapter.notifyDataSetChanged();
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
+//            exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
 
 
 }

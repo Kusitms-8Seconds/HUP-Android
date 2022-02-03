@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class PriceSuggestionRequest {
 
@@ -21,5 +20,11 @@ public class PriceSuggestionRequest {
 
     @NotEmpty(message = "입찰가격을 입력해주세요.")
     private int suggestionPrice;
+
+    public PriceSuggestionRequest(Long itemId, Long userId, int suggestionPrice) {
+        this.itemId = itemId;
+        this.userId = userId;
+        this.suggestionPrice = suggestionPrice;
+    }
 
 }
