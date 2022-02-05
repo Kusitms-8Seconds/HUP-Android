@@ -98,6 +98,7 @@ dependencies {
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
-
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
 }
+apply plugin: 'com.google.gms.google-services'
