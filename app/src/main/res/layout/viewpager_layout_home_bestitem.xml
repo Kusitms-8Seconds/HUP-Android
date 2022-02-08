@@ -91,7 +91,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13dp"
+                    android:baselineAligned="false"
                     android:text="temp_max"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="원"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
 

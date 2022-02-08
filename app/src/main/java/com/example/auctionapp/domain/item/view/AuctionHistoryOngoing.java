@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.adapter.AuctionHistoryOngoingAdapter;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.model.AuctionHistoryOngoingData;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
@@ -95,6 +97,8 @@ public class AuctionHistoryOngoing extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
+            if(response.body().getData().size() == 0)
+                Toast.makeText(getActivity(), ItemConstants.EItemServiceImpl.eNotPriceSuggestionContentExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
             for(int i=0; i<response.body().getData().size(); i++){
                 if(response.body().getData().get(i).isAcceptState()==false) {
                     LocalDateTime startDateTime = LocalDateTime.now();
@@ -125,7 +129,6 @@ public class AuctionHistoryOngoing extends Fragment {
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                             .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
                 }
-//                setAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 

@@ -103,33 +103,18 @@ public class ItemListPresenter implements ItemListPresenterInterface {
             for(int i=0; i<response.body().getData().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
-//                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-//                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-//                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-
-                long tmpMinute = ChronoUnit.MINUTES.between(startDateTime, endDateTime); // 시작시간 ~ 끝나는 시간을 minute으로 환산
-//                long tmpMinute = 0;
-                long tmpHour = 0;
-                long tmpDay = 0;
-//
-//                tmpMinute = tmp / 60;
-//                tmpMinute = tmp % 60;
-//                tmp = tmp / 60;
-//                tmpHour = tmp % 60
-
-                tmpHour = tmpMinute % 60;
-                tmpMinute = tmpMinute / 60;
-                tmpDay = tmpMinute % 24;
-                tmpMinute = tmpMinute / 24;
-
-                String days = String.valueOf(tmpDay);
-                String hours = String.valueOf(tmpHour);
-                String minutes = String.valueOf(tmpMinute);
+                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
 
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
                 itemPrice = response.body().getData().get(i).getInitPrice();
-                endTime = days+"일 "+hours+"시간 "+minutes+"분";
+                if(Integer.parseInt(hours) >= 24) {
+                    hours = String.valueOf(Integer.parseInt(hours)%24);
+                    endTime = days + "일 " + hours + "시간 " + minutes + "분";
+                } else
+                    endTime = hours + "시간 " + minutes + "분";
                 views = 0;
                 heart = null;
                 if(response.body().getData().get(i).getFileNames().size()!=0) {

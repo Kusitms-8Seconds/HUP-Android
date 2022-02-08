@@ -74,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시간"
+            android:textColor="@color/Hup"
             android:textSize="36px" />
 
         <TextView
@@ -81,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/Hup"
             android:text=" 전"
             android:textSize="36px" />
     </LinearLayout>

@@ -103,12 +103,8 @@ public class BidPagePresenter implements Presenter{
                 if(!binding.editPrice.getText().toString().equals("")){
                     hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
-//                    PriceSuggestionRequest priceSuggestionRequest = new PriceSuggestionRequest(itemId, Constants.userId, Integer.parseInt(binding.editPrice.getText().toString()));
-//                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).priceSuggest(priceSuggestionRequest)
-//                            .enqueue(MainRetrofitTool.getCallback(new priceSuggestCallback()));
                 }
                 //                showDialog01();
-//                String price = editPrice.getText().toString();
             }
         });
     }
@@ -224,11 +220,11 @@ public class BidPagePresenter implements Presenter{
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
             userCount++;
-//            if(response.body().getUserId().equals(myId)) {
-//                binding.lyEditPrice.setVisibility(View.GONE);
-//            }else {
-//                binding.lyEditPrice.setVisibility(View.VISIBLE);
-//            }
+            if(response.body().getUserId().equals(myId)) {
+                binding.lyEditPrice.setVisibility(View.GONE);
+            }else {
+                binding.lyEditPrice.setVisibility(View.VISIBLE);
+            }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override

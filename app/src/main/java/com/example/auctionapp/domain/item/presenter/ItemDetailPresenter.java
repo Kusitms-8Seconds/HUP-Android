@@ -325,8 +325,13 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            binding.itemLeftTime.setText(days+"일 "+hours+"시간 "+minutes+"분 전");
+            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+
+            if(Integer.parseInt(hours) >= 24) {
+                hours = String.valueOf(Integer.parseInt(hours)%24);
+                binding.itemLeftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 전");
+            } else
+                binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
 
             if(response.body().getUserId().equals(myId)) {
                 binding.deleteButton.setVisibility(View.VISIBLE);

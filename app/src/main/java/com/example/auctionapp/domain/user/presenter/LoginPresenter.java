@@ -60,7 +60,6 @@ import lombok.SneakyThrows;
 import retrofit2.Response;
 
 public class LoginPresenter implements LoginPresenterInterface {
-    private static Mypage mypage;
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
     GoogleSignInClient mGoogleSignInClient;

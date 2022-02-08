@@ -90,7 +90,7 @@ public class ItemConstants {
         eNotFoundItemExceptionForCategoryMessage("해당 카테고리에 해당하는 상품이 없습니다."),
         eNotFoundItemExceptionForDefaultMessage("해당 아이디로 상품을 찾을 수 없습니다."),
         eNotOnGoingExceptionMessage("경매중인 상품이 아닙니다."),
-        eNotSoldOutTimeExceptionMessage("낙찰시간이 아닙니다."),
+        eNotSoldOutTimeExceptionMessage("낙찰 가능한 시간이 아닙니다."),
         eNotDesirableAuctionEndTimeExceptionMessage("경매종료일자가 현재시각보다 빠릅니다."),
         eNotPriceSuggestionContentExceptionMessage("경매입찰내역이 없습니다.");
         private final String value;
