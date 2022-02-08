@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +28,9 @@ import com.example.auctionapp.domain.upload.view.UploadPage;
 import com.example.auctionapp.domain.item.view.ItemList;
 import com.example.auctionapp.domain.pricesuggestion.view.FeesPage;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -64,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         dialog03 = new Dialog(MainActivity.this);
         dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog03.setContentView(R.layout.custom_dialog03);
+
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String token) {
+                Log.d("FCM Log", "FCM 토큰: " + token);
+//                Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
