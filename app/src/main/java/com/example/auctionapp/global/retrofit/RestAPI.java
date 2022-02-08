@@ -33,6 +33,8 @@ import com.example.auctionapp.domain.user.dto.SignUpRequest;
 import com.example.auctionapp.domain.user.dto.SignUpResponse;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
+import com.example.auctionapp.global.firebase.FCMRequest;
+import com.example.auctionapp.global.firebase.FCMResponse;
 
 import java.util.List;
 
@@ -123,5 +125,9 @@ public interface RestAPI {
     Call<PaginationDto<List<PriceSuggestionListResponse>>> getAllPriceSuggestionByUserId(@Path("userId") Long userId);
     @POST("api/v1/priceSuggestions/priceSuggestionTest")   //입찰하기
     Call<PriceSuggestionResponse> priceSuggest(@Body PriceSuggestionRequest priceSuggestionRequest);
+
+    //FCM
+    @POST("api/fcm")   //입찰하기
+    Call<FCMResponse> pushMessage(@Body FCMRequest fcmRequest);
 
 }
