@@ -12,8 +12,10 @@ import lombok.With;
 public class OAuth2GoogleLoginRequest {
     
     private String idToken;
+    private String targetToken;
 
-    public OAuth2GoogleLoginRequest(String idToken) {
+    public OAuth2GoogleLoginRequest(String idToken, String targetToken) {
         this.idToken = idToken;
+        this.targetToken = targetToken;
     }
 }

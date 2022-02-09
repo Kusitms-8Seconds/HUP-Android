@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class OAuth2KakaoLoginRequest {
 
     private String accessToken;
+    private String targetToken;
 }

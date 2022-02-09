@@ -25,10 +25,13 @@ public class LoginRequest {
     //@Size(min = 8, max = 16, message = "패스워드는 8글자 이상 16글자 이하여야 합니다.")
     private String password;
 
-    public static LoginRequest of(String loginId, String password) {
+    private String targetToken;
+
+    public static LoginRequest of(String loginId, String password, String targetToken) {
         return LoginRequest.builder()
                 .loginId(loginId)
                 .password(password)
+                .targetToken(targetToken)
                 .build();
     }
 }

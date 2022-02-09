@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity implements LoginView{
             @SneakyThrows
             @Override
             public void onClick(View view) {
-                LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString());
+                LoginRequest loginRequest = LoginRequest.of(binding.editID.getText().toString(), binding.editPW.getText().toString(), Constants.targetToken);
                 presenter.appLoginCallback(loginRequest);
             }
         });

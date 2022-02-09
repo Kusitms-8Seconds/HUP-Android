@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String token) {
                 Log.d("FCM Log", "FCM 토큰: " + token);
+                Constants.targetToken = token;
 //                Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
             }
         });
