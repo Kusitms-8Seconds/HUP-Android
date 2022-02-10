@@ -16,7 +16,6 @@
         android:icon="@drawable/uploadp"
         android:title="Upload" />
 
-
     <item
         android:id="@+id/itemlist"
         android:icon="@drawable/itemlistp"
