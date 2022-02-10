@@ -139,6 +139,16 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                 dialog.show();
             }
         });
+        // 경매 종료 시간
+        binding.editAuctionFinalTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog dialog = new TimePickerDialog(UploadPage.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                        timePickerEndTime, 00, 00, true);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.show();
+            }
+        });
 
         // 물건 상태
         binding.itemStateRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
