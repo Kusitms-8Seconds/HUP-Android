@@ -239,10 +239,10 @@
 
             <TextView
                 android:id="@+id/editAuctionBuyDate"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="145px"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/box_edge"
                 android:paddingLeft="39px"
                 android:paddingTop="39px"
@@ -262,17 +262,36 @@
                 android:textColor="#000000"
                 android:textSize="44px" />
 
-            <TextView
-                android:id="@+id/editAuctionFinalDate"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="145px"
-                android:background="@drawable/box_edge"
-                android:paddingLeft="39px"
-                android:paddingTop="39px"
-                android:text="경매 종료 일자를 선택하세요."
-                android:textSize="44px" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/editAuctionFinalDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="145px"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/box_edge"
+                    android:paddingLeft="39px"
+                    android:paddingTop="39px"
+                    android:text="경매 종료 일자"
+                    android:textSize="44px" />
+
+                <TextView
+                    android:id="@+id/editAuctionFinalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="145px"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/box_edge"
+                    android:paddingLeft="39px"
+                    android:paddingTop="39px"
+                    android:text="경매 종료 시간"
+                    android:textSize="44px" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView8"
@@ -316,12 +335,13 @@
                 android:id="@+id/editItemContent"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:gravity="start"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="70dp"
+                android:layout_weight="1"
                 android:background="@drawable/box_edge"
                 android:ems="10"
+                android:gravity="start"
                 android:hint="제품을 소개해주세요."
                 android:inputType="textPersonName"
                 android:paddingLeft="39px"

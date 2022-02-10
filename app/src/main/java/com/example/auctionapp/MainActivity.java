@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("FCM Log", "FCM 토큰: " + token);
                 Constants.targetToken = token;
 //                Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -94,11 +95,13 @@ public class MainActivity extends AppCompatActivity {
             fragment = new Home();
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
             fragmentTransaction.show(fragment);
-        } else if (id == R.id.chat) {
+        }
+        else if (id == R.id.chat) {
             fragment = new Chat();
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
             fragmentTransaction.show(fragment);
-        } else if (id == R.id.upload) {
+        }
+        else if (id == R.id.upload) {
             Intent intent = new Intent(MainActivity.this, UploadPage.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

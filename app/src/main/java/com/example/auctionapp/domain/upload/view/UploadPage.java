@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.upload.view;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -74,6 +76,12 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             LocalDateTime endDateTime = LocalDateTime.of(year, month+1, dayOfMonth, 00, 00,00,0000);
             String formatDate = endDateTime.format(DateTimeFormatter.ofPattern(UploadConstants.EDate.datePattern.getText()));
             binding.editAuctionFinalDate.setText(formatDate.toString());
+        }
+    };
+    TimePickerDialog.OnTimeSetListener timePickerEndTime = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            binding.editAuctionFinalTime.setText(hourOfDay + ":" + minute + ":00");
         }
     };
 
@@ -196,7 +204,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                     }
                     int initPrice = Integer.parseInt(initPriceStr);
                     String buyDate = binding.editAuctionBuyDate.getText().toString() + UploadConstants.EDate.dateZero.getText();
-                    String auctionClosingDate = binding.editAuctionFinalDate.getText().toString() + UploadConstants.EDate.dateZero.getText();
+                    String auctionClosingDate = binding.editAuctionFinalDate.getText().toString() + " " + binding.editAuctionFinalTime.getText().toString();
                     String description = binding.editItemContent.getText().toString();
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(UploadConstants.EDate.dateTimePattern.getText());
