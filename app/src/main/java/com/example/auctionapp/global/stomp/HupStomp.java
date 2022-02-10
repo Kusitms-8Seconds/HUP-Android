@@ -146,6 +146,8 @@ public class HupStomp {
             String ptImage = "";
             if(response.body().getPicture()!=null){
                 ptImage = response.body().getPicture();
+            } else {
+                ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
             }
             BidParticipants data = new BidParticipants(Long.valueOf(userId), ptImage, username, Integer.valueOf(suggestionPrice), "11");
             bidParticipants.add(data);

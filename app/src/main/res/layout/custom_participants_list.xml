@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="37px">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/participants_image"
         android:layout_width="140px"
         android:layout_height="140px"
@@ -31,6 +31,7 @@
             android:text="참여자 이름"
             android:textColor="#000000"
             android:textSize="38px"
+            android:layout_marginStart="40px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
             android:text="000000"
             android:textColor="#0505E8"
             android:textSize="38px"
+            android:layout_marginEnd="40px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
