@@ -13,15 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FCMRequest {
-    private String body;
-    private String targetToken;
-    private String title;
+    private Long itemId;
 
-    public static FCMRequest of(String body, String targetToken, String title) {
+    public static FCMRequest of(Long itemId) {
         return FCMRequest.builder()
-                .body(body)
-                .targetToken(targetToken)
-                .title(title)
+                .itemId(itemId)
                 .build();
     }
 }

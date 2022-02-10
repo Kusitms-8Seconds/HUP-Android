@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.pricesuggestion.presenter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
+import com.example.auctionapp.global.firebase.FCMRequest;
+import com.example.auctionapp.global.firebase.FCMResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
@@ -50,6 +53,7 @@ import static android.content.ContentValues.TAG;
 public class BidPagePresenter implements Presenter{
     PTAdapter ptAdapter;
     private HupStomp hupstomp;
+    boolean onGoing;
 
     Long itemId;
     Long myId = Constants.userId;
@@ -96,6 +100,12 @@ public class BidPagePresenter implements Presenter{
         hupstomp = new HupStomp();
         hupstomp.initStomp(ptAdapter, bidParticipants, binding.highPrice, binding.participants);
 
+        if(!onGoing) {
+            binding.auctionState.setVisibility(View.GONE);
+        } else {
+            binding.auctionState.setVisibility(View.VISIBLE);
+        }
+
         binding.bidbutton.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
             @Override
@@ -104,7 +114,6 @@ public class BidPagePresenter implements Presenter{
                     hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
                 }
-                //                showDialog01();
             }
         });
     }
@@ -132,9 +141,41 @@ public class BidPagePresenter implements Presenter{
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
             String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)/60);
-            binding.itemLeftTime.setText(days + PriceConstants.EPriceCallback.dpDay.getText() + hours +
-                    PriceConstants.EPriceCallback.dpHour.getText() + minutes + PriceConstants.EPriceCallback.dpMinute.getText());
+            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+
+            if(Integer.parseInt(hours) >= 24) {
+                hours = String.valueOf(Integer.parseInt(hours)%24);
+                binding.itemLeftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 전");
+            } else
+                binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
+
+            if(response.body().getUserId().equals(myId)) {
+                binding.editPrice.setVisibility(View.GONE);
+                binding.bidbutton.setText("낙찰하기");
+                binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+                    @SneakyThrows
+                    @Override
+                    public void onClick(View view) {
+                        FCMRequest fcmRequest = FCMRequest.of(itemId);
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).pushMessage(fcmRequest)
+                                .enqueue(MainRetrofitTool.getCallback(new pushMessageCallback()));
+                    }
+                });
+            }else {
+                binding.editPrice.setVisibility(View.VISIBLE);
+                binding.bidbutton.setText("입찰하기");
+                binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+                    @SneakyThrows
+                    @Override
+                    public void onClick(View view) {
+                        if(!binding.editPrice.getText().toString().equals("")){
+                            hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                            ptAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+            }
+
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -220,11 +261,11 @@ public class BidPagePresenter implements Presenter{
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
             userCount++;
-            if(response.body().getUserId().equals(myId)) {
-                binding.lyEditPrice.setVisibility(View.GONE);
-            }else {
-                binding.lyEditPrice.setVisibility(View.VISIBLE);
-            }
+//            if(response.body().getUserId().equals(myId)) {
+//                binding.lyEditPrice.setVisibility(View.GONE);
+//            }else {
+//                binding.lyEditPrice.setVisibility(View.VISIBLE);
+//            }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -237,27 +278,24 @@ public class BidPagePresenter implements Presenter{
             Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
-    private class priceSuggestCallback implements MainRetrofitCallback<PriceSuggestionResponse> {
+//낙찰하기
+    private class pushMessageCallback implements MainRetrofitCallback<FCMResponse> {
 
         @Override
-        public void onSuccessResponse(Response<PriceSuggestionResponse> response) {
-            
-            ptAdapter.notifyDataSetChanged();
-//            init(itemId);
-//            initializeData(itemId);
+        public void onSuccessResponse(Response<FCMResponse> response) {
+            onGoing = false;
+//            binding.auctionState.setVisibility(View.GONE);
+            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<PriceSuggestionResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
+        public void onFailResponse(Response<FCMResponse> response) throws IOException, JSONException {
+//                exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText() + "_pushMessage" +
+                    response.errorBody().string());
         }
         @Override
         public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
+            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }

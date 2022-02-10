@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FCMResponse {
-    private String body;
-    private String statusCode;
-    private Long statusCodeValue;
+    private Long itemId;
+    private Long priceSuggestionId;
+    private int salesPrice;
 
-    public static FCMResponse from(String body, String statusCode, Long statusCodeValue) {
+    public static FCMResponse from(Long itemId, Long priceSuggestionId, int salesPrice) {
         return FCMResponse.builder()
-                .body(body)
-                .statusCode(statusCode)
-                .statusCodeValue(statusCodeValue)
+                .itemId(itemId)
+                .priceSuggestionId(priceSuggestionId)
+                .salesPrice(salesPrice)
                 .build();
     }
 }

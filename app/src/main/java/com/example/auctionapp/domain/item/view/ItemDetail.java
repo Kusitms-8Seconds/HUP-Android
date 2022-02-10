@@ -20,8 +20,6 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
     private ItemDetailPresenter presenter;
 
     private Long itemId;
-    private Long scrapId;
-    public Boolean isHeart = false;
 
     @Override
     public void onBackPressed()
@@ -55,7 +53,7 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), BidPage.class);
-                intent.putExtra("itemId", String.valueOf(itemId));
+                intent.putExtra("itemId", itemId);
                 startActivity(intent);
             }
         });

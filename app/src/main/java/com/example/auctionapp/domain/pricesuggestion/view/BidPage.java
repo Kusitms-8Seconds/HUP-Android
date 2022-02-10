@@ -64,8 +64,7 @@ public class BidPage extends AppCompatActivity implements BidPageView {
         presenter = new BidPagePresenter(this, binding, getApplicationContext());
 
         Intent intent = getIntent();
-        String getItemId = intent.getExtras().getString("itemId");
-        this.itemId = Long.valueOf(getItemId);
+        this.itemId = intent.getLongExtra("itemId", 0);
 
         presenter.init(itemId);
         presenter.initializeData(itemId);

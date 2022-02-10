@@ -87,11 +87,6 @@ public class SellHistoryEnd extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
     private void getData(){
-        //일단 레이아웃만
-//        SellHistoryEndData data = new SellHistoryEndData(R.drawable.rectangle, "닌텐도 스위치", 197000, "소소소소");
-//        adapter.addItem(data);
-//        data = new SellHistoryEndData(R.drawable.rectangle, "CGV 영화티켓", 6500, "마블마블");
-//        adapter.addItem(data);
         bidderCount = 0;
         sellHistoryEndDataList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsByUserIdAndStatus(GetAllItemsByStatusRequest.of(Constants.userId, ItemConstants.EItemSoldStatus.eSoldOut))

@@ -127,7 +127,7 @@ public interface RestAPI {
     Call<PriceSuggestionResponse> priceSuggest(@Body PriceSuggestionRequest priceSuggestionRequest);
 
     //FCM
-    @POST("api/fcm")   //입찰하기
+    @POST("api/v1/items/sold")   //낙찰하기
     Call<FCMResponse> pushMessage(@Body FCMRequest fcmRequest);
 
 }

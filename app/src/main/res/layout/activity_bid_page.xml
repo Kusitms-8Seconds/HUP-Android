@@ -229,17 +229,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <Button
             android:id="@+id/bidbutton"
-            android:layout_width="284px"
-            android:layout_height="120px"
+            android:layout_width="0dp"
+            android:layout_height="150px"
             android:layout_marginLeft="26px"
             android:layout_marginRight="50px"
+            android:text="입찰하기"
+            android:backgroundTint="@color/Hup"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/editPrice"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bidbutton" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

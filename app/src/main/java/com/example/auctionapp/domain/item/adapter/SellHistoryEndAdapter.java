@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.item.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.model.SellHistoryEndData;
+import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
+import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.firebase.FCMRequest;
+import com.example.auctionapp.global.firebase.FCMResponse;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 @Getter
 public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -92,6 +107,21 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                 }
             });
+//            itemView.findViewById(R.id.btn_bid).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int pos = getAdapterPosition() ;
+//                    if (pos != RecyclerView.NO_POSITION) {
+//                        // 리스너 객체의 메서드 호출.
+////                        if (mListener != null) {
+////                            mListener.onItemClick(v, pos);
+////                        }
+//                        FCMRequest fcmRequest = FCMRequest.of("body", Constants.targetToken, "title");
+//                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).pushMessage(fcmRequest)
+//                                .enqueue(MainRetrofitTool.getCallback(new pushMessageCallback()));
+//                    }
+//                }
+//            });
 
         }
 
@@ -103,5 +133,7 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             sell_history_end_edt_myPrice.setText(data.getItemPrice()+"");
             sell_history_end_edt_seller.setText(data.getBidderName());
         }
+
+
     }
 }

@@ -84,7 +84,7 @@ public class LoginPresenter implements LoginPresenterInterface {
     public void appLoginCallback(LoginRequest loginRequest) throws InterruptedException {
         RetrofitTool.getAPIWithNullConverter().login(loginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-        Thread.sleep(500);
+        Thread.sleep(1000);
         goMain();
     }
 
@@ -93,7 +93,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2KakaoLoginRequest oAuth2KakaoLoginRequest = new OAuth2KakaoLoginRequest(accessToken, Constants.targetToken);
         RetrofitTool.getAPIWithNullConverter().kakaoAccessTokenValidation(oAuth2KakaoLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-        Thread.sleep(500);
+        Thread.sleep(1000);
         goMain();
     }
 
@@ -102,7 +102,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest = new OAuth2GoogleLoginRequest(idToken, Constants.targetToken);
         RetrofitTool.getAPIWithNullConverter().googleIdTokenValidation(oAuth2GoogleLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-        Thread.sleep(500);
+        Thread.sleep(1000);
         goMain();
     }
 
@@ -111,7 +111,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         OAuth2NaverLoginRequest oAuth2NaverLoginRequest = new OAuth2NaverLoginRequest(accessToken, Constants.targetToken);
         RetrofitTool.getAPIWithNullConverter().naverAccessTokenValidation(oAuth2NaverLoginRequest)
                 .enqueue(MainRetrofitTool.getCallback(new LoginCallback()));
-        Thread.sleep(500);
+        Thread.sleep(1000);
         goMain();
     }
 

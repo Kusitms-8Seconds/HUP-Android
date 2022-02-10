@@ -21,6 +21,7 @@ import com.example.auctionapp.domain.item.adapter.SellHistoryOngoingAdapter;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
+import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -70,7 +71,7 @@ public class SellHistoryOngoing extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SellHistoryOngoingData item = (SellHistoryOngoingData) adapter.getItem(position);
-                Intent intent = new Intent(view.getContext(), ItemDetail.class);
+                Intent intent = new Intent(view.getContext(), BidPage.class);
                 intent.putExtra("itemId", item.getItemId());
                 startActivity(intent);
             }
