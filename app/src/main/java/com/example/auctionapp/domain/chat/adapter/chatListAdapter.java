@@ -65,9 +65,9 @@ public class chatListAdapter extends BaseAdapter {
 
         itemImageImageView = (ImageView) view.findViewById(R.id.iv_chatlist_itemImage);
         itemImageImageView.setClipToOutline(true);
-//        Long itemIdL = data.get(position).getItemId();
-        // 상품 이미지 load  //임시
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(Long.valueOf(8))
+        Long itemIdL = data.get(position).getItemId();
+        // 상품 이미지 load
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemIdL)
                 .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
         profileNameTextView.setText(data.get(position).getProfileName());

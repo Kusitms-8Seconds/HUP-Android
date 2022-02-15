@@ -1,16 +1,24 @@
 package com.example.auctionapp.domain.chat.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.databinding.ActivityChatRoomBinding;
+import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.presenter.ChatRoomPresenter;
 
 public class ChatRoom extends AppCompatActivity implements ChatRoomView{
     private ActivityChatRoomBinding binding;
     private ChatRoomPresenter presenter;
+
+    //uid
+    private String destUid;     //상대방 uid
+    private User destUser;
+    String profileUrlStr;
+    private Long EndItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +36,11 @@ public class ChatRoom extends AppCompatActivity implements ChatRoomView{
             }
         });
 
-        presenter.init();
+        Intent intent = getIntent();
+        destUid = intent.getStringExtra("destUid");
+        EndItemId = intent.getLongExtra("itemId", 0);
+
+        presenter.init(destUid, EndItemId);
         presenter.sendMsg();
     }
 

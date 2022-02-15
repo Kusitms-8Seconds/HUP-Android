@@ -14,6 +14,7 @@ import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatView;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,8 +28,8 @@ public class ChatPresenter implements ChatPresenterInterface {
     //firebase
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    //uid___수정필요
-    String myuid = "상대방";
+    //uid
+    String myuid;
     String chatRoomUid;
     Long itemId;
     //chatting room list
@@ -54,6 +55,8 @@ public class ChatPresenter implements ChatPresenterInterface {
 
         chatListAdapter = new chatListAdapter(context, chatroomList);
         mBinding.chattingRoomListView.setAdapter(chatListAdapter);
+
+        myuid = String.valueOf(Constants.userId);
     }
 
     @Override

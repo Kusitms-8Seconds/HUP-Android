@@ -67,21 +67,22 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
     }
 
     @Override
-    public void init() {
+    public void init(String destuid, Long EndItemId) {
         database = FirebaseDatabase.getInstance(ChatConstants.EChatFirebase.firebaseUrl.getText());
         databaseReference = database.getReference();
 
-        myuid = "상대방";
-        destUid = "15";
-//        Intent intent = getIntent();
-//        destUid = intent.getStringExtra("destUid");
+        myuid = String.valueOf(Constants.userId);
+        destUid = destuid;
 //        EndItemId = intent.getLongExtra("itemId", 0);
 
         mBinding.chattingItemImage.setClipToOutline(true);
 
         //상품 정보 가져오기
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(Long.valueOf(8))
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(EndItemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
+//        //상대방 user info
+//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(destuid))
+//                .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
 
         if (mBinding.editText.getText().toString() == null) mBinding.sendbutton.setEnabled(false);
         else mBinding.sendbutton.setEnabled(true);
@@ -98,7 +99,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
                 ChatModel chatModel = new ChatModel();
                 chatModel.users.put(myuid, true);
                 chatModel.users.put(destUid, true);
-                chatModel.itemId.put(ChatConstants.EChatFirebase.itemId.getText(), Long.valueOf(8));    //상품 id ?
+                chatModel.itemId.put(ChatConstants.EChatFirebase.itemId.getText(), EndItemId);
 
                 //push() 데이터가 쌓이기 위해 채팅방 생성_미완
                 if (chatRoomUid == null) {
@@ -219,8 +220,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
             String userProfile = response.body().getPicture();
             Long chatUserId = response.body().getUserId();
             String userName = response.body().getUsername();
-            User userInfo = new User(userName, userProfile, chatUserId);
-            databaseReference.child(ChatConstants.EChatFirebase.User.getText()).push().setValue(userInfo);
+//            User userInfo = new User(userName, userProfile, chatUserId);
+//            databaseReference.child(ChatConstants.EChatFirebase.User.getText()).push().setValue(userInfo);
 
             Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }

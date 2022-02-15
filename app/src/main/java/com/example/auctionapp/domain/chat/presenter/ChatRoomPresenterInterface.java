@@ -1,7 +1,7 @@
 package com.example.auctionapp.domain.chat.presenter;
 
 public interface ChatRoomPresenterInterface {
-    void init();
+    void init(String destUid, Long EndItemId);
     void sendMsg();
     void insertUserInfo(Long chatUserId);
     void sendMsgToDataBase();

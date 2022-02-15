@@ -1,11 +1,13 @@
 package com.example.auctionapp.domain.chat.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,17 +15,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityChatRoomBinding;
+import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
+import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 //===============채팅 창===============//
 public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChatRoomView {
@@ -110,7 +127,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 }
                 notifyDataSetChanged();
-//                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
+                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
             }
 
             @Override
@@ -140,10 +157,35 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        //user detail callback
+        class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
+            @Override
+            public void onSuccessResponse(Response<UserInfoResponse> response) {
+                ((LeftViewHolder) viewHolder).name.setText(response.body().getUsername());
+                Glide.with(context).load(response.body().getPicture()).into(((LeftViewHolder) viewHolder).image);
+
+                Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
+            }
+            @Override
+            public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
+                Log.d(TAG, response.errorBody().string());
+                try {
+                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                    Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
+                } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
+                Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
+            }
+            @Override
+            public void onConnectionFail(Throwable t) {
+                Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
+            }
+        }
+
         if (viewHolder instanceof CenterViewHolder) {
 //                ((CenterViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
         } else if (viewHolder instanceof LeftViewHolder) {
-            ((LeftViewHolder) viewHolder).name.setText(comments.get(position).getUid());
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(comments.get(position).getUid()))
+                .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
             ((LeftViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
             String chatTimeStr = comments.get(position).getTimestamp();
             String [] array = chatTimeStr.split("-");
@@ -153,18 +195,6 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
             ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
             ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
-            databaseReference.child("User").orderByChild("name").equalTo(destUid).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        profileUrlStr = dataSnapshot.child("profile").getValue(String.class);
-                    }
-                    Glide.with(context).load(profileUrlStr).into(((LeftViewHolder) viewHolder).image);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
 
         } else {
 //                ((RightViewHolder) viewHolder).name.setText(comments.get(position).getUid());
@@ -177,6 +207,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
             ((RightViewHolder) viewHolder).chat_time.setText(chatTime);
         }
+
     }
 
     @Override
