@@ -81,7 +81,11 @@ public class UploadPage extends AppCompatActivity implements UploadView{
     TimePickerDialog.OnTimeSetListener timePickerEndTime = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            binding.editAuctionFinalTime.setText(hourOfDay + ":" + minute + ":00");
+            String hourStr = String.valueOf(hourOfDay);
+            String minStr = String.valueOf(minute);
+            if(hourOfDay < 10) hourStr = "0" + hourOfDay;
+            if(minute < 10) minStr = "0" + minute;
+            binding.editAuctionFinalTime.setText(hourStr + ":" + minStr + ":00");
         }
     };
 
