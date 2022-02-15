@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AuctionApp"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/hup_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/Hup" />
         <activity android:name=".domain.item.view.QnA"></activity>
         <activity
             android:name=".domain.home.view.SplashActivity"
