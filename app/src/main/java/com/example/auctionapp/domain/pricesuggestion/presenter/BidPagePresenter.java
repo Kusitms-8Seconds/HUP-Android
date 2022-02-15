@@ -162,18 +162,22 @@ public class BidPagePresenter implements Presenter{
                     }
                 });
             }else {
-                binding.editPrice.setVisibility(View.VISIBLE);
-                binding.bidbutton.setText("입찰하기");
-                binding.bidbutton.setOnClickListener(new View.OnClickListener() {
-                    @SneakyThrows
-                    @Override
-                    public void onClick(View view) {
-                        if(!binding.editPrice.getText().toString().equals("")){
-                            hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
-                            ptAdapter.notifyDataSetChanged();
+                if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
+                    binding.bidbutton.setEnabled(false);
+                } else {
+                    binding.editPrice.setVisibility(View.VISIBLE);
+                    binding.bidbutton.setText("입찰하기");
+                    binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+                        @SneakyThrows
+                        @Override
+                        public void onClick(View view) {
+                            if (!binding.editPrice.getText().toString().equals("")) {
+                                hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                                ptAdapter.notifyDataSetChanged();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
 
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());

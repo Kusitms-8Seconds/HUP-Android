@@ -156,6 +156,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
+            Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "retrofit success: ");
         }
 
