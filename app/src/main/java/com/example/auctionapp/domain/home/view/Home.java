@@ -61,32 +61,4 @@ public class Home extends Fragment implements MainView{
         super.onViewCreated(view, savedInstanceState);
     }
 
-
-//    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-//
-//        @Override
-//        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-//
-//            auctionDataList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
-//            adapter.addItem(auctionDataList.get(maximumPriceCount));
-//            adapter.notifyDataSetChanged();
-//            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-//            maximumPriceCount++;
-//        }
-//        @Override
-//        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-//            System.out.println("errorBody"+response.errorBody().string());
-//            try {
-//                JSONObject jObjError = new JSONObject(response.errorBody().string());
-//                Toast.makeText(getContext(), jObjError.getString("error"), Toast.LENGTH_LONG).show();
-//            } catch (Exception e) { Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); }
-//            Log.d(TAG, "onFailResponse");
-//        }
-//        @Override
-//        public void onConnectionFail(Throwable t) {
-//            Log.e("연결실패", t.getMessage());
-//        }
-//    }
-
-
 }

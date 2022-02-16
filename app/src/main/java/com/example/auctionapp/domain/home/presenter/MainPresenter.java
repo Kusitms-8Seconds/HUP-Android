@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -241,6 +243,7 @@ public class MainPresenter implements Presenter{
             auctionDataList.add(data);
             auctionNowAdapter.addItem(auctionDataList.get(heartCount));
             auctionNowAdapter.notifyDataSetChanged();
+            setAuctionItemAnimation();
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             heartCount++;
         }
@@ -269,6 +272,7 @@ public class MainPresenter implements Presenter{
             bestItemDataList.add(bestItem);
             bestItemAdapter.notifyDataSetChanged();
             binding.bestItemViewPager.setAdapter(bestItemAdapter);
+            setBestItemAnimation();
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
             maximumPriceCount2++;
         }
@@ -286,6 +290,17 @@ public class MainPresenter implements Presenter{
         public void onConnectionFail(Throwable t) {
             Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
+    }
+
+    public void setAuctionItemAnimation() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1500);
+        binding.AuctionNowView.setAnimation(animation);
+    }
+    public void setBestItemAnimation() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1500);
+        binding.bestItemViewPager.setAnimation(animation);
     }
 }
 
