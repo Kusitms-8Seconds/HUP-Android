@@ -162,7 +162,10 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void onSuccessResponse(Response<UserInfoResponse> response) {
                 ((LeftViewHolder) viewHolder).name.setText(response.body().getUsername());
-                Glide.with(context).load(response.body().getPicture()).into(((LeftViewHolder) viewHolder).image);
+                if(response.body().getPicture() != null)
+                    Glide.with(context).load(response.body().getPicture()).into(((LeftViewHolder) viewHolder).image);
+                else
+                    Glide.with(context).load(R.drawable.profile).into(((LeftViewHolder) viewHolder).image);
 
                 Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
             }

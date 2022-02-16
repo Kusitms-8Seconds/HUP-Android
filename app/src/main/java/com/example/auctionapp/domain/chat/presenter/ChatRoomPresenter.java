@@ -80,9 +80,6 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         //상품 정보 가져오기
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(EndItemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
-//        //상대방 user info
-//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(destuid))
-//                .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
 
         if (mBinding.editText.getText().toString() == null) mBinding.sendbutton.setEnabled(false);
         else mBinding.sendbutton.setEnabled(true);
@@ -123,7 +120,6 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
 
     @Override
     public void insertUserInfo(Long chatUserId) {
-//        UserDetailsInfoRequest userDetailsInfoRequest = UserDetailsInfoRequest.of(chatUserId);
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(chatUserId)
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
     }
