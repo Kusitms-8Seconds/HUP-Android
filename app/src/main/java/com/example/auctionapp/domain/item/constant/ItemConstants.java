@@ -92,7 +92,8 @@ public class ItemConstants {
         eNotOnGoingExceptionMessage("경매중인 상품이 아닙니다."),
         eNotSoldOutTimeExceptionMessage("낙찰 가능한 시간이 아닙니다."),
         eNotDesirableAuctionEndTimeExceptionMessage("경매종료일자가 현재시각보다 빠릅니다."),
-        eNotPriceSuggestionContentExceptionMessage("경매입찰내역이 없습니다.");
+        eNotPriceSuggestionContentExceptionMessage("경매입찰내역이 없습니다."),
+        eDeleted("삭제가 완료되었습니다.");
         private final String value;
     }
 }

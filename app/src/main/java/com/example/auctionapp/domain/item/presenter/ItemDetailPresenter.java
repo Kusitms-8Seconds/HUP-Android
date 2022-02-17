@@ -1,12 +1,14 @@
 package com.example.auctionapp.domain.item.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDetailViewPagerAdapter;
@@ -156,7 +158,11 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, ItemConstants.EItemServiceImpl.eDeleted.getValue(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
             Log.d(TAG, "retrofit success: ");
         }
 

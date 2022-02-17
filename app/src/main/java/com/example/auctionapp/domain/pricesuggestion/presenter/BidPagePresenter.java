@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.pricesuggestion.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
@@ -124,9 +127,9 @@ public class BidPagePresenter implements Presenter{
         if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
         else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
         else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
+        else if(statusCode==409) errorMsg = ItemConstants.EItemServiceImpl.eNotSoldOutTimeExceptionMessage.getValue();
         else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, tag +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -159,6 +162,10 @@ public class BidPagePresenter implements Presenter{
                         FCMRequest fcmRequest = FCMRequest.of(itemId);
                         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).pushMessage(fcmRequest)
                                 .enqueue(MainRetrofitTool.getCallback(new pushMessageCallback()));
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
                     }
                 });
             }else {
@@ -293,7 +300,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<FCMResponse> response) throws IOException, JSONException {
-//                exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+                exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText() + "_pushMessage" +
                     response.errorBody().string());
         }

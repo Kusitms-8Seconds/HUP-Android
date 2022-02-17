@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/ly_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -70,14 +71,17 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_profile"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="32px"
-                android:text="chat_time" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25px"
+            android:text="chat_time"
+            android:gravity="bottom"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/ly_profile"
+            app:layout_constraintBottom_toBottomOf="@id/ly_profile"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
