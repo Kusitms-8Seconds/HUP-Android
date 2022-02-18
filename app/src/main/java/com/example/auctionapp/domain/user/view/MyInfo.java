@@ -15,6 +15,7 @@ import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,18 +67,16 @@ public class MyInfo extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-//            exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-//                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-//                Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
             Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
+    }
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
