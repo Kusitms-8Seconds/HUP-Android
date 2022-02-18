@@ -23,6 +23,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -90,7 +91,7 @@ public class MypagePresenter implements Presenter{
         Constants.accessToken = null;
         Constants.refreshToken = null;
 
-        showToast(MypageConstants.ELogin.logout.getText());
+        mypageView.showToast(MypageConstants.ELogin.logout.getText());
     }
 
     @Override
@@ -113,28 +114,6 @@ public class MypagePresenter implements Presenter{
         mOAuthLoginModule.logout(activity);
     }
 
-    @Override
-    public void exceptionToast(String tag, int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(activity, MypageConstants.EMyPageCallback.eMypageTAG.getText() + tag+
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStart() {
-//        Bundle bundle =
-//        Long userId = bundle.getLong("userId");
-    }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-    }
-
     public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
@@ -153,11 +132,8 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            mypageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
@@ -168,7 +144,7 @@ public class MypagePresenter implements Presenter{
     public class LogoutCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            showToast(response.body().getMessage().toString());
+//            mypageView.showToast(response.body().getMessage().toString());
 
             binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
             Glide.with(activity).load(R.drawable.profile).into(binding.profileImg);
@@ -181,26 +157,13 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            exceptionToast(MypageConstants.EMyPageCallback.eUserDetailsInfoCallback.getText(), response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            mypageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
             Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
-    }
-    public static Mypage newInstance() {
-        if(mypage == null) {
-            mypage = new Mypage();
-        }
-//        Mypage mypage = new Mypage();
-//        Bundle bundle = new Bundle();
-//        bundle.putLong("userId", Long.valueOf(2));
-//        mypage.setArguments(bundle);
-        return mypage;
     }
 }

@@ -5,8 +5,4 @@ public interface Presenter {
     void getUserInfo();
     void logout();
     void socialLogOut();
-    void showToast(String message);
-
-    void exceptionToast(String tag, int statusCode);
-    void onStart();
 }
