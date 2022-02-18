@@ -38,6 +38,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.stomp.HupStomp;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,18 +122,6 @@ public class BidPagePresenter implements Presenter{
         });
     }
 
-    @Override
-    public void exceptionToast(String tag, int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else if(statusCode==409) errorMsg = ItemConstants.EItemServiceImpl.eNotSoldOutTimeExceptionMessage.getValue();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-
     private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
 
         @Override
@@ -170,7 +159,7 @@ public class BidPagePresenter implements Presenter{
                 });
             }else {
                 if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
-                    binding.bidbutton.setEnabled(false);
+//                    binding.bidbutton.setEnabled(false);
                 } else {
                     binding.editPrice.setVisibility(View.VISIBLE);
                     binding.bidbutton.setText("입찰하기");
@@ -191,7 +180,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            exceptionToast(PriceConstants.EPriceCallback.egetItemDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -210,7 +200,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(PriceConstants.EPriceCallback.egetMaximumPriceCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -228,7 +219,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            exceptionToast(PriceConstants.EPriceCallback.egetParticipantsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -252,7 +244,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            exceptionToast(PriceConstants.EPriceCallback.egetAllPriceSuggestionCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -281,7 +274,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -300,7 +294,8 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<FCMResponse> response) throws IOException, JSONException {
-                exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText() + "_pushMessage" +
                     response.errorBody().string());
         }

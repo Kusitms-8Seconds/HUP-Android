@@ -223,6 +223,11 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return comments.size();
     }
 
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
     public class CenterViewHolder extends RecyclerView.ViewHolder {
         TextView content;
 

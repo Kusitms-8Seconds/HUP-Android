@@ -7,6 +7,4 @@ import java.io.IOException;
 public interface Presenter {
     void initializeData(Long itemId);
     void init(Long itemId) throws IOException, JSONException;
-
-    void exceptionToast(String tag, int statusCode);
 }
