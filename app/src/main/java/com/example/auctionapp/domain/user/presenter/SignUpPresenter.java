@@ -15,6 +15,7 @@ import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     public boolean validLoginIdCheck() {
         String inputId = binding.edtUserId.getText().toString();
         if(inputId.length() < 5 || inputId.length() > 11){
-            showToast(Constants.ESignUp.idWarningMessage.getText());
+            signUpView.showToast(Constants.ESignUp.idWarningMessage.getText());
             return false; }
         return true;
     }
@@ -85,7 +86,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         RetrofitTool.getAPIWithNullConverter().checkDuplicateId(loginId)
                 .enqueue(MainRetrofitTool.getCallback(new checkDuplicateIdCheck()));
         if(!isValidId) {
-            showToast(Constants.ESignUp.idDuplicateMessage.getText());
+            signUpView.showToast(Constants.ESignUp.idDuplicateMessage.getText());
         }
     }
 
@@ -94,7 +95,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         String inputEmail = binding.edtEmail.getText().toString();
         Boolean emailFormatResult = Pattern.matches(Constants.ESignUp.emailFormat.getText(), inputEmail);
         if(emailFormatResult==false){
-            showToast(Constants.ESignUp.emailFormatErrorMessage.getText());
+            signUpView.showToast(Constants.ESignUp.emailFormatErrorMessage.getText());
             return false; }
         return true;
     }
@@ -106,15 +107,15 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         Boolean inputPWEnglishNumberResult = Pattern.matches(Constants.ESignUp.pwEnglishNumberFormat.getText(), inputPW);
         Boolean inputCheckPWEnglishNumberResult = Pattern.matches(Constants.ESignUp.pwEnglishNumberFormat.getText(), inputCheckPW);
         if(inputPW.length()==0 || inputCheckPW.length()==0){
-            showToast(Constants.ESignUp.pwInputMessage.getText());
+            signUpView.showToast(Constants.ESignUp.pwInputMessage.getText());
             return false;
         }
         if(inputPWEnglishNumberResult==false || inputCheckPWEnglishNumberResult==false){
-            showToast(Constants.ESignUp.pwWarningMessage.getText());
+            signUpView.showToast(Constants.ESignUp.pwWarningMessage.getText());
             return false;
         }
         if(!inputPW.equals(inputCheckPW)){
-            showToast(Constants.ESignUp.pwNotMatchMessage.getText());
+            signUpView.showToast(Constants.ESignUp.pwNotMatchMessage.getText());
             return false;
         }
         return true;
@@ -124,11 +125,11 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     public boolean validNameCheck() {
         String inputName = binding.edtNickname.getText().toString();
         if(inputName.length()==0){
-            showToast(Constants.ESignUp.nameInputMessage.getText());
+            signUpView.showToast(Constants.ESignUp.nameInputMessage.getText());
             return false;
         }
         if(inputName.length()<3 || inputName.length()>10 ){
-            showToast(Constants.ESignUp.nameInput2Message.getText());
+            signUpView.showToast(Constants.ESignUp.nameInput2Message.getText());
             return false;
         }
         return true;
@@ -138,17 +139,11 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     public boolean agreeCheck() {
         if((!binding.radioButton.isChecked())||(!binding.radioButton2.isChecked())||(!binding.radioButton3.isChecked())
                 ||(!binding.radioButton4.isChecked())){
-            showToast(Constants.ESignUp.agreeCheckMessage.getText());
+            signUpView.showToast(Constants.ESignUp.agreeCheckMessage.getText());
             return false;
         }
         return true;
     }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
 
     class SignUpCallback implements MainRetrofitCallback<SignUpResponse> {
 
@@ -159,15 +154,8 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<SignUpResponse> response) throws IOException, JSONException {
-            try {
-
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-
-            }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            signUpView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -180,22 +168,14 @@ public class SignUpPresenter implements SignUpPresenterInterface{
 
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            showToast(response.body().getMessage());
+            signUpView.showToast(response.body().getMessage());
             isValidId = true;
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            try {
-//                System.out.println(response.errorBody().string());
-                showToast(response.errorBody().string());
-                isValidId = false;
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-
-            }
+            isValidId = false;
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            signUpView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 

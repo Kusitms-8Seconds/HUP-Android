@@ -10,5 +10,4 @@ public interface SignUpPresenterInterface {
     boolean validPasswordCheck();
     boolean validNameCheck();
     boolean agreeCheck();
-    void showToast(String message);
 }
