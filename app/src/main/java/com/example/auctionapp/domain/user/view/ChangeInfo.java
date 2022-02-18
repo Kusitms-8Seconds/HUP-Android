@@ -87,9 +87,12 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
                     else {
                         Uri imageUri = data.getData();
                         binding.ivProfileChange.setImageURI(imageUri);
+                        binding.cameraIv.setVisibility(View.INVISIBLE);
                         imagePath = getRealpath(imageUri);
                         File profileFile = new File(imagePath);
                     }
+                } else {
+                    binding.cameraIv.setVisibility(View.VISIBLE);
                 }
             }
         }

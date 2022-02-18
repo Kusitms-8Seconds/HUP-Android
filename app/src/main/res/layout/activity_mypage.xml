@@ -113,8 +113,8 @@
 
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/imageButton4"
+                    <ImageView
+                        android:id="@+id/iv_camera"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:background="@drawable/mypage_circle"

@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityMypageMyinfoBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -55,6 +57,11 @@ public class MyInfo extends AppCompatActivity {
     public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
+            String ptImage = "";
+            if(response.body().getPicture()!=null) ptImage = response.body().getPicture();
+            else
+                ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
+            Glide.with(getApplicationContext()).load(ptImage).into(binding.ivMyprofile);
             binding.tvUsername.setText(response.body().getUsername());
             binding.tvLoginId.setText(response.body().getLoginId());
 //            binding.tvUserId.setText(response.body().getUserId()+"");

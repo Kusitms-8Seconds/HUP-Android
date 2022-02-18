@@ -75,7 +75,8 @@
             android:layout_width="224px"
             android:layout_height="224px"
             android:layout_marginLeft="30px"
-            android:src="@drawable/box_edge"
+            android:background="@drawable/box_edge"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

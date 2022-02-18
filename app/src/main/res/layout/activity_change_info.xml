@@ -59,6 +59,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <ImageView
+                android:id="@+id/camera_iv"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/mypage_circle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/modi_profile"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profileChange"
+                app:layout_constraintEnd_toEndOf="@+id/iv_profileChange"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/iv_profileChange"
+                app:layout_constraintTop_toTopOf="@+id/iv_profileChange"
+                app:layout_constraintVertical_bias="1.0" />
+
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"

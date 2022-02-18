@@ -68,6 +68,11 @@ public class MypagePresenter implements Presenter{
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
         // naver 객체
         mOAuthLoginModule = OAuthLogin.getInstance();
+
+        if(Constants.userId != null)
+            binding.ivCamera.setVisibility(View.INVISIBLE);
+        else
+            binding.ivCamera.setVisibility(View.VISIBLE);
     }
 
     @Override

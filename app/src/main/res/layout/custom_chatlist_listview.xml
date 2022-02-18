@@ -10,7 +10,8 @@
         android:id="@+id/iv_chatlist_itemImage"
         android:layout_width="150px"
         android:layout_height="150px"
-        android:src="@drawable/box_edge"
+        android:background="@drawable/box_edge"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
