@@ -30,6 +30,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -247,17 +248,6 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void exceptionToast(int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else if(statusCode==500) errorMsg = Constants.EUserServiceImpl.eNotFoundUserException.getValue();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, Constants.ELoginCallback.TAG.getText() + statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void goMain() {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -275,8 +265,8 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
-//            System.out.println("login error: "+response.errorBody().string());
-            exceptionToast(response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            loginView.showToast(errorMessageParser.getParsedErrorMessage());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Log.d(Constants.ELoginCallback.TAG.getText(), jObjError.getString("error"));

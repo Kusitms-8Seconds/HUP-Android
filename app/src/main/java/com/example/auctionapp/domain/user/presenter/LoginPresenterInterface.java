@@ -29,6 +29,5 @@ public interface LoginPresenterInterface {
     void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
     void handleSignInResult(Task<GoogleSignInAccount> completedTask);
 
-    void exceptionToast(int statusCode);
     void goMain();
 }
