@@ -3,11 +3,12 @@ package com.example.auctionapp.domain.user.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityChangeInfoBinding;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
+import com.example.auctionapp.domain.user.dto.UpdateProfileResponse;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.domain.user.view.ChangeInfoView;
@@ -18,7 +19,6 @@ import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -41,7 +41,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         this.context = context;
     }
     @Override
-    public Intent UpdateCheck() {
+    public Intent UpdateCheck(String imagePath) {
         if(validLoginIdCheck()==false){
             return null;
         } else if(validPasswordCheck()==false){
@@ -60,6 +60,10 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
                     .build();
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUser(updateUserRequest)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateCallback()));
+            //profile img
+            UpdateProfileImgRequest updateProfileImgRequest = new UpdateProfileImgRequest(imagePath, Constants.userId);
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(updateProfileImgRequest)
+                    .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));
 
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -133,6 +137,24 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
+        }
+
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+    class UpdateProfileImgCallback implements MainRetrofitCallback<UpdateProfileResponse> {
+        @Override
+        public void onSuccessResponse(Response<UpdateProfileResponse> response) {
+//            Constants.userId = response.body().getUserId();
+            System.out.println("UpdateProfileImg: "+Constants.userId);
+        }
+        @Override
+        public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, "UpdateProfileImg: onFailResponse");
         }
 
         @Override

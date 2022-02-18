@@ -17,6 +17,7 @@ public class UploadConstants {
         afterLogin("로그인 후 상품 등록이 가능합니다."),
         uploadComplete("상품 등록이 완료되었습니다."),
         unselectImage("이미지를 선택하지 않았습니다."),
+        oneselectImage("프로필 이미지는 한장만 선택 가능합니다."),
         imageSelectOver("사진은 10장까지 선택 가능합니다."),
         editInitPrice("경매시작가 입력하세요");
 

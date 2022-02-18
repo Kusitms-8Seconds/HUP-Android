@@ -6,6 +6,8 @@ import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
 import com.example.auctionapp.domain.user.dto.TokenInfoResponse;
+import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
+import com.example.auctionapp.domain.user.dto.UpdateProfileResponse;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
 import com.example.auctionapp.global.dto.DefaultResponse;
@@ -35,7 +37,9 @@ import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.firebase.FCMRequest;
 import com.example.auctionapp.global.firebase.FCMResponse;
+import com.kakao.usermgmt.request.UpdateProfileRequest;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -56,6 +60,8 @@ public interface RestAPI {
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
     @PUT("api/v1/users")    //사용자 정보 수정
     Call<UpdateUserResponse> updateUser(@Body UpdateUserRequest updateUserRequest);
+    @PUT("api/v1/users/images")    //사용자 프로필 사진 수정
+    Call<UpdateProfileResponse> updateUserProfileImg(@Body UpdateProfileImgRequest updateProfileImgRequest);
     @POST("api/v1/email/send")   //회원가입 시 이메일 인증
     Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
     @POST("api/v1/email/verify")   //인증코드 확인

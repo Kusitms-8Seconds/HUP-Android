@@ -11,11 +11,13 @@ import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
+import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -55,6 +57,8 @@ public class HupStomp {
     String maximumPrice;
     String theNumberOfParticipants;
     String userId;
+
+    private BidPageView bidPageView;
 
     int count;
 
@@ -158,7 +162,8 @@ public class HupStomp {
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-//            exceptionToast(PriceConstants.EPriceCallback.egetUserDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
