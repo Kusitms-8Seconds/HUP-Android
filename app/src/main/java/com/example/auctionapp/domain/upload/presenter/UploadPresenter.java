@@ -13,6 +13,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 
@@ -99,17 +100,6 @@ public class UploadPresenter implements Presenter{
                 .enqueue(MainRetrofitTool.getCallback(new RegisterItemCallback()));
     }
 
-    @Override
-    public void exceptionToast(int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, UploadConstants.EUploadCallback.TAG.getText() +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
     private class RegisterItemCallback implements MainRetrofitCallback<RegisterItemResponse> {
         @Override
         public void onSuccessResponse(Response<RegisterItemResponse> response) {
@@ -119,8 +109,8 @@ public class UploadPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<RegisterItemResponse> response) throws IOException, JSONException {
-            exceptionToast(response.code());
-//            System.out.println(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            uploadView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override
