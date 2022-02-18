@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,11 +12,13 @@ import com.example.auctionapp.databinding.ActivityNoticeBinding;
 import com.example.auctionapp.domain.mypage.notice.adapter.NoticeAdapter;
 import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
 import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
+import com.example.auctionapp.domain.mypage.notice.presenter.NoticePresenter;
 
 import java.util.ArrayList;
 
 public class Notice extends AppCompatActivity implements NoticeView{
     private ActivityNoticeBinding binding;
+    private NoticePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +27,9 @@ public class Notice extends AppCompatActivity implements NoticeView{
         View view = binding.getRoot();
         setContentView(view);
 
-        init();
+        presenter = new NoticePresenter(this, binding, getApplicationContext());
+
+        presenter.init();
 
         binding.goback.bringToFront();
         binding.goback.setOnClickListener(new View.OnClickListener() {
@@ -36,9 +41,13 @@ public class Notice extends AppCompatActivity implements NoticeView{
 
     }
     @Override
-    public void init() {
-//        noticeList.add(new NoticeData("[점검] 서비스 점검 예정 안내 ", "2021.11.24"));
-//        noticeList.add(new NoticeData("개인정보 처리방침 안내", "2021.11.20"));
-//        noticeList.add(new NoticeData("안전거래 안내", "2021.11.11"));
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+//    @Override
+//    public void init() {
+////        noticeList.add(new NoticeData("[점검] 서비스 점검 예정 안내 ", "2021.11.24"));
+////        noticeList.add(new NoticeData("개인정보 처리방침 안내", "2021.11.20"));
+////        noticeList.add(new NoticeData("안전거래 안내", "2021.11.11"));
+//    }
 }
