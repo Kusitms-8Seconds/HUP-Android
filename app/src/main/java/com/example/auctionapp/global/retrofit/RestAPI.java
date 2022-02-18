@@ -2,6 +2,9 @@ package com.example.auctionapp.global.retrofit;
 
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
+import com.example.auctionapp.domain.mypage.notice.dto.NoticeListResponse;
+import com.example.auctionapp.domain.mypage.notice.dto.NoticeResponse;
+import com.example.auctionapp.domain.mypage.notice.dto.UpdateNoticeResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
@@ -135,5 +138,17 @@ public interface RestAPI {
     //FCM
     @POST("api/v1/items/sold")   //낙찰하기
     Call<FCMResponse> pushMessage(@Body FCMRequest fcmRequest);
+
+    //공지사항
+    @GET("api/v1/notices")     //공지사항 전체 목록 조회
+    Call<NoticeListResponse> getAllNotice();
+//    @PUT("api/v1/notices")     //공지사항 수정
+//    Call<UpdateNoticeResponse> updateNotice(@Body UpdateNoticeRequest updateNoticeRequest);
+//    @POST("api/v1/notices")     //공지사항 등록
+//    Call<NoticeResponse> uploadNortice(@Body UploadNoticeRequest uploadNoticeRequest);
+    @GET("api/v1/notices/{noticeId}")     //공지사항 상세 조회
+    Call<NoticeResponse> getNotice(@Path("noticeId") Long noticeId);
+    @DELETE("api/v1/notices/{noticeId}")     //공지사항 삭제
+    Call<DefaultResponse> deleteNotice(@Path("noticeId") Long noticeId);
 
 }
