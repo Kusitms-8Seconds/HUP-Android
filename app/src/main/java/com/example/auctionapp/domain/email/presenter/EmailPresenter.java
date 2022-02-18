@@ -16,8 +16,12 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Response;
 
@@ -55,15 +59,9 @@ public class EmailPresenter implements EmailPresenterInterface {
             Log.d(TAG, "sending email success, idToken: " + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<DefaultResponse> response) {
-            try {
-
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-            }
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            emailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -77,7 +75,7 @@ public class EmailPresenter implements EmailPresenterInterface {
 
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            showToast("이메일인증성공");
+            emailView.showToast("이메일 인증 성공");
             Log.d(TAG, "checking code success, idToken: " + response.body().toString());
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -85,15 +83,9 @@ public class EmailPresenter implements EmailPresenterInterface {
             context.startActivity(intent);
         }
         @Override
-        public void onFailResponse(Response<DefaultResponse> response) {
-            exceptionToast(response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("fail error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-            }
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            emailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -101,21 +93,5 @@ public class EmailPresenter implements EmailPresenterInterface {
         public void onConnectionFail(Throwable t) {
             Log.e("연결실패", t.getMessage());
         }
-    }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void exceptionToast(int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, "Email 인증 실패: " +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 }
