@@ -39,4 +39,8 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
             }
         });
     }
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }

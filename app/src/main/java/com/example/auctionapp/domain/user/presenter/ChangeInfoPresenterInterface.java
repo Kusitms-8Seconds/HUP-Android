@@ -8,5 +8,4 @@ public interface ChangeInfoPresenterInterface {
     void duplicateLoginIdCheck(String loginId);
     boolean validPasswordCheck();
     boolean validNameCheck();
-    void showToast(String message);
 }

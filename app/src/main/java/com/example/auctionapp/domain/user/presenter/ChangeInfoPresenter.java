@@ -15,6 +15,7 @@ import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +72,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
     public boolean validLoginIdCheck() {
         String inputId = binding.edtLoginId.getText().toString();
         if(inputId.length() < 5 || inputId.length() > 11){
-            showToast(Constants.ESignUp.idWarningMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.idWarningMessage.getText());
             return false; }
         return true;
     }
@@ -81,7 +82,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         RetrofitTool.getAPIWithNullConverter().checkDuplicateId(loginId)
                 .enqueue(MainRetrofitTool.getCallback(new checkDuplicateIdCheck()));
         if(!isValidId) {
-            showToast(Constants.ESignUp.idDuplicateMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.idDuplicateMessage.getText());
         }
     }
 
@@ -92,15 +93,15 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         Boolean inputPWEnglishNumberResult = Pattern.matches(Constants.ESignUp.pwEnglishNumberFormat.getText(), inputPW);
         Boolean inputCheckPWEnglishNumberResult = Pattern.matches(Constants.ESignUp.pwEnglishNumberFormat.getText(), inputCheckPW);
         if(inputPW.length()==0 || inputCheckPW.length()==0){
-            showToast(Constants.ESignUp.pwInputMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.pwInputMessage.getText());
             return false;
         }
         if(inputPWEnglishNumberResult==false || inputCheckPWEnglishNumberResult==false){
-            showToast(Constants.ESignUp.pwWarningMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.pwWarningMessage.getText());
             return false;
         }
         if(!inputPW.equals(inputCheckPW)){
-            showToast(Constants.ESignUp.pwNotMatchMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.pwNotMatchMessage.getText());
             return false;
         }
         return true;
@@ -110,20 +111,16 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
     public boolean validNameCheck() {
         String inputName = binding.edtNickname.getText().toString();
         if(inputName.length()==0){
-            showToast(Constants.ESignUp.nameInputMessage.getText());
+            changeInfoView.showToast(Constants.ESignUp.nameInputMessage.getText());
             return false;
         }
         if(inputName.length()<3 || inputName.length()>10 ){
-            showToast(Constants.ESignUp.nameInput2Message.getText());
+            changeInfoView.showToast(Constants.ESignUp.nameInput2Message.getText());
             return false;
         }
         return true;
     }
 
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
     class UpdateCallback implements MainRetrofitCallback<UpdateUserResponse> {
 
         @Override
@@ -133,15 +130,8 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
-            try {
-
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-
-            }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -154,22 +144,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
 
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-            showToast(response.body().getMessage());
+            changeInfoView.showToast(response.body().getMessage());
             isValidId = true;
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            try {
-//                System.out.println(response.errorBody().string());
-                showToast(response.errorBody().string());
-                isValidId = false;
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("error", jObjError.getString("message"));
-                showToast(jObjError.getString("message"));
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-
-            }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
