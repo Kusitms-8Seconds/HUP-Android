@@ -194,7 +194,6 @@ public class BidPagePresenter implements Presenter{
 
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
             binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
@@ -261,6 +260,9 @@ public class BidPagePresenter implements Presenter{
             bidParticipants.get(userCount).setPtName(response.body().getUsername());
             if(response.body().getPicture()!=null){
                 bidParticipants.get(userCount).setPtImage(response.body().getPicture());
+            } else {
+                String ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
+                bidParticipants.get(userCount).setPtImage(ptImage);
             }
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
