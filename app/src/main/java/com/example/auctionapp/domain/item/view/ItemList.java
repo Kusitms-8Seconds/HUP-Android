@@ -48,12 +48,6 @@ public class ItemList extends Fragment implements ItemListView {
     private ActivityItemlistBinding binding;
     ItemListPresenter presenter;
 
-//    ItemDataAdapter adapter;
-//    ItemData data;
-//    List<ItemData> itemDataList;
-//    int heartCount;
-//    int participantCount;
-
     @Override
     public void onResume() {
         super.onResume();
@@ -96,5 +90,10 @@ public class ItemList extends Fragment implements ItemListView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void showToast(String parsedErrorMessage) {
+        Toast.makeText(getActivity(), parsedErrorMessage, Toast.LENGTH_SHORT).show();
     }
 }

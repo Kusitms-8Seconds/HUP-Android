@@ -16,6 +16,7 @@ import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.ItemData;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.item.view.ItemList;
 import com.example.auctionapp.domain.item.view.ItemListView;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
@@ -24,6 +25,7 @@ import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,7 +137,8 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -160,7 +163,8 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
@@ -177,7 +181,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
         @Override
         public void onSuccessResponse(Response<ParticipantsResponse> response) {
-
             itemDataList.get(participantCount).setViews(response.body().getParticipantsCount());
 //            adapter.addItem(itemDataList.get(participantCount));
             adapter.notifyDataSetChanged();
@@ -186,7 +189,8 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                 Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();

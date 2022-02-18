@@ -145,17 +145,6 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
                 .enqueue(MainRetrofitTool.getCallback(new DeleteItemCallback()));
     }
 
-    @Override
-    public void exceptionToast(String tag, int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = ItemConstants.EItemServiceImpl.eNotFoundItemExceptionForDefaultMessage.toString();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, tag +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
     private class DeleteItemCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
@@ -169,7 +158,6 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "errorMessage"+errorMessageParser.getParsedErrorMessage());
@@ -192,8 +180,9 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
 
         @Override
-        public void onFailResponse(Response<DefaultResponse> response) {
-            exceptionToast(ItemConstants.EItemCallback.eDeleteScrapCallback.getText(), response.code());
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -213,8 +202,9 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
 
         @Override
-        public void onFailResponse(Response<ScrapRegisterResponse> response) {
-            exceptionToast(ItemConstants.EItemCallback.eCreateScrapCallback.getText(), response.code());
+        public void onFailResponse(Response<ScrapRegisterResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -241,8 +231,9 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
 
         @Override
-        public void onFailResponse(Response<ScrapCheckedResponse> response) {
-            exceptionToast(ItemConstants.EItemCallback.eisCheckedHeartCallback.getText(), response.code());
+        public void onFailResponse(Response<ScrapCheckedResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
@@ -262,7 +253,8 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(ItemConstants.EItemCallback.egetMaximumPriceCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -280,7 +272,8 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            exceptionToast(ItemConstants.EItemCallback.egetParticipantsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -304,7 +297,8 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(ItemConstants.EItemCallback.egetUserDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -351,7 +345,8 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            exceptionToast(ItemConstants.EItemCallback.egetItemDetailsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
         @Override
