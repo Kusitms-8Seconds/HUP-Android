@@ -30,6 +30,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,12 +169,10 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            System.out.println("delete: "+ response.errorBody().string());
-//            exceptionToast(ItemConstants.EItemCallback.eDeleteItemCallback.getText(), response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
+
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, "errorMessage"+errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
 
