@@ -25,6 +25,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 
@@ -86,17 +87,6 @@ public class ScrapPresenter implements Presenter{
                 .enqueue(MainRetrofitTool.getCallback(new getAllScrapsCallback()));
     }
 
-    @Override
-    public void exceptionToast(String tag, int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = ScrapConstants.EScrapServiceImpl.eNotExistingScrapOfUserExceptionMessage.getValue();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, ScrapConstants.EScrapCallback.eScrapTAG.getText() + tag +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
     private class getAllScrapsCallback implements MainRetrofitCallback<PaginationDto<List<ScrapDetailsResponse>>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -135,7 +125,8 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-            exceptionToast(ScrapConstants.EScrapCallback.egetAllScrapsCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            scrapView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
@@ -157,7 +148,8 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            exceptionToast(ScrapConstants.EScrapCallback.egetMaximumPriceCallback.getText(), response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            scrapView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override
