@@ -18,12 +18,14 @@ import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
+import com.example.auctionapp.domain.item.view.ItemListView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -176,17 +178,6 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         });
     }
 
-    @Override
-    public void exceptionToast(String Tag, int statusCode) {
-        String errorMsg = "";
-        if(statusCode==401) errorMsg = RetrofitConstants.ERetrofitCallback.eUnauthorized.getText();
-        else if(statusCode==403) errorMsg = RetrofitConstants.ERetrofitCallback.eForbidden.getText();
-        else if(statusCode==404) errorMsg = RetrofitConstants.ERetrofitCallback.eNotFound.getText();
-        else errorMsg = String.valueOf(statusCode);
-        Toast.makeText(context, ChatConstants.EChatCallback.eChatTAG.getText() + Tag + "::" +
-                statusCode + "_" + errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
@@ -201,7 +192,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            exceptionToast(ChatConstants.EChatCallback.eGetItemDetailsCallback.getText(),response.code());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            chatRoomView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
@@ -223,11 +215,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            exceptionToast(ChatConstants.EChatCallback.eUserDetailsInfoCallback.getText(), response.code());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            chatRoomView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
