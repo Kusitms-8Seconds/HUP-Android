@@ -61,4 +61,8 @@ public class Home extends Fragment implements MainView{
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 }
