@@ -144,8 +144,12 @@ public interface RestAPI {
     Call<NoticeListResponse> getAllNotice();
 //    @PUT("api/v1/notices")     //공지사항 수정
 //    Call<UpdateNoticeResponse> updateNotice(@Body UpdateNoticeRequest updateNoticeRequest);
-//    @POST("api/v1/notices")     //공지사항 등록
-//    Call<NoticeResponse> uploadNortice(@Body UploadNoticeRequest uploadNoticeRequest);
+    @Multipart
+    @POST("api/v1/notices")     //공지사항 등록
+    Call<NoticeResponse> uploadNotice(@Part List<MultipartBody.Part> files,
+                                      @Part("title") RequestBody title,
+                                      @Part("body") RequestBody body,
+                                      @Part("userId") RequestBody userId);
     @GET("api/v1/notices/{noticeId}")     //공지사항 상세 조회
     Call<NoticeResponse> getNotice(@Path("noticeId") Long noticeId);
     @DELETE("api/v1/notices/{noticeId}")     //공지사항 삭제
