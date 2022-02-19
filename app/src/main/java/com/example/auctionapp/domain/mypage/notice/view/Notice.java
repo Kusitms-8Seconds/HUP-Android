@@ -40,8 +40,8 @@ public class Notice extends AppCompatActivity implements NoticeView{
             }
         });
         //관리자일때 (admin)
-        if(Constants.userId == 100) binding.goUploadNotice.setVisibility(View.VISIBLE);
-        else binding.goUploadNotice.setVisibility(View.GONE);
+        if(Constants.userId == null || Constants.userId != 100) binding.goUploadNotice.setVisibility(View.GONE);
+        else if(Constants.userId == 100) binding.goUploadNotice.setVisibility(View.VISIBLE);
 
         binding.goUploadNotice.setOnClickListener(new View.OnClickListener() {
             @Override

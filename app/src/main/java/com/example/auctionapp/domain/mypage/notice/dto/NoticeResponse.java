@@ -17,23 +17,4 @@ public class NoticeResponse {
     private String body;
     private List<String> fileNames;
 
-//    public static NoticeResponse from(Long id, Long userId, String userName, String title, String body, List<String> filenames) {
-//        filenames = new ArrayList<>();
-//        if (!filenames.isEmpty()) {
-//            List<MyFile> myFiles = notice.getMyFiles();
-//            filenames = new ArrayList<>();
-//            for (MyFile myFile : myFiles) {
-//                filenames.add(myFile.getFilename());
-//            }
-//        }
-//
-//        return NoticeResponse.builder()
-//                .id(id)
-//                .userId(userId)
-//                .userName(userName)
-//                .title(title)
-//                .body(body)
-//                .fileNames(filenames)
-//                .build();
-//    }
 }

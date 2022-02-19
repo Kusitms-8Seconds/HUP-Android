@@ -50,7 +50,7 @@ public class NoticeAdapter extends BaseAdapter {
         noticeTitleTextView = (TextView) view.findViewById(R.id.noticeTitleTxt);
         noticeTitleTextView.setText(data.get(position).getNoticeTitle());
         noticeDateTextView = (TextView) view.findViewById(R.id.noticeDateTxt);
-        noticeDateTextView.setText(data.get(position).getNoticeDate());
+        noticeDateTextView.setText(data.get(position).getUserName());
 
         return view;
     }

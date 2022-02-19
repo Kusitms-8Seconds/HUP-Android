@@ -141,7 +141,7 @@ public interface RestAPI {
 
     //공지사항
     @GET("api/v1/notices")     //공지사항 전체 목록 조회
-    Call<NoticeListResponse> getAllNotice();
+    Call<PaginationDto<List<NoticeListResponse>>> getAllNotice();
 //    @PUT("api/v1/notices")     //공지사항 수정
 //    Call<UpdateNoticeResponse> updateNotice(@Body UpdateNoticeRequest updateNoticeRequest);
     @Multipart

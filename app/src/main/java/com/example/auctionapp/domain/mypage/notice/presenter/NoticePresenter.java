@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityNoticeBinding;
+import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.notice.adapter.NoticeAdapter;
 import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
@@ -20,6 +21,7 @@ import com.example.auctionapp.domain.mypage.notice.view.NoticeView;
 import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -29,6 +31,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -42,6 +45,7 @@ public class NoticePresenter implements NoticePresenterInterface {
 
     ArrayList<NoticeData> noticeList = new ArrayList<NoticeData>();
     NoticeAdapter noticeAdapter;
+//    Long noticeId;
 
     // Constructor
     public NoticePresenter(NoticeView noticeView, ActivityNoticeBinding binding, Context context){
@@ -58,11 +62,9 @@ public class NoticePresenter implements NoticePresenterInterface {
         binding.noticeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String noticeTitle = noticeList.get(position).getNoticeTitle();
-                String noticeDate = noticeList.get(position).getNoticeDate();
+                Long noticeId = noticeList.get(position).getNoticeId();
                 Intent intent = new Intent(context, NoticeDetail.class);
-                intent.putExtra(NoticeConstants.ENoticeDetails.noticeTitle.getText(), noticeTitle);
-                intent.putExtra(NoticeConstants.ENoticeDetails.noticeDate.getText(), noticeDate);
+                intent.putExtra("noticeId", noticeId);
                 context.startActivity(intent);
             }
         });
@@ -72,18 +74,21 @@ public class NoticePresenter implements NoticePresenterInterface {
 
     }
 
-    public class getAllNoticeCallback implements MainRetrofitCallback<NoticeListResponse> {
+    public class getAllNoticeCallback implements MainRetrofitCallback<PaginationDto<List<NoticeListResponse>>> {
         @Override
-        public void onSuccessResponse(Response<NoticeListResponse> response) {
-            String title = response.body().getTitle();
-            String userName = response.body().getUserName();
-            noticeList.add(new NoticeData(title, userName));
-            noticeAdapter.notifyDataSetChanged();
+        public void onSuccessResponse(Response<PaginationDto<List<NoticeListResponse>>> response) {
+            for(int i=0; i<response.body().getData().size(); i++){
+                Long noticeId = response.body().getData().get(i).getId();
+                String title = response.body().getData().get(i).getTitle();
+                String userName = response.body().getData().get(i).getUserName();
+                noticeList.add(new NoticeData(noticeId, title, userName));
+                noticeAdapter.notifyDataSetChanged();
+            }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
         }
         @Override
-        public void onFailResponse(Response<NoticeListResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<PaginationDto<List<NoticeListResponse>>> response) throws IOException, JSONException {
 //            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
 //            noticeView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
