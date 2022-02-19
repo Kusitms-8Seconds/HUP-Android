@@ -34,7 +34,11 @@ import static android.content.ContentValues.TAG;
 
 public class NoticeDetail extends AppCompatActivity {
     private ActivityNoticeDetailBinding binding;
+
     Long noticeId;
+    String title;
+    String body;
+    String userName;
 
 //    String temp = "안녕하세요, HUP!입니다.\n" +
 //            "\n" +
@@ -66,8 +70,14 @@ public class NoticeDetail extends AppCompatActivity {
         });
 
         //관리자일때 (admin)
-        if(Constants.userId == null || Constants.userId != 100) binding.deleteButton.setVisibility(View.GONE);
-        else if(Constants.userId == 100) binding.deleteButton.setVisibility(View.VISIBLE);
+        if(Constants.userId == null || Constants.userId != 100) {
+            binding.deleteButton.setVisibility(View.GONE);
+            binding.goUpdateNotice.setVisibility(View.GONE);
+        }
+        else if(Constants.userId == 100) {
+            binding.deleteButton.setVisibility(View.VISIBLE);
+            binding.goUpdateNotice.setVisibility(View.VISIBLE);
+        }
         //delete button
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,13 +89,25 @@ public class NoticeDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //수정 button
+        binding.goUpdateNotice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UpdateNotice.class);
+                intent.putExtra("noticeId", noticeId);
+                intent.putExtra("title", title);
+                intent.putExtra("body", body);
+                intent.putExtra("userName", userName);
+                startActivity(intent);
+            }
+        });
     }
     public class getNoticeDetailCallback implements MainRetrofitCallback<NoticeResponse> {
         @Override
         public void onSuccessResponse(Response<NoticeResponse> response) {
-            String title = response.body().getTitle();
-            String body = response.body().getBody();
-            String userName = response.body().getUserName();
+            title = response.body().getTitle();
+            body = response.body().getBody();
+            userName = response.body().getUserName();
             binding.noticeTitle.setText(title);
             binding.userName.setText(userName);
             binding.noticeContent.setText(body);
