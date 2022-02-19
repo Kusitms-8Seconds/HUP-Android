@@ -40,6 +40,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/goUploadNotice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="79px"
+                android:layout_marginBottom="20px"
+                android:layout_marginEnd="50px"
+                android:layout_weight="0"
+                android:fontFamily="sans-serif-black"
+                android:text="등록"
+                android:textColor="#FFFFFF"
+                android:textSize="48px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/goback"
                 android:layout_width="60px"

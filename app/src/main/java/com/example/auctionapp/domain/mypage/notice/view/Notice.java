@@ -13,6 +13,7 @@ import com.example.auctionapp.domain.mypage.notice.adapter.NoticeAdapter;
 import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
 import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
 import com.example.auctionapp.domain.mypage.notice.presenter.NoticePresenter;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,17 @@ public class Notice extends AppCompatActivity implements NoticeView{
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+        //관리자일때 (admin)
+        if(Constants.userId == 100) binding.goUploadNotice.setVisibility(View.VISIBLE);
+        else binding.goUploadNotice.setVisibility(View.GONE);
+
+        binding.goUploadNotice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UploadNotice.class);
+                startActivity(intent);
             }
         });
 
