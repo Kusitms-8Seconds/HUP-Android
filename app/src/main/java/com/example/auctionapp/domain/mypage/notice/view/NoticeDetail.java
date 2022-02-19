@@ -2,12 +2,32 @@ package com.example.auctionapp.domain.mypage.notice.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
+import com.example.auctionapp.domain.mypage.notice.dto.NoticeListResponse;
+import com.example.auctionapp.domain.mypage.notice.dto.NoticeResponse;
+import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
+import com.example.auctionapp.domain.mypage.notice.presenter.NoticePresenter;
+import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.dto.PaginationDto;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class NoticeDetail extends AppCompatActivity {
     private ActivityNoticeDetailBinding binding;
@@ -28,12 +48,10 @@ public class NoticeDetail extends AppCompatActivity {
         setContentView(view);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra(NoticeConstants.ENoticeDetails.noticeTitle.getText());
-        String date = intent.getStringExtra(NoticeConstants.ENoticeDetails.noticeDate.getText());
+        Long noticeId = intent.getLongExtra("noticeId", 0);
 
-        binding.noticeTitle.setText(title);
-        binding.noticeDate.setText(date);
-//        binding.noticeContent.setText(temp);    //dummy data
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getNotice(noticeId)
+                .enqueue(MainRetrofitTool.getCallback(new getNoticeDetailCallback()));
 
         binding.goback.bringToFront();
         binding.goback.setOnClickListener(new View.OnClickListener() {
@@ -42,5 +60,28 @@ public class NoticeDetail extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+    public class getNoticeDetailCallback implements MainRetrofitCallback<NoticeResponse> {
+        @Override
+        public void onSuccessResponse(Response<NoticeResponse> response) {
+            String title = response.body().getTitle();
+            String body = response.body().getBody();
+            String userName = response.body().getUserName();
+            binding.noticeTitle.setText(title);
+            binding.noticeDate.setText(userName);
+            binding.noticeContent.setText(body);
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<NoticeResponse> response) throws IOException, JSONException {
+//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+//            noticeView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
+        }
     }
 }
