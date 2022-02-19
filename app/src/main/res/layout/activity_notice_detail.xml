@@ -63,10 +63,11 @@
             android:textSize="44px" />
 
         <TextView
-            android:id="@+id/noticeDate"
+            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notice date" />
+            android:text="userName" />
+
         <View
             android:layout_width="match_parent"
             android:background="#C4C4C4"
@@ -81,5 +82,16 @@
             android:textColor="#000000"
             android:textSize="40px"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제하기"
+        android:background="@drawable/box_edge"
+        android:padding="10dp"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

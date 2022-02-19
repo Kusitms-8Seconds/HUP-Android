@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,10 +16,12 @@ import com.example.auctionapp.domain.mypage.notice.dto.NoticeResponse;
 import com.example.auctionapp.domain.mypage.notice.model.NoticeData;
 import com.example.auctionapp.domain.mypage.notice.presenter.NoticePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 
@@ -31,6 +34,7 @@ import static android.content.ContentValues.TAG;
 
 public class NoticeDetail extends AppCompatActivity {
     private ActivityNoticeDetailBinding binding;
+    Long noticeId;
 
 //    String temp = "안녕하세요, HUP!입니다.\n" +
 //            "\n" +
@@ -48,7 +52,7 @@ public class NoticeDetail extends AppCompatActivity {
         setContentView(view);
 
         Intent intent = getIntent();
-        Long noticeId = intent.getLongExtra("noticeId", 0);
+        noticeId = intent.getLongExtra("noticeId", 0);
 
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getNotice(noticeId)
                 .enqueue(MainRetrofitTool.getCallback(new getNoticeDetailCallback()));
@@ -60,6 +64,21 @@ public class NoticeDetail extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        //관리자일때 (admin)
+        if(Constants.userId == null || Constants.userId != 100) binding.deleteButton.setVisibility(View.GONE);
+        else if(Constants.userId == 100) binding.deleteButton.setVisibility(View.VISIBLE);
+        //delete button
+        binding.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).deleteNotice(noticeId)
+                        .enqueue(MainRetrofitTool.getCallback(new deleteNoticeCallback()));
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
     public class getNoticeDetailCallback implements MainRetrofitCallback<NoticeResponse> {
         @Override
@@ -68,7 +87,7 @@ public class NoticeDetail extends AppCompatActivity {
             String body = response.body().getBody();
             String userName = response.body().getUserName();
             binding.noticeTitle.setText(title);
-            binding.noticeDate.setText(userName);
+            binding.userName.setText(userName);
             binding.noticeContent.setText(body);
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -83,5 +102,25 @@ public class NoticeDetail extends AppCompatActivity {
         public void onConnectionFail(Throwable t) {
             Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
+    }
+    public class deleteNoticeCallback implements MainRetrofitCallback<DefaultResponse> {
+        @Override
+        public void onSuccessResponse(Response<DefaultResponse> response) {
+            showToast("삭제 완료");
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
+    public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
