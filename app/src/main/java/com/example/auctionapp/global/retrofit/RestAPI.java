@@ -63,8 +63,10 @@ public interface RestAPI {
     Call<SignUpResponse> signup(@Body SignUpRequest signUpRequest);
     @PUT("api/v1/users")    //사용자 정보 수정
     Call<UpdateUserResponse> updateUser(@Body UpdateUserRequest updateUserRequest);
+    @Multipart
     @PUT("api/v1/users/images")    //사용자 프로필 사진 수정
-    Call<UpdateProfileResponse> updateUserProfileImg(@Body UpdateProfileImgRequest updateProfileImgRequest);
+    Call<UpdateProfileResponse> updateUserProfileImg(@Part MultipartBody.Part file,
+                                                     @Part("userId") RequestBody userId);
     @POST("api/v1/email/send")   //회원가입 시 이메일 인증
     Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
     @POST("api/v1/email/verify")   //인증코드 확인
@@ -142,6 +144,7 @@ public interface RestAPI {
     //공지사항
     @GET("api/v1/notices")     //공지사항 전체 목록 조회
     Call<PaginationDto<List<NoticeListResponse>>> getAllNotice();
+    @Multipart
     @PUT("api/v1/notices")     //공지사항 수정
     Call<UpdateNoticeResponse> updateNotice(@Part List<MultipartBody.Part> files,
                                             @Part("title") RequestBody title,

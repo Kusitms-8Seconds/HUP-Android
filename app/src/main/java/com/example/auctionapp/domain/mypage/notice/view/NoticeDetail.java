@@ -129,7 +129,7 @@ public class NoticeDetail extends AppCompatActivity {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
             showToast("삭제 완료");
-            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
+            Log.d(TAG, "delete notice_on success");
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {

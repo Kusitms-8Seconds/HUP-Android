@@ -78,7 +78,7 @@ public class UploadNotice extends AppCompatActivity {
             public void onClick(View view) {
                 String noticeTitle = binding.editNoticeTitle.getText().toString();
                 String noticeContent = binding.editNoticeContent.getText().toString();
-                if(noticeTitle != null || noticeContent != null) {
+                if(noticeTitle != null && noticeContent != null) {
                     RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
                     RequestBody noticeTitleR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeTitle);
                     RequestBody noticeContentR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeContent);
@@ -87,7 +87,6 @@ public class UploadNotice extends AppCompatActivity {
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(files, noticeTitleR, noticeContentR, userIdR)
                             .enqueue(MainRetrofitTool.getCallback(new UploadNoticeCallback()));
                     //go home
-                    showToast(UploadConstants.EUploadToast.uploadComplete.getText());
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);
                     tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(tt);
@@ -101,18 +100,19 @@ public class UploadNotice extends AppCompatActivity {
 
     }
     public void makeMultiPart() {
-        for (int i = 0; i < fileList.size(); ++i) {
-            // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-            RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
-            // 사진 파일 이름
-            LocalDateTime localDateTime = LocalDateTime.now();
-            String fileName = "photo" + localDateTime + ".jpg";
-            // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData(UploadConstants.EMultiPart.files.getText(), fileName, fileBody);
-            // 추가
-            files.add(filePart);
+        if(fileList != null) {
+            for (int i = 0; i < fileList.size(); ++i) {
+                // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
+                RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
+                // 사진 파일 이름
+                LocalDateTime localDateTime = LocalDateTime.now();
+                String fileName = "photo" + localDateTime + ".jpg";
+                // RequestBody로 Multipart.Part 객체 생성
+                MultipartBody.Part filePart = MultipartBody.Part.createFormData(UploadConstants.EMultiPart.files.getText(), fileName, fileBody);
+                // 추가
+                files.add(filePart);
+            }
         }
-
     }
     // select image
     @Override
@@ -123,10 +123,10 @@ public class UploadNotice extends AppCompatActivity {
         uriList = new ArrayList<>();
         fileList = new ArrayList<>();
         if(requestCode == 2222){
-            if(data == null){   // 어떤 이미지도 선택하지 않은 경우
-                showToast(UploadConstants.EUploadToast.unselectImage.getText());
-            }
-            else {   // 이미지를 하나라도 선택한 경우
+//            if(data == null){   // 어떤 이미지도 선택하지 않은 경우
+//                showToast(UploadConstants.EUploadToast.unselectImage.getText());
+//            }
+            if(data != null) {   // 이미지를 하나라도 선택한 경우
                 if (data.getClipData() != null) {
                     ClipData clipData = data.getClipData();
                     binding.selectedImageCount.setText(String.valueOf(clipData.getItemCount()) + "/10");
@@ -174,7 +174,8 @@ public class UploadNotice extends AppCompatActivity {
         @Override
         public void onSuccessResponse(Response<NoticeResponse> response) {
             NoticeResponse result = response.body();
-            Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtSuccessResponse.getText() + result.toString());
+            showToast("공지사항 등록완료");
+            Log.d("UploadNotice", "공지사항 등록: " + result.toString());
 
         }
         @Override

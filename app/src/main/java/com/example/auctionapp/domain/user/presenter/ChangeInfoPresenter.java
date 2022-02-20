@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityChangeInfoBinding;
+import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
 import com.example.auctionapp.domain.user.dto.UpdateProfileResponse;
@@ -20,9 +21,13 @@ import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -61,8 +66,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUser(updateUserRequest)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateCallback()));
             //profile img
-            UpdateProfileImgRequest updateProfileImgRequest = new UpdateProfileImgRequest(imagePath, Constants.userId);
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(updateProfileImgRequest)
+            File profileFile = new File(imagePath);
+            // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), profileFile);
+            // RequestBody로 Multipart.Part 객체 생성
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("photo", "photo.jpg", fileBody);
+            RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(filePart, userIdR)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));
 
             Intent intent = new Intent(context, MainActivity.class);
@@ -152,9 +162,9 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, "UpdateProfileImg: onFailResponse");
+//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+//            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, "UpdateProfileImg: onFailResponse: " + response.errorBody().string());
         }
 
         @Override

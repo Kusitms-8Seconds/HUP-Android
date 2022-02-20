@@ -65,6 +65,7 @@ public class NoticePresenter implements NoticePresenterInterface {
                 Long noticeId = noticeList.get(position).getNoticeId();
                 Intent intent = new Intent(context, NoticeDetail.class);
                 intent.putExtra("noticeId", noticeId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

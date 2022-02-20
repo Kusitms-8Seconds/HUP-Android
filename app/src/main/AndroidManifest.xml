@@ -42,6 +42,7 @@
         <activity android:name=".domain.mypage.notice.view.Notice" />
         <activity android:name=".domain.mypage.notice.view.NoticeDetail" />
         <activity android:name=".domain.mypage.notice.view.UploadNotice" />
+        <activity android:name=".domain.mypage.notice.view.UpdateNotice" />
         <activity android:name=".domain.scrap.view.Scrap" />
         <activity android:name=".domain.item.view.Interests" />
         <activity android:name=".domain.chat.view.ChatRoom" />

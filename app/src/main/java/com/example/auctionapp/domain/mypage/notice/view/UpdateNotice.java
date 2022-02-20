@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.auctionapp.MainActivity;
+import com.example.auctionapp.databinding.ActivityUpdateNoticeBinding;
 import com.example.auctionapp.databinding.ActivityUploadNoticeBinding;
 import com.example.auctionapp.domain.mypage.notice.dto.NoticeResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.UpdateNoticeResponse;
@@ -41,7 +42,7 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class UpdateNotice extends AppCompatActivity {
-    private ActivityUploadNoticeBinding binding;
+    private ActivityUpdateNoticeBinding binding;
     Long noticeId;
 
     private static final String TAG = "UpdateNotice";
@@ -53,9 +54,11 @@ public class UpdateNotice extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUploadNoticeBinding.inflate(getLayoutInflater());
+        binding = ActivityUpdateNoticeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        init();
 
         // 이미지 업로드
         binding.chooseImage.setOnClickListener(new View.OnClickListener() {
