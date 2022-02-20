@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityNoticeDetailBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.notice.constant.NoticeConstants;
@@ -111,8 +112,13 @@ public class NoticeDetail extends AppCompatActivity {
             binding.noticeTitle.setText(title);
             binding.userName.setText(userName);
             binding.noticeContent.setText(body);
+            String noticeImgUrl = Constants.imageBaseUrl;
+            if(response.body().getFileNames() != null)
+                noticeImgUrl += response.body().getFileNames().get(0);
+            else binding.noticeImg.setVisibility(View.GONE);
+            Glide.with(getApplicationContext()).load(noticeImgUrl).override(binding.noticeImg.getWidth()
+                    ,binding.noticeImg.getHeight()).into(binding.noticeImg);
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
-
         }
         @Override
         public void onFailResponse(Response<NoticeResponse> response) throws IOException, JSONException {

@@ -95,9 +95,6 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
     public void duplicateLoginIdCheck(String loginId) {
         RetrofitTool.getAPIWithNullConverter().checkDuplicateId(loginId)
                 .enqueue(MainRetrofitTool.getCallback(new checkDuplicateIdCheck()));
-        if(!isValidId) {
-            changeInfoView.showToast(Constants.ESignUp.idDuplicateMessage.getText());
-        }
     }
 
     @Override
@@ -183,6 +180,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            isValidId = false;
             Log.d(TAG, "onFailResponse");
         }
 
