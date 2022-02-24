@@ -112,7 +112,7 @@ public class UploadNotice extends AppCompatActivity {
                 // 추가
                 files.add(filePart);
             }
-        }
+        } else if(fileList == null) return;
     }
     // select image
     @Override

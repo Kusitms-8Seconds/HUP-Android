@@ -113,18 +113,19 @@ public class UpdateNotice extends AppCompatActivity {
         binding.editNoticeContent.setText(body);
     }
     public void makeMultiPart() {
-        for (int i = 0; i < fileList.size(); ++i) {
-            // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-            RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
-            // 사진 파일 이름
-            LocalDateTime localDateTime = LocalDateTime.now();
-            String fileName = "photo" + localDateTime + ".jpg";
-            // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData(UploadConstants.EMultiPart.files.getText(), fileName, fileBody);
-            // 추가
-            files.add(filePart);
-        }
-
+        if(fileList != null) {
+            for (int i = 0; i < fileList.size(); ++i) {
+                // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
+                RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
+                // 사진 파일 이름
+                LocalDateTime localDateTime = LocalDateTime.now();
+                String fileName = "photo" + localDateTime + ".jpg";
+                // RequestBody로 Multipart.Part 객체 생성
+                MultipartBody.Part filePart = MultipartBody.Part.createFormData(UploadConstants.EMultiPart.files.getText(), fileName, fileBody);
+                // 추가
+                files.add(filePart);
+            }
+        } else if(fileList == null) return;
     }
     // select image
     @Override
