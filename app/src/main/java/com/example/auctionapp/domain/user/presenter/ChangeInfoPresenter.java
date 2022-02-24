@@ -23,6 +23,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
@@ -69,8 +70,11 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             File profileFile = new File(imagePath);
             // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
             RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), profileFile);
+            // 사진 파일 이름
+            LocalDateTime localDateTime = LocalDateTime.now();
+            String fileName = "photo" + localDateTime + ".jpg";
             // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("photo", "photo.jpg", fileBody);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("photo", fileName, fileBody);
             RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(filePart, userIdR)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));

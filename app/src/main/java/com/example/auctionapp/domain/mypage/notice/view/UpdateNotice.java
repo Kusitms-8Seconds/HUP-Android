@@ -85,10 +85,15 @@ public class UpdateNotice extends AppCompatActivity {
                     RequestBody noticeIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(noticeId));
                     RequestBody noticeTitleR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeTitle);
                     RequestBody noticeContentR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeContent);
-                    makeMultiPart();
 
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateNotice(files, noticeTitleR, noticeContentR, userIdR, noticeIdR)
-                            .enqueue(MainRetrofitTool.getCallback(new UpdateNoticeCallback()));
+                    if(fileList == null)
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateNotice(null, noticeTitleR, noticeContentR, userIdR, noticeIdR)
+                                .enqueue(MainRetrofitTool.getCallback(new UpdateNoticeCallback()));
+                    else {
+                        makeMultiPart();
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateNotice(files, noticeTitleR, noticeContentR, userIdR, noticeIdR)
+                                .enqueue(MainRetrofitTool.getCallback(new UpdateNoticeCallback()));
+                    }
                     //go home
                     showToast(UploadConstants.EUploadToast.uploadComplete.getText());
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);

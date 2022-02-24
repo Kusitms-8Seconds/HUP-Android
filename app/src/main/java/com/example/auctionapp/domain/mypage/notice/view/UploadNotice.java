@@ -82,10 +82,16 @@ public class UploadNotice extends AppCompatActivity {
                     RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
                     RequestBody noticeTitleR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeTitle);
                     RequestBody noticeContentR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeContent);
-                    makeMultiPart();
 
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(files, noticeTitleR, noticeContentR, userIdR)
-                            .enqueue(MainRetrofitTool.getCallback(new UploadNoticeCallback()));
+                    if(fileList == null)
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(null, noticeTitleR, noticeContentR, userIdR)
+                                .enqueue(MainRetrofitTool.getCallback(new UploadNoticeCallback()));
+                    else {
+                        makeMultiPart();
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(files, noticeTitleR, noticeContentR, userIdR)
+                                .enqueue(MainRetrofitTool.getCallback(new UploadNoticeCallback()));
+                    }
+
                     //go home
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);
                     tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -103,7 +109,7 @@ public class UploadNotice extends AppCompatActivity {
         if(fileList != null) {
             for (int i = 0; i < fileList.size(); ++i) {
                 // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-                RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
+                RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(i));
                 // 사진 파일 이름
                 LocalDateTime localDateTime = LocalDateTime.now();
                 String fileName = "photo" + localDateTime + ".jpg";
@@ -180,9 +186,9 @@ public class UploadNotice extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<NoticeResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
+//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+//            showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d("create notice", response.errorBody().string());
         }
         @Override
         public void onConnectionFail(Throwable t) {
