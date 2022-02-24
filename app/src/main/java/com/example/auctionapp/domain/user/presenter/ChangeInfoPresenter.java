@@ -20,6 +20,7 @@ import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,8 +75,8 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             LocalDateTime localDateTime = LocalDateTime.now();
             String fileName = "photo" + localDateTime + ".jpg";
             // RequestBody로 Multipart.Part 객체 생성
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("photo", fileName, fileBody);
-            RequestBody userIdR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), String.valueOf(Constants.userId));
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", fileName, fileBody);
+            RequestBody userIdR = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(Constants.userId));
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(filePart, userIdR)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));
 
@@ -160,12 +161,19 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onSuccessResponse(Response<UpdateProfileResponse> response) {
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateProfileImg: "+Constants.userId);
+            System.out.println("UpdateProfileImg123: "+response.body().getProfileImageURL());
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
 //            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
 //            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, "UpdateProfileImg: onFailResponse: " + response.errorBody().string());
+//            Log.d(TAG, "UpdateProfileImg: onFailResponse: " + response.errorBody().string());
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                Log.d("UpdateProfileImg fail", jObjError.getString("error"));
+            } catch (Exception e) {
+                Log.d("UpdateProfileImg fail", e.getMessage());
+            }
         }
 
         @Override

@@ -1,5 +1,7 @@
 package com.example.auctionapp.global.retrofit;
 
+import androidx.annotation.Nullable;
+
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.NoticeListResponse;
@@ -153,7 +155,7 @@ public interface RestAPI {
                                             @Part("noticeId") RequestBody noticeId);
     @Multipart
     @POST("api/v1/notices")     //공지사항 등록
-    Call<NoticeResponse> uploadNotice(@Part List<MultipartBody.Part> files,
+    Call<NoticeResponse> uploadNotice(@Nullable @Part List<MultipartBody.Part> files,
                                       @Part("title") RequestBody title,
                                       @Part("body") RequestBody body,
                                       @Part("userId") RequestBody userId);

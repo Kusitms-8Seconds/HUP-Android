@@ -83,9 +83,11 @@ public class UploadNotice extends AppCompatActivity {
                     RequestBody noticeTitleR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeTitle);
                     RequestBody noticeContentR = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypePlain.getText()), noticeContent);
 
-                    if(fileList == null)
-                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(null, noticeTitleR, noticeContentR, userIdR)
+                    if(fileList == null) {
+                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(files , noticeTitleR, noticeContentR, userIdR)
                                 .enqueue(MainRetrofitTool.getCallback(new UploadNoticeCallback()));
+                        System.out.println("null img");
+                    }
                     else {
                         makeMultiPart();
                         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).uploadNotice(files, noticeTitleR, noticeContentR, userIdR)

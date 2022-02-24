@@ -118,7 +118,7 @@ public class NoticeDetail extends AppCompatActivity {
             binding.userName.setText(userName);
             binding.noticeContent.setText(body);
             String noticeImgUrl = Constants.imageBaseUrl;
-            if(response.body().getFileNames() != null)
+            if(!response.body().getFileNames().isEmpty())
                 noticeImgUrl += response.body().getFileNames().get(0);
             else binding.noticeImg.setVisibility(View.GONE);
             Glide.with(getApplicationContext()).load(noticeImgUrl).override(binding.noticeImg.getWidth()
