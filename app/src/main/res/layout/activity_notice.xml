@@ -93,6 +93,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="48px"
+        android:paddingBottom="300dp"
+        tools:listitem="@layout/custom_notice_listview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ly1"/>

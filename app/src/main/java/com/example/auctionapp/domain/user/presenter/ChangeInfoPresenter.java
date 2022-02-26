@@ -3,15 +3,21 @@ package com.example.auctionapp.domain.user.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivityChangeInfoBinding;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
+import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
 import com.example.auctionapp.domain.user.dto.UpdateProfileResponse;
 import com.example.auctionapp.domain.user.dto.UpdateUserRequest;
 import com.example.auctionapp.domain.user.dto.UpdateUserResponse;
+import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.domain.user.view.ChangeInfoView;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -47,6 +53,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         this.binding = binding;
         this.context = context;
     }
+
+    @Override
+    public void init() {
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Constants.userId)
+                .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
+    }
+
     @Override
     public Intent UpdateCheck(String imagePath) {
         if(validLoginIdCheck()==false){
@@ -161,7 +174,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onSuccessResponse(Response<UpdateProfileResponse> response) {
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateProfileImg: "+Constants.userId);
-            System.out.println("UpdateProfileImg123: "+response.body().getProfileImageURL());
+            System.out.println("UpdateProfileImgURL: "+response.body().getProfileImageURL());
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
@@ -199,6 +212,26 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         @Override
         public void onConnectionFail(Throwable t) {
             Log.e("연결실패", t.getMessage());
+        }
+    }
+    public class UserDetailsInfoCallback implements MainRetrofitCallback<UserInfoResponse> {
+        @Override
+        public void onSuccessResponse(Response<UserInfoResponse> response) {
+            if(response.body().getPicture()!=null){
+                Glide.with(context).load(response.body().getPicture()).into(binding.ivProfileChange);
+            }
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
+
+        }
+        @Override
+        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e( MypageConstants.EMyPageCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
 }

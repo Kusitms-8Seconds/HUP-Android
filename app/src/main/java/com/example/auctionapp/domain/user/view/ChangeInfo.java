@@ -39,6 +39,7 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
         setContentView(view);
 
         presenter = new ChangeInfoPresenter(this, binding, getApplicationContext());
+        presenter.init();
 
         binding.ivProfileChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,9 +55,11 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
         binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = presenter.UpdateCheck(imagePath);
+                Intent intent = null;
+                if(imagePath != null) intent = presenter.UpdateCheck(imagePath);
+                else showToast(UploadConstants.EUploadToast.unselectImage.getText());
                 if(intent !=null){
-                    Toast.makeText(getApplicationContext(), "정보수정완료", Toast.LENGTH_SHORT).show();
+                    showToast("정보수정완료");
                     startActivity(intent); } }
         });
         binding.checkId.setOnClickListener(new View.OnClickListener() {
