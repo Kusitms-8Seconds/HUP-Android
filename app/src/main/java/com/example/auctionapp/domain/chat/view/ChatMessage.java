@@ -16,9 +16,7 @@ public class ChatMessage extends AppCompatActivity implements ChatMessageView {
     private ChatMessagePresenter presenter;
 
     //uid
-    private String destUid;     //상대방 uid
-    private User destUser;
-    String profileUrlStr;
+    private Long destUid;     //상대방 uid
     private Long EndItemId;
 
     @Override
@@ -38,7 +36,7 @@ public class ChatMessage extends AppCompatActivity implements ChatMessageView {
         });
 
         Intent intent = getIntent();
-        destUid = intent.getStringExtra("destUid");
+        destUid = intent.getLongExtra("destUid", 0);
         EndItemId = intent.getLongExtra("itemId", 0);
 
         presenter.init(destUid, EndItemId);

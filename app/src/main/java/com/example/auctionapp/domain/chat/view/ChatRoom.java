@@ -35,7 +35,7 @@ public class ChatRoom extends Fragment implements ChatRoomView {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
-                String destUid = destUser.getDestId().toString();
+                Long destUid = destUser.getDestId();
                 Long destItemId = destUser.getItemId();
                 Intent intent = new Intent(getContext(), ChatMessage.class);
                 intent.putExtra("destUid", destUid);

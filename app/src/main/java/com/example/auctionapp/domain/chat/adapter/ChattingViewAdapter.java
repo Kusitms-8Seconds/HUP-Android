@@ -16,14 +16,17 @@ import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
+import com.example.auctionapp.domain.chat.dto.ChatMessageResponse;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
+import com.example.auctionapp.domain.chat.presenter.ChatMessagePresenter;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +50,9 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     List<ChatModel.Comment> comments;
 
     //uid
-    private String chatRoomUid; //채팅방 하나 id
-    private String myuid;       //나의 id
-    private String destUid;     //상대방 uid
+    private Long chatRoomUid; //채팅방 하나 id
+    private Long myuid;       //나의 id
+    private Long destUid;     //상대방 uid
     private User destUser;
     String profileUrlStr;
     private Long EndItemId;
@@ -62,23 +66,17 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ActivityChatRoomBinding mBinding;
     private Context context;
 
-    public void initFirebase() {
-        comments = new ArrayList<>();
-
-        database = FirebaseDatabase.getInstance("https://auctionapp-f3805-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        databaseReference = database.getReference();
-    }
 
     public ChattingViewAdapter() {
-        initFirebase();
+        comments = new ArrayList<>();
         myuid = null;
         destUid = null;
 
-        getDestUid();
+        //채팅 내용 읽어들임
+        getMessageList();
     }
 
-    public ChattingViewAdapter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext, String chatRoomUid, String myuid, String destUid) {
-        initFirebase();
+    public ChattingViewAdapter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext, Long chatRoomUid, Long myuid, Long destUid) {
 
         this.chatMessageView = chatMessageView;
         this.mBinding = mBinding;
@@ -87,52 +85,89 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.myuid = myuid;
         this.destUid = destUid;
 
-        getDestUid();
+        //채팅 내용 읽어들임
+        getMessageList();
     }
 
-    //상대방 uid 하나(single) 읽기
-    private void getDestUid() {
-        databaseReference.child("users").child(destUid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                destUser = snapshot.getValue(User.class);
-
-                //채팅 내용 읽어들임
-                getMessageList();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
+//    //상대방 uid 하나(single) 읽기
+//    private void getDestUid() {
+//        databaseReference.child("users").child(destUid).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                destUser = snapshot.getValue(User.class);
+//
+//                //채팅 내용 읽어들임
+//                getMessageList();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
+//    }
 
     //채팅 내용 읽어들임
     private void getMessageList() {
-        databaseReference.child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                comments.clear();
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(Constants.userId)
+                .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
 
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ChatModel.Comment commentUser = dataSnapshot.getValue(ChatModel.Comment.class);
-                    String messageStr = commentUser.getMessage();
-                    String timestampStr = commentUser.getTimestamp();
-                    String UidStr = commentUser.getUid();
-                    if (UidStr.equals(myuid)) {
-                        comments.add(new ChatModel.Comment(UidStr, messageStr, timestampStr, 1));
-                    } else {
-                        comments.add(new ChatModel.Comment(UidStr, messageStr, timestampStr, 0));
-                    }
-                }
-                notifyDataSetChanged();
-                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
+//        databaseReference.child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                comments.clear();
+//
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    ChatModel.Comment commentUser = dataSnapshot.getValue(ChatModel.Comment.class);
+//                    String messageStr = commentUser.getMessage();
+//                    String timestampStr = commentUser.getTimestamp();
+//                    Long Uid = commentUser.getUid();
+//                    if (Uid == Constants.userId) {
+//                        comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 1));
+//                    } else {
+//                        comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 0));
+//                    }
+//                }
+//                notifyDataSetChanged();
+//                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
+    }
+
+    public class getChatMessagesCallback implements MainRetrofitCallback<ChatMessageResponse> {
+        @Override
+        public void onSuccessResponse(Response<ChatMessageResponse> response) {
+            String messageStr = response.body().getMessage();
+            String LocallatestDate = response.body().getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+            String month = LocallatestDate.substring(4,6);
+            String day = LocallatestDate.substring(6,8);
+            String hour = LocallatestDate.substring(9,11);
+            String minute = LocallatestDate.substring(12,14);
+            String time = LocallatestDate.substring(9,14);
+            String timestampStr = month + "월 " + day + "일 " + time;
+            Long Uid = response.body().getId();
+            if (Uid == Constants.userId) {
+                comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 1));
+            } else {
+                comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 0));
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<ChatMessageResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            mBinding.chattingItemDetailPrice.setText(ChatConstants.EChatCallback.rtConnectionFail.getText());
+            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
+        }
     }
 
     @Override

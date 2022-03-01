@@ -8,7 +8,7 @@ public class ChatModel {
     public Map<String, Long> itemId = new HashMap<>(); //채팅 아이템 id
 
     public static class Comment {
-        public String uid;
+        public Long uid;
         public String message;
         public String timestamp;
         public int viewType;
@@ -17,14 +17,14 @@ public class ChatModel {
 
         }
 
-        public Comment(String uid, String message, String timestamp, int viewType) {
+        public Comment(Long uid, String message, String timestamp, int viewType) {
             this.uid = uid;
             this.message = message;
             this.timestamp = timestamp;
             this.viewType = viewType;
         }
 
-        public String getUid() {
+        public Long getUid() {
             return uid;
         }
         public String getMessage() {
