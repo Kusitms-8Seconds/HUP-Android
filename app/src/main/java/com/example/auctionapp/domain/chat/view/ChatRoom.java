@@ -2,51 +2,53 @@ package com.example.auctionapp.domain.chat.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.example.auctionapp.databinding.ActivityChatRoomBinding;
-import com.example.auctionapp.domain.chat.model.User;
+import com.example.auctionapp.databinding.ActivityChatBinding;
+import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.presenter.ChatRoomPresenter;
 
-public class ChatRoom extends AppCompatActivity implements ChatRoomView{
-    private ActivityChatRoomBinding binding;
-    private ChatRoomPresenter presenter;
+public class ChatRoom extends Fragment implements ChatRoomView {
+    private ActivityChatBinding binding;
+    ChatRoomPresenter presenter;
 
-    //uid
-    private String destUid;     //상대방 uid
-    private User destUser;
-    String profileUrlStr;
-    private Long EndItemId;
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        binding = ActivityChatBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        setContentView(view);
 
-        presenter = new ChatRoomPresenter(this, binding, getApplicationContext());
+        presenter = new ChatRoomPresenter(this, binding, this.getContext());
 
-        binding.goback.setOnClickListener(new View.OnClickListener() {
+        presenter.init();
+        presenter.getChatList();
+
+        binding.chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                onBackPressed();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
+                String destUid = destUser.getProfileName();
+                Long destItemId = destUser.getItemId();
+                Intent intent = new Intent(getContext(), ChatMessage.class);
+                intent.putExtra("destUid", destUid);
+                intent.putExtra("itemId", destItemId);
+                startActivity(intent);
             }
         });
 
-        Intent intent = getIntent();
-        destUid = intent.getStringExtra("destUid");
-        EndItemId = intent.getLongExtra("itemId", 0);
-
-        presenter.init(destUid, EndItemId);
-        presenter.sendMsg();
+        return view;
     }
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
 }

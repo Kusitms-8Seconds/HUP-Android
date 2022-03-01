@@ -18,8 +18,7 @@ import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
-import com.example.auctionapp.domain.chat.view.ChatRoomView;
-import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
+import com.example.auctionapp.domain.chat.view.ChatMessageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -43,7 +42,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 //===============채팅 창===============//
-public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChatRoomView {
+public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChatMessageView {
     List<ChatModel.Comment> comments;
 
     //uid
@@ -59,7 +58,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private DatabaseReference databaseReference;
 
     // Attributes
-    private ChatRoomView chatRoomView;
+    private ChatMessageView chatMessageView;
     private ActivityChatRoomBinding mBinding;
     private Context context;
 
@@ -78,10 +77,10 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         getDestUid();
     }
 
-    public ChattingViewAdapter(ChatRoomView chatRoomView, ActivityChatRoomBinding mBinding, Context getApplicationContext, String chatRoomUid, String myuid, String destUid) {
+    public ChattingViewAdapter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext, String chatRoomUid, String myuid, String destUid) {
         initFirebase();
 
-        this.chatRoomView = chatRoomView;
+        this.chatMessageView = chatMessageView;
         this.mBinding = mBinding;
         this.context = getApplicationContext;
         this.chatRoomUid = chatRoomUid;

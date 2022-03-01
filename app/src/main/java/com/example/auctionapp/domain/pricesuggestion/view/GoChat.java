@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.auctionapp.R;
-import com.example.auctionapp.domain.chat.view.ChatRoom;
+import com.example.auctionapp.domain.chat.view.ChatMessage;
 
 public class GoChat extends AppCompatActivity {
     @Override
@@ -24,7 +24,7 @@ public class GoChat extends AppCompatActivity {
         tv_goChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent(getApplicationContext(), ChatRoom.class);
+                Intent tt = new Intent(getApplicationContext(), ChatMessage.class);
                 tt.putExtra("itemId", EndItemId);
                 tt.putExtra("participantId", participantId);
                 tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

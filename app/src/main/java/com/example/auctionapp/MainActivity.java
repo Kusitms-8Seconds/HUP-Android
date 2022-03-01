@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +19,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityMainBinding;
-import com.example.auctionapp.domain.chat.view.Chat;
+import com.example.auctionapp.domain.chat.view.ChatRoom;
 import com.example.auctionapp.domain.home.view.Home;
-import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.upload.view.UploadPage;
 import com.example.auctionapp.domain.item.view.ItemList;
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.show(fragment);
         }
         else if (id == R.id.chat) {
-            fragment = new Chat();
+            fragment = new ChatRoom();
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
             fragmentTransaction.show(fragment);
         }

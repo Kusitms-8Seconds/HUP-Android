@@ -45,7 +45,7 @@
         <activity android:name=".domain.mypage.notice.view.UpdateNotice" />
         <activity android:name=".domain.scrap.view.Scrap" />
         <activity android:name=".domain.item.view.Interests" />
-        <activity android:name=".domain.chat.view.ChatRoom" />
+        <activity android:name=".domain.chat.view.ChatMessage" />
         <activity android:name=".domain.pricesuggestion.view.FeesPage" />
         <activity android:name=".domain.pricesuggestion.view.GoChat"/>
         <activity android:name=".domain.item.view.EditQnA" />
