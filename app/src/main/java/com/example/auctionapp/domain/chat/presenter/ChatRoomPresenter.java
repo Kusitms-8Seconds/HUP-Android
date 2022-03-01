@@ -20,6 +20,7 @@ import com.example.auctionapp.domain.home.presenter.MainPresenter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -81,34 +82,40 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                 .enqueue(MainRetrofitTool.getCallback(new getChatRoomsCallback()));
     }
 
-    private class getChatRoomsCallback implements MainRetrofitCallback<ChatRoomResponse> {
+    private class getChatRoomsCallback implements MainRetrofitCallback<List<ChatRoomResponse>> {
 
         @Override
-        public void onSuccessResponse(Response<ChatRoomResponse> response) throws IOException {
-            Long chatroomId = response.body().getId();
-            Long destId = response.body().getUserId();
-            String userName = response.body().getUserName();
-            Long itemId = response.body().getItemId();
-            String itemUrl = "";
-            if(response.body().getFileNames() != null) itemUrl = response.body().getFileNames().get(0);
-            String latestMessage = response.body().getLatestMessage();
+        public void onSuccessResponse(Response<List<ChatRoomResponse>>response) throws IOException {
+            for(int i=0; i<response.body().size(); i++) {
+                Long chatroomId = response.body().get(i).getId();
+                Long destId = response.body().get(i).getUserId();
+                String userName = response.body().get(i).getUserName();
+                Long itemId = response.body().get(i).getItemId();
+                String itemUrl = "";
+                if (response.body().get(i).getFileNames() != null)
+                    itemUrl = response.body().get(i).getFileNames().get(0);
+                String latestMessage = response.body().get(i).getLatestMessage();
 
-            String LocallatestDate = response.body().getLatestTime().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
-            String month = LocallatestDate.substring(4,6);
-            String day = LocallatestDate.substring(6,8);
-            String hour = LocallatestDate.substring(9,11);
-            String minute = LocallatestDate.substring(12,14);
-            String time = LocallatestDate.substring(9,14);
-            String latestTime = month + "월 " + day + "일 " + time;
+                System.out.println(userName + " !!: " + chatroomId);
+//                String LocallatestDate = response.body().get(i).getLatestTime().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+//                String month = LocallatestDate.substring(4,6);
+//                String day = LocallatestDate.substring(6,8);
+//                String hour = LocallatestDate.substring(9,11);
+//                String minute = LocallatestDate.substring(12,14);
+//                String time = LocallatestDate.substring(9,14);
+//                String latestTime = LocallatestDate;
 
-            chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));
-            chatListAdapter.notifyDataSetChanged();
+                chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, null));
+                chatListAdapter.notifyDataSetChanged();
+            }
+
+            Log.d("getChatRooms", "onSuccess");
         }
         @Override
-        public void onFailResponse(Response<ChatRoomResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<List<ChatRoomResponse>> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             chatRoomView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
+            Log.d("getChatRooms", HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {

@@ -79,25 +79,4 @@ public class chatListAdapter extends BaseAdapter {
 
         return view;
     }
-//    class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
-//        @Override
-//        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
-//            if(response.body().getFileNames().size()!=0){
-//                String fileThumbNail = response.body().getFileNames().get(0);
-//                Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+fileThumbNail).into(itemImageImageView);
-//            }
-//            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-//        }
-//        @Override
-//        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-//            System.out.println("errorBody"+response.errorBody().string());
-//            itemImageImageView.setImageResource(R.drawable.baby);
-//            Log.d(TAG, "onFailResponse");
-//        }
-//        @Override
-//        public void onConnectionFail(Throwable t) {
-//            itemImageImageView.setImageResource(R.drawable.baby);
-//            Log.e("연결실패", t.getMessage());
-//        }
-//    }
 }

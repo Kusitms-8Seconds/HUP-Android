@@ -23,6 +23,7 @@ import com.example.auctionapp.domain.chat.presenter.ChatMessagePresenter;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
+import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
@@ -57,10 +58,6 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     String profileUrlStr;
     private Long EndItemId;
 
-    //firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-
     // Attributes
     private ChatMessageView chatMessageView;
     private ActivityChatRoomBinding mBinding;
@@ -77,7 +74,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public ChattingViewAdapter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext, Long chatRoomUid, Long myuid, Long destUid) {
-
+        comments = new ArrayList<>();
         this.chatMessageView = chatMessageView;
         this.mBinding = mBinding;
         this.context = getApplicationContext;
@@ -110,6 +107,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void getMessageList() {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
+        mBinding.chattingRecyclerView.scrollToPosition(mBinding.chattingRecyclerView.getAdapter().getItemCount()-1);
 
 //        databaseReference.child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
 //            @Override

@@ -169,7 +169,7 @@ public interface RestAPI {
 
     //chat
     @GET("api/v1/chatRooms/{id}")     //유저의 모든 채팅방 조회
-    Call<ChatRoomResponse> getChatRooms(@Path("id") Long id);
+    Call<List<ChatRoomResponse>> getChatRooms(@Path("id") Long id);
     @GET("api/v1/chatMessages/{id}")     //채팅방의 모든 메세지 조회
     Call<ChatMessageResponse> getChatMessages(@Path("id") Long id);
 
