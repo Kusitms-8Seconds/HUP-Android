@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
 
 public class HupStomp {
 
-    private static final String url = "ws://52.78.175.27:8080/stomp/websocket";
+    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
@@ -69,7 +69,7 @@ public class HupStomp {
         this.participants = participants;
         this.highPrice = highPrice;
         connectSTOMP();
-//        topicSTOMP();
+        topicSTOMP();
     }
 
     public void connectSTOMP(){

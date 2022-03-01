@@ -2,6 +2,7 @@ package com.example.auctionapp.domain.chat.presenter;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -9,17 +10,37 @@ import androidx.annotation.RequiresApi;
 import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.adapter.chatListAdapter;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
+import com.example.auctionapp.domain.chat.dto.ChatRoomResponse;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
+import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
+import com.example.auctionapp.domain.home.constant.HomeConstants;
+import com.example.auctionapp.domain.home.presenter.MainPresenter;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
+import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
+import com.example.auctionapp.global.retrofit.MainRetrofitTool;
+import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     //firebase
@@ -47,81 +68,51 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
 
     @Override
     public void init() {
-        database = FirebaseDatabase.getInstance(ChatConstants.EChatFirebase.firebaseUrl.getText());
-        databaseReference = database.getReference();
-
         chatListAdapter = new chatListAdapter(context, chatroomList);
         mBinding.chattingRoomListView.setAdapter(chatListAdapter);
 
         myuid = String.valueOf(Constants.userId);
+        getChatList();
     }
 
     @Override
     public void getChatList() {
-        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).orderByChild(ChatConstants.EChatFirebase.users.getText() +
-                ChatConstants.EChatFirebase.slash.getText()+myuid).equalTo(true).addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chatroomList.clear();
-                for(DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-                    ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
-                    chatRoomUid = dataSnapshot.getKey();
-                    itemId = dataSnapshot.child(ChatConstants.EChatFirebase.itemId.getText() + ChatConstants.EChatFirebase.slash.getText()
-                            + ChatConstants.EChatFirebase.itemId.getText()).getValue(Long.class);
-                    String temp = chatModel.users.toString();
-                    String [] array = temp.split("=true");
-                    for(int i=0; i<array.length; i++) {
-                        // 내가 들어가 있는 채팅방의 상대방유저 id 가져오기
-                        String usersIdStr = array[i];
-                        if(usersIdStr.contains(myuid)) continue;
-                        usersIdStr = usersIdStr.replace("{","");
-                        usersIdStr = usersIdStr.replace("}","");
-                        usersIdStr = usersIdStr.replace(",","");
-                        usersIdStr = usersIdStr.replace(" ","");
-                        if(!usersIdStr.equals(myuid) && !usersIdStr.equals("")) {
-                            setChatList(chatRoomUid, usersIdStr, itemId);
-                        }
-                    }
-
-                }
-                chatListAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatRooms(Constants.userId)
+                .enqueue(MainRetrofitTool.getCallback(new getChatRoomsCallback()));
     }
 
-    @Override
-    public void setChatList(String chatRoomUid, String oppId, Long itemIdL) {
-        databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()+ChatConstants.EChatFirebase.slash.getText() + chatRoomUid +
-                ChatConstants.EChatFirebase.slash.getText() + ChatConstants.EChatFirebase.comments.getText())
-                .addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String lastChat = "";
-                String lastChatTime = "";
-                String lastChatTimeStr = "";
-                for(DataSnapshot dataSnapshot:snapshot.getChildren()) //마지막 채팅, 시간 가져오기
-                {
-                    lastChat = dataSnapshot.child(ChatConstants.EChatFirebase.message.getText()).getValue(String.class);
-                    lastChatTimeStr = dataSnapshot.child(ChatConstants.EChatFirebase.timestamp.getText()).getValue(String.class);
-                }
-                String [] array = lastChatTimeStr.split("-");
-                String month = array[1];
-                String [] array2 = array[2].split("T");
-                String [] array3 = array2[1].split(":");
-                lastChatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
-                chatroomList.add(new chatListData(itemIdL, oppId, lastChatTime, lastChat));
-                chatListAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+    private class getChatRoomsCallback implements MainRetrofitCallback<ChatRoomResponse> {
+
+        @Override
+        public void onSuccessResponse(Response<ChatRoomResponse> response) throws IOException {
+            Long chatroomId = response.body().getId();
+            Long destId = response.body().getUserId();
+            String userName = response.body().getUserName();
+            Long itemId = response.body().getItemId();
+            String itemUrl = "";
+            if(response.body().getFileNames() != null) itemUrl = response.body().getFileNames().get(0);
+            String latestMessage = response.body().getLatestMessage();
+
+            String LocallatestDate = response.body().getLatestTime().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+            String month = LocallatestDate.substring(4,6);
+            String day = LocallatestDate.substring(6,8);
+            String hour = LocallatestDate.substring(9,11);
+            String minute = LocallatestDate.substring(12,14);
+            String time = LocallatestDate.substring(9,14);
+            String latestTime = month + "월 " + day + "일 " + time;
+
+            chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));
+            chatListAdapter.notifyDataSetChanged();
+        }
+        @Override
+        public void onFailResponse(Response<ChatRoomResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            chatRoomView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
+        }
     }
 }

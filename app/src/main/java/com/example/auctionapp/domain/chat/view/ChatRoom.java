@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,13 +30,12 @@ public class ChatRoom extends Fragment implements ChatRoomView {
         presenter = new ChatRoomPresenter(this, binding, this.getContext());
 
         presenter.init();
-        presenter.getChatList();
 
         binding.chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
-                String destUid = destUser.getProfileName();
+                String destUid = destUser.getDestId().toString();
                 Long destItemId = destUser.getItemId();
                 Intent intent = new Intent(getContext(), ChatMessage.class);
                 intent.putExtra("destUid", destUid);
@@ -49,6 +49,10 @@ public class ChatRoom extends Fragment implements ChatRoomView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

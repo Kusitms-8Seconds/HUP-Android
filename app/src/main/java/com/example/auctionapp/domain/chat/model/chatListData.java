@@ -1,29 +1,31 @@
 package com.example.auctionapp.domain.chat.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class chatListData {
+    private Long chatroomId;
+    private Long destId;
+    private String userName;
     private Long itemId;
-    private String profileName;
-    private String chatTime;
-    private String lastChat;
+    private String itemUrl;
+    private String latestMessage;
+    private String latestTime;
 
     public chatListData(){ }
 
-    public chatListData(Long itemId, String profileName, String chatTime, String lastChat){
+    public chatListData(Long chatroomId, Long destId, String userName, Long itemId, String itemUrl, String latestMessage, String latestTime) {
+        this.chatroomId =  chatroomId;
+        this.destId = destId;
         this.itemId = itemId;
-        this.profileName = profileName;
-        this.chatTime = chatTime;
-        this.lastChat = lastChat;
-    }
-    public Long getItemId() {
-        return this.itemId;
-    }
-    public String getProfileName(){
-        return this.profileName;
-    }
-    public String getChatTime(){
-        return this.chatTime;
-    }
-    public String getLastChat(){
-        return this.lastChat;
+        this.userName = userName;
+        this.itemUrl = itemUrl;
+        this.latestMessage = latestMessage;
+        this.latestTime = latestTime;
     }
 }

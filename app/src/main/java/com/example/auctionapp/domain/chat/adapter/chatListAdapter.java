@@ -67,36 +67,37 @@ public class chatListAdapter extends BaseAdapter {
         itemImageImageView.setClipToOutline(true);
         Long itemIdL = data.get(position).getItemId();
         // 상품 이미지 load
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemIdL)
-                .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
+        Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+data.get(position).getItemUrl()).into(itemImageImageView);
+//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemIdL)
+//                .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
-        profileNameTextView.setText(data.get(position).getProfileName());
+        profileNameTextView.setText(data.get(position).getUserName());
         chatTimeTextView = (TextView) view.findViewById(R.id.tv_chatlist_lastChatTime);
-        chatTimeTextView.setText(data.get(position).getChatTime());
+        chatTimeTextView.setText(data.get(position).getLatestTime());
         lastChatTextView = (TextView) view.findViewById(R.id.tv_chatlist_lastChat);
-        lastChatTextView.setText(data.get(position).getLastChat());
+        lastChatTextView.setText(data.get(position).getLatestMessage());
 
         return view;
     }
-    class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
-        @Override
-        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
-            if(response.body().getFileNames().size()!=0){
-                String fileThumbNail = response.body().getFileNames().get(0);
-                Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+fileThumbNail).into(itemImageImageView);
-            }
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            itemImageImageView.setImageResource(R.drawable.baby);
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            itemImageImageView.setImageResource(R.drawable.baby);
-            Log.e("연결실패", t.getMessage());
-        }
-    }
+//    class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
+//        @Override
+//        public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+//            if(response.body().getFileNames().size()!=0){
+//                String fileThumbNail = response.body().getFileNames().get(0);
+//                Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+fileThumbNail).into(itemImageImageView);
+//            }
+//            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
+//        }
+//        @Override
+//        public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
+//            System.out.println("errorBody"+response.errorBody().string());
+//            itemImageImageView.setImageResource(R.drawable.baby);
+//            Log.d(TAG, "onFailResponse");
+//        }
+//        @Override
+//        public void onConnectionFail(Throwable t) {
+//            itemImageImageView.setImageResource(R.drawable.baby);
+//            Log.e("연결실패", t.getMessage());
+//        }
+//    }
 }
