@@ -68,8 +68,6 @@ public class chatListAdapter extends BaseAdapter {
         Long itemIdL = data.get(position).getItemId();
         // 상품 이미지 load
         Glide.with(itemImageImageView.getContext()).load(Constants.imageBaseUrl+data.get(position).getItemUrl()).into(itemImageImageView);
-//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemIdL)
-//                .enqueue(MainRetrofitTool.getCallback(new chatListAdapter.getItemDetailsCallback()));
         profileNameTextView = (TextView) view.findViewById(R.id.tv_chatlist_profileName);
         profileNameTextView.setText(data.get(position).getUserName());
         chatTimeTextView = (TextView) view.findViewById(R.id.tv_chatlist_lastChatTime);

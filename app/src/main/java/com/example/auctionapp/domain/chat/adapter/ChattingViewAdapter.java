@@ -86,53 +86,10 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         getMessageList();
     }
 
-//    //상대방 uid 하나(single) 읽기
-//    private void getDestUid() {
-//        databaseReference.child("users").child(destUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                destUser = snapshot.getValue(User.class);
-//
-//                //채팅 내용 읽어들임
-//                getMessageList();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
-//    }
-
     //채팅 내용 읽어들임
     private void getMessageList() {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(Constants.userId)
                 .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
-        mBinding.chattingRecyclerView.scrollToPosition(mBinding.chattingRecyclerView.getAdapter().getItemCount()-1);
-
-//        databaseReference.child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                comments.clear();
-//
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    ChatModel.Comment commentUser = dataSnapshot.getValue(ChatModel.Comment.class);
-//                    String messageStr = commentUser.getMessage();
-//                    String timestampStr = commentUser.getTimestamp();
-//                    Long Uid = commentUser.getUid();
-//                    if (Uid == Constants.userId) {
-//                        comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 1));
-//                    } else {
-//                        comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 0));
-//                    }
-//                }
-//                notifyDataSetChanged();
-//                mBinding.chattingRecyclerView.scrollToPosition(comments.size() - 1);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
     }
 
     public class getChatMessagesCallback implements MainRetrofitCallback<ChatMessageResponse> {

@@ -117,6 +117,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         //동기화
         mBinding.chattingRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mBinding.chattingRecyclerView.setAdapter(new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid));
+        mBinding.chattingRecyclerView.scrollToPosition(mBinding.chattingRecyclerView.getAdapter().getItemCount()-1);
     }
 
 //    public class getChatMessagesCallback implements MainRetrofitCallback<ChatMessageResponse> {
@@ -147,7 +148,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
                 Glide.with(context).load(Constants.imageBaseUrl+fileThumbNail).into(mBinding.chattingItemImage);
             }
             mBinding.chattingItemDetailCategory.setText(response.body().getCategory().getName());
-            mBinding.chattingItemDetailPrice.setText(response.body().getSoldPrice());    //낙찰가 출력
+            mBinding.chattingItemDetailPrice.setText(String.valueOf(response.body().getSoldPrice()));    //낙찰가 출력
             Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
