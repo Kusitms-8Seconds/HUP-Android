@@ -59,18 +59,17 @@ public class MainPresenter implements Presenter{
     AuctionNowAdapter auctionNowAdapter;
 
     //AuctionNow Attributes
-    Long[] itemId;
-    String[] imageURL;
-    String[] itemName;
-    int[] itemPrice;
-    String[] date;
-    String[] itemInfo;
-    Long[] heart;
+    Long itemId;
+    String imageURL;
+    String itemName;
+    int itemPrice;
+    String date;
+    String itemInfo;
     //BestItem Attributes
-    String[] btImage;
-    String[] btName;
-    String[] btTime;
-    int[] btTempMax;
+    String btImage;
+    String btName;
+    String btTime;
+    int btTempMax;
 
     int maximumPriceCount;
     int maximumPriceCount2;
@@ -105,9 +104,10 @@ public class MainPresenter implements Presenter{
             }
         });
 
-        bestItemDataList = new ArrayList<>();
-        bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
-        binding.bestItemViewPager.setAdapter(bestItemAdapter);
+//        bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+//        binding.bestItemViewPager.setAdapter(bestItemAdapter);
+        setBestItemAnimation();
+        maximumPriceCount2 = 0;
     }
 
     @Override
@@ -124,27 +124,28 @@ public class MainPresenter implements Presenter{
 
     // best items callback
     public class getBestItemsCallback implements MainRetrofitCallback<List<BestItemResponse>> {
-
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<List<BestItemResponse>> response) {
-            btImage = new String[response.body().size()];
-            btName = new String[response.body().size()];
-            btTime = new String[response.body().size()];
-            btTempMax = new int[response.body().size()];
+            bestItemDataList = new ArrayList<>();
             for(int i=0; i<response.body().size(); i++){
-                btName[i] = response.body().get(i).getItemName();
-                btTime[i] = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() + " " +
+                btName = response.body().get(i).getItemName();
+                btTime = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() + " " +
                         response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText();
-                btTempMax[i] = response.body().get(i).getInitPrice();
+                btTempMax = response.body().get(i).getInitPrice();
 
                 if(response.body().get(i).getFileNames().size()!=0) {
-                    btImage[i] = response.body().get(i).getFileNames().get(0);
+                    btImage = response.body().get(i).getFileNames().get(0);
                 } else{
-                    btImage[i] = null;
+                    btImage = null;
                 }
+                bestItem = new BestItem(btImage, btName, btTime, btTempMax);
+                bestItemDataList.add(bestItem);
+
                 RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
+
+//                bestItemAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -166,13 +167,6 @@ public class MainPresenter implements Presenter{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
-            itemId = new Long[response.body().getData().size()];
-            itemName = new String[response.body().getData().size()];
-            itemPrice = new int[response.body().getData().size()];
-            date = new String[response.body().getData().size()];
-            itemInfo = new String[response.body().getData().size()];
-            heart = new Long[response.body().getData().size()];
-            imageURL = new String[response.body().getData().size()];
             for(int i=0; i<response.body().getData().size(); i++){
                 LocalDateTime startDateTime = LocalDateTime.now();
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
@@ -180,23 +174,25 @@ public class MainPresenter implements Presenter{
                 String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
                 String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
 
-                itemId[i] = response.body().getData().get(i).getId();
-                itemName[i] = response.body().getData().get(i).getItemName();
-                itemPrice[i] = response.body().getData().get(i).getInitPrice();
+                itemId = response.body().getData().get(i).getId();
+                itemName = response.body().getData().get(i).getItemName();
+                itemPrice = response.body().getData().get(i).getInitPrice();
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
-                    date[i] = days + "일 " + hours + "시간 " + minutes + "분 전";
+                    date = days + "일 " + hours + "시간 " + minutes + "분 전";
                 } else
-                    date[i] = hours + "시간 " + minutes + "분 전";
-                itemInfo[i] = response.body().getData().get(i).getDescription();
-                heart[i] = null;
+                    date = hours + "시간 " + minutes + "분 전";
+                itemInfo = response.body().getData().get(i).getDescription();
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
-                    imageURL[i] = response.body().getData().get(i).getFileNames().get(0);
+                    imageURL = response.body().getData().get(i).getFileNames().get(0);
                 } else{
-                    imageURL[i] = null;
+                    imageURL = null;
                 }
-                RetrofitTool.getAPIWithNullConverter().getHeart(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
+                data = new AuctionNow(itemId, imageURL, itemName, itemPrice, date, itemInfo);
+                auctionDataList.add(data);
+                auctionNowAdapter.addItem(data);
+                auctionNowAdapter.notifyDataSetChanged();
+                setAuctionItemAnimation();
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -212,43 +208,17 @@ public class MainPresenter implements Presenter{
             Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
-    // heart callback
-    private class getHeartCallback implements MainRetrofitCallback<ScrapCountResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ScrapCountResponse> response) {
-            heart[heartCount] = response.body().getHeart();
-            data = new AuctionNow(itemId[heartCount], imageURL[heartCount], itemName[heartCount], itemPrice[heartCount],
-                    date[heartCount], itemInfo[heartCount], heart[heartCount]);
-            auctionDataList.add(data);
-            auctionNowAdapter.addItem(auctionDataList.get(heartCount));
-            auctionNowAdapter.notifyDataSetChanged();
-            setAuctionItemAnimation();
-            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
-            heartCount++;
-        }
-        @Override
-        public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mainView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
     private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
 
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-            btTempMax[maximumPriceCount2] = response.body().getMaximumPrice();
-            bestItem = new BestItem(btImage[maximumPriceCount2], btName[maximumPriceCount2], btTime[maximumPriceCount2], btTempMax[maximumPriceCount2]);
-            bestItemDataList.add(bestItem);
-            bestItemAdapter.notifyDataSetChanged();
+            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
+            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
             binding.bestItemViewPager.setAdapter(bestItemAdapter);
-            setBestItemAnimation();
+            bestItemAdapter.notifyDataSetChanged();
+
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
+
             maximumPriceCount2++;
         }
         @Override

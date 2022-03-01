@@ -16,7 +16,14 @@ public class ErrorMessageParser {
     public ErrorMessageParser(String errorResponse) {
         this.parser = new JsonParser();
         this.element = parser.parse(errorResponse);
-        this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
-        this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
+        if(element.getAsJsonObject().get("messages").getAsJsonArray() != null) {
+//            System.out.println("element: " + element.getAsJsonObject().get("messages"));
+            this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
+            this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
+        }
+        else {
+            this.errorMessage = "null";
+            this.parsedErrorMessage = "null";
+        }
     }
 }

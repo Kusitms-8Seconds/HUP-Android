@@ -2,6 +2,7 @@ package com.example.auctionapp.global.retrofit;
 
 import androidx.annotation.Nullable;
 
+import com.example.auctionapp.domain.chat.dto.ChatRoomResponse;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.NoticeListResponse;
@@ -163,5 +164,11 @@ public interface RestAPI {
     Call<NoticeResponse> getNotice(@Path("noticeId") Long noticeId);
     @DELETE("api/v1/notices/{noticeId}")     //공지사항 삭제
     Call<DefaultResponse> deleteNotice(@Path("noticeId") Long noticeId);
+
+    //chat
+    @GET("api/v1/chatRooms/{id}")     //유저의 모든 채팅방 조회
+    Call<ChatRoomResponse> getChatRooms(@Path("id") Long id);
+    @GET("api/v1/chatMessages/{id}")     //채팅방의 모든 메세지 조회
+    Call<ChatRoomResponse> getChatMessages(@Path("id") Long id);
 
 }

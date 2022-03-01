@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
 
 public class HupStomp {
 
-    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
+    private static final String url = "ws://52.78.175.27:8080/stomp/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
@@ -69,7 +69,7 @@ public class HupStomp {
         this.participants = participants;
         this.highPrice = highPrice;
         connectSTOMP();
-        topicSTOMP();
+//        topicSTOMP();
     }
 
     public void connectSTOMP(){
@@ -95,7 +95,7 @@ public class HupStomp {
     public void topicSTOMP() throws IOException, JSONException {
         topicHeaderList=new ArrayList<>();
         topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
-        stompClient.topic("/topic/priceSuggestions", topicHeaderList).subscribe(topicMessage -> {
+        stompClient.topic("/sub/priceSuggestions", topicHeaderList).subscribe(topicMessage -> {
               JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
             username = element.getAsJsonObject().get("username").getAsString();
@@ -117,11 +117,6 @@ public class HupStomp {
                 public void run() {
                     highPrice.setText(String.valueOf(maximumPrice));
                     participants.setText(String.valueOf(theNumberOfParticipants));
-//                    BidParticipants data = new BidParticipants(Long.valueOf(userId), "", username, Integer.valueOf(suggestionPrice), "11");
-//                    bidParticipants.add(data);
-//                    ptAdapter.validationAndDeleteItem(data.getUserId());
-//                    ptAdapter.addItem(data);
-//                    ptAdapter.notifyDataSetChanged();
 
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(userId))
                             .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
@@ -135,7 +130,7 @@ public class HupStomp {
     public void sendMessage(Long itemId, Long userId, String suggestionPrice) throws JSONException{
         sendHeaderList = new ArrayList<>();
         sendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
-        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/app/priceSuggestions"));
+        sendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/pub/priceSuggestions"));
         JSONObject json = new JSONObject();
         json.put("itemId", itemId);
         json.put("userId", userId);

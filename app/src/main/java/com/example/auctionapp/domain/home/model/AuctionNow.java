@@ -26,16 +26,14 @@ public class AuctionNow {
     int itemPrice;
     String date;
     String itemInfo;
-    Long heart;
 
-    public AuctionNow(Long itemId, String imageURL, String itemName, int itemPrice, String date, String itemInfo, Long heart) {
+    public AuctionNow(Long itemId, String imageURL, String itemName, int itemPrice, String date, String itemInfo) {
         this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.date = date;
         this.itemInfo = itemInfo;
-        this.heart = heart;
     }
 }
 

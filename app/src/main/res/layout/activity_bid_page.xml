@@ -219,15 +219,26 @@
             android:layout_height="120px"
             android:layout_marginLeft="50px"
             android:background="@drawable/box_edge"
-            android:ems="10"
+            android:ems="7"
             android:inputType="number"
             android:digits="0123456789"
-            android:hint="가격을 입력해주세요.(숫자만 입력)"
-            android:textSize="38px"
+            android:hint="가격을 입력해주세요 (숫자만 입력)"
+            android:textSize="34px"
+            android:paddingLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bidbutton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:layout_marginEnd="10dp"
+            android:textSize="38px"
+            app:layout_constraintEnd_toEndOf="@id/editPrice"
+            app:layout_constraintTop_toTopOf="@id/editPrice"
+            app:layout_constraintBottom_toBottomOf="@id/editPrice"/>
 
         <Button
             android:id="@+id/bidbutton"
