@@ -103,8 +103,8 @@ public class ChatMessageStomp {
             JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
             System.out.println("element: " + element);
-            chatRoomId = element.getAsJsonObject().get("chatRoomId").getAsLong();
-            userId = element.getAsJsonObject().get("userId").getAsLong();
+            chatRoomId = Long.valueOf(element.getAsJsonObject().get("chatRoomId").getAsString());
+            userId = Long.valueOf(element.getAsJsonObject().get("userId").getAsString());
             userName = element.getAsJsonObject().get("userName").getAsString();
             message = element.getAsJsonObject().get("message").getAsString();
             createdDate = element.getAsJsonObject().get("createdDate").getAsString();

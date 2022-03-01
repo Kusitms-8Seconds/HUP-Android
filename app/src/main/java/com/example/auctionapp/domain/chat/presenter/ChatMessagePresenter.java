@@ -85,6 +85,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         else mBinding.sendbutton.setEnabled(true);
 
         checkChatRoom();
+        chatMessageStomp = new ChatMessageStomp();
         chatMessageStomp.initStomp(adapter, chatRoomUid, chatMessageView);
 
         mBinding.sendbutton.setOnClickListener(new View.OnClickListener() {
