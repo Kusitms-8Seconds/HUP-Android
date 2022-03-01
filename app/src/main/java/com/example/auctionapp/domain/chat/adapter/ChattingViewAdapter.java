@@ -88,32 +88,36 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //채팅 내용 읽어들임
     private void getMessageList() {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(Constants.userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(chatRoomUid)
                 .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
     }
 
-    public class getChatMessagesCallback implements MainRetrofitCallback<ChatMessageResponse> {
+    public class getChatMessagesCallback implements MainRetrofitCallback<PaginationDto<List<ChatMessageResponse>>> {
         @Override
-        public void onSuccessResponse(Response<ChatMessageResponse> response) {
-            String messageStr = response.body().getMessage();
-            String LocallatestDate = response.body().getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
-            String month = LocallatestDate.substring(4,6);
-            String day = LocallatestDate.substring(6,8);
-            String hour = LocallatestDate.substring(9,11);
-            String minute = LocallatestDate.substring(12,14);
-            String time = LocallatestDate.substring(9,14);
-            String timestampStr = month + "월 " + day + "일 " + time;
-            Long Uid = response.body().getId();
-            if (Uid == Constants.userId) {
-                comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 1));
-            } else {
-                comments.add(new ChatModel.Comment(Uid, messageStr, timestampStr, 0));
-            }
+        public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) {
+            for(int i=0;i<response.body().getData().size();i++) {
+                String messageStr = response.body().getData().get(i).getMessage();
+                System.out.println(messageStr + " :::: ");
+                String LocallatestDate = response.body().getData().get(i).getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            String month = LocallatestDate.substring(4,6);
+//            String day = LocallatestDate.substring(6,8);
+//            String hour = LocallatestDate.substring(9,11);
+//            String minute = LocallatestDate.substring(12,14);
+//            String time = LocallatestDate.substring(9,14);
+//            String timestampStr = month + "월 " + day + "일 " + time;
 
+                Long Uid = response.body().getData().get(i).getId();
+                if (Uid == Constants.userId) {
+                    comments.add(new ChatModel.Comment(Uid, messageStr, LocallatestDate, 1));
+                } else {
+                    comments.add(new ChatModel.Comment(Uid, messageStr, LocallatestDate, 0));
+                }
+                notifyDataSetChanged();
+            }
             Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<ChatMessageResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
@@ -179,25 +183,13 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(comments.get(position).getUid()))
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
             ((LeftViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
-            String chatTimeStr = comments.get(position).getTimestamp();
-            String [] array = chatTimeStr.split("-");
-            String month = array[1];
-            String [] array2 = array[2].split("T");
-            String [] array3 = array2[1].split(":");
-            String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
-            ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
-            ((LeftViewHolder) viewHolder).chat_time.setText(chatTime);
+            ((LeftViewHolder) viewHolder).chat_time.setText("");
+            ((LeftViewHolder) viewHolder).chat_time.setText("");
 
         } else {
 //                ((RightViewHolder) viewHolder).name.setText(comments.get(position).getUid());
             ((RightViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
-            String chatTimeStr = comments.get(position).getTimestamp();
-            String [] array = chatTimeStr.split("-");
-            String month = array[1];
-            String [] array2 = array[2].split("T");
-            String [] array3 = array2[1].split(":");
-            String chatTime = month + "월 " + array2[0] + "일 " + array3[0] + ":" + array3[1];
-            ((RightViewHolder) viewHolder).chat_time.setText(chatTime);
+            ((RightViewHolder) viewHolder).chat_time.setText("");
         }
 
     }

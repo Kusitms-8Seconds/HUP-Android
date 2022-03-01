@@ -11,7 +11,7 @@ public class Constants {
     public static String accessToken = null;
     public static String refreshToken = null;
     public static String targetToken = null;
-    public static final String imageBaseUrl = "http://52.78.175.27:8080/api/v1/files/";
+    public static final String imageBaseUrl = "http://10.0.2.2:8080/api/v1/files/";
 
     @Getter
     @NoArgsConstructor

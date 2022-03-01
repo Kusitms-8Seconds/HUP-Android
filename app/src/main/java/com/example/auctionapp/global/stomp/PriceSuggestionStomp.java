@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
 
 public class PriceSuggestionStomp {
 
-    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
+    private static final String url = "http://10.0.2.2:8080/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;

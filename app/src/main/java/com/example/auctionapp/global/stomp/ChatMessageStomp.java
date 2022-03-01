@@ -44,7 +44,7 @@ import static android.content.ContentValues.TAG;
 
 public class ChatMessageStomp {
 
-    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
+    private static final String url = "http://10.0.2.2:8080/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
@@ -73,7 +73,7 @@ public class ChatMessageStomp {
         comments = new ArrayList<>();
         connectSTOMP();
         subSTOMP();
-        pubEnterMessage();
+        //pubEnterMessage();
     }
 
     public void connectSTOMP(){
@@ -103,7 +103,7 @@ public class ChatMessageStomp {
             JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
             System.out.println("element: " + element);
-            chatRoomId = Long.valueOf(element.getAsJsonObject().get("chatRoomId").getAsString());
+            chatRoomId = Long.valueOf(element.getAsJsonObject().get("id").getAsString());
             userId = Long.valueOf(element.getAsJsonObject().get("userId").getAsString());
             userName = element.getAsJsonObject().get("userName").getAsString();
             message = element.getAsJsonObject().get("message").getAsString();
