@@ -2,32 +2,22 @@ package com.example.auctionapp.domain.pricesuggestion.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
-import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
-import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
-import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
-import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
-import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -35,13 +25,11 @@ import com.example.auctionapp.global.firebase.FCMRequest;
 import com.example.auctionapp.global.firebase.FCMResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
-import com.example.auctionapp.global.stomp.HupStomp;
+import com.example.auctionapp.global.stomp.PriceSuggestionStomp;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -56,7 +44,7 @@ import static android.content.ContentValues.TAG;
 
 public class BidPagePresenter implements Presenter{
     PTAdapter ptAdapter;
-    private HupStomp hupstomp;
+    private PriceSuggestionStomp hupstomp;
     boolean onGoing;
 
     Long itemId;
@@ -101,7 +89,7 @@ public class BidPagePresenter implements Presenter{
         ptAdapter = new PTAdapter();
         binding.participantsRecyclerView.setAdapter(ptAdapter);
 
-        hupstomp = new HupStomp();
+        hupstomp = new PriceSuggestionStomp();
         hupstomp.initStomp(ptAdapter, bidParticipants, binding.highPrice, binding.participants);
 
         if(!onGoing) {

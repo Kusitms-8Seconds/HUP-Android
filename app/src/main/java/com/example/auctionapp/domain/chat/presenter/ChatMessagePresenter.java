@@ -23,6 +23,7 @@ import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.stomp.ChatMessageStomp;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +37,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -47,9 +49,10 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
     private Long destUid;     //상대방 uid
     private Long itemId;
 
-    //firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    ChattingViewAdapter adapter;
+
+    //stomp
+    ChatMessageStomp chatMessageStomp;
 
     // Attributes
     private ChatMessageView chatMessageView;
@@ -64,12 +67,15 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
     }
 
     @Override
-    public void init(Long destuid, Long EndItemId) {
+    public void init(Long chatRoomId, Long destuid, Long EndItemId) throws IOException, JSONException {
+        chatRoomUid = chatRoomId;
         myuid = Constants.userId;
         destUid = destuid;
         itemId = EndItemId;
 
         mBinding.chattingItemImage.setClipToOutline(true);
+        adapter = new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid);
+        adapter.notifyDataSetChanged();
 
         //상품 정보 가져오기
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
@@ -79,65 +85,26 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         else mBinding.sendbutton.setEnabled(true);
 
         checkChatRoom();
-    }
+        chatMessageStomp.initStomp(adapter, chatRoomUid, chatMessageView);
 
-    @Override
-    public void sendMsg() {
         mBinding.sendbutton.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                sendMsgToDataBase();
+                String message = mBinding.editText.getText().toString();
+                chatMessageStomp.pubSendMessage(message);
             }
         });
     }
 
     @Override
-    public void sendMsgToDataBase() {
-        if (!mBinding.editText.getText().toString().equals("")) {
-            // comment.uid 값이 myuid 여야 하는지, destuid여야 하는지 체크해야 함..
-//            LocalDateTime currentDate = LocalDateTime.now();
-//            ChatModel.Comment comment = new ChatModel.Comment();
-//            comment.uid = myuid;
-//            comment.message = mBinding.editText.getText().toString();
-//            comment.timestamp = String.valueOf(currentDate);
-//            databaseReference.child(ChatConstants.EChatFirebase.chatrooms.getText()).child(chatRoomUid).child(ChatConstants.EChatFirebase.comments.getText()).push().setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void aVoid) {
-//                    mBinding.editText.setText("");
-//                }
-//            });
-        }
-    }
-
-    @Override
     public void checkChatRoom() {
-//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(Constants.userId)
-//                .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
         //동기화
         mBinding.chattingRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mBinding.chattingRecyclerView.setAdapter(new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid));
-        mBinding.chattingRecyclerView.scrollToPosition(mBinding.chattingRecyclerView.getAdapter().getItemCount()-1);
+        mBinding.chattingRecyclerView.setAdapter(adapter);
+        mBinding.chattingRecyclerView.scrollToPosition(adapter.getItemCount()-1);
     }
-
-//    public class getChatMessagesCallback implements MainRetrofitCallback<ChatMessageResponse> {
-//        @Override
-//        public void onSuccessResponse(Response<ChatMessageResponse> response) {
-//
-//            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
-//        }
-//        @Override
-//        public void onFailResponse(Response<ChatMessageResponse> response) throws IOException, JSONException {
-//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-//            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
-//            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
-//        }
-//        @Override
-//        public void onConnectionFail(Throwable t) {
-//            mBinding.chattingItemDetailPrice.setText(ChatConstants.EChatCallback.rtConnectionFail.getText());
-//            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
-//        }
-//    }
 
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override

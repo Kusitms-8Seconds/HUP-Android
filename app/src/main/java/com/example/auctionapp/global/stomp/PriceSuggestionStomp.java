@@ -38,7 +38,7 @@ import ua.naiksoftware.stomp.dto.StompMessage;
 import static android.content.ContentValues.TAG;
 
 
-public class HupStomp {
+public class PriceSuggestionStomp {
 
     private static final String url = "http://52.78.175.27:8080/websocket/websocket";
 

@@ -11,6 +11,8 @@ import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.presenter.ChatMessagePresenter;
 
+import lombok.SneakyThrows;
+
 public class ChatMessage extends AppCompatActivity implements ChatMessageView {
     private ActivityChatRoomBinding binding;
     private ChatMessagePresenter presenter;
@@ -18,7 +20,9 @@ public class ChatMessage extends AppCompatActivity implements ChatMessageView {
     //uid
     private Long destUid;     //상대방 uid
     private Long EndItemId;
+    private Long chatRoomId;
 
+    @SneakyThrows
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +42,9 @@ public class ChatMessage extends AppCompatActivity implements ChatMessageView {
         Intent intent = getIntent();
         destUid = intent.getLongExtra("destUid", 0);
         EndItemId = intent.getLongExtra("itemId", 0);
+        chatRoomId = intent.getLongExtra("chatRoomId", 0);
 
-        presenter.init(destUid, EndItemId);
-        presenter.sendMsg();
+        presenter.init(chatRoomId, destUid, EndItemId);
     }
     @Override
     public void showToast(String message) {

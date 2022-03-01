@@ -21,11 +21,9 @@ import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.global.stomp.HupStomp;
+import com.example.auctionapp.global.stomp.PriceSuggestionStomp;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -39,7 +37,7 @@ public class BidPage extends AppCompatActivity implements BidPageView {
     Dialog dialog02;
     Dialog dialog03;
     PTAdapter ptAdapter;
-    private HupStomp hupstomp;
+    private PriceSuggestionStomp hupstomp;
 
     Long itemId;
     Long participantId;

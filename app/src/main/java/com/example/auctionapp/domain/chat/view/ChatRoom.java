@@ -37,9 +37,11 @@ public class ChatRoom extends Fragment implements ChatRoomView {
                 chatListData destUser = (chatListData) adapterView.getItemAtPosition(position);
                 Long destUid = destUser.getDestId();
                 Long destItemId = destUser.getItemId();
+                Long chatRoomId = destUser.getChatroomId();
                 Intent intent = new Intent(getContext(), ChatMessage.class);
                 intent.putExtra("destUid", destUid);
                 intent.putExtra("itemId", destItemId);
+                intent.putExtra("chatRoomId", chatRoomId);
                 startActivity(intent);
             }
         });

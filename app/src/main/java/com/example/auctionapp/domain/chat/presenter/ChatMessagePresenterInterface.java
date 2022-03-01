@@ -1,11 +1,10 @@
 package com.example.auctionapp.domain.chat.presenter;
 
-public interface ChatMessagePresenterInterface {
-    void init(Long destUid, Long EndItemId);
-    void sendMsg();
-    void sendMsgToDataBase();
-    void checkChatRoom();
+import org.json.JSONException;
 
-//    void getDestUid(); //상대방 uid 하나(single) 읽기
-//    void getMessageList(); //채팅 내용 읽어들임
+import java.io.IOException;
+
+public interface ChatMessagePresenterInterface {
+    void init(Long chatRoomId, Long destUid, Long EndItemId) throws IOException, JSONException;
+    void checkChatRoom();
 }
