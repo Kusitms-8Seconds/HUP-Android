@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,32 +96,33 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class getChatMessagesCallback implements MainRetrofitCallback<PaginationDto<List<ChatMessageResponse>>> {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) {
-            for(int i=0;i<response.body().getData().size();i++) {
-                String messageStr = response.body().getData().get(i).getMessage();
-                System.out.println(messageStr + " :::: ");
-                String LocallatestDate = response.body().getData().get(i).getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//            String month = LocallatestDate.substring(4,6);
-//            String day = LocallatestDate.substring(6,8);
-//            String hour = LocallatestDate.substring(9,11);
-//            String minute = LocallatestDate.substring(12,14);
-//            String time = LocallatestDate.substring(9,14);
-//            String timestampStr = month + "월 " + day + "일 " + time;
+            if(response.body().getData().isEmpty()) showToast("null messages");
+            else {
+                for (int i = 0; i < response.body().getData().size(); i++) {
+                    String messageStr = response.body().getData().get(i).getMessage();
+                    Month month = response.body().getData().get(i).getCreatedDate().getMonth();
+                    String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
+                    String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
+                    String minute = String.valueOf(response.body().getData().get(i).getCreatedDate().getMinute());
+                    String time = month + " " + day + "/ " + hour + ":" + minute;
 
-                Long Uid = response.body().getData().get(i).getId();
-                if (Uid == Constants.userId) {
-                    comments.add(new ChatModel.Comment(Uid, messageStr, LocallatestDate, 1));
-                } else {
-                    comments.add(new ChatModel.Comment(Uid, messageStr, LocallatestDate, 0));
+                    Long Uid = response.body().getData().get(i).getUserId();
+                    //left : 0          //right : 1
+                    if (Uid.equals(Constants.userId)) {
+                        comments.add(new ChatModel.Comment(Uid, messageStr, time, 1));
+                    } else {
+                        comments.add(new ChatModel.Comment(Uid, messageStr, time, 0));
+                    }
+                    notifyDataSetChanged();
                 }
-                notifyDataSetChanged();
             }
-            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
+            Log.d("chat messages", ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
+            Log.d("chat messages", ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
         public void onConnectionFail(Throwable t) {
@@ -180,16 +182,15 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewHolder instanceof CenterViewHolder) {
 //                ((CenterViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
         } else if (viewHolder instanceof LeftViewHolder) {
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(comments.get(position).getUid()))
+            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(comments.get(position).getUid())
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
             ((LeftViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
-            ((LeftViewHolder) viewHolder).chat_time.setText("");
-            ((LeftViewHolder) viewHolder).chat_time.setText("");
+            ((LeftViewHolder) viewHolder).chat_time.setText(comments.get(position).getTimestamp());
 
         } else {
 //                ((RightViewHolder) viewHolder).name.setText(comments.get(position).getUid());
             ((RightViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
-            ((RightViewHolder) viewHolder).chat_time.setText("");
+            ((RightViewHolder) viewHolder).chat_time.setText(comments.get(position).getTimestamp());
         }
 
     }

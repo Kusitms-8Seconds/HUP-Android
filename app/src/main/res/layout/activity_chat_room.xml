@@ -165,6 +165,8 @@
             android:layout_marginStart="50px"
             android:layout_marginEnd="50px"
             android:layout_marginTop="30px"
+            android:paddingBottom="40px"
+            tools:listitem="@layout/custom_chatting_mybox"
             android:divider="#00000000"/>
 
     </ScrollView>

@@ -35,6 +35,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,6 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ChatRoomPresenter implements ChatRoomPresenterInterface {
-    //firebase
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     //uid
     String myuid;
     String chatRoomUid;
@@ -96,16 +94,13 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                     itemUrl = response.body().get(i).getFileNames().get(0);
                 String latestMessage = response.body().get(i).getLatestMessage();
 
-                System.out.println(userName + " !!: " + chatroomId);
-//                String LocallatestDate = response.body().get(i).getLatestTime().format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
-//                String month = LocallatestDate.substring(4,6);
-//                String day = LocallatestDate.substring(6,8);
-//                String hour = LocallatestDate.substring(9,11);
-//                String minute = LocallatestDate.substring(12,14);
-//                String time = LocallatestDate.substring(9,14);
-//                String latestTime = LocallatestDate;
+                Month month = response.body().get(i).getLatestTime().getMonth();
+                String day = String.valueOf(response.body().get(i).getLatestTime().getDayOfMonth());
+                String hour = String.valueOf(response.body().get(i).getLatestTime().getHour());
+                String minute = String.valueOf(response.body().get(i).getLatestTime().getMinute());
+                String latestTime = month + " " + day + "/ " + hour + ":" + minute;
 
-                chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, null));
+                chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));
                 chatListAdapter.notifyDataSetChanged();
             }
 

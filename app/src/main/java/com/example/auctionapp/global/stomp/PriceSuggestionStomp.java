@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
 
 public class PriceSuggestionStomp {
 
-    private static final String url = "http://10.0.2.2:8080/websocket/websocket";
+    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
@@ -103,12 +103,6 @@ public class PriceSuggestionStomp {
             maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
             theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
             userId = element.getAsJsonObject().get("userId").getAsString();
-            System.out.println("userId"+userId );
-            System.out.println("username"+username );
-            System.out.println("suggestionPrice"+suggestionPrice );
-            System.out.println("maximumPrice"+maximumPrice );
-            System.out.println("theNumberOfParticipants"+theNumberOfParticipants );
-            System.out.println("들어오는지?");
 
             Handler mainHandler = new Handler(Looper.getMainLooper());
 

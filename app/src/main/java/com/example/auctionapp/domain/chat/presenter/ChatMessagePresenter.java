@@ -50,7 +50,6 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
     private Long itemId;
 
     ChattingViewAdapter adapter;
-
     //stomp
     ChatMessageStomp chatMessageStomp;
 
@@ -87,6 +86,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         checkChatRoom();
         chatMessageStomp = new ChatMessageStomp();
         chatMessageStomp.initStomp(adapter, chatRoomUid, chatMessageView);
+        mBinding.chattingRecyclerView.scrollToPosition(adapter.getItemCount()-1);
 
         mBinding.sendbutton.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
@@ -95,6 +95,10 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
             public void onClick(View v) {
                 String message = mBinding.editText.getText().toString();
                 chatMessageStomp.pubSendMessage(message);
+                //refresh
+                init(chatRoomUid, destUid, itemId);
+//                adapter = new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid);
+//                adapter.notifyDataSetChanged();
             }
         });
     }
