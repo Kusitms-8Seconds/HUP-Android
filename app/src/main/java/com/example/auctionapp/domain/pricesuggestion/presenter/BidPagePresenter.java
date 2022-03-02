@@ -105,6 +105,7 @@ public class BidPagePresenter implements Presenter{
                 if(!binding.editPrice.getText().toString().equals("")){
                     hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
+                    binding.editPrice.setText("");
                 }
             }
         });

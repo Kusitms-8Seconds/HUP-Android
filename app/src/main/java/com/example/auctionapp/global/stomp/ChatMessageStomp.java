@@ -111,11 +111,21 @@ public class ChatMessageStomp {
             Runnable myRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    if(userId == Constants.userId)
-                        comments.add(new ChatModel.Comment(userId, message, createdDate, 1));
-                    else
-                        comments.add(new ChatModel.Comment(userId, message, createdDate, 0));
-
+                    if(message.contains("님이 채팅방에 참여하였습니다")) {
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 2);
+                        comments.add(data);
+                        adapter.addItem(data);
+                    }
+                    else if(userId.equals(Constants.userId)) {
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 1);
+                        comments.add(data);
+                        adapter.addItem(data);
+                    }
+                    else {
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 0);
+                        comments.add(data);
+                        adapter.addItem(data);
+                    }
                     adapter.notifyDataSetChanged();
                 } // This is your code
             };

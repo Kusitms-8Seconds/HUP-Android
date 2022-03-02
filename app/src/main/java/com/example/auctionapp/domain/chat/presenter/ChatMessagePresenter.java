@@ -73,6 +73,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         itemId = EndItemId;
 
         mBinding.chattingItemImage.setClipToOutline(true);
+
         adapter = new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid);
         adapter.notifyDataSetChanged();
 
@@ -80,10 +81,11 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
 
-        if (mBinding.editText.getText().toString() == null) mBinding.sendbutton.setEnabled(false);
-        else mBinding.sendbutton.setEnabled(true);
+//        if (mBinding.editText.getText().toString()) mBinding.sendbutton.setEnabled(false);
+//        else mBinding.sendbutton.setEnabled(true);
 
         checkChatRoom();
+
         chatMessageStomp = new ChatMessageStomp();
         chatMessageStomp.initStomp(adapter, chatRoomUid, chatMessageView);
         mBinding.chattingRecyclerView.scrollToPosition(adapter.getItemCount()-1);
@@ -94,11 +96,11 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
             @Override
             public void onClick(View v) {
                 String message = mBinding.editText.getText().toString();
-                chatMessageStomp.pubSendMessage(chatRoomUid, Constants.userId, message);
-                //refresh
-                init(chatRoomUid, destUid, itemId);
-//                adapter = new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid);
-//                adapter.notifyDataSetChanged();
+                if(!message.equals("")) {
+                    chatMessageStomp.pubSendMessage(chatRoomUid, Constants.userId, message);
+                    adapter.notifyDataSetChanged();
+                    mBinding.editText.setText("");
+                }
             }
         });
     }

@@ -21,6 +21,7 @@ import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.presenter.ChatMessagePresenter;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
+import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -86,7 +87,10 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //채팅 내용 읽어들임
         getMessageList();
     }
-
+    public void addItem(ChatModel.Comment data) {
+        // 외부에서 item을 추가시킬 함수입니다.
+        comments.add(data);
+    }
     //채팅 내용 읽어들임
     private void getMessageList() {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(chatRoomUid)
@@ -109,7 +113,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     Long Uid = response.body().getData().get(i).getUserId();
                     //left : 0          //right : 1     //center:2
-                    if(messageStr.equals(userName+"님이 채팅방에 참여하였습니다."))
+                    if(messageStr.contains("님이 채팅방에 참여하였습니다"))
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 2));
                     else if (Uid.equals(Constants.userId)) {
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 1));
