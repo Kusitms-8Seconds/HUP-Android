@@ -94,9 +94,9 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
             @Override
             public void onClick(View v) {
                 String message = mBinding.editText.getText().toString();
-                chatMessageStomp.pubSendMessage(message);
+                chatMessageStomp.pubSendMessage(chatRoomUid, Constants.userId, message);
                 //refresh
-                init(chatRoomUid, destUid, itemId);
+//                init(chatRoomUid, destUid, itemId);
 //                adapter = new ChattingViewAdapter(chatMessageView, mBinding, context, chatRoomUid, myuid, destUid);
 //                adapter.notifyDataSetChanged();
             }

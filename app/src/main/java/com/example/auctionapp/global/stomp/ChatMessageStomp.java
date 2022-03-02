@@ -135,13 +135,13 @@ public class ChatMessageStomp {
         stompClient.send(stompMessage).subscribe();
     }
 
-    public void pubSendMessage(String message) throws JSONException{
+    public void pubSendMessage(Long chatRoomId, Long userId, String message) throws JSONException{
         pubSendHeaderList = new ArrayList<>();
         pubSendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
         pubSendHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/pub/chatRoom/send"));
         JSONObject json = new JSONObject();
         json.put("chatRoomId", chatRoomId);
-        json.put("userId", Constants.userId);
+        json.put("userId", userId);
         json.put("message", message);
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, pubSendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
