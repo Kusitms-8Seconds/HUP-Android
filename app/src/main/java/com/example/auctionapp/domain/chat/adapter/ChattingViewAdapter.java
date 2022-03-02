@@ -100,6 +100,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             else {
                 for (int i = 0; i < response.body().getData().size(); i++) {
                     String messageStr = response.body().getData().get(i).getMessage();
+                    String userName = response.body().getData().get(i).getUserName();
                     Month month = response.body().getData().get(i).getCreatedDate().getMonth();
                     String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
                     String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
@@ -107,8 +108,10 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String time = month + " " + day + "/ " + hour + ":" + minute;
 
                     Long Uid = response.body().getData().get(i).getUserId();
-                    //left : 0          //right : 1
-                    if (Uid.equals(Constants.userId)) {
+                    //left : 0          //right : 1     //center:2
+                    if(messageStr.equals(userName+"님이 채팅방에 참여하였습니다."))
+                        comments.add(new ChatModel.Comment(Uid, messageStr, time, 2));
+                    else if (Uid.equals(Constants.userId)) {
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 1));
                     } else {
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 0));
@@ -138,8 +141,8 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (viewType == Code.ViewType.CENTER_CONTENT) {
-//                view = inflater.inflate(R.layout.center_content, parent, false);
-//                return new CenterViewHolder(view);
+                view = inflater.inflate(R.layout.custom_chatting_enter, parent, false);
+                return new CenterViewHolder(view);
         } else if (viewType == Code.ViewType.LEFT_CONTENT) {
             view = inflater.inflate(R.layout.custom_chatting_otherbox, parent, false);
             return new LeftViewHolder(view);
@@ -147,7 +150,6 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view = inflater.inflate(R.layout.custom_chatting_mybox, parent, false);
             return new RightViewHolder(view);
         }
-        return new RightViewHolder(view);
     }
 
     @Override
@@ -180,7 +182,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         if (viewHolder instanceof CenterViewHolder) {
-//                ((CenterViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
+                ((CenterViewHolder) viewHolder).content.setText(comments.get(position).getMessage());
         } else if (viewHolder instanceof LeftViewHolder) {
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(comments.get(position).getUid())
                 .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
@@ -215,7 +217,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         CenterViewHolder(View itemView) {
             super(itemView);
-            content = itemView.findViewById(R.id.content);
+            content = itemView.findViewById(R.id.tv_message);
         }
     }
 
