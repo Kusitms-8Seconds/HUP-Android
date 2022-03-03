@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -56,9 +57,9 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Long chatRoomUid; //채팅방 하나 id
     private Long myuid;       //나의 id
     private Long destUid;     //상대방 uid
-    private User destUser;
-    String profileUrlStr;
     private Long EndItemId;
+    private int page = 0;
+    private int size = 10;
 
     // Attributes
     private ChatMessageView chatMessageView;
@@ -71,8 +72,9 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         myuid = null;
         destUid = null;
 
+//        getChatPage();
         //채팅 내용 읽어들임
-        getMessageList();
+        getMessageList(0, size);
     }
 
     public ChattingViewAdapter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext, Long chatRoomUid, Long myuid, Long destUid) {
@@ -84,24 +86,72 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.myuid = myuid;
         this.destUid = destUid;
 
+        //get chat page
+//        getChatPage();
         //채팅 내용 읽어들임
-        getMessageList();
+        getMessageList(page, size);
+        mBinding.progressBar.setVisibility(View.GONE);
+
+        mBinding.nestedScrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+//                    if(response.body().isHasNext()) {
+                        page++;
+                        mBinding.progressBar.setVisibility(View.VISIBLE);
+                        getMessageList(page, size);
+                    mBinding.progressBar.setVisibility(View.GONE);
+//                    } else mBinding.progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
     public void addItem(ChatModel.Comment data) {
         // 외부에서 item을 추가시킬 함수입니다.
         comments.add(data);
     }
+    private int getChatPage() {
+//        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(chatRoomUid, 0, size)
+//                .enqueue(MainRetrofitTool.getCallback(new getChatPageCallback()));
+
+        return page;
+    }
     //채팅 내용 읽어들임
-    private void getMessageList() {
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(chatRoomUid)
+    private void getMessageList(int page, int size) {
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getChatMessages(chatRoomUid, page, size)
                 .enqueue(MainRetrofitTool.getCallback(new getChatMessagesCallback()));
     }
+//    public class getChatPageCallback implements MainRetrofitCallback<PaginationDto<List<ChatMessageResponse>>> {
+//        @Override
+//        public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) {
+//            if(response.body().getData().isEmpty()) page = 0;
+//            else {
+//                page = response.body().getTotalPage();
+//                System.out.println("PAGE::" + page);
+//            }
+//            Log.d("chat messages", ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
+//        }
+//        @Override
+//        public void onFailResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
+//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+//            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+//            Log.d("chat messages", ChatConstants.EChatCallback.rtFailResponse.getText());
+//        }
+//        @Override
+//        public void onConnectionFail(Throwable t) {
+//            mBinding.chattingItemDetailPrice.setText(ChatConstants.EChatCallback.rtConnectionFail.getText());
+//            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
+//        }
+//    }
 
     public class getChatMessagesCallback implements MainRetrofitCallback<PaginationDto<List<ChatMessageResponse>>> {
         @Override
-        public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) {
-            if(response.body().getData().isEmpty()) showToast("null messages");
+        public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
+            if(response.body().getData().isEmpty()) System.out.println("null messages");
             else {
+//                System.out.println("page:::: " + response.body().getData().);
+//                System.out.println("current page: " + response.body().getCurrentPage());
+//                System.out.println("current elements: " + response.body().getCurrentElements());
                 for (int i = 0; i < response.body().getData().size(); i++) {
                     String messageStr = response.body().getData().get(i).getMessage();
                     String userName = response.body().getData().get(i).getUserName();
@@ -109,7 +159,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
                     String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
                     String minute = String.valueOf(response.body().getData().get(i).getCreatedDate().getMinute());
-                    String time = month + " " + day + "/ " + hour + ":" + minute;
+                    String time = month + " " + day + " " + hour + ":" + minute;
 
                     Long Uid = response.body().getData().get(i).getUserId();
                     //left : 0          //right : 1     //center:2
@@ -122,6 +172,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                     notifyDataSetChanged();
                 }
+
             }
             Log.d("chat messages", ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
         }

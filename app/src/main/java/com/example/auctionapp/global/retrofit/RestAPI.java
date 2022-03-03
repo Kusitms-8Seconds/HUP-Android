@@ -63,6 +63,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RestAPI {
 
@@ -173,7 +174,8 @@ public interface RestAPI {
     @GET("api/v1/chatRooms/{id}")     //유저의 모든 채팅방 조회
     Call<List<ChatRoomResponse>> getChatRooms(@Path("id") Long id);
     @GET("api/v1/chatMessages/{id}")     //채팅방의 모든 메세지 조회
-    Call<PaginationDto<List<ChatMessageResponse>>> getChatMessages(@Path("id") Long id);
+    Call<PaginationDto<List<ChatMessageResponse>>> getChatMessages(@Path("id") Long id,
+                                                                   @Query("page") int page, @Query("size") int size);
     @POST("api/v1/chatRooms/isEnter")   //해당 유저의 채팅방 입장여부 조회
     Call<IsEnterChatRoomResponse> isChatRoomEntered(@Body IsEnterChatRoomRequest isEnterChatRoomRequest);
 }
