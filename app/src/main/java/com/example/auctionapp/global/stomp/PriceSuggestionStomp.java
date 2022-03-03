@@ -46,6 +46,8 @@ public class PriceSuggestionStomp {
     private List<StompHeader> connectHeaderList;
     private List<StompHeader> topicHeaderList;
     private List<StompHeader> sendHeaderList;
+
+    Long itemId;
     private PTAdapter ptAdapter;
     private ArrayList<BidParticipants> bidParticipants;
     TextView participants;
@@ -60,10 +62,9 @@ public class PriceSuggestionStomp {
 
     private BidPageView bidPageView;
 
-    int count;
-
     @SuppressLint("CheckResult")
-    public void initStomp(PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants) throws IOException, JSONException {
+    public void initStomp(Long itemId, PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants) throws IOException, JSONException {
+        this.itemId = itemId;
         this.ptAdapter = adapter;
         this.bidParticipants = bidParticipants;
         this.participants = participants;
@@ -95,8 +96,8 @@ public class PriceSuggestionStomp {
     public void topicSTOMP() throws IOException, JSONException {
         topicHeaderList=new ArrayList<>();
         topicHeaderList.add(new StompHeader("Authorization", "Bearer "+ Constants.accessToken));
-        stompClient.topic("/sub/priceSuggestions", topicHeaderList).subscribe(topicMessage -> {
-              JsonParser jsonParser = new JsonParser();
+        stompClient.topic("/sub/priceSuggestions/"+itemId, topicHeaderList).subscribe(topicMessage -> {
+            JsonParser jsonParser = new JsonParser();
             JsonElement element = jsonParser.parse(topicMessage.getPayload());
             username = element.getAsJsonObject().get("username").getAsString();
             suggestionPrice = element.getAsJsonObject().get("suggestionPrice").getAsString();

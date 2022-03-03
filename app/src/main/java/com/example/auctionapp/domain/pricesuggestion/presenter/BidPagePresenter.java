@@ -44,7 +44,7 @@ import static android.content.ContentValues.TAG;
 
 public class BidPagePresenter implements Presenter{
     PTAdapter ptAdapter;
-    private PriceSuggestionStomp hupstomp;
+    private PriceSuggestionStomp priceSuggestionStomp;
     boolean onGoing;
 
     Long itemId;
@@ -89,8 +89,8 @@ public class BidPagePresenter implements Presenter{
         ptAdapter = new PTAdapter();
         binding.participantsRecyclerView.setAdapter(ptAdapter);
 
-        hupstomp = new PriceSuggestionStomp();
-        hupstomp.initStomp(ptAdapter, bidParticipants, binding.highPrice, binding.participants);
+        priceSuggestionStomp = new PriceSuggestionStomp();
+        priceSuggestionStomp.initStomp(itemId, ptAdapter, bidParticipants, binding.highPrice, binding.participants);
 
         if(!onGoing) {
             binding.auctionState.setVisibility(View.GONE);
@@ -103,7 +103,7 @@ public class BidPagePresenter implements Presenter{
             @Override
             public void onClick(View view) {
                 if(!binding.editPrice.getText().toString().equals("")){
-                    hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                    priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
                     binding.editPrice.setText("");
                 }
@@ -157,7 +157,7 @@ public class BidPagePresenter implements Presenter{
                         @Override
                         public void onClick(View view) {
                             if (!binding.editPrice.getText().toString().equals("")) {
-                                hupstomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                                priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                                 ptAdapter.notifyDataSetChanged();
                             }
                         }
