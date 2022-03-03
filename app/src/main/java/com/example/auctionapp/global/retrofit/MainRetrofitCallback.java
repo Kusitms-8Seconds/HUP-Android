@@ -7,7 +7,7 @@ import java.io.IOException;
 import retrofit2.Response;
 
 public interface MainRetrofitCallback<T> {
-        void onSuccessResponse(Response<T> response) throws IOException;
+        void onSuccessResponse(Response<T> response) throws IOException, JSONException;
         void onFailResponse(Response<T> response) throws IOException, JSONException;
         void onConnectionFail(Throwable t);
     }

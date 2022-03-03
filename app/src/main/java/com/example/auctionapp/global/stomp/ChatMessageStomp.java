@@ -71,7 +71,6 @@ public class ChatMessageStomp {
         comments = new ArrayList<>();
         connectSTOMP();
         subSTOMP();
-        pubEnterMessage();
     }
 
     public void connectSTOMP(){
@@ -134,13 +133,13 @@ public class ChatMessageStomp {
         });
     }
 
-    public void pubEnterMessage() throws JSONException{
+    public void pubEnterMessage(Long chatRoomId, Long userId) throws JSONException {
         pubEnterHeaderList = new ArrayList<>();
         pubEnterHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
         pubEnterHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/pub/chatRoom/enter"));
         JSONObject json = new JSONObject();
         json.put("chatRoomId", chatRoomId);
-        json.put("userId", Constants.userId);
+        json.put("userId", userId);
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, pubEnterHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }

@@ -14,6 +14,8 @@ import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.adapter.ChattingViewAdapter;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.dto.ChatMessageResponse;
+import com.example.auctionapp.domain.chat.dto.IsEnterChatRoomRequest;
+import com.example.auctionapp.domain.chat.dto.IsEnterChatRoomResponse;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.User;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
@@ -81,13 +83,14 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getItem(itemId)
                 .enqueue(MainRetrofitTool.getCallback(new getItemDetailsCallback()));
 
-//        if (mBinding.editText.getText().toString()) mBinding.sendbutton.setEnabled(false);
-//        else mBinding.sendbutton.setEnabled(true);
-
         checkChatRoom();
 
         chatMessageStomp = new ChatMessageStomp();
         chatMessageStomp.initStomp(adapter, chatRoomUid, chatMessageView);
+        //채팅방 입장여부 확인
+        IsEnterChatRoomRequest isEnterChatRoomRequest = new IsEnterChatRoomRequest(chatRoomUid, Constants.userId);
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).isChatRoomEntered(isEnterChatRoomRequest)
+                .enqueue(MainRetrofitTool.getCallback(new getIfChatRoomEnteredCallback()));
         mBinding.chattingRecyclerView.scrollToPosition(adapter.getItemCount()-1);
 
         mBinding.sendbutton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +130,25 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            mBinding.chattingItemDetailPrice.setText(ChatConstants.EChatCallback.rtConnectionFail.getText());
+            Log.e(ChatConstants.EChatCallback.rtConnectionFail.getText(), t.getMessage());
+        }
+    }
+    public class getIfChatRoomEnteredCallback implements MainRetrofitCallback<IsEnterChatRoomResponse> {
+        @Override
+        public void onSuccessResponse(Response<IsEnterChatRoomResponse> response) throws JSONException {
+            Boolean isEnter = response.body().isEnter();
+            if(!isEnter) chatMessageStomp.pubEnterMessage(chatRoomUid, Constants.userId);
+            Log.d(TAG, ChatConstants.EChatCallback.rtSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<IsEnterChatRoomResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
