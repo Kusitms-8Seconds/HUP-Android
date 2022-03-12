@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.presenter.ChatRoomPresenter;
+import com.example.auctionapp.domain.user.constant.Constants;
 
 import lombok.SneakyThrows;
 
@@ -30,8 +31,17 @@ public class ChatRoom extends Fragment implements ChatRoomView {
         View view = binding.getRoot();
 
         presenter = new ChatRoomPresenter(this, binding, this.getContext());
-
-        presenter.init();
+        if(Constants.userId != null) {
+            binding.afterLogin.setVisibility(View.GONE);
+            binding.chattingRoomListView.setVisibility(View.VISIBLE);
+            binding.image.setVisibility(View.VISIBLE);
+            presenter.init();
+        }
+        else {
+            binding.afterLogin.setVisibility(View.VISIBLE);
+            binding.chattingRoomListView.setVisibility(View.GONE);
+            binding.image.setVisibility(View.GONE);
+        }
 
         binding.chattingRoomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

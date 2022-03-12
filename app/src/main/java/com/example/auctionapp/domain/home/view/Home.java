@@ -21,10 +21,12 @@ import com.example.auctionapp.domain.home.presenter.MainPresenter;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.notification.view.NotificationList;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.home.adapter.AuctionNowAdapter;
+import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.SignUp;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
@@ -60,8 +62,10 @@ public class Home extends Fragment implements MainView{
         binding.notiBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), NotificationList.class);
-                startActivity(intent);
+                if(Constants.userId != null) {
+                    Intent intent = new Intent(getActivity(), NotificationList.class);
+                    startActivity(intent);
+                } else showToast(MypageConstants.ELogin.afterLogin.getText());
             }
         });
         return view;

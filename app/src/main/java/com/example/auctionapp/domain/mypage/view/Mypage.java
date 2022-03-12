@@ -69,8 +69,10 @@ public class Mypage extends Fragment implements MypageView{
         binding.notiBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), NotificationList.class);
-                startActivity(intent);
+                if(Constants.userId != null) {
+                    Intent intent = new Intent(getActivity(), NotificationList.class);
+                    startActivity(intent);
+                } else showToast(MypageConstants.ELogin.afterLogin.getText());
             }
         });
         return view;

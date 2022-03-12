@@ -24,6 +24,7 @@ import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.item.view.ItemDetail;
+import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.scrap.dto.ScrapCountResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
@@ -98,9 +99,13 @@ public class MainPresenter implements Presenter{
         auctionNowAdapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(context, ItemDetail.class);
-                intent.putExtra("itemId", auctionNowAdapter.getAuctionNowData().get(position).getItemId());
-                context.startActivity(intent);
+                if(Constants.userId != null) {
+                    Intent intent = new Intent(context, ItemDetail.class);
+                    intent.putExtra("itemId", auctionNowAdapter.getAuctionNowData().get(position).getItemId());
+                    context.startActivity(intent);
+                } else {
+                    mainView.showToast(MypageConstants.ELogin.afterLogin.getText());
+                }
             }
         });
 
