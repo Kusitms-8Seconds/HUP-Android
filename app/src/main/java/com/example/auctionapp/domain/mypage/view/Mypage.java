@@ -18,6 +18,7 @@ import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
 import com.example.auctionapp.domain.mypage.notice.view.Notice;
 import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
+import com.example.auctionapp.domain.notification.view.NotificationList;
 import com.example.auctionapp.domain.scrap.view.Scrap;
 import com.example.auctionapp.domain.item.view.SellHistory;
 import com.example.auctionapp.domain.item.view.Interests;
@@ -65,7 +66,13 @@ public class Mypage extends Fragment implements MypageView{
                 binding.swipe.setRefreshing(false);
             }
         });
-
+        binding.notiBell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), NotificationList.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

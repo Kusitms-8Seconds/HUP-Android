@@ -12,6 +12,7 @@ import com.example.auctionapp.domain.item.dto.BestItemResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.NoticeListResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.NoticeResponse;
 import com.example.auctionapp.domain.mypage.notice.dto.UpdateNoticeResponse;
+import com.example.auctionapp.domain.notification.dto.NotificationListResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
@@ -148,6 +149,9 @@ public interface RestAPI {
     //FCM
     @POST("api/v1/items/sold")   //낙찰하기
     Call<FCMResponse> pushMessage(@Body FCMRequest fcmRequest);
+    //notification
+    @GET("api/v1/notifications/{userId}")     //유저의 모든 알림 조회
+    Call<PaginationDto<List<NotificationListResponse>>> getNotificationList(@Path("userId") Long id);
 
     //공지사항
     @GET("api/v1/notices")     //공지사항 전체 목록 조회
