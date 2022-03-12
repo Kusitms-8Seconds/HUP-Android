@@ -6,12 +6,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -27,7 +29,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String title = remoteMessage.getData().get("HUP");//firebase에서 보낸 메세지의 title
+        String title = remoteMessage.getData().get("title");//firebase에서 보낸 메세지의 title
         String message = remoteMessage.getData().get("message");//firebase에서 보낸 메세지의 내용
         String test = remoteMessage.getData().get("test");
 
@@ -38,7 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            String channel = "채널";
+            String channel = "HUP";
             String channel_nm = "채널명";
 
             NotificationManager notichannel = (android.app.NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -86,4 +88,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
     }
+
 }

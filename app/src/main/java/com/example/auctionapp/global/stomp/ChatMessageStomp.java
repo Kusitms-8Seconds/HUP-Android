@@ -21,6 +21,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetChatTime;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -104,6 +105,8 @@ public class ChatMessageStomp {
             userName = element.getAsJsonObject().get("userName").getAsString();
             message = element.getAsJsonObject().get("message").getAsString();
             createdDate = element.getAsJsonObject().get("createdDate").getAsString();
+            GetChatTime getChatTime = new GetChatTime(createdDate);
+            String time = getChatTime.getLatestTime();
 
             Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -111,17 +114,17 @@ public class ChatMessageStomp {
                 @Override
                 public void run() {
                     if(message.contains("님이 채팅방에 참여하였습니다")) {
-                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 2);
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, time, 2);
                         comments.add(data);
                         adapter.addItem(data);
                     }
                     else if(userId.equals(Constants.userId)) {
-                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 1);
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, time, 1);
                         comments.add(data);
                         adapter.addItem(data);
                     }
                     else {
-                        ChatModel.Comment data = new ChatModel.Comment(userId, message, createdDate, 0);
+                        ChatModel.Comment data = new ChatModel.Comment(userId, message, time, 0);
                         comments.add(data);
                         adapter.addItem(data);
                     }

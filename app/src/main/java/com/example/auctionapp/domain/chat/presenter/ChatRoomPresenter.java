@@ -25,6 +25,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetChatTime;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,7 +91,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                 String userName = response.body().get(i).getUserName();
                 Long itemId = response.body().get(i).getItemId();
                 String itemUrl = "";
-                if (response.body().get(i).getFileNames() != null)
+                if (!response.body().get(i).getFileNames().isEmpty())
                     itemUrl = response.body().get(i).getFileNames().get(0);
                 String latestMessage = response.body().get(i).getLatestMessage();
 
@@ -98,7 +99,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                 String day = String.valueOf(response.body().get(i).getLatestTime().getDayOfMonth());
                 String hour = String.valueOf(response.body().get(i).getLatestTime().getHour());
                 String minute = String.valueOf(response.body().get(i).getLatestTime().getMinute());
-                String latestTime = month + " " + day + "/ " + hour + ":" + minute;
+                GetChatTime getChatTime = new GetChatTime(month, day, hour, minute);
+                String latestTime = getChatTime.getLatestTime();
 
                 chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));
                 chatListAdapter.notifyDataSetChanged();

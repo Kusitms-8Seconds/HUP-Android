@@ -30,6 +30,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetChatTime;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -159,7 +160,8 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
                     String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
                     String minute = String.valueOf(response.body().getData().get(i).getCreatedDate().getMinute());
-                    String time = month + " " + day + " " + hour + ":" + minute;
+                    GetChatTime getChatTime = new GetChatTime(month, day, hour, minute);
+                    String time = getChatTime.getLatestTime();
 
                     Long Uid = response.body().getData().get(i).getUserId();
                     //left : 0          //right : 1     //center:2

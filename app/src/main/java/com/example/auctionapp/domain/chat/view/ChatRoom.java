@@ -16,6 +16,8 @@ import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.presenter.ChatRoomPresenter;
 
+import lombok.SneakyThrows;
+
 public class ChatRoom extends Fragment implements ChatRoomView {
     private ActivityChatBinding binding;
     ChatRoomPresenter presenter;
