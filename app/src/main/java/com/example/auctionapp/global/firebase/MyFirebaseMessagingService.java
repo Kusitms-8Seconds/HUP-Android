@@ -29,19 +29,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String title = remoteMessage.getData().get("title");//firebase에서 보낸 메세지의 title
-        String message = remoteMessage.getData().get("message");//firebase에서 보낸 메세지의 내용
-        String test = remoteMessage.getData().get("test");
+        String title = remoteMessage.getNotification().getTitle();
+        String message = remoteMessage.getNotification().getBody();
+        Long time = remoteMessage.getNotification().getEventTime();
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("test", test);
+        intent.putExtra("message", message);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             String channel = "HUP";
-            String channel_nm = "채널명";
+            String channel_nm = "HUP";
 
             NotificationManager notichannel = (android.app.NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channelMessage = new NotificationChannel(channel, channel_nm,
