@@ -1,22 +1,27 @@
 package com.example.auctionapp.domain.pricesuggestion.presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.MainActivity;
+import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
+import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.ParticipantsResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
+import com.example.auctionapp.domain.pricesuggestion.view.BidPage;
 import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
@@ -52,6 +57,7 @@ public class BidPagePresenter implements Presenter{
 
     private int userCount;
     private ArrayList<BidParticipants> bidParticipants;
+    Dialog dialog01;
 
     // Attributes
     private BidPageView bidPageView;
@@ -97,6 +103,10 @@ public class BidPagePresenter implements Presenter{
         } else {
             binding.auctionState.setVisibility(View.VISIBLE);
         }
+
+        dialog01 = new Dialog(context);
+        dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog01.setContentView(R.layout.custom_dialog01);
 
         binding.bidbutton.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
@@ -294,5 +304,33 @@ public class BidPagePresenter implements Presenter{
         public void onConnectionFail(Throwable t) {
             Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
+    }
+    // dialog01을 디자인하는 함수
+    public void showDialog01(){
+        dialog01.show(); // 다이얼로그 띄우기
+
+        // 홈으로 돌아가기 버튼
+        dialog01.findViewById(R.id.goHome).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog01.dismiss();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                dialog01.dismiss();
+            }
+        });
+        // 참여내역 확인 버튼
+        dialog01.findViewById(R.id.check_bidlist).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, AuctionHistory.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                dialog01.dismiss();
+            }
+        });
     }
 }

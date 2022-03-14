@@ -55,16 +55,15 @@ public class MainActivity extends AppCompatActivity {
 
         binding.navView.setSelectedItemId(R.id.home);
 
-        dialog02 = new Dialog(MainActivity.this);
-        dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog02.setContentView(R.layout.custom_dialog02);
+        Intent intent = getIntent();
+        String pushMessage = intent.getStringExtra("message");
+        if(pushMessage != null && Constants.userId != null) {
+            dialog02 = new Dialog(MainActivity.this);
+            dialog02.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog02.setContentView(R.layout.custom_dialog02);
 
-        if (!(Constants.userId == null))
-            showDialog();
-
-        dialog03 = new Dialog(MainActivity.this);
-        dialog03.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog03.setContentView(R.layout.custom_dialog03);
+            showDialog(pushMessage);
+        }
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
             @Override
@@ -125,59 +124,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // dialog02을 디자인하는 함수
-    public void showDialog() {
+    public void showDialog(String message) {
         dialog02.show(); // 다이얼로그 띄우기
 
-        // 홈으로 돌아가기 버튼
-        ImageView goHome = dialog02.findViewById(R.id.refuseAuction);
+        TextView messageTv = dialog02.findViewById(R.id.message_tv);
+        messageTv.setText(message);
+
+        // 닫기 버튼
+        ImageView goHome = dialog02.findViewById(R.id.dismissButton);
         goHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog02.dismiss();
-
             }
         });
-        // 참여내역 확인 버튼
-        dialog02.findViewById(R.id.ongoAuction).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, ChatRoom.class);
-//                startActivity(intent);
-                showFeesDialog();
-            }
-        });
-    }
-
-    // dialog03을 디자인하는 함수
-    public void showFeesDialog() {
-        dialog03.show(); // 다이얼로그 띄우기
-
-        ImageView timer = dialog03.findViewById(R.id.iv_timer);
-        Glide.with(this).load(R.raw.timer).into(timer);
-
-        tv_timer = (TextView) dialog03.findViewById(R.id.tv_timer);
-        class MyTimer extends CountDownTimer {
-            public MyTimer(long millisInFuture, long countDownInterval) {
-                super(millisInFuture, countDownInterval);
-            }
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                tv_timer.setText(millisUntilFinished / 1000 + 1 + "");
-            }
-
-            @Override
-            public void onFinish() {
-                Intent tt = new Intent(MainActivity.this, FeesPage.class);
-                tt.putExtra("itemId", 5);
-                tt.putExtra("participantId", 1);
-                tt.putExtra("finalPrice", 500000);
-                tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(tt);
-            }
-        }
-        MyTimer myTimer = new MyTimer(3000, 1000);
-        myTimer.start();
-
     }
 }

@@ -8,7 +8,7 @@
     android:background="@drawable/dialog_edge">
 
     <TextView
-        android:id="@+id/textView22"
+        android:id="@+id/message_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="157px"
@@ -21,24 +21,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/refuseAuction"
+    <Button
+        android:id="@+id/dismissButton"
         android:layout_width="324px"
         android:layout_height="120px"
+        android:text="닫기"
+        android:background="@drawable/selected_blue"
+        android:backgroundTint="@color/Hup"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ongoAuction"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView22"
-        app:srcCompat="@drawable/refuse_auction" />
-
-    <ImageView
-        android:id="@+id/ongoAuction"
-        android:layout_width="324px"
-        android:layout_height="120px"
-        android:layout_marginRight="61px"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/refuseAuction"
-        app:layout_constraintTop_toBottomOf="@id/textView22"
-        app:srcCompat="@drawable/ongoing_auction" />
+        app:layout_constraintTop_toBottomOf="@id/message_tv"
+        app:srcCompat="@drawable/refuse_auction" />
 </androidx.constraintlayout.widget.ConstraintLayout>
