@@ -97,28 +97,35 @@ public class ScrapPresenter implements Presenter{
                 LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
                 String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
                 String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
                 Long itemId = response.body().getData().get(i).getItemId();
-                String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                 String itemName = response.body().getData().get(i).getItemName();
+
+                String date = "";
+                if(Integer.parseInt(hours) >= 24) {
+                    hours = String.valueOf(Integer.parseInt(hours)%24);
+                    date = days + "일 " + hours + "시간 " + minutes + "분";
+                } else
+                    date = hours + "시간 " + minutes + "분";
+
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
+                    String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                     data = new ScrapItem(itemId,
                             fileNameMajor,
                             itemName,
                             0,
-                            minutes + ScrapConstants.EScrapCallback.dpMinute.getText());
+                            date);
                 } else{
                     data = new ScrapItem(itemId,
                             null,
                             itemName,
                             0,
-                            minutes + ScrapConstants.EScrapCallback.dpMinute.getText());
+                            date);
                 }
                 scrapItemsList.add(data);
                 System.out.println(ScrapConstants.EScrapCallback.logItemId.getText()+itemId);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
                         .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
-//                setAnimation();
             }
             Log.d(TAG, ScrapConstants.EScrapCallback.rtSuccessResponse.getText() + response.body().toString());
 

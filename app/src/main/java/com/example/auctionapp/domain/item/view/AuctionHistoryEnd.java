@@ -104,16 +104,11 @@ public class AuctionHistoryEnd extends Fragment {
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
                 if(response.body().getData().get(i).isAcceptState()==true) {
-                    LocalDateTime startDateTime = LocalDateTime.now();
-                    LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
-                    String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-                    String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
                     Long itemId = response.body().getData().get(i).getItemId();
-
                     String itemName = response.body().getData().get(i).getItemName();
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
                     String userName = response.body().getData().get(i).getUserName();
+
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
                         String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                         data = new AuctionHistoryEndData(itemId,
@@ -130,7 +125,6 @@ public class AuctionHistoryEnd extends Fragment {
                     }
                     auctionHistoryEndDataList.add(data);
                 }
-//                setAnimation();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
 

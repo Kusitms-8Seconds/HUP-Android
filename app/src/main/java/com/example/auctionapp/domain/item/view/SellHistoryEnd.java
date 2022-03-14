@@ -99,17 +99,12 @@ public class SellHistoryEnd extends Fragment {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                LocalDateTime startDateTime = LocalDateTime.now();
-                LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
-                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
                 Long itemId = response.body().getData().get(i).getId();
-                String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                 String itemName = response.body().getData().get(i).getItemName();
                 int suggestionPrice = response.body().getData().get(i).getSoldPrice();
 
                 if (response.body().getData().get(i).getFileNames().size() != 0) {
+                    String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                     data = new SellHistoryEndData(itemId,
                             fileNameMajor,
                             itemName,
@@ -126,7 +121,6 @@ public class SellHistoryEnd extends Fragment {
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getBidder(itemId)
                         .enqueue(MainRetrofitTool.getCallback(new getBidderCallback()));
             }
-//                setAnimation();
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
 

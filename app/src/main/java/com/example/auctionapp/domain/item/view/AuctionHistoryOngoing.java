@@ -81,11 +81,6 @@ public class AuctionHistoryOngoing extends Fragment {
         });
     }
     private void getData(){
-        //일단 레이아웃만
-//        AuctionHistoryOngoingData data = new AuctionHistoryOngoingData(R.drawable.rectangle, "맥북 에어 M1 실버", 200000, 270000, "12:21");
-//        adapter.addItem(data);
-//        data = new AuctionHistoryOngoingData(R.drawable.rectangle, "맥북 에어 M1 실버", 200000, 270000, "12:21");
-//        adapter.addItem(data);
         maximumPriceCount = 0;
         auctionHistoryOngoingDataList = new ArrayList<>();
         RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllPriceSuggestionByUserId(Constants.userId)
@@ -105,25 +100,33 @@ public class AuctionHistoryOngoing extends Fragment {
                     LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
                     String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
                     String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime));
+                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
                     Long itemId = response.body().getData().get(i).getItemId();
-                    String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                     String itemName = response.body().getData().get(i).getItemName();
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
+
+                    String date = "";
+                    if(Integer.parseInt(hours) >= 24) {
+                        hours = String.valueOf(Integer.parseInt(hours)%24);
+                        date = days + "일 " + hours + "시간 " + minutes + "분";
+                    } else
+                        date = hours + "시간 " + minutes + "분";
+
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
+                        String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
                         data = new AuctionHistoryOngoingData(itemId,
                                 fileNameMajor,
                                 itemName,
                                 suggestionPrice,
                                 0,
-                                minutes + "분");
+                                date);
                     } else {
                         data = new AuctionHistoryOngoingData(itemId,
                                 null,
                                 itemName,
                                 suggestionPrice,
                                 0,
-                                minutes + "분");
+                                date);
                     }
                     auctionHistoryOngoingDataList.add(data);
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
