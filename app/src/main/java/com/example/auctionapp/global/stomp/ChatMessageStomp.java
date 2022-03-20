@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.auctionapp.R;
 import com.example.auctionapp.domain.chat.adapter.ChattingViewAdapter;
+import com.example.auctionapp.domain.chat.dto.DeleteChatRoomRequest;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
 import com.example.auctionapp.domain.item.model.BidParticipants;
@@ -52,6 +53,7 @@ public class ChatMessageStomp {
     private List<StompHeader> subHeaderList;
     private List<StompHeader> pubEnterHeaderList;
     private List<StompHeader> pubSendHeaderList;
+    private List<StompHeader> outChatHeaderList;
     private ChattingViewAdapter adapter;
 
     List<ChatModel.Comment> comments;
@@ -70,6 +72,15 @@ public class ChatMessageStomp {
         this.chatMessageView = chatMessageView;
 
         comments = new ArrayList<>();
+        connectSTOMP();
+        subSTOMP();
+    }
+    public void initStomp(DeleteChatRoomRequest deleteChatRoomRequest) throws IOException, JSONException {
+//        this.adapter = adapter;
+//        this.chatRoomId = deleteChatRoomRequest.getChatRoomId();
+//        this.chatMessageView = chatMessageView;
+
+//        comments = new ArrayList<>();
         connectSTOMP();
         subSTOMP();
     }
@@ -146,7 +157,6 @@ public class ChatMessageStomp {
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, pubEnterHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }
-
     public void pubSendMessage(Long chatRoomId, Long userId, String message) throws JSONException{
         pubSendHeaderList = new ArrayList<>();
         pubSendHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
@@ -158,5 +168,14 @@ public class ChatMessageStomp {
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, pubSendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }
-
+    public void outChatRoom(DeleteChatRoomRequest deleteChatRoomRequest) throws JSONException{
+        outChatHeaderList = new ArrayList<>();
+        outChatHeaderList.add(new StompHeader("Authorization", "Bearer " + Constants.accessToken));
+        outChatHeaderList.add(new StompHeader(StompHeader.DESTINATION, "/pub/chatRoom/out"));
+        JSONObject json = new JSONObject();
+        json.put("chatRoomId", deleteChatRoomRequest.getChatRoomId());
+        json.put("userId", deleteChatRoomRequest.getUserId());
+        StompMessage stompMessage = new StompMessage(StompCommand.SEND, outChatHeaderList, json.toString());
+        stompClient.send(stompMessage).subscribe();
+    }
 }

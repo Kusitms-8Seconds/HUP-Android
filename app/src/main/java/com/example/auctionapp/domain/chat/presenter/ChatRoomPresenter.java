@@ -15,6 +15,7 @@ import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.adapter.chatListAdapter;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.dto.ChatRoomResponse;
+import com.example.auctionapp.domain.chat.dto.DeleteChatRoomRequest;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
@@ -28,6 +29,7 @@ import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.stomp.ChatMessageStomp;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.example.auctionapp.global.util.GetChatTime;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +47,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -57,6 +60,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     //chatting room list
     ArrayList<chatListData> chatroomList = new ArrayList<chatListData>();
     com.example.auctionapp.domain.chat.adapter.chatListAdapter chatListAdapter;
+    //stomp
+    ChatMessageStomp chatMessageStomp;
 
     // Attributes
     private ChatRoomView chatRoomView;
@@ -78,15 +83,22 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
         myuid = String.valueOf(Constants.userId);
         getChatList();
 
+        chatMessageStomp = new ChatMessageStomp();
         mBinding.chattingRoomListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("채팅방 퇴장").setMessage("퇴장하시겠습니까?");
                 builder.setPositiveButton("예", new DialogInterface.OnClickListener(){
+                    @SneakyThrows
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //TODO : 채팅방 퇴장
+                        chatListData data = (chatListData) parent.getItemAtPosition(position);
+                        DeleteChatRoomRequest deleteChatRoomRequest = new DeleteChatRoomRequest(data.getChatroomId(), Constants.userId);
+                        chatMessageStomp.initStomp(deleteChatRoomRequest);
+                        chatMessageStomp.outChatRoom(deleteChatRoomRequest);
+//                        init();
                     }
                 });
                 builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
