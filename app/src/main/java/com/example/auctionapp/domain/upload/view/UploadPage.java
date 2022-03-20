@@ -241,7 +241,6 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                             itemNameR, categoryR, initPriceR, buyDateR, itemStatePointR,
                             auctionClosingDateR, descriptionR);
                     //go home
-                    showToast(UploadConstants.EUploadToast.uploadComplete.getText());
                     Intent tt = new Intent(getApplicationContext(), MainActivity.class);
                     tt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(tt);

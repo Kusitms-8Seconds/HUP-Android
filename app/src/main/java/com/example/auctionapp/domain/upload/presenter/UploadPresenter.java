@@ -105,7 +105,7 @@ public class UploadPresenter implements Presenter{
         public void onSuccessResponse(Response<RegisterItemResponse> response) {
             RegisterItemResponse result = response.body();
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtSuccessResponse.getText() + result.toString());
-
+            uploadView.showToast(UploadConstants.EUploadToast.uploadComplete.getText());
         }
         @Override
         public void onFailResponse(Response<RegisterItemResponse> response) throws IOException, JSONException {
