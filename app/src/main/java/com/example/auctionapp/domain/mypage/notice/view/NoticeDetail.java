@@ -121,6 +121,7 @@ public class NoticeDetail extends AppCompatActivity {
             if(!response.body().getFileNames().isEmpty())
                 noticeImgUrl += response.body().getFileNames().get(0);
             else binding.noticeImg.setVisibility(View.GONE);
+            System.out.println("imgaeUrl:::::" + noticeImgUrl);
             Glide.with(getApplicationContext()).load(noticeImgUrl).override(binding.noticeImg.getWidth()
                     ,binding.noticeImg.getHeight()).into(binding.noticeImg);
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());

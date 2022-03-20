@@ -150,9 +150,9 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void onSuccessResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
             if(response.body().getData().isEmpty()) System.out.println("null messages");
             else {
-//                System.out.println("page:::: " + response.body().getData().);
-//                System.out.println("current page: " + response.body().getCurrentPage());
-//                System.out.println("current elements: " + response.body().getCurrentElements());
+                System.out.println("page:::: " + response.body().getTotalPage());
+                System.out.println("current page: " + response.body().getCurrentPage());
+                System.out.println("current elements: " + response.body().getCurrentElements());
                 for (int i = 0; i < response.body().getData().size(); i++) {
                     String messageStr = response.body().getData().get(i).getMessage();
                     String userName = response.body().getData().get(i).getUserName();
