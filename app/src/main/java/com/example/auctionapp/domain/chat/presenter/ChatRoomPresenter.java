@@ -1,8 +1,12 @@
 package com.example.auctionapp.domain.chat.presenter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -73,6 +77,27 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
 
         myuid = String.valueOf(Constants.userId);
         getChatList();
+
+        mBinding.chattingRoomListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("채팅방 퇴장").setMessage("퇴장하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO : 채팅방 퇴장
+                    }
+                });
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
     }
 
     @Override
