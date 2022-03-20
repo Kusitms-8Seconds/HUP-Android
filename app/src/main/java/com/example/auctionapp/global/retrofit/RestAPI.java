@@ -151,7 +151,8 @@ public interface RestAPI {
     Call<FCMResponse> pushMessage(@Body FCMRequest fcmRequest);
     //notification
     @GET("api/v1/notifications/{userId}")     //유저의 모든 알림 조회
-    Call<PaginationDto<List<NotificationListResponse>>> getNotificationList(@Path("userId") Long id);
+    Call<PaginationDto<List<NotificationListResponse>>> getNotificationList(@Path("userId") Long id,
+                                                                            @Query("page") int page, @Query("size") int size);
 
     //공지사항
     @GET("api/v1/notices")     //공지사항 전체 목록 조회

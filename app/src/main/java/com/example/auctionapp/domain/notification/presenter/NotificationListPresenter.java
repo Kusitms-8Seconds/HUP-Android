@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.notification.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.example.auctionapp.databinding.ActivityNotificationListBinding;
 import com.example.auctionapp.domain.mypage.constant.MypageConstants;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
@@ -39,6 +41,8 @@ public class NotificationListPresenter implements Presenter {
 
     ArrayList<NotificationListData> notificationList = new ArrayList<NotificationListData>();
     NotificationAdapter notificationAdapter;
+    int page;
+    int size = 10;
 
     // Constructor
     public NotificationListPresenter(NotificationListView notificationListView, ActivityNotificationListBinding binding, Context context){
@@ -51,14 +55,28 @@ public class NotificationListPresenter implements Presenter {
     public void init(Long userId) {
         notificationAdapter = new NotificationAdapter(context, notificationList);
         binding.notificationListView.setAdapter(notificationAdapter);
+        binding.moreButton.setVisibility(View.GONE);
+        binding.progressbar.setVisibility(View.GONE);
 
-        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getNotificationList(userId)
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getNotificationList(userId, page, size)
                 .enqueue(MainRetrofitTool.getCallback(new getAllNotificationListCallback()));
+
+        binding.moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.progressbar.setVisibility(View.VISIBLE);
+                page++;
+                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getNotificationList(userId, page, size)
+                        .enqueue(MainRetrofitTool.getCallback(new getAllNotificationListCallback()));
+                binding.progressbar.setVisibility(View.GONE);
+            }
+        });
     }
 
     public class getAllNotificationListCallback implements MainRetrofitCallback<PaginationDto<List<NotificationListResponse>>> {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<NotificationListResponse>>> response) {
+            if(response.body().getCurrentElements() >= 10) binding.moreButton.setVisibility(View.VISIBLE);
             for(int i=0; i<response.body().getData().size(); i++){
                 String message = response.body().getData().get(i).getMessage();
                 String category = response.body().getData().get(i).getENotificationCategory();
