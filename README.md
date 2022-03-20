@@ -42,9 +42,9 @@
 ✅ __google / naver / kakao__ : 구글, 네이버, 카카오 소셜 로그인 구현 및 사용자 정보 연동 </br>
 
 ## 협업
-1. github
-2. slack
-3. Jira
+1. Github
+2. Slack
+3. Jira <img src="https://user-images.githubusercontent.com/87636557/159142524-b4b1bbcc-30bf-400b-8293-29d813fad101.png"/>
 
 ## :books: HUP Swagger API Docs
 <a href="http://52.78.175.27:8080/swagger-ui/index.html#/">HUP Swagger API Docs</a><br>
