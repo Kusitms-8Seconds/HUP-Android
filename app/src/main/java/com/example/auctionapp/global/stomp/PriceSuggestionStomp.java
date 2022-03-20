@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
@@ -50,8 +51,9 @@ public class PriceSuggestionStomp {
     Long itemId;
     private PTAdapter ptAdapter;
     private ArrayList<BidParticipants> bidParticipants;
-    TextView participants;
-    TextView highPrice;
+//    TextView participants;
+//
+    ActivityBidPageBinding binding;
     BidParticipants data;
 
     String username;
@@ -63,12 +65,13 @@ public class PriceSuggestionStomp {
     private BidPageView bidPageView;
 
     @SuppressLint("CheckResult")
-    public void initStomp(Long itemId, PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, TextView highPrice, TextView participants) throws IOException, JSONException {
+    public void initStomp(Long itemId, PTAdapter adapter, ArrayList<BidParticipants> bidParticipants, ActivityBidPageBinding binding) throws IOException, JSONException {
         this.itemId = itemId;
         this.ptAdapter = adapter;
         this.bidParticipants = bidParticipants;
-        this.participants = participants;
-        this.highPrice = highPrice;
+        this.binding = binding;
+//        this.participants = participants;
+//        this.highPrice = highPrice;
         connectSTOMP();
         topicSTOMP();
     }
@@ -110,8 +113,8 @@ public class PriceSuggestionStomp {
             Runnable myRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    highPrice.setText(String.valueOf(maximumPrice));
-                    participants.setText(String.valueOf(theNumberOfParticipants));
+                    binding.highPrice.setText(String.valueOf(maximumPrice));
+                    binding.participants.setText(String.valueOf(theNumberOfParticipants));
 
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(userId))
                             .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));

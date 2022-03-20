@@ -96,7 +96,7 @@ public class BidPagePresenter implements Presenter{
         binding.participantsRecyclerView.setAdapter(ptAdapter);
 
         priceSuggestionStomp = new PriceSuggestionStomp();
-        priceSuggestionStomp.initStomp(itemId, ptAdapter, bidParticipants, binding.highPrice, binding.participants);
+        priceSuggestionStomp.initStomp(itemId, ptAdapter, bidParticipants, binding);
 
         if(!onGoing) {
             binding.auctionState.setVisibility(View.GONE);
