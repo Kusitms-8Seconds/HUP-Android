@@ -128,6 +128,7 @@ public class BidPagePresenter implements Presenter{
             if(response.body().getFileNames().size()!=0){
                 Glide.with(context).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
                         .into(binding.bidImage); }
+            binding.initPrice.setText(String.valueOf(response.body().getInitPrice()));
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
