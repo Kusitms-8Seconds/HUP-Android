@@ -1,4 +1,6 @@
 package com.example.auctionapp.domain.notification.dto;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +15,5 @@ public class NotificationListResponse {
     private Long userId;
     private String message;
     private String eNotificationCategory;
-
+    private LocalDateTime createdDate;
 }

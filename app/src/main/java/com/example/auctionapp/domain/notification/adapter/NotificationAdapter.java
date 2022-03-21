@@ -50,8 +50,8 @@ public class NotificationAdapter extends BaseAdapter {
 
         notiMessage = (TextView) view.findViewById(R.id.noti_message);
         notiMessage.setText(data.get(position).getNoticeTitle());
-        notiCategory = (TextView) view.findViewById(R.id.noti_category);
-        notiCategory.setText(data.get(position).getCategory());
+        notiCategory = (TextView) view.findViewById(R.id.noti_time);
+        notiCategory.setText(data.get(position).getTime());
 
         return view;
     }

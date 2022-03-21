@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +18,7 @@ import com.example.auctionapp.databinding.ActivityChatRoomBinding;
 import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.dto.ChatMessageResponse;
 import com.example.auctionapp.domain.chat.model.ChatModel;
-import com.example.auctionapp.domain.chat.model.User;
-import com.example.auctionapp.domain.chat.presenter.ChatMessagePresenter;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
-import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.UserInfoResponse;
 import com.example.auctionapp.global.dto.PaginationDto;
@@ -30,19 +26,13 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
-import com.example.auctionapp.global.util.GetChatTime;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.auctionapp.global.util.GetTime;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,8 +150,8 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
                     String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
                     String minute = String.valueOf(response.body().getData().get(i).getCreatedDate().getMinute());
-                    GetChatTime getChatTime = new GetChatTime(month, day, hour, minute);
-                    String time = getChatTime.getLatestTime();
+                    GetTime getTime = new GetTime(month, day, hour, minute);
+                    String time = getTime.getLatestTime();
 
                     Long Uid = response.body().getData().get(i).getUserId();
                     //left : 0          //right : 1     //center:2

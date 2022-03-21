@@ -4,25 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.example.auctionapp.R;
 import com.example.auctionapp.domain.chat.adapter.ChattingViewAdapter;
 import com.example.auctionapp.domain.chat.dto.DeleteChatRoomRequest;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
-import com.example.auctionapp.domain.item.model.BidParticipants;
-import com.example.auctionapp.domain.item.adapter.PTAdapter;
-import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
-import com.example.auctionapp.domain.pricesuggestion.presenter.BidPagePresenter;
-import com.example.auctionapp.domain.pricesuggestion.view.BidPageView;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.domain.user.dto.UserInfoResponse;
-import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
-import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitTool;
-import com.example.auctionapp.global.util.ErrorMessageParser;
-import com.example.auctionapp.global.util.GetChatTime;
+import com.example.auctionapp.global.util.GetTime;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -30,18 +18,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompCommand;
 import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
-
-import static android.content.ContentValues.TAG;
 
 
 public class ChatMessageStomp {
@@ -116,7 +100,7 @@ public class ChatMessageStomp {
             userName = element.getAsJsonObject().get("userName").getAsString();
             message = element.getAsJsonObject().get("message").getAsString();
             createdDate = element.getAsJsonObject().get("createdDate").getAsString();
-            GetChatTime getChatTime = new GetChatTime(createdDate);
+            GetTime getChatTime = new GetTime(createdDate);
             String time = getChatTime.getLatestTime();
 
             Handler mainHandler = new Handler(Looper.getMainLooper());

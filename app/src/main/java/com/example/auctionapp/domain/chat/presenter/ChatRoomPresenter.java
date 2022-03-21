@@ -3,54 +3,34 @@ package com.example.auctionapp.domain.chat.presenter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import com.example.auctionapp.databinding.ActivityChatBinding;
 import com.example.auctionapp.domain.chat.adapter.chatListAdapter;
-import com.example.auctionapp.domain.chat.constant.ChatConstants;
 import com.example.auctionapp.domain.chat.dto.ChatRoomResponse;
 import com.example.auctionapp.domain.chat.dto.DeleteChatRoomRequest;
-import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.model.chatListData;
 import com.example.auctionapp.domain.chat.view.ChatRoomView;
-import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
-import com.example.auctionapp.domain.home.presenter.MainPresenter;
-import com.example.auctionapp.domain.item.constant.ItemConstants;
-import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
 import com.example.auctionapp.domain.user.constant.Constants;
-import com.example.auctionapp.global.dto.PaginationDto;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.stomp.ChatMessageStomp;
 import com.example.auctionapp.global.util.ErrorMessageParser;
-import com.example.auctionapp.global.util.GetChatTime;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.auctionapp.global.util.GetTime;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.SneakyThrows;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     //uid
@@ -136,7 +116,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                 String day = String.valueOf(response.body().get(i).getLatestTime().getDayOfMonth());
                 String hour = String.valueOf(response.body().get(i).getLatestTime().getHour());
                 String minute = String.valueOf(response.body().get(i).getLatestTime().getMinute());
-                GetChatTime getChatTime = new GetChatTime(month, day, hour, minute);
+                GetTime getChatTime = new GetTime(month, day, hour, minute);
                 String latestTime = getChatTime.getLatestTime();
 
                 chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));

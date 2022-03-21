@@ -5,13 +5,13 @@ import java.time.Month;
 import lombok.Getter;
 
 @Getter
-public class GetChatTime {
+public class GetTime {
     String latestTime;
-    public GetChatTime(Month monthM, String day, String hour, String min) {
+    public GetTime(Month monthM, String day, String hour, String min) {
         String month = getMonth(monthM.toString());
         this.latestTime = month + "월 " + day + "일 " + hour + ":" + min;
     }
-    public GetChatTime(String createdDate) {
+    public GetTime(String createdDate) {
         String month = createdDate.substring(5, 7);
 //        if(month.charAt(0) == 0) month = String.valueOf(month.charAt(1));
         String day = createdDate.substring(8, 10);

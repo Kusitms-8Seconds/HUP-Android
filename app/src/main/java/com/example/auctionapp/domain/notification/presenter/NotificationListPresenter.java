@@ -21,10 +21,12 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetTime;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +81,9 @@ public class NotificationListPresenter implements Presenter {
             if(response.body().getCurrentElements() >= 10) binding.moreButton.setVisibility(View.VISIBLE);
             for(int i=0; i<response.body().getData().size(); i++){
                 String message = response.body().getData().get(i).getMessage();
-                String category = response.body().getData().get(i).getENotificationCategory();
-                notificationList.add(new NotificationListData(message, category));
+                String createdTime = String.valueOf(response.body().getData().get(i).getCreatedDate());
+                GetTime getTime = new GetTime(createdTime);
+                notificationList.add(new NotificationListData(message, getTime.getLatestTime()));
                 notificationAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());

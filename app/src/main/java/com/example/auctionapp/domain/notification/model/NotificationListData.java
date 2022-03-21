@@ -7,14 +7,14 @@ import lombok.Setter;
 @Setter
 public class NotificationListData {
     private String noticeTitle;
-    private String category;
+    private String time;
 
     public NotificationListData(){
 
     }
 
-    public NotificationListData(String noticeTitle, String category){
+    public NotificationListData(String noticeTitle, String time){
         this.noticeTitle = noticeTitle;
-        this.category = category;
+        this.time = time;
     }
 }
