@@ -112,7 +112,8 @@ public class BidPagePresenter implements Presenter{
             @SneakyThrows
             @Override
             public void onClick(View view) {
-                if(!(binding.editPrice.getText().toString().equals(""))){
+                String editPrice = binding.editPrice.getText().toString();
+                if(! (editPrice.equals(""))){
                     priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
                     binding.editPrice.setText("");

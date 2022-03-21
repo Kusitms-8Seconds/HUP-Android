@@ -49,7 +49,7 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
         return listData.size();
     }
 
-    void addItem(AuctionHistoryEndData data) {
+    public void addItem(AuctionHistoryEndData data) {
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
     }

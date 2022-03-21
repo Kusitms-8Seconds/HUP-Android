@@ -106,6 +106,7 @@ public class AuctionHistoryEnd extends Fragment {
                 if(response.body().getData().get(i).isAcceptState()==true) {
                     Long itemId = response.body().getData().get(i).getItemId();
                     String itemName = response.body().getData().get(i).getItemName();
+                    System.out.println("item::" + itemName);
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
                     String userName = response.body().getData().get(i).getUserName();
 
@@ -124,6 +125,8 @@ public class AuctionHistoryEnd extends Fragment {
                                 userName);
                     }
                     auctionHistoryEndDataList.add(data);
+                    adapter.addItem(data);
+                    adapter.notifyDataSetChanged();
                 }
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
