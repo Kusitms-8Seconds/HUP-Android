@@ -1,10 +1,22 @@
-# HUP-App
+# 💰 HUP-App
+<div align="center"><h2>중고거래에 실시간의 재미를 더하다, </br> HURRY UP! HUP! 💨 </h2></div>
+<p align="center"><img src="https://user-images.githubusercontent.com/61726631/149874766-fcb10202-e727-4841-bfa4-2ebddc515b8d.jpg" width="400" height="400"/><p>
+
+  
+## :raising_hand: Introduce
 
 - 큐시즘 학술제 2조 에잇세컨즈의 HUP!입니다.
-- 실시간 경매 중고거래 안드로이드 어플입니다.
-<img width="447" alt="itemposter" src="https://user-images.githubusercontent.com/87636557/144025631-72675be4-f3f4-4dca-8511-735ec1117c09.png">
+- 경매에 대한 경험이 부족하고 경매에 부담을 갖고 있는 z세대들에게 더 쉽게 다가갈 수 있는 방안이 필요했습니다.</br>
+따라서 중고거래의 즐거움을 높이고 + 경매 진입장벽은 낮추고 + 실시간 거래는 빠른, HUP을 개발했습니다.
+- 서버(spring) 레포지토리와 안드로이드 레포지토리로 나뉘어져 있습니다.
+- 현재 레포지토리는 안드로이드 레포지토리이며 서버 레포지토리는 아래 주소에서 확인 가능합니다.
+- [서버 레포지토리](https://github.com/Kusitms-8Seconds/HUP-Server)
 
-## layout
+## :mag_right: ItemPoster
+
+ <p align="center"><img src="https://user-images.githubusercontent.com/61726631/149875042-4a0d2719-c8c3-48b9-905d-693234d99310.png"/><p>
+  
+## ✨ layout
 |스플래쉬|로그인|홈|채팅|
 |:-:|:-:|:-:|:-:|
 |<img width="236" alt="splash" src="https://user-images.githubusercontent.com/87636557/144022180-6099bea3-591d-4c13-8a1b-82d1d21e5d12.png">|<img width="236" alt="login" src="https://user-images.githubusercontent.com/87636557/144022176-ceb00f2c-47d1-45e1-bf59-c9a0ac1b260d.png">|<img width="236" alt="home" src="https://user-images.githubusercontent.com/87636557/144022165-f8fb7d3e-6745-4741-8fc4-33e301aaa572.png">|<img width="236" alt="chatting" src="https://user-images.githubusercontent.com/87636557/144022149-5ee30d84-d82d-49d5-b65b-bcd8fc5a95fb.png">
@@ -13,16 +25,32 @@
 |수수료 결제창|결제완료|공지사항|아이콘|
 |<img width="236" alt="fees" src="https://user-images.githubusercontent.com/87636557/144022153-ebcc134b-e9bc-4958-b0fd-7d72586c1848.png">|<img width="236" alt="finish" src="https://user-images.githubusercontent.com/87636557/144022157-cdc0e02b-1788-4fcc-ae4c-59390f9f31b4.png">|<img width="236" alt="notice" src="https://user-images.githubusercontent.com/87636557/144022178-4bab2ea2-8927-4b9f-9905-734912a5033f.png">|<img width="236" alt="hupicon" src="https://user-images.githubusercontent.com/87636557/144022250-0e5547ce-fade-40dc-9de3-4fa7f220340c.png">
 
+## 👩🏻‍💻 참여자 🧑🏻‍💻
+|이름|파트|레포|
+|---|---|---|
+|고민채|안드로이드|[이동하기](https://github.com/gom1n)|  
+|김정우|서버(스프링)|[이동하기](https://github.com/friendshipkim97)|
+  
+## foldering
+  MVP패턴을 도입해, model / view / presenter 의 형태로 폴더링되어있습니다.
+  
+## 라이브러리 & APIs
+✅ __retrofit__ : HTTP통신을 통해 데이터를 가져오거나 수정 및 보냅니다. </br>
+✅ __websocket, STOMP__ : 실시간 채팅 및 경매 입찰, 낙찰을 담당합니다. </br>
+✅ __FCM (firebase messaging)__ : 푸시알림을 통해 낙찰 시 판매자와 낙찰자의 기기에 알람을 보냅니다. </br>
+✅ __SQLite__ : 검색결과 저장 및 삭제 </br>
+✅ __google / naver / kakao__ : 구글, 네이버, 카카오 소셜 로그인 구현 및 사용자 정보 연동 </br>
 
-## 개요
-- 서버 레포지토리와 안드로이드 레포지토리로 나뉘어져 있습니다.
-- 현재 레포지토리는 안드로이드 레포지토리이며 서버 레포지토리는 아래 주소에서 확인 가능합니다.
-- [서버 레포지토리](https://github.com/gom1n/HUP-Server)
+## 협업
+1. Github
+2. Slack
+3. Jira <img src="https://user-images.githubusercontent.com/87636557/159142524-b4b1bbcc-30bf-400b-8293-29d813fad101.png"/>
+
+## :books: HUP Swagger API Docs
+<a href="http://52.78.175.27:8080/swagger-ui/index.html#/">HUP Swagger API Docs</a><br>
+
+<!-- ## 개요
 - 시연 영상 유튜브 업로드 : https://youtu.be/Fv1n-7LECvQ
 - apk(release) 경로 : HUP-App\app\release\app-release.apk
 - apk(debug) 경로 : HUP-App\app\build\outputs\apk\debug\app-debug.apk
-- Android Studio Emulator를 사용하여 테스트 해 보실 경우, 아래 3개의 파일에서 BaseURL IP주소를 http://10.0.2.2:8080/websocket/websocket 로 설정하셔야 합니다.
-- AVD가 아닌 실제 기기에 연결하여 테스트 해 보실 경우, 아래 3개의 파일에서 BaseURL IP 주소를 ws://***.***.*.*:8080/websocket/websocket (* 부분은 cmd > ipconfig > Wifi 주소) 로 설정하셔야 합니다.
- 1) app/src/main/java/com/example/auctionapp/global/stomp/HupStomp.java
- 2) app/src/main/java/com/example/auctionapp/global/retrofit/RetrofitTool.java
- 3) app/src/main/java/com/example/auctionapp/domain/user/constant/Constants.java
+ -->
