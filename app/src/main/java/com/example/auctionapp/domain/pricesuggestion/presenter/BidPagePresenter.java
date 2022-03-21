@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -46,6 +47,7 @@ import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class BidPagePresenter implements Presenter{
     PTAdapter ptAdapter;
@@ -118,6 +120,8 @@ public class BidPagePresenter implements Presenter{
                     ptAdapter.notifyDataSetChanged();
                     binding.editPrice.setText("");
                 }
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.editPrice.getWindowToken(), 0);
             }
         });
     }

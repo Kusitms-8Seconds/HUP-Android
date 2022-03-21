@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -43,6 +44,7 @@ import lombok.SneakyThrows;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class ChatMessagePresenter implements ChatMessagePresenterInterface {
     //uid
@@ -104,6 +106,8 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
                     adapter.notifyDataSetChanged();
                     mBinding.editText.setText("");
                 }
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mBinding.editText.getWindowToken(), 0);
             }
         });
     }
