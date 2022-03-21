@@ -27,6 +27,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,9 +82,24 @@ public class NotificationListPresenter implements Presenter {
             if(response.body().getCurrentElements() >= 10) binding.moreButton.setVisibility(View.VISIBLE);
             for(int i=0; i<response.body().getData().size(); i++){
                 String message = response.body().getData().get(i).getMessage();
-                String createdTime = String.valueOf(response.body().getData().get(i).getCreatedDate());
-                GetTime getTime = new GetTime(createdTime);
-                notificationList.add(new NotificationListData(message, getTime.getLatestTime()));
+//                String createdTime = String.valueOf(response.body().getData().get(i).getCreatedDate());
+
+                String createdTime = "";
+                LocalDateTime endDateTime = LocalDateTime.now();
+                LocalDateTime startDateTime = response.body().getData().get(i).getCreatedDate();
+                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+                if(Integer.parseInt(hours) >= 24) {
+                    hours = String.valueOf(Integer.parseInt(hours)%24);
+                    createdTime = days + "일 " + hours + "시간 " + minutes + "분 전";
+                } else if(Integer.parseInt(hours) > 0)
+                    createdTime = hours + "시간 " + minutes + "분 전";
+                else if(Integer.parseInt(hours) <= 0)
+                    createdTime = minutes + "분 전";
+
+//                GetTime getTime = new GetTime(createdTime);
+                notificationList.add(new NotificationListData(message, createdTime));
                 notificationAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());

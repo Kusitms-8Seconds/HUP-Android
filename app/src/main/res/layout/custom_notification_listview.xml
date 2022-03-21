@@ -30,7 +30,7 @@
         android:id="@+id/noti_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="category"
+        android:text="time"
         android:textSize="30px"
         android:layout_marginStart="48px"
         android:layout_marginTop="15px"
