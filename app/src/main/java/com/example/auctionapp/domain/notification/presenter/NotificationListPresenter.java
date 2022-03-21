@@ -82,7 +82,6 @@ public class NotificationListPresenter implements Presenter {
             if(response.body().getCurrentElements() >= 10) binding.moreButton.setVisibility(View.VISIBLE);
             for(int i=0; i<response.body().getData().size(); i++){
                 String message = response.body().getData().get(i).getMessage();
-//                String createdTime = String.valueOf(response.body().getData().get(i).getCreatedDate());
 
                 String createdTime = "";
                 LocalDateTime endDateTime = LocalDateTime.now();
@@ -98,7 +97,6 @@ public class NotificationListPresenter implements Presenter {
                 else if(Integer.parseInt(hours) <= 0)
                     createdTime = minutes + "분 전";
 
-//                GetTime getTime = new GetTime(createdTime);
                 notificationList.add(new NotificationListData(message, createdTime));
                 notificationAdapter.notifyDataSetChanged();
             }

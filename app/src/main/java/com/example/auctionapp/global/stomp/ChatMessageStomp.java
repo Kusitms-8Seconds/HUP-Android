@@ -108,7 +108,7 @@ public class ChatMessageStomp {
             Runnable myRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    if(message.contains("님이 채팅방에 참여하였습니다")) {
+                    if(message.contains("님이 채팅방에 참여하였습니다") || message.contains("님이 채팅방을 퇴장했습니다")) {
                         ChatModel.Comment data = new ChatModel.Comment(userId, message, time, 2);
                         comments.add(data);
                         adapter.addItem(data);

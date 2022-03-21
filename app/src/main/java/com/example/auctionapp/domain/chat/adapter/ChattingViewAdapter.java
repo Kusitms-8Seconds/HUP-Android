@@ -155,7 +155,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     Long Uid = response.body().getData().get(i).getUserId();
                     //left : 0          //right : 1     //center:2
-                    if(messageStr.contains("님이 채팅방에 참여하였습니다"))
+                    if(messageStr.contains("님이 채팅방에 참여하였습니다") || messageStr.contains("님이 채팅방을 퇴장했습니다"))
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 2));
                     else if (Uid.equals(Constants.userId)) {
                         comments.add(new ChatModel.Comment(Uid, messageStr, time, 1));
