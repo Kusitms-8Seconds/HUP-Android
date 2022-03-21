@@ -91,10 +91,8 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
     @Override
     public void getData() {
-        if (Constants.accessToken != null) {
-            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
-                    .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
-        }
+        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsInfo(ItemConstants.EItemSoldStatus.eOnGoing)
+                .enqueue(MainRetrofitTool.getCallback(new getAllItemsInfoCallback()));
     }
 
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
