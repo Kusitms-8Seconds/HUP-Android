@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity implements LoginView{
             @Override
             public void onClick(View view) {
                 presenter.googleLogin();
-                onBackPressed();
             }
         });
         //네이버 로그인

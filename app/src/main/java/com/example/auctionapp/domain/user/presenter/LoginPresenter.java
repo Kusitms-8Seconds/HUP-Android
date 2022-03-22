@@ -66,6 +66,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 0116;  //google login request code
     OAuthLogin mOAuthLoginModule;
+    //token 만료
+    boolean isExpired = false;
     
     // Attributes
     private LoginView loginView;
@@ -261,6 +263,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         public void onSuccessResponse(Response<LoginResponse> response) {
             Constants.userId = response.body().getUserId();
             Constants.accessToken = response.body().getAccessToken();
+            Constants.refreshToken = response.body().getRefreshToken();
             Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -273,6 +276,10 @@ public class LoginPresenter implements LoginPresenterInterface {
             } catch (Exception e) {
                 Log.d(Constants.ELoginCallback.TAG.getText(), e.getMessage());
             }
+            //액세스 토큰이 만료되었을 때
+//            if(response.code() == 401) {
+//
+//            }
             Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eFailResponse.getText());
         }
         @Override
