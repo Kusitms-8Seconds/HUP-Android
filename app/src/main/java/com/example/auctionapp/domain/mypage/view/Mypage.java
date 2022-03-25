@@ -207,8 +207,8 @@ public class Mypage extends Fragment implements MypageView{
         binding.safetyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), Notice.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), SafeTransactionSetting.class);
+                startActivity(intent);
             }
         });
     }

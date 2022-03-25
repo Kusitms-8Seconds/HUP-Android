@@ -53,6 +53,7 @@
         <activity android:name=".domain.user.view.ChangeInfo"/>
         <activity android:name=".domain.user.view.MyInfo"/>
         <activity android:name=".domain.notification.view.NotificationList"/>
+        <activity android:name=".domain.mypage.view.SafeTransactionSetting"/>
 
 
         <meta-data
