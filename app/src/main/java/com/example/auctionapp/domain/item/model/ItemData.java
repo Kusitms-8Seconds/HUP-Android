@@ -13,9 +13,9 @@ public class ItemData {
     int itemPrice;
     String endTime;
     int views;
-    Long heart;
+    int heart;
 
-    public ItemData(Long itemId, String imageURL, String itemName, int itemPrice, String endTime, int views, Long heart){
+    public ItemData(Long itemId, String imageURL, String itemName, int itemPrice, String endTime, int views, int heart){
         this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;

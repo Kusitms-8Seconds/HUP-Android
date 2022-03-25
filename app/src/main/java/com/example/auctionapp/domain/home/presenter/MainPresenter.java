@@ -67,7 +67,8 @@ public class MainPresenter implements Presenter{
     Long itemId;
     String imageURL;
     String itemName;
-    int itemPrice;
+    int initPrice;
+    int maxPrice;
     String date;
     String itemInfo;
     //BestItem Attributes
@@ -162,7 +163,7 @@ public class MainPresenter implements Presenter{
                 btName = response.body().get(i).getItemName();
                 btTime = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() + " " +
                         response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText();
-                btTempMax = response.body().get(i).getInitPrice();
+//                btTempMax = response.body().get(i).ge
 
                 if(response.body().get(i).getFileNames().size()!=0) {
                     btImage = response.body().get(i).getFileNames().get(0);
@@ -206,7 +207,10 @@ public class MainPresenter implements Presenter{
 
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
-                itemPrice = response.body().getData().get(i).getInitPrice();
+                initPrice = response.body().getData().get(i).getInitPrice();
+                maxPrice = response.body().getData().get(i).getMaximumPrice();
+                int dif = maxPrice - initPrice;
+
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     date = days + "일 " + hours + "시간 " + minutes + "분 전";
@@ -220,7 +224,7 @@ public class MainPresenter implements Presenter{
                 } else{
                     imageURL = null;
                 }
-                data = new AuctionNow(itemId, imageURL, itemName, itemPrice, date, itemInfo);
+                data = new AuctionNow(itemId, imageURL, itemName, dif, date, itemInfo);
                 auctionDataList.add(data);
                 auctionNowAdapter.addItem(data);
                 auctionNowAdapter.notifyDataSetChanged();

@@ -60,7 +60,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
     int itemPrice;
     String endTime;
     int views;
-    Long heart;
+    int heart;
 
     static final String[] LIST_MENU = {"전체", "디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
             ,"유아도서", "스포츠/레저", "여성잡화", "여성의류", "남성패션/잡화", "게임/취미", "뷰티/미용",
@@ -143,7 +143,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
     }
 
     private class getAllItemsInfoCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
-
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
@@ -156,7 +155,9 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
-                itemPrice = response.body().getData().get(i).getInitPrice();
+                itemPrice = response.body().getData().get(i).getMaximumPrice();
+                views = response.body().getData().get(i).getParticipants();
+                heart = response.body().getData().get(i).getScrapCount();
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     endTime = days + "일 " + hours + "시간 " + minutes + "분";
@@ -164,8 +165,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                     endTime = "";
                 } else
                     endTime = hours + "시간 " + minutes + "분";
-                views = 0;
-                heart = null;
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     imageURL = response.body().getData().get(i).getFileNames().get(0);
                 } else {
@@ -173,10 +172,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 }
                 data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
                 itemDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getHeart(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getParticipants(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
                 adapter.notifyDataSetChanged();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
@@ -198,57 +193,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
     }
 
-    private class getHeartCallback implements MainRetrofitCallback<ScrapCountResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ScrapCountResponse> response) {
-
-            itemDataList.get(heartCount).setHeart(response.body().getHeart());
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            heartCount++;
-            adapter.notifyDataSetChanged();
-        }
-        @Override
-        public void onFailResponse(Response<ScrapCountResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
-    private class getParticipantsCallback implements MainRetrofitCallback<ParticipantsResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<ParticipantsResponse> response) {
-            itemDataList.get(participantCount).setViews(response.body().getParticipantsCount());
-//            adapter.addItem(itemDataList.get(participantCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            participantCount++;
-        }
-        @Override
-        public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
     private class getAllItemsByCategoryCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -263,14 +207,14 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
-                itemPrice = response.body().getData().get(i).getInitPrice();
+                itemPrice = response.body().getData().get(i).getMaximumPrice();
+                views = response.body().getData().get(i).getParticipants();
+                heart = response.body().getData().get(i).getScrapCount();
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     endTime = days + "일 " + hours + "시간 " + minutes + "분";
                 } else
                     endTime = hours + "시간 " + minutes + "분";
-                views = 0;
-                heart = null;
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     imageURL = response.body().getData().get(i).getFileNames().get(0);
                 } else{
@@ -278,10 +222,6 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 }
                 data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
                 itemDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getHeart(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getHeartCallback()));
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getParticipants(response.body().getData().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getParticipantsCallback()));
                 adapter.notifyDataSetChanged();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());

@@ -43,7 +43,6 @@ public class BestItemAdapter extends PagerAdapter {
             Glide.with(context).load(Constants.imageBaseUrl+url).override(viewPagerImageView.getWidth()
                     ,viewPagerImageView.getHeight()).into(viewPagerImageView);
         }
-        System.out.println("IMG:::" + url);
 
         TextView bt_item_name = view.findViewById(R.id.bt_item_name);
         bt_item_name.setText(listData.get(position).getBtName());

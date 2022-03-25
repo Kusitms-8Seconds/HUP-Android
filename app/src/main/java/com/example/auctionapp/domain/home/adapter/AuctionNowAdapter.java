@@ -79,6 +79,8 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView item_upPrice;
         TextView item_date;
         TextView item_info;
+        TextView upArrow;
+        TextView won;
 
         public AuctionNowViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +90,8 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             item_upPrice = itemView.findViewById(R.id.auc_list_price);
             item_date = itemView.findViewById(R.id.sell_history_ongoing_max);
             item_info = itemView.findViewById(R.id.sell_history_ongoing_myPrice);
+            upArrow = itemView.findViewById(R.id.upArrow);
+            won = itemView.findViewById(R.id.won);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,7 +118,13 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
-            item_upPrice.setText(data.getItemPrice() + "");
+            int dif = data.getItemPrice();
+            if(dif <= 0) {
+                upArrow.setText("-");
+                won.setVisibility(View.GONE);
+                item_upPrice.setText("-");
+            } else
+                item_upPrice.setText(data.getItemPrice() + "");
             item_date.setText(data.getDate());
             if(data.getDate().equals("경매 시간 종료")) item_date.setTypeface(item_date.getTypeface(), Typeface.BOLD);
             item_info.setText(data.getItemInfo() + "");

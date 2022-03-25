@@ -13,7 +13,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ItemDetailsResponse {
-
     private Long id;
     private Long userId;
     private String itemName;
@@ -26,5 +25,8 @@ public class ItemDetailsResponse {
     private ItemConstants.EItemSoldStatus soldStatus;
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
-
+    private int scrapCount;
+    private int maximumPrice;
+    private int participants;
+    private Long chatRoomId;
 }
