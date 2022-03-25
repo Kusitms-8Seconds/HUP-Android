@@ -73,7 +73,6 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                     @SneakyThrows
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //TODO : 채팅방 퇴장
                         chatListData data = (chatListData) parent.getItemAtPosition(position);
                         DeleteChatRoomRequest deleteChatRoomRequest = new DeleteChatRoomRequest(data.getChatroomId(), Constants.userId);
                         chatMessageStomp.initStomp(deleteChatRoomRequest);
@@ -99,7 +98,6 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     }
 
     private class getChatRoomsCallback implements MainRetrofitCallback<List<ChatRoomResponse>> {
-
         @Override
         public void onSuccessResponse(Response<List<ChatRoomResponse>>response) throws IOException {
             for(int i=0; i<response.body().size(); i++) {
@@ -112,11 +110,13 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                     itemUrl = response.body().get(i).getFileNames().get(0);
                 String latestMessage = response.body().get(i).getLatestMessage();
 
+                int year = response.body().get(i).getLatestTime().getYear();
                 Month month = response.body().get(i).getLatestTime().getMonth();
                 String day = String.valueOf(response.body().get(i).getLatestTime().getDayOfMonth());
                 String hour = String.valueOf(response.body().get(i).getLatestTime().getHour());
                 String minute = String.valueOf(response.body().get(i).getLatestTime().getMinute());
-                GetTime getChatTime = new GetTime(month, day, hour, minute);
+
+                GetTime getChatTime = new GetTime(year, month, day, hour, minute);
                 String latestTime = getChatTime.getLatestTime();
 
                 chatroomList.add(new chatListData(chatroomId, destId, userName, itemId, itemUrl, latestMessage, latestTime));

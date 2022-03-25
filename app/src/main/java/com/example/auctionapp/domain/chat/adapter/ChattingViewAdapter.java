@@ -146,11 +146,13 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 for (int i = 0; i < response.body().getData().size(); i++) {
                     String messageStr = response.body().getData().get(i).getMessage();
                     String userName = response.body().getData().get(i).getUserName();
+
+                    int year = response.body().getData().get(i).getCreatedDate().getYear();
                     Month month = response.body().getData().get(i).getCreatedDate().getMonth();
                     String day = String.valueOf(response.body().getData().get(i).getCreatedDate().getDayOfMonth());
                     String hour = String.valueOf(response.body().getData().get(i).getCreatedDate().getHour());
                     String minute = String.valueOf(response.body().getData().get(i).getCreatedDate().getMinute());
-                    GetTime getTime = new GetTime(month, day, hour, minute);
+                    GetTime getTime = new GetTime(year, month, day, hour, minute);
                     String time = getTime.getLatestTime();
 
                     Long Uid = response.body().getData().get(i).getUserId();

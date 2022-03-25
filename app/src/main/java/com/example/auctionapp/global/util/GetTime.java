@@ -7,9 +7,12 @@ import lombok.Getter;
 @Getter
 public class GetTime {
     String latestTime;
-    public GetTime(Month monthM, String day, String hour, String min) {
+    public GetTime(int year, Month monthM, String day, String hour, String min) {
         String month = getMonth(monthM.toString());
-        this.latestTime = month + "월 " + day + "일 " + hour + ":" + min;
+        if((year==2000) && month.equals("1") && day.equals("1") && hour.equals("1") && min.equals("1"))
+            this.latestTime = "";
+        else
+            this.latestTime = month + "월 " + day + "일 " + hour + ":" + min;
     }
     public GetTime(String createdDate) {
         String month = createdDate.substring(5, 7);
