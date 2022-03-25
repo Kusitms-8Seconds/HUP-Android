@@ -126,8 +126,13 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         public void onBind(SellHistoryEndData data){
-            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(sell_history_end_img.getWidth()
-                    ,sell_history_end_img.getHeight()).into(sell_history_end_img);
+            if(data.getImageURL() == null) {
+                Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(sell_history_end_img.getWidth()
+                        , sell_history_end_img.getHeight()).into(sell_history_end_img);
+            } else {
+                Glide.with(context).load(Constants.imageBaseUrl + data.getImageURL()).override(sell_history_end_img.getWidth()
+                        , sell_history_end_img.getHeight()).into(sell_history_end_img);
+            }
             sell_history_end_img.setClipToOutline(true);  //item 테두리
             sell_history_end_edt_name.setText(data.getItemName());
             sell_history_end_edt_myPrice.setText(data.getItemPrice()+"");

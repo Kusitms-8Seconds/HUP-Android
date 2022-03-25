@@ -4,4 +4,5 @@
     <string name="naver_client_id">Myk42LjvpBgNgRiDOcaz</string>
     <string name="naver_client_secret">xA453VP9g7</string>
     <string name="naver_client_name">AuctionApp</string>
+    <string name="hup_icon_url">https://user-images.githubusercontent.com/61726631/149874766-fcb10202-e727-4841-bfa4-2ebddc515b8d.jpg</string>
 </resources>

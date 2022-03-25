@@ -313,14 +313,16 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
             getUserInfoCallback(response.body().getUserId());
             binding.itemName.setText(response.body().getItemName());
             binding.itemContent.setText(response.body().getDescription());
-            if(response.body().getFileNames().size()!=0){
+            if(!(response.body().getFileNames().isEmpty())){
                 for (int i=0; i<response.body().getFileNames().size(); i++) {
                     itemImageList.add(response.body().getFileNames().get(i));
                 }
-                itemDetailViewPagerAdapter = new ItemDetailViewPagerAdapter(context, itemImageList);
-                binding.itemDetailViewPager.setAdapter(itemDetailViewPagerAdapter);
             }
+            itemDetailViewPagerAdapter = new ItemDetailViewPagerAdapter(context, itemImageList);
+            binding.itemDetailViewPager.setAdapter(itemDetailViewPagerAdapter);
+
             binding.category.setText(response.body().getCategory().getName());
+
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));

@@ -91,8 +91,13 @@ public class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
 
         public void onBind(ScrapItem data){
-            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
-                    ,item_image.getHeight()).into(item_image);
+            if(data.getImageURL() == null) {
+                Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(item_image.getWidth()
+                        ,item_image.getHeight()).into(item_image);
+            } else {
+                Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(item_image.getWidth()
+                        ,item_image.getHeight()).into(item_image);
+            }
             item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(data.getItemName());
             item_price.setText(data.getItemPrice()+"");

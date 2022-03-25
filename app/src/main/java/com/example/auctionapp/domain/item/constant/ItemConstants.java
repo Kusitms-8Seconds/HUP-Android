@@ -62,15 +62,7 @@ public class ItemConstants {
     }
 
     public enum EItemCallback {
-        eItemTAG("Item: "),
-        eDeleteItemCallback("DeleteItemCallback::"),
-        eDeleteScrapCallback("deleteScrapCallback::"),
-        eCreateScrapCallback("createScrapCallback::"),
-        eisCheckedHeartCallback("isCheckedHeartCallback::"),
-        egetMaximumPriceCallback("getMaximumPriceCallback::"),
-        egetParticipantsCallback("getParticipantsCallback::"),
-        egetUserDetailsCallback("getUserDetailsCallback::"),
-        egetItemDetailsCallback("getItemDetailsCallback::"),
+        eHupIcon("https://user-images.githubusercontent.com/61726631/149874766-fcb10202-e727-4841-bfa4-2ebddc515b8d.jpg"),
 
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),

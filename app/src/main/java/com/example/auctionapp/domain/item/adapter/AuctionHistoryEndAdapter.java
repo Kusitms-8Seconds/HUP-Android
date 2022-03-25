@@ -97,8 +97,13 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
         }
 
         public void onBind(AuctionHistoryEndData data){
-            Glide.with(context).load(Constants.imageBaseUrl+data.getImageURL()).override(auc_history_end_img.getWidth()
-                    ,auc_history_end_img.getHeight()).into(auc_history_end_img);
+            if(data.getImageURL() == null) {
+                Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(auc_history_end_img.getWidth()
+                        , auc_history_end_img.getHeight()).into(auc_history_end_img);
+            } else {
+                Glide.with(context).load(Constants.imageBaseUrl + data.getImageURL()).override(auc_history_end_img.getWidth()
+                        , auc_history_end_img.getHeight()).into(auc_history_end_img);
+            }
             auc_history_end_img.setClipToOutline(true);  //item 테두리
             auc_history_end_edt_name.setText(data.getItemName());
             auc_history_end_edt_myPrice.setText(data.getItemPrice()+"");

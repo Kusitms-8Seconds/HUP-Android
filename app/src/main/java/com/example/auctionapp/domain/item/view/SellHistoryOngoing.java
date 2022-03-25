@@ -91,36 +91,36 @@ public class SellHistoryOngoing extends Fragment {
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                    LocalDateTime startDateTime = LocalDateTime.now();
-                    LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
-                    String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-                    String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
-                    Long itemId = response.body().getData().get(i).getId();
-                    String itemName = response.body().getData().get(i).getItemName();
-                    int suggestionPrice = response.body().getData().get(i).getInitPrice();
+                LocalDateTime startDateTime = LocalDateTime.now();
+                LocalDateTime endDateTime = response.body().getData().get(i).getAuctionClosingDate();
+                String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+                Long itemId = response.body().getData().get(i).getId();
+                String itemName = response.body().getData().get(i).getItemName();
+                int suggestionPrice = response.body().getData().get(i).getInitPrice();
 
-                    String date = "";
-                    if(Integer.parseInt(hours) >= 24) {
-                        hours = String.valueOf(Integer.parseInt(hours)%24);
-                        date = days + "일 " + hours + "시간 " + minutes + "분";
-                    } else
-                        date = hours + "시간 " + minutes + "분";
+                String date = "";
+                if(Integer.parseInt(hours) >= 24) {
+                    hours = String.valueOf(Integer.parseInt(hours)%24);
+                    date = days + "일 " + hours + "시간 " + minutes + "분";
+                } else
+                    date = hours + "시간 " + minutes + "분";
 
-                    if (response.body().getData().get(i).getFileNames().size() != 0) {
-                        String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                        data = new SellHistoryOngoingData(itemId,
-                                fileNameMajor,
-                                itemName,
-                                suggestionPrice,
-                                date);
-                    } else {
-                        data = new SellHistoryOngoingData(itemId,
-                                null,
-                                itemName,
-                                suggestionPrice,
-                                date);
-                    }
+                if (response.body().getData().get(i).getFileNames().size() != 0) {
+                    String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
+                    data = new SellHistoryOngoingData(itemId,
+                            fileNameMajor,
+                            itemName,
+                            suggestionPrice,
+                            date);
+                } else {
+                    data = new SellHistoryOngoingData(itemId,
+                            null,
+                            itemName,
+                            suggestionPrice,
+                            date);
+                }
                 adapter.addItem(data);adapter.notifyDataSetChanged();
                 sellHistoryOngoingDataList.add(data);
                 }

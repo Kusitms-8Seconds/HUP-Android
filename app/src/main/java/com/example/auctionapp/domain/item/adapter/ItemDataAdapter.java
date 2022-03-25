@@ -65,14 +65,19 @@ class ItemDataAdapter extends BaseAdapter {
         item_views = view.findViewById(R.id.item_views);
         item_hearts = view.findViewById(R.id.item_hearts);
 
-        Glide.with(mContext).load(Constants.imageBaseUrl+data.get(position).getImageURL()).override(item_image.getWidth()
+        if(data.get(position).getImageURL() == null) {
+            Glide.with(mContext).load(mContext.getString(R.string.hup_icon_url)).override(item_image.getWidth()
                     ,item_image.getHeight()).into(item_image);
-            item_image.setClipToOutline(true);  //item 테두리
-            item_name.setText(data.get(position).getItemName());
-            item_price.setText(data.get(position).getItemPrice()+"");
-            end_time.setText(data.get(position).getEndTime());
-            item_views.setText(data.get(position).getViews()+"");
-            item_hearts.setText(data.get(position).getHeart()+"");
+        } else {
+            Glide.with(mContext).load(Constants.imageBaseUrl+data.get(position).getImageURL()).override(item_image.getWidth()
+                    ,item_image.getHeight()).into(item_image);
+        }
+        item_image.setClipToOutline(true);  //item 테두리
+        item_name.setText(data.get(position).getItemName());
+        item_price.setText(data.get(position).getItemPrice()+"");
+        end_time.setText(data.get(position).getEndTime());
+        item_views.setText(data.get(position).getViews()+"");
+        item_hearts.setText(data.get(position).getHeart()+"");
 
         return view;
     }

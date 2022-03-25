@@ -55,10 +55,13 @@ public class AuctionHistoryOngoingAdapter extends BaseAdapter {
         TextView auc_history_ongoing_max = (TextView) convertView.findViewById(R.id.auc_history_ongoing_max);
         TextView itemLeftTime = (TextView) convertView.findViewById(R.id.itemLeftTime);
 
-        //auc_history_ongoing_img.setImageResource(items.get(position).getImage());
-
-        Glide.with(context).load(Constants.imageBaseUrl+items.get(position).getImageURL()).override(auc_history_ongoing_img.getWidth()
-                ,auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        if(items.get(position).getImageURL() == null) {
+            Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(auc_history_ongoing_img.getWidth()
+                    ,auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        } else {
+            Glide.with(context).load(Constants.imageBaseUrl + items.get(position).getImageURL()).override(auc_history_ongoing_img.getWidth()
+                    , auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        }
         auc_history_ongoing_img.setClipToOutline(true);  //item 테두리
         auc_history_ongoing_edt_name.setText(items.get(position).getItemName());
         auc_history_ongoing_myPrice.setText(items.get(position).getMyPrice()+"");

@@ -32,8 +32,11 @@ public class ItemDetailViewPagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.viewpager_layout_itemdetail, null);
 
         ImageView ViewPagerImageView = view.findViewById(R.id.viewpagerImageView);
-        Glide.with(mContext).load(Constants.imageBaseUrl+imageList.get(position)).into(ViewPagerImageView);
-        //ViewPagerImageView.setImageResource(imageList.get(position));
+        if(imageList.isEmpty()) {
+            Glide.with(mContext).load(mContext.getString(R.string.hup_icon_url)).into(ViewPagerImageView);
+        } else {
+            Glide.with(mContext).load(Constants.imageBaseUrl+imageList.get(position)).into(ViewPagerImageView);
+        }
 
         container.addView(view);
 

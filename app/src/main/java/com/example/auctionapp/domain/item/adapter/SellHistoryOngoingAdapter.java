@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.user.constant.Constants;
 
@@ -55,8 +56,13 @@ public class SellHistoryOngoingAdapter extends BaseAdapter {
         TextView auc_history_ongoing_max = (TextView) convertView.findViewById(R.id.sell_history_ongoing_max);
         TextView itemLeftTime = (TextView) convertView.findViewById(R.id.itemLeftTime);
 
-        Glide.with(context).load(Constants.imageBaseUrl+items.get(position).getImageURL()).override(auc_history_ongoing_img.getWidth()
-                ,auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        if(items.get(position).getImageURL() == null) {
+            Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(auc_history_ongoing_img.getWidth()
+                    ,auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        } else {
+            Glide.with(context).load(Constants.imageBaseUrl + items.get(position).getImageURL()).override(auc_history_ongoing_img.getWidth()
+                    , auc_history_ongoing_img.getHeight()).into(auc_history_ongoing_img);
+        }
         auc_history_ongoing_img.setClipToOutline(true);  //item 테두리
         auc_history_ongoing_edt_name.setText(items.get(position).getItemName());
         auc_history_ongoing_max.setText(items.get(position).getMaxPrice()+"");
