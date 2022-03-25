@@ -89,6 +89,9 @@ public interface RestAPI {
     Call<TokenInfoResponse> reissue(@Body LogoutRequest logoutRequest);
     @GET("api/v1/users/{id}")      //사용자 정보 조회
     Call<UserInfoResponse> userDetails(@Path("id") Long userId);
+    @DELETE("api/v1/users/{id}")      //사용자 탈퇴
+    Call<DefaultResponse> deleteUser(@Path("id") Long userId);
+
     @POST("api/v1/users/google-login")      //구글 로그인
     Call<LoginResponse> googleIdTokenValidation(@Body OAuth2GoogleLoginRequest oAuth2GoogleLoginRequest);
     @POST("api/v1/users/kakao-login")       //카카오 로그인
