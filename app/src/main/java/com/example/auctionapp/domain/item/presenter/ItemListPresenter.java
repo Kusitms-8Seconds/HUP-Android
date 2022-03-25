@@ -62,7 +62,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
     int views;
     Long heart;
 
-    static final String[] LIST_MENU = {"디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
+    static final String[] LIST_MENU = {"전체", "디지털 기기", "생활가전", "가구/인테리어", "유아동", "생활/가공식품"
             ,"유아도서", "스포츠/레저", "여성잡화", "여성의류", "남성패션/잡화", "게임/취미", "뷰티/미용",
             "반려동물용품", "도서/티켓/음반", "식물"} ;
 
@@ -118,10 +118,16 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                         heartCount = 0;
                         participantCount = 0;
 
-                        GetCategory getCategory = new GetCategory(category);
-                        String eCategory = getCategory.getCategory();
-                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsByCategory(eCategory)
-                                .enqueue(MainRetrofitTool.getCallback(new getAllItemsByCategoryCallback()));
+                        if(category.equals(LIST_MENU[0])) {
+                            init();
+                            getData();
+                        }
+                        else {
+                            GetCategory getCategory = new GetCategory(category);
+                            String eCategory = getCategory.getCategory();
+                            RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getAllItemsByCategory(eCategory)
+                                    .enqueue(MainRetrofitTool.getCallback(new getAllItemsByCategoryCallback()));
+                        }
                     }
                 });
                 dlg.show();
@@ -154,7 +160,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     endTime = days + "일 " + hours + "시간 " + minutes + "분";
-                } else if(Integer.parseInt(hours) < 0) {
+                } else if(Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0) {
                     endTime = "";
                 } else
                     endTime = hours + "시간 " + minutes + "분";

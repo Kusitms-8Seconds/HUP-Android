@@ -332,7 +332,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
             if(Integer.parseInt(hours) >= 24) {
                 hours = String.valueOf(Integer.parseInt(hours)%24);
                 binding.itemLeftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 전");
-            } else if(Integer.parseInt(hours) < 0) {
+            } else if(Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0) {
                 binding.itemLeftTime.setText("경매 시간 종료");
             } else {
                 binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
