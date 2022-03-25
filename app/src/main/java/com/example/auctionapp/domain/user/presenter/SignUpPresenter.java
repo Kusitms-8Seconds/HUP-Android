@@ -93,11 +93,13 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     @Override
     public boolean validEmailCheck() {
         String inputEmail = binding.edtEmail.getText().toString();
-        Boolean emailFormatResult = Pattern.matches(Constants.ESignUp.emailFormat.getText(), inputEmail);
-        if(emailFormatResult==false){
+        Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+        if(pattern.matcher(inputEmail).matches()) {
+            return true;
+        } else {
             signUpView.showToast(Constants.ESignUp.emailFormatErrorMessage.getText());
-            return false; }
-        return true;
+            return false;
+        }
     }
 
     @Override

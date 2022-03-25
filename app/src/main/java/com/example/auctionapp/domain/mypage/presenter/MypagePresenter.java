@@ -130,7 +130,7 @@ public class MypagePresenter implements Presenter{
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
             if(!response.body().isActivated()) {
-                Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedException.getValue(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
             }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -139,6 +139,13 @@ public class MypagePresenter implements Presenter{
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             mypageView.showToast(errorMessageParser.getParsedErrorMessage());
+//            if(errorMessageParser.getExpiredCode().equals("EXPIRED_TOKEN")) {
+//                socialLogOut();
+//                Constants.userId = null;
+//                Constants.accessToken = null;
+//                Constants.refreshToken = null;
+//                init();
+//            }
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override

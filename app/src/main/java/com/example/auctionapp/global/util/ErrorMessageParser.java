@@ -12,18 +12,20 @@ public class ErrorMessageParser {
     JsonElement element;
     String errorMessage;
     String parsedErrorMessage;
+    String expiredCode;
 
     public ErrorMessageParser(String errorResponse) {
         this.parser = new JsonParser();
         this.element = parser.parse(errorResponse);
-        if(element.getAsJsonObject().get("messages").getAsJsonArray() != null) {
+//        if(element.getAsJsonObject().get("message").getAsJsonArray() != null) {
 //            System.out.println("element: " + element.getAsJsonObject().get("messages"));
             this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
             this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
-        }
-        else {
-            this.errorMessage = "null";
-            this.parsedErrorMessage = "null";
-        }
+            if(this.parsedErrorMessage.equals("만료된 토큰입니다.")) this.expiredCode = "EXPIRED_TOKEN";
+//        }
+//        else {
+//            this.errorMessage = "null";
+//            this.parsedErrorMessage = "null";
+//        }
     }
 }

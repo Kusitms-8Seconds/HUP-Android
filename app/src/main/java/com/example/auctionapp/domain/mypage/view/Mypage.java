@@ -108,7 +108,7 @@ public class Mypage extends Fragment implements MypageView{
             });
         } else if(Constants.userId != null && Constants.accessToken == null){
             //이메일 인증이 되어있지 않을 때
-            showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthException.getValue());
+            showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
             binding.logoutButton.setVisibility(View.VISIBLE);
             binding.userNameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
