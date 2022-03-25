@@ -27,15 +27,10 @@ public class Email extends AppCompatActivity implements EmailView {
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
         binding.tvEmailCheck.setText(email);
-        System.out.println("email: "+email);
 
         binding.btnSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.btnSendEmail.setEnabled(false);
-                binding.btnSendEmail.setText("발송되었습니다");
-                binding.btnSendEmail.setBackgroundColor(Color.GRAY);
-                binding.lyCheckAuthcode.setVisibility(View.VISIBLE);
                 presenter.sendEmail(email);
             }
         });
