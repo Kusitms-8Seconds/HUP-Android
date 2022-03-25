@@ -23,13 +23,12 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
     private Long itemId;
 
     @Override
-    public void onBackPressed()
-    {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+    public void onResume() {
+        presenter = new ItemDetailPresenter(this, binding, getApplicationContext());
+        presenter.initializeImageData();
+        presenter.getItemInfoCallback(itemId);  //item info
 
-        super.onBackPressed();
+        super.onResume();
     }
 
     @Override
