@@ -75,9 +75,8 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                     public void onClick(DialogInterface dialog, int id) {
                         chatListData data = (chatListData) parent.getItemAtPosition(position);
                         DeleteChatRoomRequest deleteChatRoomRequest = new DeleteChatRoomRequest(data.getChatroomId(), Constants.userId);
-                        chatMessageStomp.initStomp(deleteChatRoomRequest);
+                        chatMessageStomp.initStomp(chatRoomView);
                         chatMessageStomp.outChatRoom(deleteChatRoomRequest);
-//                        init();
                     }
                 });
                 builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){

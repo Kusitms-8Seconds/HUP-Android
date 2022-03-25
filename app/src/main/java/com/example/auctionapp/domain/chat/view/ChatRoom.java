@@ -23,6 +23,11 @@ public class ChatRoom extends Fragment implements ChatRoomView {
     private ActivityChatBinding binding;
     ChatRoomPresenter presenter;
 
+    @Override
+    public void onResume() {
+        init();
+        super.onResume();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,6 +35,21 @@ public class ChatRoom extends Fragment implements ChatRoomView {
         binding = ActivityChatBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        init();
+
+        return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void init() {
         presenter = new ChatRoomPresenter(this, binding, this.getContext());
         if(Constants.userId != null) {
             binding.afterLogin.setVisibility(View.GONE);
@@ -57,17 +77,6 @@ public class ChatRoom extends Fragment implements ChatRoomView {
                 startActivity(intent);
             }
         });
-
-        return view;
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
 }
 

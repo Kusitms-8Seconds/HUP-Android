@@ -9,6 +9,7 @@ import com.example.auctionapp.domain.chat.adapter.ChattingViewAdapter;
 import com.example.auctionapp.domain.chat.dto.DeleteChatRoomRequest;
 import com.example.auctionapp.domain.chat.model.ChatModel;
 import com.example.auctionapp.domain.chat.view.ChatMessageView;
+import com.example.auctionapp.domain.chat.view.ChatRoomView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.global.util.GetTime;
 import com.google.gson.JsonElement;
@@ -48,6 +49,7 @@ public class ChatMessageStomp {
     String createdDate;
 
     private ChatMessageView chatMessageView;
+    private ChatRoomView chatRoomView;
 
     @SuppressLint("CheckResult")
     public void initStomp(ChattingViewAdapter adapter, Long chatRoomId, ChatMessageView chatMessageView) throws IOException, JSONException {
@@ -59,12 +61,8 @@ public class ChatMessageStomp {
         connectSTOMP();
         subSTOMP();
     }
-    public void initStomp(DeleteChatRoomRequest deleteChatRoomRequest) throws IOException, JSONException {
-//        this.adapter = adapter;
-//        this.chatRoomId = deleteChatRoomRequest.getChatRoomId();
-//        this.chatMessageView = chatMessageView;
-
-//        comments = new ArrayList<>();
+    public void initStomp(ChatRoomView view) throws IOException, JSONException {
+        this.chatRoomView = view;
         connectSTOMP();
         subSTOMP();
     }
