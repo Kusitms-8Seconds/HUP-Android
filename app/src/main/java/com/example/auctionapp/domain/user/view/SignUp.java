@@ -68,9 +68,10 @@ public class SignUp extends AppCompatActivity implements SignUpView {
             public void onClick(View view) {
                 Intent intent = presenter.signUpCheck();
                 if(intent !=null){
-                        showToast("회원가입을 성공했습니다.");
-                        startActivity(intent); } }
-            });
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 

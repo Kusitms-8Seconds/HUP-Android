@@ -28,7 +28,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class SignUpPresenter implements SignUpPresenterInterface{
-    boolean isValidId;
+    boolean isSignUp = false;
     // Attributes
     private SignUpView signUpView;
     private ActivitySignUpBinding binding;
@@ -53,8 +53,6 @@ public class SignUpPresenter implements SignUpPresenterInterface{
             return null;
         } else if(!agreeCheck()){
             return null;
-        } else if(!isValidId){
-            return null;
         } else{
             SignUpRequest signUpRequest = SignUpRequest.builder()
                     .loginId(binding.edtUserId.getText().toString())
@@ -66,9 +64,12 @@ public class SignUpPresenter implements SignUpPresenterInterface{
             RetrofitTool.getAPIWithNullConverter().signup(signUpRequest)
                     .enqueue(MainRetrofitTool.getCallback(new SignUpCallback()));
 
-            Intent intent = new Intent(context, Email.class);
-            intent.putExtra("email", binding.edtEmail.getText().toString());
-            return intent;
+            if(isSignUp) {
+                Intent intent = new Intent(context, Email.class);
+                intent.putExtra("email", binding.edtEmail.getText().toString());
+                return intent;
+            }
+            else return null;
         }
     }
 
@@ -85,9 +86,6 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     public void duplicateLoginIdCheck(String loginId) {
         RetrofitTool.getAPIWithNullConverter().checkDuplicateId(loginId)
                 .enqueue(MainRetrofitTool.getCallback(new checkDuplicateIdCheck()));
-        if(!isValidId) {
-            signUpView.showToast(Constants.ESignUp.idDuplicateMessage.getText());
-        }
     }
 
     @Override
@@ -152,12 +150,15 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         @Override
         public void onSuccessResponse(Response<SignUpResponse> response) {
             Constants.userId = response.body().getUserId();
+            signUpView.showToast(Constants.EUserServiceImpl.eSuccessSignUpMessage.getValue());
+            isSignUp = true;
             System.out.println("SignUp_userId: "+Constants.userId);
         }
         @Override
         public void onFailResponse(Response<SignUpResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             signUpView.showToast(errorMessageParser.getParsedErrorMessage());
+            isSignUp = false;
             Log.d(TAG, "onFailResponse");
         }
 
@@ -171,11 +172,9 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
             signUpView.showToast(response.body().getMessage());
-            isValidId = true;
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            isValidId = false;
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             signUpView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");

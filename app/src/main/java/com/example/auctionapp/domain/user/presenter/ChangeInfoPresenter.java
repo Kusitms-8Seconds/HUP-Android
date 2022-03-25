@@ -41,7 +41,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
-    boolean isValidId;
+    boolean isChangedProfile;
     // Attributes
     private ChangeInfoView changeInfoView;
     private ActivityChangeInfoBinding binding;
@@ -68,8 +68,6 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             return null;
         } else if(validNameCheck()==false){
             return null;
-        } else if(!isValidId){
-            return null;
         } else{
             UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
                     .userId(Constants.userId)
@@ -93,10 +91,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(filePart, userIdR)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));
 
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return intent;
+            if(isChangedProfile) {
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                return intent;
+            } else
+                return null;
         }
     }
 
@@ -156,11 +157,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onSuccessResponse(Response<UpdateUserResponse> response) {
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateUser: "+Constants.userId);
+            isChangedProfile = true;
         }
         @Override
         public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            isChangedProfile = false;
             Log.d(TAG, "onFailResponse");
         }
 
@@ -175,18 +178,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateProfileImg: "+Constants.userId);
             System.out.println("UpdateProfileImgURL: "+response.body().getProfileImageURL());
+            isChangedProfile = true;
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
-//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-//            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-//            Log.d(TAG, "UpdateProfileImg: onFailResponse: " + response.errorBody().string());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Log.d("UpdateProfileImg fail", jObjError.getString("error"));
-            } catch (Exception e) {
-                Log.d("UpdateProfileImg fail", e.getMessage());
-            }
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
+            isChangedProfile = false;
         }
 
         @Override
@@ -199,13 +197,11 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
             changeInfoView.showToast(response.body().getMessage());
-            isValidId = true;
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-            isValidId = false;
             Log.d(TAG, "onFailResponse");
         }
 

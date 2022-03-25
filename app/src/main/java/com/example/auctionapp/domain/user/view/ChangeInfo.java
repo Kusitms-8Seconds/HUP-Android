@@ -59,8 +59,9 @@ public class ChangeInfo extends AppCompatActivity implements ChangeInfoView{
                 if(imagePath != null) intent = presenter.UpdateCheck(imagePath);
                 else showToast(UploadConstants.EUploadToast.unselectImage.getText());
                 if(intent !=null){
-                    showToast("정보수정완료");
-                    startActivity(intent); } }
+                    startActivity(intent);
+                }
+            }
         });
         binding.checkId.setOnClickListener(new View.OnClickListener() {
             @Override
