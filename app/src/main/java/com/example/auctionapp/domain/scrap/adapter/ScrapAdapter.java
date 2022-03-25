@@ -66,6 +66,8 @@ public class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         TextView item_name;
         TextView item_price;
         TextView end_time;
+        TextView tv1;
+        TextView tv2;
 
         public ScrapViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,7 +75,9 @@ public class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             item_image = itemView.findViewById(R.id.scrap_image);
             item_name = itemView.findViewById(R.id.scrap_name);
             item_price = itemView.findViewById(R.id.scrap_price);
-            end_time = itemView.findViewById(R.id.scarp_end_time);
+            end_time = itemView.findViewById(R.id.scrap_end_time);
+            tv1 = itemView.findViewById(R.id.scrap_end_time_1);
+            tv2 = itemView.findViewById(R.id.scrap_end_time_2);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,6 +106,12 @@ public class ScrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             item_name.setText(data.getItemName());
             item_price.setText(data.getItemPrice()+"");
             end_time.setText(data.getEndTime());
+            if(data.getEndTime().equals("")) {
+                end_time.setText("경매 시간 종료");
+                tv1.setVisibility(View.GONE);
+                tv2.setVisibility(View.GONE);
+            }
+
         }
     }
 

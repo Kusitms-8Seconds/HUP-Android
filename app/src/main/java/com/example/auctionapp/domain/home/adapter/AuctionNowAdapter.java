@@ -1,6 +1,8 @@
 package com.example.auctionapp.domain.home.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +116,7 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             item_name.setText(data.getItemName());
             item_upPrice.setText(data.getItemPrice() + "");
             item_date.setText(data.getDate());
+            if(data.getDate().equals("경매 시간 종료")) item_date.setTypeface(item_date.getTypeface(), Typeface.BOLD);
             item_info.setText(data.getItemInfo() + "");
         }
     }

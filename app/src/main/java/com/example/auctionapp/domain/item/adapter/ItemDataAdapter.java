@@ -62,6 +62,8 @@ class ItemDataAdapter extends BaseAdapter {
         item_name = view.findViewById(R.id.bt_item_name);
         item_price = view.findViewById(R.id.item_price);
         end_time = view.findViewById(R.id.end_time);
+        TextView tv1 = view.findViewById(R.id.tv_finish);
+        TextView tv2 = view.findViewById(R.id.tv_before);
         item_views = view.findViewById(R.id.item_views);
         item_hearts = view.findViewById(R.id.item_hearts);
 
@@ -76,6 +78,11 @@ class ItemDataAdapter extends BaseAdapter {
         item_name.setText(data.get(position).getItemName());
         item_price.setText(data.get(position).getItemPrice()+"");
         end_time.setText(data.get(position).getEndTime());
+        if(data.get(position).getEndTime().equals("")) {
+            end_time.setText("경매 시간 종료");
+            tv1.setVisibility(View.GONE);
+            tv2.setVisibility(View.GONE);
+        }
         item_views.setText(data.get(position).getViews()+"");
         item_hearts.setText(data.get(position).getHeart()+"");
 

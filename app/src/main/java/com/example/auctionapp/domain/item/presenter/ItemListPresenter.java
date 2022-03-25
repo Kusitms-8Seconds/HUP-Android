@@ -154,13 +154,15 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     endTime = days + "일 " + hours + "시간 " + minutes + "분";
+                } else if(Integer.parseInt(hours) < 0) {
+                    endTime = "";
                 } else
                     endTime = hours + "시간 " + minutes + "분";
                 views = 0;
                 heart = null;
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     imageURL = response.body().getData().get(i).getFileNames().get(0);
-                } else{
+                } else {
                     imageURL = null;
                 }
                 data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);

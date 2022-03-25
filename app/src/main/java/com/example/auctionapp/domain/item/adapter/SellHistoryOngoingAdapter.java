@@ -55,6 +55,8 @@ public class SellHistoryOngoingAdapter extends BaseAdapter {
         TextView auc_history_ongoing_edt_name = (TextView) convertView.findViewById(R.id.sell_history_ongoing_edt_name);
         TextView auc_history_ongoing_max = (TextView) convertView.findViewById(R.id.sell_history_ongoing_max);
         TextView itemLeftTime = (TextView) convertView.findViewById(R.id.itemLeftTime);
+        TextView tv1 = (TextView) convertView.findViewById(R.id.sell_history_ongoing_edt_end1);
+        TextView tv2 = (TextView) convertView.findViewById(R.id.sell_history_ongoing_edt_end2);
 
         if(items.get(position).getImageURL() == null) {
             Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(auc_history_ongoing_img.getWidth()
@@ -67,6 +69,11 @@ public class SellHistoryOngoingAdapter extends BaseAdapter {
         auc_history_ongoing_edt_name.setText(items.get(position).getItemName());
         auc_history_ongoing_max.setText(items.get(position).getMaxPrice()+"");
         itemLeftTime.setText(items.get(position).getLeftTime());
+        if(items.get(position).getLeftTime().equals("")) {
+            itemLeftTime.setText("경매 시간 종료");
+            tv1.setVisibility(View.GONE);
+            tv2.setVisibility(View.GONE);
+        }
 
 
         return convertView;

@@ -62,7 +62,7 @@
         app:layout_constraintLeft_toRightOf="@id/sell_history_ongoing_img">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_finish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -78,7 +78,7 @@
             android:textSize="36px" />
 
         <TextView
-            android:id="@+id/history_end_edt_seller"
+            android:id="@+id/tv_before"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -185,6 +185,8 @@ public class MainPresenter implements Presenter{
                 if(Integer.parseInt(hours) >= 24) {
                     hours = String.valueOf(Integer.parseInt(hours)%24);
                     date = days + "일 " + hours + "시간 " + minutes + "분 전";
+                } else if(Integer.parseInt(hours) < 0) {
+                    date = "경매 시간 종료";
                 } else
                     date = hours + "시간 " + minutes + "분 전";
                 itemInfo = response.body().getData().get(i).getDescription();

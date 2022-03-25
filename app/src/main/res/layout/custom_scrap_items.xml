@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/scrap_image">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/scrap_end_time_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,14 +80,14 @@
             android:textSize="36px" />
 
         <TextView
-            android:id="@+id/scarp_end_time"
+            android:id="@+id/scrap_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시간"
             android:textSize="36px" />
 
         <TextView
-            android:id="@+id/history_end_edt_seller"
+            android:id="@+id/scrap_end_time_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

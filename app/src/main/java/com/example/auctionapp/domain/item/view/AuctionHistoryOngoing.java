@@ -109,7 +109,10 @@ public class AuctionHistoryOngoing extends Fragment {
                     if(Integer.parseInt(hours) >= 24) {
                         hours = String.valueOf(Integer.parseInt(hours)%24);
                         date = days + "일 " + hours + "시간 " + minutes + "분";
-                    } else
+                    } else if(Integer.parseInt(hours) < 0) {
+                        date = "";
+                    }
+                    else
                         date = hours + "시간 " + minutes + "분";
 
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
