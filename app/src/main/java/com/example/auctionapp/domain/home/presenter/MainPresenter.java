@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.adapter.BestItemAdapter;
 import com.example.auctionapp.domain.home.constant.HomeConstants;
@@ -43,6 +45,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Response;
 
@@ -74,6 +78,11 @@ public class MainPresenter implements Presenter{
 
     int maximumPriceCount;
     int maximumPriceCount2;
+
+    int currentPage = 0;
+    Timer timer;
+    final long DELAY_MS = 200;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3500; // time in milliseconds between successive task executions.
 
     // Attributes
     private MainView mainView;
@@ -109,8 +118,6 @@ public class MainPresenter implements Presenter{
             }
         });
 
-//        bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
-//        binding.bestItemViewPager.setAdapter(bestItemAdapter);
         setBestItemAnimation();
         maximumPriceCount2 = 0;
     }
@@ -132,6 +139,24 @@ public class MainPresenter implements Presenter{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<List<BestItemResponse>> response) {
+            // best item animation
+            final Handler handler = new Handler();
+            final Runnable Update = new Runnable() {
+                @Override
+                public void run() {
+                    if(currentPage == response.body().size()) {
+                        currentPage = 0;
+                    }
+                    binding.bestItemViewPager.setCurrentItem(currentPage++, true);
+                    setBestItemAnimation();
+                }
+            };
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() { handler.post(Update); }
+                }, DELAY_MS, PERIOD_MS);
+
             bestItemDataList = new ArrayList<>();
             for(int i=0; i<response.body().size(); i++){
                 btName = response.body().get(i).getItemName();

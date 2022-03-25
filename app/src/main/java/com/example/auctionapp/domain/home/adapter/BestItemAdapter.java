@@ -12,6 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.R;
+import com.example.auctionapp.databinding.ActivityHomeBinding;
 import com.example.auctionapp.domain.home.model.BestItem;
 import com.example.auctionapp.domain.user.constant.Constants;
 
@@ -21,8 +22,6 @@ public class BestItemAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<BestItem> listData;
     Context context;
-
-//    public BestItemAdapter() {}
 
     public BestItemAdapter(Context context, ArrayList<BestItem> listData) {
         this.mContext = context;
@@ -36,13 +35,15 @@ public class BestItemAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_layout_home_bestitem, null);
         ImageView viewPagerImageView = view.findViewById(R.id.bt_image);
-        if(listData.get(position).getBtImage() == null) {
+        String url = listData.get(position).getBtImage();
+        if(url == null) {
             Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(viewPagerImageView.getWidth()
                     ,viewPagerImageView.getHeight()).into(viewPagerImageView);
         } else {
-            Glide.with(context).load(Constants.imageBaseUrl+listData.get(position).getBtImage()).override(viewPagerImageView.getWidth()
+            Glide.with(context).load(Constants.imageBaseUrl+url).override(viewPagerImageView.getWidth()
                     ,viewPagerImageView.getHeight()).into(viewPagerImageView);
         }
+        System.out.println("IMG:::" + url);
 
         TextView bt_item_name = view.findViewById(R.id.bt_item_name);
         bt_item_name.setText(listData.get(position).getBtName());
