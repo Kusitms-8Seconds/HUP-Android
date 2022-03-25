@@ -178,13 +178,20 @@
                         android:layout_weight="0"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/imageView6"
-                            android:layout_width="196px"
-                            android:layout_height="71px"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="40px"
                             android:layout_weight="0"
-                            app:srcCompat="@drawable/highprice" />
+                            android:background="@drawable/blue_edge"
+                            android:text="최고가"
+                            android:gravity="center"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="@color/Hup"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp" />
 
                         <TextView
                             android:id="@+id/highPrice"
@@ -213,13 +220,20 @@
                         android:layout_weight="0"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/imageView7"
-                            android:layout_width="196px"
-                            android:layout_height="71px"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="40px"
                             android:layout_weight="0"
-                            app:srcCompat="@drawable/participants" />
+                            android:background="@drawable/blue_edge"
+                            android:text="참여자"
+                            android:gravity="center"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="@color/Hup"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp" />
 
                         <TextView
                             android:id="@+id/participants"

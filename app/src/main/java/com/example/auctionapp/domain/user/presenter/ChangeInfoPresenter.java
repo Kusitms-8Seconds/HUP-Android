@@ -41,7 +41,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
-    boolean isChangedProfile;
+    boolean isInfoChanged;
+    boolean isImgChanged;
     // Attributes
     private ChangeInfoView changeInfoView;
     private ActivityChangeInfoBinding binding;
@@ -91,7 +92,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).updateUserProfileImg(filePart, userIdR)
                     .enqueue(MainRetrofitTool.getCallback(new UpdateProfileImgCallback()));
 
-            if(isChangedProfile) {
+            if(isInfoChanged && isImgChanged) {
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -157,13 +158,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         public void onSuccessResponse(Response<UpdateUserResponse> response) {
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateUser: "+Constants.userId);
-            isChangedProfile = true;
+            isInfoChanged = true;
         }
         @Override
         public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-            isChangedProfile = false;
+            isInfoChanged = false;
             Log.d(TAG, "onFailResponse");
         }
 
@@ -178,13 +179,13 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
 //            Constants.userId = response.body().getUserId();
             System.out.println("UpdateProfileImg: "+Constants.userId);
             System.out.println("UpdateProfileImgURL: "+response.body().getProfileImageURL());
-            isChangedProfile = true;
+            isImgChanged = true;
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
-            isChangedProfile = false;
+            isImgChanged = false;
         }
 
         @Override

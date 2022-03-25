@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:background="@drawable/home_list_circle"
+        android:background="@drawable/red_edge"
         android:orientation="horizontal"
         android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/sell_history_ongoing_img"

@@ -115,7 +115,11 @@ public class BidPagePresenter implements Presenter{
             @Override
             public void onClick(View view) {
                 String editPrice = binding.editPrice.getText().toString();
-                if(! (editPrice.equals(""))){
+                if(editPrice.equals("")){
+                    bidPageView.showToast("가격을 입력하세요.");
+                } else if(Integer.parseInt(editPrice) <= Integer.parseInt(binding.highPrice.getText().toString())) {
+                    bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
+                } else {
                     priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
                     ptAdapter.notifyDataSetChanged();
                     binding.editPrice.setText("");
