@@ -129,22 +129,15 @@ public class Mypage extends Fragment implements MypageView{
                 }
             });
         }
-
+        // 로그아웃
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.logout();
 
-//                binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
-//                Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
                 init();
                 presenter.init();
                 presenter.getUserInfo();
-
-//                binding.loginIcon.setVisibility(View.VISIBLE);
-//                binding.logoutButton.setVisibility(View.INVISIBLE);
-//                binding.userNameLayout.setEnabled(true);
-
             }
         });
         // 경매 참여 내역

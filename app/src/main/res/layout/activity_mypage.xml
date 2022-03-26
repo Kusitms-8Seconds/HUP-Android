@@ -140,6 +140,23 @@
                         app:layout_constraintStart_toStartOf="@+id/userNameLayout"
                         app:layout_constraintTop_toBottomOf="@+id/userNameLayout" />
 
+                    <TextView
+                        android:id="@+id/emailButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="@drawable/box_edge"
+                        android:paddingStart="30px"
+                        android:paddingTop="15px"
+                        android:paddingEnd="30px"
+                        android:paddingBottom="15px"
+                        android:text="이메일 인증"
+                        android:textColor="#ABABAB"
+                        android:textSize="36px"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@id/userNameLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/userNameLayout" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
