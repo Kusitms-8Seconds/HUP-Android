@@ -37,12 +37,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scrap_name">
 
-        <ImageView
-            android:layout_width="169px"
-            android:layout_height="73px"
-            android:layout_marginRight="27px"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/highprice_red" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40px"
+            android:layout_weight="0"
+            android:background="@drawable/red_edge"
+            android:text="최고가"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#FF1616"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
         <TextView
             android:id="@+id/scrap_price"

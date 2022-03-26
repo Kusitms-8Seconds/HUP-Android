@@ -26,5 +26,5 @@ public class ScrapDetailsResponse {
     private String description;
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
-
+    private int maximumPrice;
 }

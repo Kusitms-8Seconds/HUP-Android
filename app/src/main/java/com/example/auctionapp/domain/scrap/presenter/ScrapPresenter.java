@@ -100,6 +100,7 @@ public class ScrapPresenter implements Presenter{
                 String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
                 Long itemId = response.body().getData().get(i).getItemId();
                 String itemName = response.body().getData().get(i).getItemName();
+                int maximumPrice = response.body().getData().get(i).getMaximumPrice();
 
                 String date = "";
                 if(Integer.parseInt(hours) >= 24) {
@@ -113,51 +114,18 @@ public class ScrapPresenter implements Presenter{
 
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                    data = new ScrapItem(itemId,
-                            fileNameMajor,
-                            itemName,
-                            0,
-                            date);
+                    data = new ScrapItem(itemId, fileNameMajor, itemName, maximumPrice, date);
                 } else{
-                    data = new ScrapItem(itemId,
-                            null,
-                            itemName,
-                            0,
-                            date);
+                    data = new ScrapItem(itemId, null, itemName, maximumPrice, date);
                 }
                 scrapItemsList.add(data);
-                System.out.println(ScrapConstants.EScrapCallback.logItemId.getText()+itemId);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
-                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
+                adapter.addItem(data);
+                adapter.notifyDataSetChanged();
             }
             Log.d(TAG, ScrapConstants.EScrapCallback.rtSuccessResponse.getText() + response.body().toString());
-
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            scrapView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(ScrapConstants.EScrapCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
-
-    private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            scrapItemsList.get(maximumPriceCount).setItemPrice(response.body().getMaximumPrice());
-            adapter.addItem(scrapItemsList.get(maximumPriceCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, ScrapConstants.EScrapCallback.rtSuccessResponse.getText() + response.body().toString());
-            maximumPriceCount++;
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             scrapView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());

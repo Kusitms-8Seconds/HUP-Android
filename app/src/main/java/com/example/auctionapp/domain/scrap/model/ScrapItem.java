@@ -19,8 +19,4 @@ public class ScrapItem {
         this.itemPrice = itemPrice;
         this.endTime = endTime;
     }
-
-    public ScrapItem() {
-
-    }
 }
