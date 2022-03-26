@@ -106,6 +106,10 @@ public class MainPresenter implements Presenter{
         auctionNowAdapter = new AuctionNowAdapter();
         binding.AuctionNowView.setAdapter(auctionNowAdapter);
 
+        bestItemDataList = new ArrayList<>();
+        bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
+        binding.bestItemViewPager.setAdapter(bestItemAdapter);
+
         auctionNowAdapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -158,12 +162,11 @@ public class MainPresenter implements Presenter{
                 public void run() { handler.post(Update); }
                 }, DELAY_MS, PERIOD_MS);
 
-            bestItemDataList = new ArrayList<>();
             for(int i=0; i<response.body().size(); i++){
                 btName = response.body().get(i).getItemName();
                 btTime = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() + " " +
                         response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText();
-//                btTempMax = response.body().get(i).ge
+                btTempMax = response.body().get(i).getMaximumPrice();
 
                 if(response.body().get(i).getFileNames().size()!=0) {
                     btImage = response.body().get(i).getFileNames().get(0);
@@ -172,11 +175,7 @@ public class MainPresenter implements Presenter{
                 }
                 bestItem = new BestItem(btImage, btName, btTime, btTempMax);
                 bestItemDataList.add(bestItem);
-
-                RetrofitTool.getAPIWithNullConverter().getMaximumPrice(response.body().get(i).getId())
-                        .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceBestItemCallback()));
-
-//                bestItemAdapter.notifyDataSetChanged();
+                bestItemAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
 
@@ -235,30 +234,6 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mainView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(HomeConstants.EHomeCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
-    private class getMaximumPriceBestItemCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-            bestItemDataList.get(maximumPriceCount2).setBtTempMax(response.body().getMaximumPrice());
-            bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
-            binding.bestItemViewPager.setAdapter(bestItemAdapter);
-            bestItemAdapter.notifyDataSetChanged();
-
-            Log.d(TAG, HomeConstants.EHomeCallback.rtSuccessResponse.getText() + response.body().toString());
-
-            maximumPriceCount2++;
-        }
-        @Override
-        public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             mainView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());

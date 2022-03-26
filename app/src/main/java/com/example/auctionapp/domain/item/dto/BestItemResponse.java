@@ -26,5 +26,5 @@ public class BestItemResponse {
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
     private int heart;
-
+    private int maximumPrice;
 }
