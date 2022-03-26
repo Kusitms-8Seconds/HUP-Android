@@ -29,4 +29,6 @@ public class ItemDetailsResponse {
     private int maximumPrice;
     private int participants;
     private Long chatRoomId;
+    private Long bidderUserId;
+    private String bidderUserName;
 }

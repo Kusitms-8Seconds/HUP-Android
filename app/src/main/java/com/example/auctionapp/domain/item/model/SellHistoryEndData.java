@@ -7,17 +7,21 @@ import lombok.Setter;
 @Setter
 public class SellHistoryEndData {
     Long itemId;
-    String imageURL;       //나중에 수정 (int -> string url)
+    String imageURL;
     String itemName;
     int itemPrice;
     String bidderName;
+    Long chatRoomId;
+    Long bidderId;
 
-    public SellHistoryEndData(Long itemId, String imageURL, String itemName, int itemPrice, String bidderName){
+    public SellHistoryEndData(Long itemId, String imageURL, String itemName, int itemPrice, String bidderName, Long chatRoomId, Long bidderId){
         this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.bidderName = bidderName;
+        this.chatRoomId = chatRoomId;
+        this.bidderId = bidderId;
     }
 
 }

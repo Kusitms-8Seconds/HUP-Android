@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.chat.view.ChatMessage;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.adapter.SellHistoryEndAdapter;
 import com.example.auctionapp.domain.item.dto.GetAllItemsByStatusRequest;
@@ -80,6 +81,14 @@ public class SellHistoryEnd extends Fragment {
                 intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
                 startActivity(intent);
             }
+            @Override
+            public void onChatButtonClick(View v, int position) {
+                Intent intent = new Intent(getContext(), ChatMessage.class);
+                intent.putExtra("chatRoomId", adapter.getListData().get(position).getChatRoomId());
+                intent.putExtra("destUid", adapter.getListData().get(position).getBidderId());
+                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
+                startActivity(intent);
+            }
         });
 
         //구분선
@@ -94,7 +103,6 @@ public class SellHistoryEnd extends Fragment {
     }
 
     private class getAllItemsByUserIdAndStatusCallback implements MainRetrofitCallback<PaginationDto<List<ItemDetailsResponse>>> {
-
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) {
@@ -102,24 +110,19 @@ public class SellHistoryEnd extends Fragment {
                 Long itemId = response.body().getData().get(i).getId();
                 String itemName = response.body().getData().get(i).getItemName();
                 int suggestionPrice = response.body().getData().get(i).getSoldPrice();
+                String bidderName = response.body().getData().get(i).getBidderUserName();
+                Long chatRoomId = response.body().getData().get(i).getChatRoomId();
+                Long bidderId = response.body().getData().get(i).getBidderUserId();
 
                 if (response.body().getData().get(i).getFileNames().size() != 0) {
                     String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                    data = new SellHistoryEndData(itemId,
-                            fileNameMajor,
-                            itemName,
-                            suggestionPrice,
-                            null);
+                    data = new SellHistoryEndData(itemId, fileNameMajor, itemName, suggestionPrice, bidderName, chatRoomId, bidderId);
                 } else {
-                    data = new SellHistoryEndData(itemId,
-                            null,
-                            itemName,
-                            suggestionPrice,
-                            null);
+                    data = new SellHistoryEndData(itemId, null, itemName, suggestionPrice, bidderName,  chatRoomId, bidderId);
                 }
                 sellHistoryEndDataList.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getBidder(itemId)
-                        .enqueue(MainRetrofitTool.getCallback(new getBidderCallback()));
+                adapter.addItem(data);
+                adapter.notifyDataSetChanged();
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
@@ -134,29 +137,6 @@ public class SellHistoryEnd extends Fragment {
             Log.e("연결실패", t.getMessage());
         }
     }
-
-    private class getBidderCallback implements MainRetrofitCallback<BidderResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<BidderResponse> response) throws IOException {
-
-            sellHistoryEndDataList.get(bidderCount).setBidderName(response.body().getBidderName());
-            adapter.addItem(sellHistoryEndDataList.get(bidderCount));
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
-            bidderCount++;
-        }
-        @Override
-        public void onFailResponse(Response<BidderResponse> response) throws IOException, JSONException {
-            System.out.println("errorBody"+response.errorBody().string());
-            Log.d(TAG, "onFailResponse");
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e("연결실패", t.getMessage());
-        }
-    }
-
 
 }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.auctionapp.R;
+import com.example.auctionapp.domain.chat.view.ChatMessage;
 import com.example.auctionapp.domain.item.adapter.AuctionHistoryEndAdapter;
 import com.example.auctionapp.domain.item.model.AuctionHistoryEndData;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionListResponse;
@@ -84,6 +85,15 @@ public class AuctionHistoryEnd extends Fragment {
                 intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
                 startActivity(intent);
             }
+
+            @Override
+            public void onChatButtonClick(View v, int position) {
+                Intent intent = new Intent(getContext(), ChatMessage.class);
+                intent.putExtra("chatRoomId", adapter.getListData().get(position).getChatRoomId());
+                intent.putExtra("destUid", adapter.getListData().get(position).getSellerId());
+                intent.putExtra("itemId", adapter.getListData().get(position).getItemId());
+                startActivity(intent);
+            }
         });
 
         //구분선
@@ -106,23 +116,15 @@ public class AuctionHistoryEnd extends Fragment {
                 if(response.body().getData().get(i).isAcceptState()==true) {
                     Long itemId = response.body().getData().get(i).getItemId();
                     String itemName = response.body().getData().get(i).getItemName();
-                    System.out.println("item::" + itemName);
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
                     String userName = response.body().getData().get(i).getUserName();
+//                    Long chatRoomId = response.body().getData().get(i).;
 
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
                         String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                        data = new AuctionHistoryEndData(itemId,
-                                fileNameMajor,
-                                itemName,
-                                suggestionPrice,
-                                userName);
+                        data = new AuctionHistoryEndData(itemId, fileNameMajor, itemName, suggestionPrice, userName, null, null);
                     } else {
-                        data = new AuctionHistoryEndData(itemId,
-                                null,
-                                itemName,
-                                suggestionPrice,
-                                userName);
+                        data = new AuctionHistoryEndData(itemId, null, itemName, suggestionPrice, userName, null, null);
                     }
                     auctionHistoryEndDataList.add(data);
                     adapter.addItem(data);

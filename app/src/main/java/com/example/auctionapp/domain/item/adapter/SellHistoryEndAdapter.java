@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,7 +70,8 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int position) ;
+        void onItemClick(View v, int position);
+        void onChatButtonClick(View v, int position);
     }
     // 리스너 객체 참조를 저장하는 변수
     private OnItemClickListener mListener = null ;
@@ -86,6 +88,7 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView sell_history_end_edt_name;
         TextView sell_history_end_edt_myPrice;
         TextView sell_history_end_edt_seller;
+        Button goChatButton;
 
         public SellHistoryEndViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +97,7 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             sell_history_end_edt_name = itemView.findViewById(R.id.sell_history_end_edt_name);
             sell_history_end_edt_myPrice = itemView.findViewById(R.id.sell_history_end_edt_myPrice);
             sell_history_end_edt_seller = itemView.findViewById(R.id.sell_history_end_edt_seller);
+            goChatButton = itemView.findViewById(R.id.btn_chat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,26 +106,23 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
                         if (mListener != null) {
-                            mListener.onItemClick(v, pos) ;
+                            mListener.onItemClick(v, pos);
                         }
                     }
                 }
             });
-//            itemView.findViewById(R.id.btn_bid).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int pos = getAdapterPosition() ;
-//                    if (pos != RecyclerView.NO_POSITION) {
-//                        // 리스너 객체의 메서드 호출.
-////                        if (mListener != null) {
-////                            mListener.onItemClick(v, pos);
-////                        }
-//                        FCMRequest fcmRequest = FCMRequest.of("body", Constants.targetToken, "title");
-//                        RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).pushMessage(fcmRequest)
-//                                .enqueue(MainRetrofitTool.getCallback(new pushMessageCallback()));
-//                    }
-//                }
-//            });
+            goChatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition() ;
+                    if (pos != RecyclerView.NO_POSITION) {
+                        // 리스너 객체의 메서드 호출.
+                        if (mListener != null) {
+                            mListener.onChatButtonClick(v, pos);
+                        }
+                    }
+                }
+            });
 
         }
 

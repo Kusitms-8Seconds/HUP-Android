@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,7 +56,8 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int position) ;
+        void onItemClick(View v, int position);
+        void onChatButtonClick(View v, int position);
     }
     // 리스너 객체 참조를 저장하는 변수
     private AuctionHistoryEndAdapter.OnItemClickListener mListener = null ;
@@ -72,6 +74,7 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView auc_history_end_edt_name;
         TextView auc_history_end_edt_myPrice;
         TextView auc_history_end_edt_seller;
+        Button goChatButton;
 
         public AuctionHistoryEndViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +83,7 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
             auc_history_end_edt_name = itemView.findViewById(R.id.auc_history_end_edt_name);
             auc_history_end_edt_myPrice = itemView.findViewById(R.id.auc_history_end_edt_myPrice);
             auc_history_end_edt_seller = itemView.findViewById(R.id.auc_history_end_edt_seller);
+            goChatButton = itemView.findViewById(R.id.btn_chat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +93,18 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
                         // 리스너 객체의 메서드 호출.
                         if (mListener != null) {
                             mListener.onItemClick(v, pos) ;
+                        }
+                    }
+                }
+            });
+            goChatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition() ;
+                    if (pos != RecyclerView.NO_POSITION) {
+                        // 리스너 객체의 메서드 호출.
+                        if (mListener != null) {
+                            mListener.onChatButtonClick(v, pos);
                         }
                     }
                 }
