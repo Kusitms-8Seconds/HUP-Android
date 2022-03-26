@@ -50,6 +50,10 @@ public class ItemList extends Fragment implements ItemListView {
 
     @Override
     public void onResume() {
+        presenter = new ItemListPresenter(this, binding, getActivity());
+        presenter.init();
+        presenter.getData();
+
         super.onResume();
     }
 
