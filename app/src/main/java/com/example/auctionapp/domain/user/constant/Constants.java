@@ -103,8 +103,6 @@ public class Constants {
         eKakaoUserError("사용자 정보 요청 실패: "),
         eGoogleErrorCode("signInResult:failed code=");
 
-
-
         private String text;
         private ELoginCallback(String text){
             this.text=text;

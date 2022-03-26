@@ -132,7 +132,7 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
-            if(!response.body().isActivated()) {
+            if(!(response.body().isActivated())) {
                 Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
                 binding.emailButton.setVisibility(View.VISIBLE);
             } else
@@ -165,8 +165,6 @@ public class MypagePresenter implements Presenter{
     public class LogoutCallback implements MainRetrofitCallback<DefaultResponse> {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
-//            mypageView.showToast(response.body().getMessage().toString());
-
             binding.myPageUserName.setText(MypageConstants.ELogin.login.getText());
             Glide.with(activity).load(R.drawable.profile).into(binding.profileImg);
             binding.loginIcon.setVisibility(View.VISIBLE);

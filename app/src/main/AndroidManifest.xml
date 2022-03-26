@@ -9,10 +9,10 @@
     <application
         android:name=".domain.user.presenter.GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/hup_icon"
+        android:icon="@mipmap/hup_icon_2"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/hup_icon_round"
+        android:roundIcon="@mipmap/hup_icon_2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AuctionApp"
         android:usesCleartextTraffic="true">

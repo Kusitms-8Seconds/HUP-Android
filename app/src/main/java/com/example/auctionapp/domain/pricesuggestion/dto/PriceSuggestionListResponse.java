@@ -21,5 +21,6 @@ public class PriceSuggestionListResponse {
     private boolean acceptState;
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
-
+    private Long chatRoomId;
+    private Long sellerId;
 }

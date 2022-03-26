@@ -118,13 +118,14 @@ public class AuctionHistoryEnd extends Fragment {
                     String itemName = response.body().getData().get(i).getItemName();
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
                     String userName = response.body().getData().get(i).getUserName();
-//                    Long chatRoomId = response.body().getData().get(i).;
+                    Long chatRoomId = response.body().getData().get(i).getChatRoomId();
+                    Long sellerId = response.body().getData().get(i).getSellerId();
 
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
                         String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                        data = new AuctionHistoryEndData(itemId, fileNameMajor, itemName, suggestionPrice, userName, null, null);
+                        data = new AuctionHistoryEndData(itemId, fileNameMajor, itemName, suggestionPrice, userName, chatRoomId, sellerId);
                     } else {
-                        data = new AuctionHistoryEndData(itemId, null, itemName, suggestionPrice, userName, null, null);
+                        data = new AuctionHistoryEndData(itemId, null, itemName, suggestionPrice, userName, chatRoomId, sellerId);
                     }
                     auctionHistoryEndDataList.add(data);
                     adapter.addItem(data);

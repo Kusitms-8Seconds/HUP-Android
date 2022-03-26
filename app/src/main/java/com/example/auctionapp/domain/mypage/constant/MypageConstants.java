@@ -11,9 +11,6 @@ public class MypageConstants {
         public String getText() { return this.text; }
     }
     public enum EMyPageCallback {
-        eMypageTAG("MyPage: "),
-        eUserDetailsInfoCallback("UserDetailsInfoCallback::"),
-
         rtSuccessResponse("retrofit success, idToken: "),
         rtFailResponse("onFailResponse"),
         rtConnectionFail("연결실패");
