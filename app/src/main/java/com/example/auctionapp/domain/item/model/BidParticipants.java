@@ -22,10 +22,10 @@ public class BidParticipants {
     Long userId;
     String ptImage;
     String ptName;
-    int ptPrice;
+    String ptPrice;
     String ptTime;
 
-    public BidParticipants(Long userId, String ptImage, String ptName, int ptPrice, String ptTime) {
+    public BidParticipants(Long userId, String ptImage, String ptName, String ptPrice, String ptTime) {
         this.userId = userId;
         this.ptImage = ptImage;
         this.ptName = ptName;

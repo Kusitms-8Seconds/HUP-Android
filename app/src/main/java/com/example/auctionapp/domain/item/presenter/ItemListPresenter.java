@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
     ArrayList<ItemData> itemDataList;
     int heartCount;
     int participantCount;
+    DecimalFormat myFormatter = new DecimalFormat("###,###");
 
     // itemData Attributes
     Long itemId;
@@ -155,7 +157,14 @@ public class ItemListPresenter implements ItemListPresenterInterface {
 
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
+                String itemPriceStr = "";
                 itemPrice = response.body().getData().get(i).getMaximumPrice();
+                if(itemPrice != 0) {
+                    itemPriceStr = myFormatter.format(itemPrice);
+                } else {
+                    itemPrice = response.body().getData().get(i).getInitPrice();
+                    itemPriceStr = String.valueOf(itemPrice);
+                }
                 views = response.body().getData().get(i).getParticipants();
                 heart = response.body().getData().get(i).getScrapCount();
                 if(Integer.parseInt(hours) >= 24) {
@@ -170,7 +179,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 } else {
                     imageURL = null;
                 }
-                data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
+                data = new ItemData(itemId, imageURL, itemName, itemPriceStr, endTime, views, heart);
                 itemDataList.add(data);
                 adapter.notifyDataSetChanged();
             }
@@ -208,6 +217,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 itemId = response.body().getData().get(i).getId();
                 itemName = response.body().getData().get(i).getItemName();
                 itemPrice = response.body().getData().get(i).getMaximumPrice();
+                String itemPriceStr = myFormatter.format(itemPrice);
                 views = response.body().getData().get(i).getParticipants();
                 heart = response.body().getData().get(i).getScrapCount();
                 if(Integer.parseInt(hours) >= 24) {
@@ -220,7 +230,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                 } else{
                     imageURL = null;
                 }
-                data = new ItemData(itemId, imageURL, itemName, itemPrice, endTime, views, heart);
+                data = new ItemData(itemId, imageURL, itemName, itemPriceStr, endTime, views, heart);
                 itemDataList.add(data);
                 adapter.notifyDataSetChanged();
             }

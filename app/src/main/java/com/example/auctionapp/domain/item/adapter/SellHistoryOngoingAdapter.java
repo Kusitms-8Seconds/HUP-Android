@@ -14,6 +14,7 @@ import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.model.SellHistoryOngoingData;
 import com.example.auctionapp.domain.user.constant.Constants;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SellHistoryOngoingAdapter extends BaseAdapter {
@@ -57,6 +58,7 @@ public class SellHistoryOngoingAdapter extends BaseAdapter {
         TextView itemLeftTime = (TextView) convertView.findViewById(R.id.itemLeftTime);
         TextView tv1 = (TextView) convertView.findViewById(R.id.sell_history_ongoing_edt_end1);
         TextView tv2 = (TextView) convertView.findViewById(R.id.sell_history_ongoing_edt_end2);
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
 
         if(items.get(position).getImageURL() == null) {
             Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(auc_history_ongoing_img.getWidth()
@@ -67,7 +69,7 @@ public class SellHistoryOngoingAdapter extends BaseAdapter {
         }
         auc_history_ongoing_img.setClipToOutline(true);  //item 테두리
         auc_history_ongoing_edt_name.setText(items.get(position).getItemName());
-        auc_history_ongoing_max.setText(items.get(position).getMaxPrice()+"");
+        auc_history_ongoing_max.setText(myFormatter.format(items.get(position).getMaxPrice()));
         itemLeftTime.setText(items.get(position).getLeftTime());
         if(items.get(position).getLeftTime().equals("")) {
             itemLeftTime.setText("경매 시간 종료");

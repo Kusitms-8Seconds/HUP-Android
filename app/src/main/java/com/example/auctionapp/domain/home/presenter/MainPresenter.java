@@ -41,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class MainPresenter implements Presenter{
 
     private AuctionNow data;
     List<AuctionNow> auctionDataList = new ArrayList<>();
-    int heartCount;
     AuctionNowAdapter auctionNowAdapter;
+    DecimalFormat myFormatter = new DecimalFormat("###,###");
 
     //AuctionNow Attributes
     Long itemId;
@@ -76,9 +77,6 @@ public class MainPresenter implements Presenter{
     String btName;
     String btTime;
     int btTempMax;
-
-    int maximumPriceCount;
-    int maximumPriceCount2;
 
     int currentPage = 0;
     Timer timer;
@@ -122,9 +120,7 @@ public class MainPresenter implements Presenter{
                 }
             }
         });
-
         setBestItemAnimation();
-        maximumPriceCount2 = 0;
     }
 
     @Override
@@ -167,13 +163,14 @@ public class MainPresenter implements Presenter{
                 btTime = response.body().get(i).getBuyDate().getYear()+ HomeConstants.EDate.dpYear.getText() + " " +
                         response.body().get(i).getBuyDate().getMonth().getValue()+HomeConstants.EDate.dpMonth.getText();
                 btTempMax = response.body().get(i).getMaximumPrice();
+                String itemPriceStr = myFormatter.format(btTempMax);
 
                 if(response.body().get(i).getFileNames().size()!=0) {
                     btImage = response.body().get(i).getFileNames().get(0);
                 } else{
                     btImage = null;
                 }
-                bestItem = new BestItem(btImage, btName, btTime, btTempMax);
+                bestItem = new BestItem(btImage, btName, btTime, itemPriceStr);
                 bestItemDataList.add(bestItem);
                 bestItemAdapter.notifyDataSetChanged();
             }

@@ -28,6 +28,7 @@ import com.example.auctionapp.global.retrofit.RetrofitTool;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -89,6 +90,7 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView sell_history_end_edt_myPrice;
         TextView sell_history_end_edt_seller;
         Button goChatButton;
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
 
         public SellHistoryEndViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,7 +138,7 @@ public class SellHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
             sell_history_end_img.setClipToOutline(true);  //item 테두리
             sell_history_end_edt_name.setText(data.getItemName());
-            sell_history_end_edt_myPrice.setText(data.getItemPrice()+"");
+            sell_history_end_edt_myPrice.setText(myFormatter.format(data.getItemPrice()));
             sell_history_end_edt_seller.setText(data.getBidderName());
         }
 

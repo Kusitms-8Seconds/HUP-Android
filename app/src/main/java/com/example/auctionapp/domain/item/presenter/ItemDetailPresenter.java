@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -247,8 +248,16 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-
-            binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
+            int maxPrice = response.body().getMaximumPrice();
+            if(maxPrice == 0) {
+                binding.highPrice.setText("ㅡ");
+                binding.won.setVisibility(View.INVISIBLE);
+            }
+            else {
+                DecimalFormat myFormatter = new DecimalFormat("###,###");
+                binding.highPrice.setText(myFormatter.format(maxPrice));
+                binding.won.setVisibility(View.VISIBLE);
+            }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());
         }
         @Override

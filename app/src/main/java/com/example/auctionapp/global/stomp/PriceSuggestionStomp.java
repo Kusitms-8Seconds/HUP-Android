@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +52,10 @@ public class PriceSuggestionStomp {
     Long itemId;
     private PTAdapter ptAdapter;
     private ArrayList<BidParticipants> bidParticipants;
-//    TextView participants;
-//
+
     ActivityBidPageBinding binding;
     BidParticipants data;
+    DecimalFormat myFormatter = new DecimalFormat("###,###");
 
     String username;
     String suggestionPrice;
@@ -70,8 +71,6 @@ public class PriceSuggestionStomp {
         this.ptAdapter = adapter;
         this.bidParticipants = bidParticipants;
         this.binding = binding;
-//        this.participants = participants;
-//        this.highPrice = highPrice;
         connectSTOMP();
         topicSTOMP();
     }
@@ -113,7 +112,7 @@ public class PriceSuggestionStomp {
             Runnable myRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    binding.highPrice.setText(String.valueOf(maximumPrice));
+                    binding.highPrice.setText(myFormatter.format(Integer.valueOf(maximumPrice)));
                     binding.participants.setText(String.valueOf(theNumberOfParticipants));
 
                     RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(userId))
@@ -137,7 +136,6 @@ public class PriceSuggestionStomp {
         stompClient.send(stompMessage).subscribe();
     }
     private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
-
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
             String ptImage = "";
@@ -146,7 +144,7 @@ public class PriceSuggestionStomp {
             } else {
                 ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
             }
-            BidParticipants data = new BidParticipants(Long.valueOf(userId), ptImage, username, Integer.valueOf(suggestionPrice), "11");
+            BidParticipants data = new BidParticipants(Long.valueOf(userId), ptImage, username, myFormatter.format(Integer.valueOf(suggestionPrice)), "11");
             bidParticipants.add(data);
             ptAdapter.validationAndDeleteItem(data.getUserId());
             ptAdapter.addItem(data);

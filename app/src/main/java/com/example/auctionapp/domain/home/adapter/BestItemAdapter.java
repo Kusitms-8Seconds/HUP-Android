@@ -35,6 +35,11 @@ public class BestItemAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.viewpager_layout_home_bestitem, null);
         ImageView viewPagerImageView = view.findViewById(R.id.bt_image);
+        TextView bt_item_name = view.findViewById(R.id.bt_item_name);
+        TextView bt_purchase_date = view.findViewById(R.id.bt_purchase_date);
+        TextView bt_temp_max = view.findViewById(R.id.bt_temp_max);
+        TextView won = view.findViewById(R.id.won);
+
         String url = listData.get(position).getBtImage();
         if(url == null) {
             Glide.with(context).load(context.getString(R.string.hup_icon_url)).override(viewPagerImageView.getWidth()
@@ -43,13 +48,12 @@ public class BestItemAdapter extends PagerAdapter {
             Glide.with(context).load(Constants.imageBaseUrl+url).override(viewPagerImageView.getWidth()
                     ,viewPagerImageView.getHeight()).into(viewPagerImageView);
         }
-
-        TextView bt_item_name = view.findViewById(R.id.bt_item_name);
         bt_item_name.setText(listData.get(position).getBtName());
-        TextView bt_purchase_date = view.findViewById(R.id.bt_purchase_date);
         bt_purchase_date.setText(listData.get(position).getBtTime());
-        TextView bt_temp_max = view.findViewById(R.id.bt_temp_max);
-        bt_temp_max.setText(listData.get(position).getBtTempMax() + "");
+        if(listData.get(position).getBtTempMax().equals("0")) {
+            bt_temp_max.setText("ㅡ");
+            won.setText("");
+        } else bt_temp_max.setText(listData.get(position).getBtTempMax() + "");
 
         container.addView(view);
 

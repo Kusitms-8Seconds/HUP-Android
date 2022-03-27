@@ -30,6 +30,7 @@ import com.example.auctionapp.global.util.ErrorMessageParser;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ScrapPresenter implements Presenter{
     ScrapItem data;
     List<ScrapItem> scrapItemsList = new ArrayList<>();
     int maximumPriceCount;
+    DecimalFormat myFormatter = new DecimalFormat("###,###");
 
     // Attributes
     private ScrapView scrapView;
@@ -114,9 +116,9 @@ public class ScrapPresenter implements Presenter{
 
                 if(response.body().getData().get(i).getFileNames().size()!=0) {
                     String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);
-                    data = new ScrapItem(itemId, fileNameMajor, itemName, maximumPrice, date);
+                    data = new ScrapItem(itemId, fileNameMajor, itemName, myFormatter.format(maximumPrice), date);
                 } else{
-                    data = new ScrapItem(itemId, null, itemName, maximumPrice, date);
+                    data = new ScrapItem(itemId, null, itemName, myFormatter.format(maximumPrice), date);
                 }
                 scrapItemsList.add(data);
                 adapter.addItem(data);

@@ -204,7 +204,7 @@
                             android:textSize="40px" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/won"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

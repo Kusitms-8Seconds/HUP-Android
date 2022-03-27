@@ -132,8 +132,8 @@ public class AuctionHistoryOngoing extends Fragment {
                                 date);
                     }
                     auctionHistoryOngoingDataList.add(data);
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).getMaximumPrice(itemId)
-                            .enqueue(MainRetrofitTool.getCallback(new getMaximumPriceCallback()));
+                    adapter.addItem(data);
+                    adapter.notifyDataSetChanged();
                 }
             }
             Log.d(TAG, "retrofit success, idToken: " + response.body().toString());

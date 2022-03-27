@@ -16,6 +16,7 @@ import com.example.auctionapp.R;
 import com.example.auctionapp.domain.item.model.AuctionHistoryEndData;
 import com.example.auctionapp.domain.user.constant.Constants;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -75,6 +76,7 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView auc_history_end_edt_myPrice;
         TextView auc_history_end_edt_seller;
         Button goChatButton;
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
 
         public AuctionHistoryEndViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,7 +124,7 @@ public class AuctionHistoryEndAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             auc_history_end_img.setClipToOutline(true);  //item 테두리
             auc_history_end_edt_name.setText(data.getItemName());
-            auc_history_end_edt_myPrice.setText(data.getItemPrice()+"");
+            auc_history_end_edt_myPrice.setText(myFormatter.format(data.getItemPrice()));
             auc_history_end_edt_seller.setText(data.getSellerName());
         }
     }

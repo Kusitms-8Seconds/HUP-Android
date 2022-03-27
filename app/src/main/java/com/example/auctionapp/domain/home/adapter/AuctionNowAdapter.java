@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.example.auctionapp.R;
 import com.example.auctionapp.domain.home.model.AuctionNow;
 import com.example.auctionapp.domain.user.constant.Constants;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -81,6 +83,8 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView item_info;
         TextView upArrow;
         TextView won;
+        LinearLayout ly_price;
+        DecimalFormat myFormatter = new DecimalFormat("###,###");
 
         public AuctionNowViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +96,7 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             item_info = itemView.findViewById(R.id.sell_history_ongoing_myPrice);
             upArrow = itemView.findViewById(R.id.upArrow);
             won = itemView.findViewById(R.id.won);
+            ly_price = itemView.findViewById(R.id.ly_price);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -120,11 +125,14 @@ class AuctionNowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             item_name.setText(data.getItemName());
             int dif = data.getItemPrice();
             if(dif <= 0) {
-                upArrow.setText("-");
+                upArrow.setText("");
                 won.setVisibility(View.GONE);
-                item_upPrice.setText("-");
+                item_upPrice.setText("ㅡ");
+                item_upPrice.setTextColor(Color.BLUE);
+                item_upPrice.setTypeface(item_upPrice.getTypeface(), Typeface.BOLD);
+                ly_price.setBackgroundResource(R.drawable.dialog_edge);
             } else
-                item_upPrice.setText(data.getItemPrice() + "");
+                item_upPrice.setText(myFormatter.format(data.getItemPrice()));
             item_date.setText(data.getDate());
             if(data.getDate().equals("경매 시간 종료")) item_date.setTypeface(item_date.getTypeface(), Typeface.BOLD);
             item_info.setText(data.getItemInfo() + "");

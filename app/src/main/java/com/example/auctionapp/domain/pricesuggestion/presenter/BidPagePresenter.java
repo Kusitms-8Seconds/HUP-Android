@@ -38,6 +38,7 @@ import com.example.auctionapp.global.util.ErrorMessageParser;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class BidPagePresenter implements Presenter{
     private int userCount;
     private ArrayList<BidParticipants> bidParticipants;
     Dialog dialog01;
+    DecimalFormat myFormatter = new DecimalFormat("###,###");
 
     // Attributes
     private BidPageView bidPageView;
@@ -137,7 +139,7 @@ public class BidPagePresenter implements Presenter{
             if(response.body().getFileNames().size()!=0){
                 Glide.with(context).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
                         .into(binding.bidImage); }
-            binding.initPrice.setText(String.valueOf(response.body().getInitPrice()));
+            binding.initPrice.setText(myFormatter.format(response.body().getInitPrice()));
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
@@ -153,6 +155,24 @@ public class BidPagePresenter implements Presenter{
             else {
                 binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
             }
+            binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+                @SneakyThrows
+                @Override
+                public void onClick(View view) {
+                    String editPrice = binding.editPrice.getText().toString();
+                    if(editPrice.equals("")){
+                        bidPageView.showToast("가격을 입력하세요.");
+                    } else if(Integer.parseInt(editPrice) <= response.body().getMaximumPrice()) {
+                        bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
+                    } else {
+                        priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                        ptAdapter.notifyDataSetChanged();
+                        binding.editPrice.setText("");
+                    }
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(binding.editPrice.getWindowToken(), 0);
+                }
+            });
 
             if(response.body().getUserId().equals(myId)) {
                 binding.editPrice.setVisibility(View.GONE);
@@ -204,10 +224,9 @@ public class BidPagePresenter implements Presenter{
     }
 
     private class getMaximumPriceCallback implements MainRetrofitCallback<MaximumPriceResponse> {
-
         @Override
         public void onSuccessResponse(Response<MaximumPriceResponse> response) throws IOException {
-            binding.highPrice.setText(String.valueOf(response.body().getMaximumPrice()));
+            binding.highPrice.setText(myFormatter.format(response.body().getMaximumPrice()));
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -242,12 +261,11 @@ public class BidPagePresenter implements Presenter{
     }
 
     private class getAllPriceSuggestionCallback implements MainRetrofitCallback<PaginationDto<List<PriceSuggestionListResponse>>> {
-
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
                 BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), "", null,
-                        response.body().getData().get(i).getSuggestionPrice(), "12:46");
+                        myFormatter.format(response.body().getData().get(i).getSuggestionPrice()), "12:46");
                 bidParticipants.add(data);
                 RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(response.body().getData().get(i).getUserId())
                         .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));

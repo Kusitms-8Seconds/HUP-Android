@@ -9,10 +9,10 @@ public class ScrapItem {
     Long itemId;
     String imageURL;
     String itemName;
-    int itemPrice;
+    String itemPrice;
     String endTime;
 
-    public ScrapItem(Long itemId, String imageURL, String itemName, int itemPrice, String endTime){
+    public ScrapItem(Long itemId, String imageURL, String itemName, String itemPrice, String endTime){
         this.itemId = itemId;
         this.imageURL = imageURL;
         this.itemName = itemName;

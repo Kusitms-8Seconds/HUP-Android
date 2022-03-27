@@ -22,9 +22,9 @@ public class BestItem {
     String btImage;
     String btName;
     String btTime;
-    int btTempMax;
+    String btTempMax;
 
-    public BestItem(String btImage, String btName, String btTime, int btPrice) {
+    public BestItem(String btImage, String btName, String btTime, String btPrice) {
         this.btImage = btImage;
         this.btName = btName;
         this.btTime = btTime;
