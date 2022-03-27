@@ -245,13 +245,17 @@
                 android:background="#E9E9E9"
                 app:layout_constraintTop_toBottomOf="@id/l3" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/auctionState"
-                android:layout_width="180px"
-                android:layout_height="180px"
-                app:layout_constraintBottom_toBottomOf="@id/c3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ongoing" />
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:background="@drawable/circle_button_blue"
+                android:text="판매상태"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginEnd="50px"
+                app:layout_constraintBaseline_toBottomOf="@id/c3"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/participants_recyclerView"

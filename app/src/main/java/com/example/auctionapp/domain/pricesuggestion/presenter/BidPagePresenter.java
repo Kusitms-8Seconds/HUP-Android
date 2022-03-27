@@ -15,6 +15,7 @@ import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.domain.item.adapter.PTAdapter;
+import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
@@ -103,12 +104,6 @@ public class BidPagePresenter implements Presenter{
         priceSuggestionStomp = new PriceSuggestionStomp();
         priceSuggestionStomp.initStomp(itemId, ptAdapter, bidParticipants, binding);
 
-        if(!onGoing) {
-            binding.auctionState.setVisibility(View.GONE);
-        } else {
-            binding.auctionState.setVisibility(View.VISIBLE);
-        }
-
         dialog01 = new Dialog(context);
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.custom_dialog01);
@@ -143,6 +138,13 @@ public class BidPagePresenter implements Presenter{
                 Glide.with(context).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
                         .into(binding.bidImage); }
             binding.initPrice.setText(myFormatter.format(response.body().getInitPrice()));
+            String state = response.body().getSoldStatus().getName();
+            String stateStr = "";
+            if(state.equals(ItemConstants.EItemSoldStatus.eNew.getName())) stateStr = "NEW!";
+            else if(state.equals(ItemConstants.EItemSoldStatus.eOnGoing.getName())) stateStr = "경매 중";
+            else if(state.equals(ItemConstants.EItemSoldStatus.eSoldOut.getName())) stateStr = "판매 완료";
+            binding.auctionState.setText(stateStr);
+
             LocalDateTime startDateTime = LocalDateTime.now();
             LocalDateTime endDateTime = response.body().getAuctionClosingDate();
             String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
