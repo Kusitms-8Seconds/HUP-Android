@@ -103,6 +103,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
                 Long chatroomId = response.body().get(i).getId();
                 Long destId = response.body().get(i).getUserId();
                 String userName = response.body().get(i).getUserName();
+                if(userName == null) userName = "알수없음";
                 Long itemId = response.body().get(i).getItemId();
                 String itemUrl = "";
                 if (!response.body().get(i).getFileNames().isEmpty())

@@ -117,9 +117,9 @@ public class AuctionHistoryEnd extends Fragment {
                     Long itemId = response.body().getData().get(i).getItemId();
                     String itemName = response.body().getData().get(i).getItemName();
                     int suggestionPrice = response.body().getData().get(i).getSuggestionPrice();
-                    String userName = response.body().getData().get(i).getUserName();
+                    String userName = response.body().getData().get(i).getSellerUserName();
                     Long chatRoomId = response.body().getData().get(i).getChatRoomId();
-                    Long sellerId = response.body().getData().get(i).getSellerId();
+                    Long sellerId = response.body().getData().get(i).getSellerUserId();
 
                     if (response.body().getData().get(i).getFileNames().size() != 0) {
                         String fileNameMajor = response.body().getData().get(i).getFileNames().get(0);

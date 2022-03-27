@@ -22,5 +22,6 @@ public class PriceSuggestionListResponse {
     private List<String> fileNames;
     private LocalDateTime auctionClosingDate;
     private Long chatRoomId;
-    private Long sellerId;
+    private Long sellerUserId;
+    private String sellerUserName;
 }
