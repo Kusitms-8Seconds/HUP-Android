@@ -163,7 +163,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
                     itemPriceStr = myFormatter.format(itemPrice);
                 } else {
                     itemPrice = response.body().getData().get(i).getInitPrice();
-                    itemPriceStr = String.valueOf(itemPrice);
+                    itemPriceStr = myFormatter.format(itemPrice);
                 }
                 views = response.body().getData().get(i).getParticipants();
                 heart = response.body().getData().get(i).getScrapCount();

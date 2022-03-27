@@ -33,6 +33,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.stomp.PriceSuggestionStomp;
+import com.example.auctionapp.global.util.CustomTextWatcher;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
@@ -112,17 +113,19 @@ public class BidPagePresenter implements Presenter{
         dialog01.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog01.setContentView(R.layout.custom_dialog01);
 
+        binding.editPrice.addTextChangedListener(new CustomTextWatcher(binding.editPrice));
         binding.bidbutton.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
             @Override
             public void onClick(View view) {
-                String editPrice = binding.editPrice.getText().toString();
+                String editPrice = binding.editPrice.getText().toString().replace(",","");
+                String maxPrice = binding.highPrice.getText().toString().replace(",","");
                 if(editPrice.equals("")){
                     bidPageView.showToast("가격을 입력하세요.");
-                } else if(Integer.parseInt(editPrice) <= Integer.parseInt(binding.highPrice.getText().toString())) {
+                } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice)) {
                     bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
                 } else {
-                    priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
+                    priceSuggestionStomp.sendMessage(itemId, Constants.userId, editPrice);
                     ptAdapter.notifyDataSetChanged();
                     binding.editPrice.setText("");
                 }
@@ -155,24 +158,6 @@ public class BidPagePresenter implements Presenter{
             else {
                 binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
             }
-            binding.bidbutton.setOnClickListener(new View.OnClickListener() {
-                @SneakyThrows
-                @Override
-                public void onClick(View view) {
-                    String editPrice = binding.editPrice.getText().toString();
-                    if(editPrice.equals("")){
-                        bidPageView.showToast("가격을 입력하세요.");
-                    } else if(Integer.parseInt(editPrice) <= response.body().getMaximumPrice()) {
-                        bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
-                    } else {
-                        priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
-                        ptAdapter.notifyDataSetChanged();
-                        binding.editPrice.setText("");
-                    }
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(binding.editPrice.getWindowToken(), 0);
-                }
-            });
 
             if(response.body().getUserId().equals(myId)) {
                 binding.editPrice.setVisibility(View.GONE);

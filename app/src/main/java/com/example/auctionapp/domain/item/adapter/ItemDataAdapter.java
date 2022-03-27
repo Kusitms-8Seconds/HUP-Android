@@ -1,6 +1,7 @@
 package com.example.auctionapp.domain.item.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ class ItemDataAdapter extends BaseAdapter {
         TextView end_time;
         TextView item_views;
         TextView item_hearts;
+        TextView upArrow;
 
         item_image = view.findViewById(R.id.sell_history_ongoing_img);
         item_name = view.findViewById(R.id.bt_item_name);
@@ -66,6 +68,7 @@ class ItemDataAdapter extends BaseAdapter {
         TextView tv2 = view.findViewById(R.id.tv_before);
         item_views = view.findViewById(R.id.item_views);
         item_hearts = view.findViewById(R.id.item_hearts);
+        upArrow = view.findViewById(R.id.upArrow);
 
         if(data.get(position).getImageURL() == null) {
             Glide.with(mContext).load(mContext.getString(R.string.hup_icon_url)).override(item_image.getWidth()
@@ -76,10 +79,11 @@ class ItemDataAdapter extends BaseAdapter {
         }
         item_image.setClipToOutline(true);  //item 테두리
         item_name.setText(data.get(position).getItemName());
-        item_price.setText(data.get(position).getItemPrice()+"");
+        item_price.setText(data.get(position).getItemPrice());
         end_time.setText(data.get(position).getEndTime());
         if(data.get(position).getEndTime().equals("")) {
             end_time.setText("경매 시간 종료");
+            end_time.setTextColor(Color.BLACK);
             tv1.setVisibility(View.GONE);
             tv2.setVisibility(View.GONE);
         }
