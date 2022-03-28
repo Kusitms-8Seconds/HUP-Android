@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.item.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.example.auctionapp.databinding.ActivityItemDetailBinding;
 import com.example.auctionapp.domain.item.adapter.ItemDetailViewPagerAdapter;
 import com.example.auctionapp.domain.item.adapter.qnaAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
+import com.example.auctionapp.domain.upload.constant.UploadConstants;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.qnaData;
@@ -31,15 +33,22 @@ import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetTime;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Response;
 
@@ -316,36 +325,48 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
     }
 
+    // update time with handler and timertask
+    Handler mHandler;
+    Runnable mUpdateTimeTask;
+    class MainTimerTask extends TimerTask {
+        public void run() {
+            mHandler.post(mUpdateTimeTask);
+        }
+    }
+
     public class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             getUserInfoCallback(response.body().getUserId());
             binding.itemName.setText(response.body().getItemName());
             binding.itemContent.setText(response.body().getDescription());
+            binding.category.setText(response.body().getCategory().getName());
             if(!(response.body().getFileNames().isEmpty())){
                 for (int i=0; i<response.body().getFileNames().size(); i++) {
                     itemImageList.add(response.body().getFileNames().get(i));
                 }
             }
+            // item image viewpager set
             itemDetailViewPagerAdapter = new ItemDetailViewPagerAdapter(context, itemImageList);
             binding.itemDetailViewPager.setAdapter(itemDetailViewPagerAdapter);
+            // timer
+            MainTimerTask timerTask = new MainTimerTask();
+            Timer mTimer = new Timer();
+            mTimer.schedule(timerTask, 500, 1000);
+            //handler
+            mHandler = new Handler();
+            mUpdateTimeTask = new Runnable() {
+                public void run() {
+                    LocalDateTime startDateTime = LocalDateTime.now();
+                    LocalDateTime endDateTime = response.body().getAuctionClosingDate();
+                    String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                    String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+                    String second = String.valueOf(ChronoUnit.SECONDS.between(startDateTime, endDateTime)%60);
 
-            binding.category.setText(response.body().getCategory().getName());
-
-            LocalDateTime startDateTime = LocalDateTime.now();
-            LocalDateTime endDateTime = response.body().getAuctionClosingDate();
-            String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-            String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
-
-            if(Integer.parseInt(hours) >= 24) {
-                hours = String.valueOf(Integer.parseInt(hours)%24);
-                binding.itemLeftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 전");
-            } else if(Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0) {
-                binding.itemLeftTime.setText("경매 시간 종료");
-            } else {
-                binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
-            }
+                    GetTime getTime = new GetTime(binding.itemLeftTime, days, hours, minutes, second, mTimer);
+                }
+            };
 
             if(response.body().getUserId().equals(myId)) {
                 binding.deleteButton.setVisibility(View.VISIBLE);

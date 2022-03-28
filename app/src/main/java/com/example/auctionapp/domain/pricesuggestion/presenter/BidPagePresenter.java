@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,7 @@ import com.example.auctionapp.domain.item.adapter.PTAdapter;
 import com.example.auctionapp.domain.item.constant.ItemConstants;
 import com.example.auctionapp.domain.item.dto.ItemDetailsResponse;
 import com.example.auctionapp.domain.item.model.BidParticipants;
+import com.example.auctionapp.domain.item.presenter.ItemDetailPresenter;
 import com.example.auctionapp.domain.item.view.AuctionHistory;
 import com.example.auctionapp.domain.pricesuggestion.constant.PriceConstants;
 import com.example.auctionapp.domain.pricesuggestion.dto.MaximumPriceResponse;
@@ -37,6 +39,7 @@ import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.stomp.PriceSuggestionStomp;
 import com.example.auctionapp.global.util.CustomTextWatcher;
 import com.example.auctionapp.global.util.ErrorMessageParser;
+import com.example.auctionapp.global.util.GetTime;
 
 import org.json.JSONException;
 
@@ -46,6 +49,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import lombok.SneakyThrows;
 import retrofit2.Response;
@@ -131,9 +136,15 @@ public class BidPagePresenter implements Presenter{
             }
         });
     }
-
+    // update time with handler and timertask
+    Handler mHandler;
+    Runnable mUpdateTimeTask;
+    class MainTimerTask extends TimerTask {
+        public void run() {
+            mHandler.post(mUpdateTimeTask);
+        }
+    }
     private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
-
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
             if(response.body().getFileNames().size()!=0){
@@ -147,21 +158,24 @@ public class BidPagePresenter implements Presenter{
             else if(state.equals(ItemConstants.EItemSoldStatus.eSoldOut.getName())) stateStr = "판매 완료";
             binding.auctionState.setText(stateStr);
 
-            LocalDateTime startDateTime = LocalDateTime.now();
-            LocalDateTime endDateTime = response.body().getAuctionClosingDate();
-            String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
-            String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
-            String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+            // timer
+            MainTimerTask timerTask = new MainTimerTask();
+            Timer mTimer = new Timer();
+            mTimer.schedule(timerTask, 500, 1000);
+            //handler
+            mHandler = new Handler();
+            mUpdateTimeTask = new Runnable() {
+                public void run() {
+                    LocalDateTime startDateTime = LocalDateTime.now();
+                    LocalDateTime endDateTime = response.body().getAuctionClosingDate();
+                    String days = String.valueOf(ChronoUnit.DAYS.between(startDateTime, endDateTime));
+                    String hours = String.valueOf(ChronoUnit.HOURS.between(startDateTime, endDateTime));
+                    String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
+                    String second = String.valueOf(ChronoUnit.SECONDS.between(startDateTime, endDateTime)%60);
 
-            if(Integer.parseInt(hours) >= 24) {
-                hours = String.valueOf(Integer.parseInt(hours)%24);
-                binding.itemLeftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 전");
-            } else if(Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0) {
-                binding.itemLeftTime.setText("경매 시간 종료");
-            }
-            else {
-                binding.itemLeftTime.setText(hours + "시간 " + minutes + "분 전");
-            }
+                    GetTime getTime = new GetTime(binding.itemLeftTime, days, hours, minutes, second, mTimer);
+                }
+            };
 
             if(response.body().getUserId().equals(myId)) {
                 binding.editPrice.setVisibility(View.GONE);
@@ -180,9 +194,9 @@ public class BidPagePresenter implements Presenter{
                     }
                 });
             }else {
-                if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
-//                    binding.bidbutton.setEnabled(false);
-                } else {
+//                if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
+////                    binding.bidbutton.setEnabled(false);
+//                } else {
                     binding.editPrice.setVisibility(View.VISIBLE);
                     binding.bidbutton.setText("입찰하기");
                     binding.bidbutton.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +209,7 @@ public class BidPagePresenter implements Presenter{
                             }
                         }
                     });
-                }
+//                }
             }
 
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
