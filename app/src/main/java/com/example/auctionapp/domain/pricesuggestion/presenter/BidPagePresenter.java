@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.pricesuggestion.presenter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -109,6 +110,7 @@ public class BidPagePresenter implements Presenter{
         dialog01.setContentView(R.layout.custom_dialog01);
 
         binding.editPrice.addTextChangedListener(new CustomTextWatcher(binding.editPrice));
+        binding.editPrice.setTypeface(binding.editPrice.getTypeface(), Typeface.BOLD);
         binding.bidbutton.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
             @Override

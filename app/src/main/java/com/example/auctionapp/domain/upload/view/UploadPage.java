@@ -35,6 +35,7 @@ import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.domain.item.dto.RegisterItemResponse;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
+import com.example.auctionapp.global.util.CustomTextWatcher;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -119,6 +120,8 @@ public class UploadPage extends AppCompatActivity implements UploadView{
             }
         });
 
+        //가격 입력
+        binding.editItemStartPrice.addTextChangedListener(new CustomTextWatcher(binding.editItemStartPrice));
         // 구매 일자
         Calendar calender = Calendar.getInstance();
         binding.editAuctionBuyDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
@@ -158,7 +161,6 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         binding.itemStateRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(getApplicationContext(), UploadConstants.EUploadLog.newRating.getText() + rating, Toast.LENGTH_SHORT).show();
                 itemStatePoint = Math.round(rating);
             }
         });
@@ -204,14 +206,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                     showToast(UploadConstants.EUploadToast.afterLogin.getText());
                 } else {
                     String itemName = binding.editItemName.getText().toString();
-//                Iterator<EItemCategory> iterator = Arrays.stream(EItemCategory.values()).iterator();
-//                while(iterator.hasNext()) {
-//                    EItemCategory next = iterator.next();
-//                    if(next.getName().equals(editCategory.getText().toString())){
-//                        selectedCategory = next; }
-//                }
-
-                    String initPriceStr = binding.editItemStartPrice.getText().toString();
+                    String initPriceStr = binding.editItemStartPrice.getText().toString().replace(",","");
                     if (initPriceStr == null) {
                         showToast(UploadConstants.EUploadToast.editInitPrice.getText());
                         return;
@@ -316,8 +311,6 @@ public class UploadPage extends AppCompatActivity implements UploadView{
     public void makeMultiPart() {
         for (int i = 0; i < fileList.size(); ++i) {
             // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-
-//            System.out.println("fileList.get(0)"+fileList.get(0).toString());
             RequestBody fileBody = RequestBody.create(MediaType.parse(UploadConstants.EMultiPart.mediaTypeImage.getText()), fileList.get(0));
             // 사진 파일 이름
             LocalDateTime localDateTime = LocalDateTime.now();
