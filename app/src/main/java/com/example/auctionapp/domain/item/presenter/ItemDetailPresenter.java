@@ -103,8 +103,6 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         binding.itemDetailQnaList.setAdapter(adapter);
 
         qnaList.add(new qnaData("자전거 많이 무겁나요?", "2021.11.27", "hoa9***", false, true));
-        qnaList.add(new qnaData("기능 어떤 것들이 있나요?", "2021.11.26", "둠***", true, true));
-        qnaList.add(new qnaData("자전거 브랜드 궁금합니다.", "2021.11.26", "우왕***", true, true));
 
         binding.qaCount.setText("(" + String.valueOf(qnaList.size()-1) + ")");
         adapter.notifyDataSetChanged();

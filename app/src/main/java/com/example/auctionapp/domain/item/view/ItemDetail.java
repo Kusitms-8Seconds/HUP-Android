@@ -82,7 +82,22 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
         });
 
         //QNA dumidata
-        presenter.qnaInit();
+//        presenter.qnaInit();
+        // Q&A 준비중
+        binding.preparing.setVisibility(View.VISIBLE);
+        binding.qaCount.setVisibility(View.GONE);
+        binding.itemDetailQnaList.setVisibility(View.GONE);
+
+        //view all qnas
+        binding.viewAll.setVisibility(View.INVISIBLE);
+//        binding.viewAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent t = new Intent(getApplicationContext(), QnA.class);
+//                t.putExtra("itemId", itemId);
+//                startActivity(t);
+//            }
+//        });
 
         binding.itemDetailQnaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -96,17 +111,6 @@ public class ItemDetail extends AppCompatActivity implements ItemDetailView {
                 }
             }
         });
-
-        //view all qnas
-        binding.viewAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent t = new Intent(getApplicationContext(), QnA.class);
-                t.putExtra("itemId", itemId);
-                startActivity(t);
-            }
-        });
-
     }
 
     public void showToast(String message) {
