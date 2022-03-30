@@ -186,7 +186,8 @@ public class BidPagePresenter implements Presenter{
                         String maxPrice = binding.highPrice.getText().toString().replace(",","");
                         if(editPrice.equals("")){
                             bidPageView.showToast("가격을 입력하세요.");
-                        } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice)) {
+                        } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice) ||
+                                Integer.parseInt(editPrice) <= response.body().getInitPrice()) {
                             bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
                         } else {
                             priceSuggestionStomp.sendMessage(itemId, Constants.userId, editPrice);
