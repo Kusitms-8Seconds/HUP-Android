@@ -65,6 +65,7 @@ public class LoginPresenter implements LoginPresenterInterface {
     Session session;
     GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 0116;  //google login request code
+    private int NOT_SELECTED = 12501;
     OAuthLogin mOAuthLoginModule;
     //token 만료
     boolean isExpired = false;
@@ -139,12 +140,12 @@ public class LoginPresenter implements LoginPresenterInterface {
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
 
         // 기존에 로그인 했던 계정을 확인한다.
-        GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(context);
-        // 로그인 되어있는 경우
-        if (gsa != null) {
-            String idToken = gsa.getIdToken();
-            googleLoginCallback(idToken);
-        } else
+//        GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(context);
+//        // 로그인 되어있는 경우
+//        if (gsa != null) {
+//            String idToken = gsa.getIdToken();
+//            googleLoginCallback(idToken);
+//        } else
             googleSignIn();
     }
 
@@ -214,7 +215,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-        if (requestCode == 12501) { return; }   // google account 선택 안 했을 때
+        if (requestCode == NOT_SELECTED) { return; }   // google account 선택 안 했을 때
     }
 
     @Override
@@ -276,10 +277,6 @@ public class LoginPresenter implements LoginPresenterInterface {
             } catch (Exception e) {
                 Log.d(Constants.ELoginCallback.TAG.getText(), e.getMessage());
             }
-            //액세스 토큰이 만료되었을 때
-//            if(response.code() == 401) {
-//
-//            }
             Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eFailResponse.getText());
         }
         @Override
