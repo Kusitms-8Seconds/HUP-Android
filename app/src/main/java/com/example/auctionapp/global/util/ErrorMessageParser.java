@@ -39,7 +39,7 @@ public class ErrorMessageParser {
         this.element = parser.parse(errorResponse);
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
         this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
-        if(this.parsedErrorMessage.equals("만료된 토큰입니다.")) {
+        if(this.parsedErrorMessage.equals("만료된 토큰입니다.") || this.parsedErrorMessage.equals(Constants.EOAuth2UserServiceImpl.eGoogleInvalidIdTokenMessage.getValue())) {
             LogoutRequest logoutRequest = new LogoutRequest(Constants.accessToken, Constants.refreshToken);
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).reissue(logoutRequest)
                     .enqueue(MainRetrofitTool.getCallback(new ReissueCallback()));
