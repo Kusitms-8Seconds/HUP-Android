@@ -116,25 +116,6 @@ public class BidPagePresenter implements Presenter{
 
         binding.editPrice.addTextChangedListener(new CustomTextWatcher(binding.editPrice));
         binding.editPrice.setTypeface(binding.editPrice.getTypeface(), Typeface.BOLD);
-        binding.bidbutton.setOnClickListener(new View.OnClickListener() {
-            @SneakyThrows
-            @Override
-            public void onClick(View view) {
-                String editPrice = binding.editPrice.getText().toString().replace(",","");
-                String maxPrice = binding.highPrice.getText().toString().replace(",","");
-                if(editPrice.equals("")){
-                    bidPageView.showToast("가격을 입력하세요.");
-                } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice)) {
-                    bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
-                } else {
-                    priceSuggestionStomp.sendMessage(itemId, Constants.userId, editPrice);
-                    ptAdapter.notifyDataSetChanged();
-                    binding.editPrice.setText("");
-                }
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.editPrice.getWindowToken(), 0);
-            }
-        });
     }
     // update time with handler and timertask
     Handler mHandler;
@@ -155,7 +136,10 @@ public class BidPagePresenter implements Presenter{
             String stateStr = "";
             if(state.equals(ItemConstants.EItemSoldStatus.eNew.getName())) stateStr = "NEW!";
             else if(state.equals(ItemConstants.EItemSoldStatus.eOnGoing.getName())) stateStr = "경매 중";
-            else if(state.equals(ItemConstants.EItemSoldStatus.eSoldOut.getName())) stateStr = "판매 완료";
+            else if(state.equals(ItemConstants.EItemSoldStatus.eSoldOut.getName())) {
+                stateStr = "판매 완료";
+                binding.auctionState.setBackgroundResource(R.drawable.circle_button_gray);
+            }
             binding.auctionState.setText(stateStr);
 
             // timer
@@ -194,22 +178,25 @@ public class BidPagePresenter implements Presenter{
                     }
                 });
             }else {
-//                if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
-////                    binding.bidbutton.setEnabled(false);
-//                } else {
-                    binding.editPrice.setVisibility(View.VISIBLE);
-                    binding.bidbutton.setText("입찰하기");
-                    binding.bidbutton.setOnClickListener(new View.OnClickListener() {
-                        @SneakyThrows
-                        @Override
-                        public void onClick(View view) {
-                            if (!binding.editPrice.getText().toString().equals("")) {
-                                priceSuggestionStomp.sendMessage(itemId, Constants.userId, binding.editPrice.getText().toString());
-                                ptAdapter.notifyDataSetChanged();
-                            }
+                binding.bidbutton.setOnClickListener(new View.OnClickListener() {
+                    @SneakyThrows
+                    @Override
+                    public void onClick(View view) {
+                        String editPrice = binding.editPrice.getText().toString().replace(",","");
+                        String maxPrice = binding.highPrice.getText().toString().replace(",","");
+                        if(editPrice.equals("")){
+                            bidPageView.showToast("가격을 입력하세요.");
+                        } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice)) {
+                            bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
+                        } else {
+                            priceSuggestionStomp.sendMessage(itemId, Constants.userId, editPrice);
+                            ptAdapter.notifyDataSetChanged();
+                            binding.editPrice.setText("");
                         }
-                    });
-//                }
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(binding.editPrice.getWindowToken(), 0);
+                    }
+                });
             }
 
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
@@ -301,11 +288,6 @@ public class BidPagePresenter implements Presenter{
             ptAdapter.addItem(bidParticipants.get(userCount));
             ptAdapter.notifyDataSetChanged();
             userCount++;
-//            if(response.body().getUserId().equals(myId)) {
-//                binding.lyEditPrice.setVisibility(View.GONE);
-//            }else {
-//                binding.lyEditPrice.setVisibility(View.VISIBLE);
-//            }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
@@ -319,13 +301,12 @@ public class BidPagePresenter implements Presenter{
             Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
         }
     }
-//낙찰하기
+    //낙찰하기
     private class pushMessageCallback implements MainRetrofitCallback<FCMResponse> {
 
         @Override
         public void onSuccessResponse(Response<FCMResponse> response) {
             onGoing = false;
-//            binding.auctionState.setVisibility(View.GONE);
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
