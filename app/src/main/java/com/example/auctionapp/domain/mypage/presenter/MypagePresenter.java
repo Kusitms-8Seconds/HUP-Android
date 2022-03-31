@@ -132,11 +132,11 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
-//            if(!(response.body().isActivated())) {
-//                Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
-//                binding.emailButton.setVisibility(View.VISIBLE);
-//            } else
-//                binding.emailButton.setVisibility(View.INVISIBLE);
+            if(!(response.body().isActivated())) {
+                Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
+                binding.emailButton.setVisibility(View.VISIBLE);
+            } else
+                binding.emailButton.setVisibility(View.INVISIBLE);
 
             // 이메일 인증 버튼
             binding.emailButton.setOnClickListener(new View.OnClickListener() {

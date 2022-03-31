@@ -153,7 +153,7 @@
                         android:text="이메일 인증"
                         android:textColor="#ABABAB"
                         android:textSize="36px"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="@id/userNameLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/userNameLayout" />
