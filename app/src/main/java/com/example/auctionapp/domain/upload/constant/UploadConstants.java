@@ -19,7 +19,14 @@ public class UploadConstants {
         unselectImage("이미지를 선택하지 않았습니다."),
         oneselectImage("프로필 이미지는 한장만 선택 가능합니다."),
         imageSelectOver("사진은 10장까지 선택 가능합니다."),
-        editInitPrice("경매시작가 입력하세요");
+        eEditItemName("제목을 입력하세요."),
+        eSelectCategory("카테고리를 선택하세요."),
+        eEditInitPrice("경매시작가를 입력하세요."),
+        eSelectBuyDate("구매 일자를 선택하세요."),
+        eSelectFinalDate("경매 종료 일자를 선택하세요."),
+        eSelectFinalTime("경매 종료 시간을 선택하세요."),
+//        eSelectItemState("물건 상태를 체크해주세요."),
+        eEditItemContent("제품 소개해주세요.");
 
         String text;
         EUploadToast(String text) { this.text = text; }
@@ -56,9 +63,11 @@ public class UploadConstants {
         itemName("itemName"),
         itemPrice("itemPrice"),
         itemContent("itemContent"),
-        itemBuyDate("itemBuyDate"),
-        itemEndDate("itemEndDate"),
-        itemStatePoint("itemStatePoint");
+        itemBuyDate("구매 일자"),
+        itemEndDate("경매 종료 일자"),
+        itemEndTime("경매 종료 시간"),
+        itemStatePoint("itemStatePoint"),
+        eNullString("");
 
         String text;
         ECategory(String text) { this.text = text; }
@@ -80,8 +89,7 @@ public class UploadConstants {
     public enum EMultiPart {
         mediaTypePlain("text/plain"),
         mediaTypeImage("image/jpeg"),
-        files("files")
-        ;
+        files("files");
 
         String text;
         EMultiPart(String text) { this.text = text; }

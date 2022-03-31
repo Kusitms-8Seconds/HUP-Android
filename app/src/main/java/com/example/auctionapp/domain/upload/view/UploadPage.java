@@ -124,7 +124,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         binding.editItemStartPrice.addTextChangedListener(new CustomTextWatcher(binding.editItemStartPrice));
         // 구매 일자
         Calendar calender = Calendar.getInstance();
-        binding.editAuctionBuyDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
+        binding.editAuctionBuyDate.setText(UploadConstants.ECategory.itemBuyDate.getText());
         binding.editAuctionBuyDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +136,7 @@ public class UploadPage extends AppCompatActivity implements UploadView{
         });
 
         // 경매 종료 일자
-        binding.editAuctionFinalDate.setText(calender.get(Calendar.YEAR) +"-"+ (calender.get(Calendar.MONTH)+1) +"-"+ calender.get(Calendar.DATE));
+        binding.editAuctionFinalDate.setText(UploadConstants.ECategory.itemEndDate.getText());
         binding.editAuctionFinalDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,8 +207,32 @@ public class UploadPage extends AppCompatActivity implements UploadView{
                 } else {
                     String itemName = binding.editItemName.getText().toString();
                     String initPriceStr = binding.editItemStartPrice.getText().toString().replace(",","");
-                    if (initPriceStr == null) {
-                        showToast(UploadConstants.EUploadToast.editInitPrice.getText());
+                    if (initPriceStr.equals("")) {
+                        showToast(UploadConstants.EUploadToast.eEditInitPrice.getText());
+                        return;
+                    }
+                    if(binding.editItemName.getText().toString().equals("")) {
+                        showToast(UploadConstants.EUploadToast.eEditItemName.getText());
+                        return;
+                    }
+                    if(binding.selectItemCategory.getText().toString().equals("")) {
+                        showToast(UploadConstants.EUploadToast.eSelectCategory.getText());
+                        return;
+                    }
+                    if(binding.editAuctionBuyDate.getText().toString().equals(UploadConstants.ECategory.itemBuyDate.getText())) {
+                        showToast(UploadConstants.EUploadToast.eSelectBuyDate.getText());
+                        return;
+                    }
+                    if(binding.editAuctionFinalDate.getText().toString().equals(UploadConstants.ECategory.itemEndDate.getText())) {
+                        showToast(UploadConstants.EUploadToast.eSelectFinalDate.getText());
+                        return;
+                    }
+                    if(binding.editAuctionFinalTime.getText().toString().equals(UploadConstants.ECategory.itemEndTime.getText())) {
+                        showToast(UploadConstants.EUploadToast.eSelectFinalTime.getText());
+                        return;
+                    }
+                    if(binding.editItemContent.getText().toString().equals("")) {
+                        showToast(UploadConstants.EUploadToast.eEditItemContent.getText());
                         return;
                     }
                     int initPrice = Integer.parseInt(initPriceStr);
