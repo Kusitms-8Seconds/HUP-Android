@@ -46,6 +46,11 @@ public class EmailPresenter implements EmailPresenterInterface {
     public void sendEmail(String email) {
         RetrofitTool.getAPIWithNullConverter().sendAuthCode(new EmailAuthCodeRequest(email))
                 .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
+        // 버튼 한번 누르면 비활성화
+        binding.btnSendEmail.setEnabled(false);
+        binding.btnSendEmail.setText("발송되었습니다");
+        binding.btnSendEmail.setBackgroundColor(Color.GRAY);
+        binding.lyCheckAuthcode.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -58,19 +63,11 @@ public class EmailPresenter implements EmailPresenterInterface {
         @Override
         public void onSuccessResponse(Response<DefaultResponse> response) {
             Log.d(TAG, "sending email success, idToken: " + response.body().toString());
-            binding.btnSendEmail.setEnabled(false);
-            binding.btnSendEmail.setText("발송되었습니다");
-            binding.btnSendEmail.setBackgroundColor(Color.GRAY);
-            binding.lyCheckAuthcode.setVisibility(View.VISIBLE);
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             emailView.showToast(errorMessageParser.getParsedErrorMessage());
-            binding.btnSendEmail.setEnabled(true);
-            binding.btnSendEmail.setText("이메일이 발송되지 않았습니다.");
-//            binding.btnSendEmail.setBackgroundColor(Color.BLUE);
-            binding.lyCheckAuthcode.setVisibility(View.INVISIBLE);
             Log.d(TAG, "onFailResponse");
         }
         @Override

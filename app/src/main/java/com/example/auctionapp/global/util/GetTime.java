@@ -24,7 +24,6 @@ public class GetTime {
     }
     public GetTime(String createdDate) {
         String month = createdDate.substring(5, 7);
-//        if(month.charAt(0) == 0) month = String.valueOf(month.charAt(1));
         String day = createdDate.substring(8, 10);
         String time = createdDate.substring(11, 16);
         this.latestTime = month + "월 " + day + "일 " + time;
@@ -41,7 +40,6 @@ public class GetTime {
             mTimer.cancel();
         } else if(Integer.parseInt(hours) <= 0) {
             leftTime.setText(minutes + "분 " + second + "초 전");
-            leftTime.setTextColor(Color.BLUE);
         } else if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
             leftTime.setText(second + "초 전");
             leftTime.setTextColor(Color.BLUE);
