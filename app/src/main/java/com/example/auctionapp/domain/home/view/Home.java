@@ -46,6 +46,16 @@ public class Home extends Fragment implements MainView{
     private ActivityHomeBinding binding;
     MainPresenter presenter;
 
+    @Override
+    public void onResume() {
+        presenter = new MainPresenter(this, binding, getContext(), getActivity());
+
+        presenter.init();
+        presenter.initializeAuctionNowData();
+        presenter.initializeBestData();
+
+        super.onResume();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
