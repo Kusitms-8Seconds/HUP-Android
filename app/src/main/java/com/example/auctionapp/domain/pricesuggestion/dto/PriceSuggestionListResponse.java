@@ -15,6 +15,7 @@ public class PriceSuggestionListResponse {
     private Long priceSuggestionId;
     private Long userId;
     private String userName;
+    private String picture;
     private Long itemId;
     private String itemName;
     private int suggestionPrice;

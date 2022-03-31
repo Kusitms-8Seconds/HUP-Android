@@ -128,10 +128,13 @@ public class BidPagePresenter implements Presenter{
     private class getItemDetailsCallback implements MainRetrofitCallback<ItemDetailsResponse> {
         @Override
         public void onSuccessResponse(Response<ItemDetailsResponse> response) {
+            // item image
             if(response.body().getFileNames().size()!=0){
                 Glide.with(context).load(Constants.imageBaseUrl+response.body().getFileNames().get(0))
                         .into(binding.bidImage); }
+            // item init price
             binding.initPrice.setText(myFormatter.format(response.body().getInitPrice()));
+            // item status
             String state = response.body().getSoldStatus().getName();
             String stateStr = "";
             if(state.equals(ItemConstants.EItemSoldStatus.eNew.getName())) stateStr = "NEW!";
@@ -161,6 +164,7 @@ public class BidPagePresenter implements Presenter{
                 }
             };
 
+            // 만약 판매자일 때
             if(response.body().getUserId().equals(myId)) {
                 binding.editPrice.setVisibility(View.GONE);
                 binding.bidbutton.setText("낙찰하기");
@@ -177,7 +181,7 @@ public class BidPagePresenter implements Presenter{
                         context.startActivity(intent);
                     }
                 });
-            }else {
+            } else {
                 binding.bidbutton.setOnClickListener(new View.OnClickListener() {
                     @SneakyThrows
                     @Override
@@ -185,10 +189,12 @@ public class BidPagePresenter implements Presenter{
                         String editPrice = binding.editPrice.getText().toString().replace(",","");
                         String maxPrice = binding.highPrice.getText().toString().replace(",","");
                         if(editPrice.equals("")){
-                            bidPageView.showToast("가격을 입력하세요.");
+                            bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.eEditPriceMessage.getValue());
                         } else if(Integer.parseInt(editPrice) <= Integer.parseInt(maxPrice) ||
                                 Integer.parseInt(editPrice) <= response.body().getInitPrice()) {
                             bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.ePriorPriceSuggestionExceptionMessage.getValue());
+                        } else if(binding.itemLeftTime.getText().toString().equals("경매 시간 종료")) {
+                            bidPageView.showToast(PriceConstants.EPriceSuggestionServiceImpl.eTimeOutExceptionMessage.getValue());
                         } else {
                             priceSuggestionStomp.sendMessage(itemId, Constants.userId, editPrice);
                             ptAdapter.notifyDataSetChanged();
@@ -255,44 +261,16 @@ public class BidPagePresenter implements Presenter{
         @Override
         public void onSuccessResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) {
             for(int i=0; i<response.body().getData().size(); i++){
-                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), "", null,
-                        myFormatter.format(response.body().getData().get(i).getSuggestionPrice()), "12:46");
+                BidParticipants data = new BidParticipants(response.body().getData().get(i).getUserId(), response.body().getData().get(i).getPicture(), response.body().getData().get(i).getUserName(),
+                        myFormatter.format(response.body().getData().get(i).getSuggestionPrice()), null);
                 bidParticipants.add(data);
-                RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(response.body().getData().get(i).getUserId())
-                        .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
+                ptAdapter.addItem(data);
+                ptAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
-
-    private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
-
-        @Override
-        public void onSuccessResponse(Response<UserInfoResponse> response) {
-            bidParticipants.get(userCount).setPtName(response.body().getUsername());
-            if(response.body().getPicture()!=null){
-                bidParticipants.get(userCount).setPtImage(response.body().getPicture());
-            } else {
-                String ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
-                bidParticipants.get(userCount).setPtImage(ptImage);
-            }
-            ptAdapter.addItem(bidParticipants.get(userCount));
-            ptAdapter.notifyDataSetChanged();
-            userCount++;
-            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
             bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());

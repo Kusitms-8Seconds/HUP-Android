@@ -62,6 +62,7 @@ public class PriceSuggestionStomp {
     String maximumPrice;
     String theNumberOfParticipants;
     String userId;
+    String picture;
 
     private BidPageView bidPageView;
 
@@ -106,6 +107,7 @@ public class PriceSuggestionStomp {
             maximumPrice = element.getAsJsonObject().get("maximumPrice").getAsString();
             theNumberOfParticipants = element.getAsJsonObject().get("theNumberOfParticipants").getAsString();
             userId = element.getAsJsonObject().get("userId").getAsString();
+            picture = element.getAsJsonObject().get("picture").getAsString();
 
             Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -115,9 +117,12 @@ public class PriceSuggestionStomp {
                     binding.highPrice.setText(myFormatter.format(Integer.valueOf(maximumPrice)));
                     binding.participants.setText(String.valueOf(theNumberOfParticipants));
 
-                    RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Long.valueOf(userId))
-                            .enqueue(MainRetrofitTool.getCallback(new getUserDetailsCallback()));
-                } // This is your code
+                    BidParticipants data = new BidParticipants(Long.valueOf(userId), picture, username, myFormatter.format(Integer.valueOf(suggestionPrice)), null);
+                    bidParticipants.add(data);
+                    ptAdapter.validationAndDeleteItem(data.getUserId());
+                    ptAdapter.addItem(data);
+                    ptAdapter.notifyDataSetChanged();
+                }
             };
             mainHandler.post(myRunnable);
 
@@ -135,33 +140,4 @@ public class PriceSuggestionStomp {
         StompMessage stompMessage = new StompMessage(StompCommand.SEND, sendHeaderList, json.toString());
         stompClient.send(stompMessage).subscribe();
     }
-    private class getUserDetailsCallback implements MainRetrofitCallback<UserInfoResponse> {
-        @Override
-        public void onSuccessResponse(Response<UserInfoResponse> response) {
-            String ptImage = "";
-            if(response.body().getPicture()!=null){
-                ptImage = response.body().getPicture();
-            } else {
-                ptImage = "https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8";
-            }
-            BidParticipants data = new BidParticipants(Long.valueOf(userId), ptImage, username, myFormatter.format(Integer.valueOf(suggestionPrice)), "11");
-            bidParticipants.add(data);
-            ptAdapter.validationAndDeleteItem(data.getUserId());
-            ptAdapter.addItem(data);
-            ptAdapter.notifyDataSetChanged();
-            Log.d(TAG, PriceConstants.EPriceCallback.rtSuccessResponse.getText() + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
-            Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(PriceConstants.EPriceCallback.rtConnectionFail.getText(), t.getMessage());
-        }
-    }
-
-
 }
