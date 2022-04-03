@@ -47,7 +47,7 @@
 3. Jira <img src="https://user-images.githubusercontent.com/87636557/159142524-b4b1bbcc-30bf-400b-8293-29d813fad101.png"/>
 
 ## :books: HUP Swagger API Docs
-<a href="http://52.78.175.27:8080/swagger-ui/index.html#/">HUP Swagger API Docs</a><br>
+<a href="http://www.hurryuphup.me/swagger-ui/index.html#/">HUP Swagger API Docs</a><br>
 
 <!-- ## 개요
 - 시연 영상 유튜브 업로드 : https://youtu.be/Fv1n-7LECvQ
