@@ -31,7 +31,7 @@ import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class ChatMessageStomp {
 
-    private static final String url = "http://52.78.175.27:8080/websocket/websocket";
+    private static final String url = "http://www.hurryuphup.me/websocket/websocket";
 
     private StompClient stompClient;
     private List<StompHeader> connectHeaderList;
