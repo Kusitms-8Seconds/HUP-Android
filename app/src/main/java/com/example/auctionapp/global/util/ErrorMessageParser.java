@@ -34,7 +34,7 @@ public class ErrorMessageParser {
     String errorMessage;
     String parsedErrorMessage;
 
-    public ErrorMessageParser(String errorResponse) {
+    public ErrorMessageParser(String errorResponse) throws InterruptedException {
         this.parser = new JsonParser();
         this.element = parser.parse(errorResponse);
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
@@ -43,6 +43,7 @@ public class ErrorMessageParser {
             LogoutRequest logoutRequest = new LogoutRequest(Constants.accessToken, Constants.refreshToken);
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).reissue(logoutRequest)
                     .enqueue(MainRetrofitTool.getCallback(new ReissueCallback()));
+            Thread.sleep(1000);
         }
     }
     public class ReissueCallback implements MainRetrofitCallback<TokenInfoResponse> {
@@ -53,7 +54,7 @@ public class ErrorMessageParser {
             Log.d(TAG, MypageConstants.EMyPageCallback.rtSuccessResponse.getText() + response.body().toString());
         }
         @Override
-        public void onFailResponse(Response<TokenInfoResponse> response) throws IOException, JSONException {
+        public void onFailResponse(Response<TokenInfoResponse> response) throws IOException, JSONException, InterruptedException {
             ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
 //            mypageView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, errorMessageParser.getParsedErrorMessage());
