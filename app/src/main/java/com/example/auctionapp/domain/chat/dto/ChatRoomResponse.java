@@ -12,8 +12,8 @@ import lombok.Getter;
 public class ChatRoomResponse {
 
     private Long id;
-    private Long userId;
-    private String userName;
+    private Long otherUserId;
+    private String otherUserName;
     private Long itemId;
     private List<String> fileNames;
     private String latestMessage;

@@ -129,6 +129,7 @@ public class MypagePresenter implements Presenter{
             binding.myPageUserName.setText(response.body().getUsername());
             if(response.body().getPicture()!=null){
                 Glide.with(activity).load(response.body().getPicture()).into(binding.profileImg);
+                System.out.println(response.body().getPicture());
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
