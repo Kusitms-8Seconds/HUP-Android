@@ -114,6 +114,7 @@ public class Constants {
 
     @Getter
     public enum EUserServiceImpl{
+        eAlreadyRegisteredEmailExceptionMessage("이미 가입되어 있는 이메일입니다."),
         eAlreadyRegisteredUserExceptionMessage("이미 가입되어 있는 유저입니다."),
         eAlreadyRegisteredLoginIdExceptionMessage("이미 등록되어 있는 아이디입니다."),
         eSuccessSignUpMessage("회원가입을 완료했습니다."),
@@ -128,11 +129,11 @@ public class Constants {
         eNotMatchRefreshTokenExceptionMessage("Refresh Token 정보가 일치하지 않습니다."),
         eWrongRefreshTokenRequestExceptionMessage("잘못된 요청입니다."),
         eLogout("logout"),
-        eNotValidAccessTokenExceptionMessage("잘못된 요청입니다."),
+        eNotValidAccessTokenExceptionMessage("만료된 토큰입니다."),
         eLogoutMessage("로그아웃 되었습니다."),
         eTrue(true),
         eAuthorityRoleUser("ROLE_USER"),
-        eBaseFileURL("http://52.78.175.27:8080/api/v1/files/"),
+        eBaseFileURL("http://www.hurryuphup.me/api/v1/files/"),
         eBasePicture("https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8");
 
         private boolean check;

@@ -37,7 +37,6 @@ public class ErrorMessageParser {
     JsonElement element;
     String errorMessage;
     String parsedErrorMessage;
-    boolean isExpiredRefreshToken;
     Context context;
 
     public ErrorMessageParser(String errorResponse, Context context) {
@@ -46,17 +45,17 @@ public class ErrorMessageParser {
         this.element = parser.parse(errorResponse);
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
         this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
-        if(this.parsedErrorMessage.equals("만료된 토큰입니다.") || this.parsedErrorMessage.equals(Constants.EOAuth2UserServiceImpl.eGoogleInvalidIdTokenMessage.getValue())) {
+        if(this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidAccessTokenExceptionMessage.getValue()) || this.parsedErrorMessage.equals(Constants.EOAuth2UserServiceImpl.eGoogleInvalidIdTokenMessage.getValue())) {
             LogoutRequest logoutRequest = new LogoutRequest(Constants.accessToken, Constants.refreshToken);
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).reissue(logoutRequest)
                     .enqueue(MainRetrofitTool.getCallback(new ReissueCallback()));
             showToast(this.parsedErrorMessage);
 
-        } else if(this.parsedErrorMessage.equals("Refresh Token 정보가 유효하지 않습니다.")) {
-//            this.context = context;
-//            isExpiredRefreshToken = true;
-//            Intent intent = new Intent(context, Login.class);
-//            context.startActivity(intent);
+        } else if(this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidRefreshTokenExceptionMessage.getValue())) {
+            Intent intent = new Intent(context, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(intent);
         }
     }
     public class ReissueCallback implements MainRetrofitCallback<TokenInfoResponse> {
