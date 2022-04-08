@@ -162,7 +162,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UpdateUserResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             isInfoChanged = false;
             Log.d(TAG, "onFailResponse");
@@ -183,7 +183,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UpdateProfileResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             isImgChanged = false;
         }
@@ -201,7 +201,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
@@ -222,7 +222,7 @@ public class ChangeInfoPresenter implements ChangeInfoPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             changeInfoView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }

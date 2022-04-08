@@ -43,6 +43,7 @@ import retrofit2.Response;
 
 public class UpdateNotice extends AppCompatActivity {
     private ActivityUpdateNoticeBinding binding;
+    ErrorMessageParser errorMessageParser;
     Long noticeId;
 
     private static final String TAG = "UpdateNotice";
@@ -197,8 +198,7 @@ public class UpdateNotice extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<UpdateNoticeResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override

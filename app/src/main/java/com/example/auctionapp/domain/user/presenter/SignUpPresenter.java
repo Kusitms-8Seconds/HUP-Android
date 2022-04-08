@@ -33,6 +33,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
     private SignUpView signUpView;
     private ActivitySignUpBinding binding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public SignUpPresenter(SignUpView signUpView, ActivitySignUpBinding binding, Context context) {
@@ -156,8 +157,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<SignUpResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            signUpView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             isSignUp = false;
             Log.d(TAG, "onFailResponse");
         }
@@ -175,8 +175,7 @@ public class SignUpPresenter implements SignUpPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            signUpView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
 

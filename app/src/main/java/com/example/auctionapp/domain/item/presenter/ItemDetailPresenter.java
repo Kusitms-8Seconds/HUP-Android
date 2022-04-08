@@ -70,6 +70,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
     private ItemDetailView itemDetailView;
     private ActivityItemDetailBinding binding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public ItemDetailPresenter(ItemDetailView itemDetailView, ActivityItemDetailBinding binding, Context context){
@@ -166,8 +167,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "errorMessage"+errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, "onFailResponse");
         }
@@ -189,8 +189,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
 
@@ -211,8 +210,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<ScrapRegisterResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
 
@@ -240,8 +238,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onFailResponse(Response<ScrapCheckedResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
 
@@ -269,8 +266,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -288,8 +284,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -313,8 +308,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -378,8 +372,7 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemDetailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override

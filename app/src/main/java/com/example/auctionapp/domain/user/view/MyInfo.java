@@ -38,6 +38,7 @@ import static android.content.ContentValues.TAG;
 public class MyInfo extends AppCompatActivity {
     private ActivityMypageMyinfoBinding binding;
     String myLoginType;
+    ErrorMessageParser errorMessageParser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +106,7 @@ public class MyInfo extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
@@ -127,8 +127,7 @@ public class MyInfo extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override

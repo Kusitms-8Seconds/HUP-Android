@@ -70,6 +70,7 @@ public class BidPagePresenter implements Presenter{
     private ArrayList<BidParticipants> bidParticipants;
     Dialog dialog01;
     DecimalFormat myFormatter = new DecimalFormat("###,###");
+    ErrorMessageParser errorMessageParser;
 
     // Attributes
     private BidPageView bidPageView;
@@ -210,8 +211,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -228,8 +228,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<MaximumPriceResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -247,8 +246,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<ParticipantsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -271,8 +269,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<PriceSuggestionListResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText());
         }
         @Override
@@ -290,8 +287,7 @@ public class BidPagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<FCMResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            bidPageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, PriceConstants.EPriceCallback.rtFailResponse.getText() + "_pushMessage" +
                     response.errorBody().string());
         }

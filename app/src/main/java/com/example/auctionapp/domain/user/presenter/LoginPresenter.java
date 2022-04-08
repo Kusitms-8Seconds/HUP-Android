@@ -269,7 +269,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<LoginResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             loginView.showToast(errorMessageParser.getParsedErrorMessage());
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());

@@ -88,6 +88,7 @@ public class MainPresenter implements Presenter{
     private ActivityHomeBinding binding;
     private Context context;
     private Activity activity;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public MainPresenter(MainView mainView, ActivityHomeBinding binding, Context context, Activity activity){
@@ -179,8 +180,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<List<BestItemResponse>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mainView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
@@ -231,8 +231,7 @@ public class MainPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mainView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override

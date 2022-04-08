@@ -43,6 +43,7 @@ import static android.content.ContentValues.TAG;
 //===============채팅 창===============//
 public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChatMessageView {
     List<ChatModel.Comment> comments;
+    ErrorMessageParser errorMessageParser;
 
     //uid
     private Long chatRoomUid; //채팅방 하나 id
@@ -172,8 +173,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ChatMessageResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d("chat messages", ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
@@ -217,11 +217,7 @@ public class ChattingViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             @Override
             public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-                Log.d(TAG, response.errorBody().string());
-                try {
-                    JSONObject jObjError = new JSONObject(response.errorBody().string());
-                    Toast.makeText(context, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-                } catch (Exception e) { Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show(); }
+                errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
                 Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
             }
             @Override

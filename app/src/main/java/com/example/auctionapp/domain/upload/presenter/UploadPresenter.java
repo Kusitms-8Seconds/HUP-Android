@@ -31,6 +31,7 @@ public class UploadPresenter implements Presenter{
     private UploadView uploadView;
     private ActivityUploadPageBinding binding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public UploadPresenter(UploadView uploadView, ActivityUploadPageBinding binding, Context context){
@@ -109,8 +110,7 @@ public class UploadPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<RegisterItemResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            uploadView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(UploadConstants.EUploadCallback.TAG.getText(), UploadConstants.EUploadCallback.rtFailResponse.getText());
         }
         @Override

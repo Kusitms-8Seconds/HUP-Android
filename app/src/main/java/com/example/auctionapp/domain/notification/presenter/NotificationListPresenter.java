@@ -105,7 +105,7 @@ public class NotificationListPresenter implements Presenter {
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<NotificationListResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             notificationListView.showToast(errorMessageParser.getParsedErrorMessage());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
         }

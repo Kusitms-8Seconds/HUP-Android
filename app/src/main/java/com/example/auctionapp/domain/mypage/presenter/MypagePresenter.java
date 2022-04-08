@@ -54,6 +54,7 @@ public class MypagePresenter implements Presenter{
     public static  Mypage mypage = null;
     GoogleSignInClient mGoogleSignInClient;
     OAuthLogin mOAuthLoginModule;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public MypagePresenter(MypageView mypageView, ActivityMypageBinding binding, Activity activity){
@@ -129,7 +130,6 @@ public class MypagePresenter implements Presenter{
             binding.myPageUserName.setText(response.body().getUsername());
             if(response.body().getPicture()!=null){
                 Glide.with(activity).load(response.body().getPicture()).into(binding.profileImg);
-                System.out.println(response.body().getPicture());
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
@@ -154,8 +154,7 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<UserInfoResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mypageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override
@@ -177,8 +176,7 @@ public class MypagePresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            mypageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText());
         }
         @Override

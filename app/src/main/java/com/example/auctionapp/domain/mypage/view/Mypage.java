@@ -95,6 +95,7 @@ public class Mypage extends Fragment implements MypageView{
         Glide.with(getContext()).load(R.drawable.profile).into(binding.profileImg);
         System.out.println("userId: "+Constants.userId);
         System.out.println("userToken: "+Constants.accessToken);
+        System.out.println("refershToken:" + Constants.refreshToken);
 
         if(Constants.userId != null && Constants.accessToken != null) {
             //로그인 되어있을 때

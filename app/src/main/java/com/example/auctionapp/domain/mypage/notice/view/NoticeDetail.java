@@ -35,6 +35,7 @@ import static android.content.ContentValues.TAG;
 
 public class NoticeDetail extends AppCompatActivity {
     private ActivityNoticeDetailBinding binding;
+    ErrorMessageParser errorMessageParser;
 
     Long noticeId;
     String title;
@@ -128,8 +129,7 @@ public class NoticeDetail extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<NoticeResponse> response) throws IOException, JSONException {
-//            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-//            noticeView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
         }
         @Override
@@ -145,8 +145,7 @@ public class NoticeDetail extends AppCompatActivity {
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
             Log.d(TAG, MypageConstants.EMyPageCallback.rtFailResponse.getText() + ":"+response.errorBody().string());
         }
         @Override

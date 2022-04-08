@@ -51,6 +51,7 @@ public class ScrapPresenter implements Presenter{
     private ScrapView scrapView;
     private ActivityScrapBinding mBinding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public ScrapPresenter(ScrapView scrapView, ActivityScrapBinding mBinding, Context getApplicationContext){
@@ -128,8 +129,7 @@ public class ScrapPresenter implements Presenter{
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ScrapDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            scrapView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, ScrapConstants.EScrapCallback.rtFailResponse.getText());
         }
         @Override

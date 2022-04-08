@@ -61,6 +61,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
     private ChatMessageView chatMessageView;
     private ActivityChatRoomBinding mBinding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public ChatMessagePresenter(ChatMessageView chatMessageView, ActivityChatRoomBinding mBinding, Context getApplicationContext){
@@ -134,8 +135,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         }
         @Override
         public void onFailResponse(Response<ItemDetailsResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override
@@ -153,8 +153,7 @@ public class ChatMessagePresenter implements ChatMessagePresenterInterface {
         }
         @Override
         public void onFailResponse(Response<IsEnterChatRoomResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            chatMessageView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, ChatConstants.EChatCallback.rtFailResponse.getText());
         }
         @Override

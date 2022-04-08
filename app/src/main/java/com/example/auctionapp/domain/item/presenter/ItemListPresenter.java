@@ -54,6 +54,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
     int heartCount;
     int participantCount;
     DecimalFormat myFormatter = new DecimalFormat("###,###");
+    ErrorMessageParser errorMessageParser;
 
     // itemData Attributes
     Long itemId;
@@ -188,12 +189,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -239,12 +235,7 @@ public class ItemListPresenter implements ItemListPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<PaginationDto<List<ItemDetailsResponse>>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            itemListView.showToast(errorMessageParser.getParsedErrorMessage());
-            try {
-                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                Toast.makeText(activity, jObjError.getString("error"), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show(); }
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), activity);
             Log.d(TAG, "onFailResponse");
         }
         @Override

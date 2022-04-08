@@ -34,6 +34,7 @@ public class EmailPresenter implements EmailPresenterInterface {
     private EmailView emailView;
     private ActivitySignupEmailcheckBinding binding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public EmailPresenter(EmailView emailView, ActivitySignupEmailcheckBinding binding, Context context) {
@@ -66,8 +67,7 @@ public class EmailPresenter implements EmailPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            emailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override
@@ -88,8 +88,7 @@ public class EmailPresenter implements EmailPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            emailView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d(TAG, "onFailResponse");
         }
         @Override

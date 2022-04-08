@@ -47,6 +47,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
     private ChatRoomView chatRoomView;
     private ActivityChatBinding mBinding;
     private Context context;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public ChatRoomPresenter(ChatRoomView chatRoomView, ActivityChatBinding mBinding, Context getApplicationContext){
@@ -127,8 +128,7 @@ public class ChatRoomPresenter implements ChatRoomPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<List<ChatRoomResponse>> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string());
-            chatRoomView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
             Log.d("getChatRooms", HomeConstants.EHomeCallback.rtFailResponse.getText());
         }
         @Override
