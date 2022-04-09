@@ -12,9 +12,12 @@ import com.example.auctionapp.databinding.ActivityInterestsBinding;
 import com.example.auctionapp.domain.item.adapter.CategoryAdapter;
 import com.example.auctionapp.domain.item.model.Category;
 
+import java.util.ArrayList;
+
 public class Interests extends AppCompatActivity {
     private ActivityInterestsBinding binding;
     CategoryAdapter adapter;
+    ArrayList<String> interestArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,7 @@ public class Interests extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        interestArrayList = new ArrayList<>();
         // 뒤로가기 화살표
         binding.goback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,11 +53,13 @@ public class Interests extends AppCompatActivity {
                 Category item = (Category) adapter.getItem(position);
                 if(item.getSelected()) {
                     item.setSelected(false);
+                    interestArrayList.remove(item.getCategory());
                 }else {
                     item.setSelected(true);
+                    interestArrayList.add(item.getCategory());
                 }
                 adapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "선택 :"+item.getCategory(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "선택 :"+item.getCategory(), Toast.LENGTH_SHORT).show();
             }
         });
 
