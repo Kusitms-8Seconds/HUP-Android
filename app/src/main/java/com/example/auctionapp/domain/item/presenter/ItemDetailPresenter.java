@@ -297,7 +297,10 @@ public class ItemDetailPresenter implements ItemDetailPresenterInterface{
 
         @Override
         public void onSuccessResponse(Response<UserInfoResponse> response) {
-            binding.sellerName.setText(response.body().getUsername());
+            if(response.body().getUserId() == 100) {
+                binding.sellerName.setText("admin (관리자)");
+            } else
+                binding.sellerName.setText(response.body().getUsername());
             if(response.body().getPicture() != null){
                 Glide.with(context).load(response.body().getPicture()).into(binding.sellerImage);
             } else {
