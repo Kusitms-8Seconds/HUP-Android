@@ -161,7 +161,7 @@ public class BidPagePresenter implements Presenter{
                     String minutes = String.valueOf(ChronoUnit.MINUTES.between(startDateTime, endDateTime)%60);
                     String second = String.valueOf(ChronoUnit.SECONDS.between(startDateTime, endDateTime)%60);
 
-                    GetTime getTime = new GetTime(binding.itemLeftTime, days, hours, minutes, second, mTimer);
+                    GetTime getTime = new GetTime(binding.itemLeftTime, binding.auctionState, days, hours, minutes, second, mTimer);
                 }
             };
 

@@ -2,8 +2,10 @@ package com.example.auctionapp.global.util;
 
 
 import android.graphics.Color;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityBidPageBinding;
 import com.example.auctionapp.databinding.ActivityItemDetailBinding;
 
@@ -28,8 +30,33 @@ public class GetTime {
         String time = createdDate.substring(11, 16);
         this.latestTime = month + "월 " + day + "일 " + time;
     }
+    public GetTime(TextView leftTime, TextView itemStatus, String days, String hours, String minutes, String second, Timer mTimer) {
+        getLeftTime(leftTime, itemStatus, days, hours, minutes, second, mTimer);
+    }
     public GetTime(TextView leftTime, String days, String hours, String minutes, String second, Timer mTimer) {
         getLeftTime(leftTime, days, hours, minutes, second, mTimer);
+    }
+    public void getLeftTime(TextView leftTime, TextView itemStatus, String days, String hours, String minutes, String second, Timer mTimer) {
+        if(Integer.parseInt(hours) >= 24) {
+            hours = String.valueOf(Integer.parseInt(hours)%24);
+            leftTime.setText(days + "일 " + hours + "시간 " + minutes + "분 " + second + "초 전");
+        } else if(Integer.parseInt(hours) < 0 || Integer.parseInt(minutes) < 0 || Integer.parseInt(second) < 0) {
+            leftTime.setText("경매 시간 종료");
+            itemStatus.setText("경매 종료");
+            itemStatus.setBackgroundResource(R.drawable.circle_button_gray);
+            mTimer.cancel();
+        } else if(Integer.parseInt(hours) <= 0) {
+            leftTime.setText(minutes + "분 " + second + "초 전");
+        } else if(Integer.parseInt(hours) <= 0 && Integer.parseInt(minutes) <= 0) {
+            leftTime.setText(second + "초 전");
+            leftTime.setTextColor(Color.BLUE);
+        } else if(Integer.parseInt(hours) == 0 && Integer.parseInt(minutes) == 0
+                && Integer.parseInt(second) > 0 &&  Integer.parseInt(second) < 20) {
+            leftTime.setText(second + "초 전");
+            leftTime.setTextColor(Color.BLUE);
+        } else {
+            leftTime.setText(hours + "시간 " + minutes + "분 " + second + "초 전");
+        }
     }
     public void getLeftTime(TextView leftTime, String days, String hours, String minutes, String second, Timer mTimer) {
         if(Integer.parseInt(hours) >= 24) {
