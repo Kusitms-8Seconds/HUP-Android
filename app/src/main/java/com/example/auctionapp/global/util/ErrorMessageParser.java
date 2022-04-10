@@ -37,21 +37,27 @@ public class ErrorMessageParser {
     JsonElement element;
     String errorMessage;
     String parsedErrorMessage;
+    int code;
     Context context;
 
     public ErrorMessageParser(String errorResponse, Context context) {
         this.context = context;
         this.parser = new JsonParser();
         this.element = parser.parse(errorResponse);
+        this.code = element.getAsJsonObject().get("status").getAsInt();
+        if(code == 403) {
+            showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
+            return;
+        }
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
-        this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length()-1);
-        if(this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidAccessTokenExceptionMessage.getValue()) || this.parsedErrorMessage.equals(Constants.EOAuth2UserServiceImpl.eGoogleInvalidIdTokenMessage.getValue())) {
+        this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length() - 1);
+        if (this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidAccessTokenExceptionMessage.getValue()) || this.parsedErrorMessage.equals(Constants.EOAuth2UserServiceImpl.eGoogleInvalidIdTokenMessage.getValue())) {
             LogoutRequest logoutRequest = new LogoutRequest(Constants.accessToken, Constants.refreshToken);
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).reissue(logoutRequest)
                     .enqueue(MainRetrofitTool.getCallback(new ReissueCallback()));
             showToast(this.parsedErrorMessage);
 
-        } else if(this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidRefreshTokenExceptionMessage.getValue())) {
+        } else if (this.parsedErrorMessage.equals(Constants.EUserServiceImpl.eNotValidRefreshTokenExceptionMessage.getValue())) {
             Intent intent = new Intent(context, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
