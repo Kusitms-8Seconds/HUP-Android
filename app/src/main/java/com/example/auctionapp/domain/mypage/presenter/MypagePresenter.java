@@ -81,9 +81,11 @@ public class MypagePresenter implements Presenter{
 
     @Override
     public void getUserInfo() {
-        if(Constants.userId!=null){
+        if(Constants.userId != null && Constants.accessToken != null && Constants.refreshToken != null){
             RetrofitTool.getAPIWithAuthorizationToken(Constants.accessToken).userDetails(Constants.userId)
                     .enqueue(MainRetrofitTool.getCallback(new UserDetailsInfoCallback()));
+        } else if(Constants.userId != null && Constants.accessToken == null){
+            mypageView.showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
         }
     }
 

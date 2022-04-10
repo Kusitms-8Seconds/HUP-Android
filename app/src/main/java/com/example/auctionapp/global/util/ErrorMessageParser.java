@@ -47,6 +47,10 @@ public class ErrorMessageParser {
         this.code = element.getAsJsonObject().get("status").getAsInt();
         if(code == 403) {
             showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(intent);
             return;
         }
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
