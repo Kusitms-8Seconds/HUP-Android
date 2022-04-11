@@ -135,7 +135,7 @@ public class MypagePresenter implements Presenter{
             }
             binding.loginIcon.setVisibility(View.INVISIBLE);
             binding.logoutButton.setVisibility(View.VISIBLE);
-            if(!(response.body().isActivated())) {
+            if(!(response.body().isEmailAuthActivated())) {
                 Toast.makeText(activity, Constants.EUserServiceImpl.eUserNotActivatedExceptionMessage.getValue(), Toast.LENGTH_SHORT).show();
                 binding.emailButton.setVisibility(View.VISIBLE);
             } else

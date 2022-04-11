@@ -20,6 +20,7 @@ public class UserInfoResponse {
     private String phoneNumber;
     private String picture;
     private boolean activated;
+    private boolean emailAuthActivated;
     private Constants.ELoginType loginType;
 
 }

@@ -37,21 +37,23 @@ public class ErrorMessageParser {
     JsonElement element;
     String errorMessage;
     String parsedErrorMessage;
-    int code;
+    String error;
     Context context;
 
     public ErrorMessageParser(String errorResponse, Context context) {
         this.context = context;
         this.parser = new JsonParser();
         this.element = parser.parse(errorResponse);
-        this.code = element.getAsJsonObject().get("status").getAsInt();
-        if(code == 403) {
-            showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
+        if(element.getAsJsonObject().get("error") != null) {
+            this.error = element.getAsJsonObject().get("error").getAsString();
+            if (error.equals("Forbidden")) {
+                showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(intent);
-            return;
+                return;
+            }
         }
         this.errorMessage = element.getAsJsonObject().get("messages").getAsJsonArray().get(0).toString();
         this.parsedErrorMessage = this.errorMessage.substring(1, this.errorMessage.length() - 1);
