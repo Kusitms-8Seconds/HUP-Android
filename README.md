@@ -46,11 +46,7 @@
 2. Slack
 3. Jira <img src="https://user-images.githubusercontent.com/87636557/159142524-b4b1bbcc-30bf-400b-8293-29d813fad101.png"/>
 
-## :books: HUP Swagger API Docs
-<a href="http://www.hurryuphup.me/swagger-ui/index.html#/">HUP Swagger API Docs</a><br>
+## :books: HUP API Docs
+<a href="http://www.hurryuphup.me/swagger-ui/index.html#/">HUP Swagger REST API Docs</a><br>
+<a href="https://expensive-cowbell-87c.notion.site/0a16957c3cdb42ccb9681d16ee1311b9?v=3d543e845738431bb16e11ca359ffede">HUP STOMP API Docs</a><br>
 
-<!-- ## 개요
-- 시연 영상 유튜브 업로드 : https://youtu.be/Fv1n-7LECvQ
-- apk(release) 경로 : HUP-App\app\release\app-release.apk
-- apk(debug) 경로 : HUP-App\app\build\outputs\apk\debug\app-debug.apk
- -->
