@@ -46,7 +46,7 @@ public class ErrorMessageParser {
         this.element = parser.parse(errorResponse);
         if(element.getAsJsonObject().get("error") != null) {
             this.error = element.getAsJsonObject().get("error").getAsString();
-            if (error.equals("Forbidden")) {
+            if (error.equals(Constants.EUserServiceImpl.e403Error.getValue())) {
                 showToast(Constants.EUserServiceImpl.eNotActivatedEmailAuthExceptionMessage.getValue());
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

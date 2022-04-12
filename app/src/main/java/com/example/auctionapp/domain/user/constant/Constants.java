@@ -134,7 +134,8 @@ public class Constants {
         eTrue(true),
         eAuthorityRoleUser("ROLE_USER"),
         eBaseFileURL("http://www.hurryuphup.me/api/v1/files/"),
-        eBasePicture("https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8");
+        eBasePicture("https://firebasestorage.googleapis.com/v0/b/auctionapp-f3805.appspot.com/o/profile.png?alt=media&token=655ed158-b464-4e5e-aa56-df3d7f12bdc8"),
+        e403Error("Forbidden");
 
         private boolean check;
         private String value;
