@@ -3,6 +3,7 @@ package com.example.auctionapp.domain.home.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.auctionapp.databinding.ActivityHomeBinding;
@@ -100,7 +102,7 @@ public class MainPresenter implements Presenter{
 
     @Override
     public void init() {
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(context,2);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 2);
         binding.AuctionNowView.setLayoutManager(linearLayoutManager);
         auctionNowAdapter = new AuctionNowAdapter();
         binding.AuctionNowView.setAdapter(auctionNowAdapter);
@@ -112,7 +114,7 @@ public class MainPresenter implements Presenter{
         auctionNowAdapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                if(Constants.userId != null) {
+                if (Constants.userId != null) {
                     Intent intent = new Intent(context, ItemDetail.class);
                     intent.putExtra("itemId", auctionNowAdapter.getAuctionNowData().get(position).getItemId());
                     context.startActivity(intent);
