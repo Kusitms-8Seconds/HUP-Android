@@ -15,6 +15,8 @@ import com.example.auctionapp.domain.mypage.notice.dto.UpdateNoticeResponse;
 import com.example.auctionapp.domain.notification.dto.NotificationListResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
+import com.example.auctionapp.domain.user.dto.FindLoginIdRequest;
+import com.example.auctionapp.domain.user.dto.FindLoginIdResponse;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
 import com.example.auctionapp.domain.user.dto.TokenInfoResponse;
 import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
@@ -85,7 +87,10 @@ public interface RestAPI {
     Call<DefaultResponse> resetPWAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
 
     //아이디 찾기/비번 재설정
-
+    @POST("api/v1/users/find-id") //아이디 찾기
+    Call<FindLoginIdResponse> findId(@Body FindLoginIdRequest findLoginIdRequest);
+    @POST("api/v1/users/reset-password") //비밀번호 재설정
+    Call<FindLoginIdResponse> resetPW(@Body FindLoginIdRequest findLoginIdRequest);
 
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
