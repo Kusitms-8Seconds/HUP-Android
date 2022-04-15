@@ -98,15 +98,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/loginbutton"/>
     <TextView
-        android:id="@+id/findIDPW"
+        android:id="@+id/findID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="아이디 찾기 / 비밀번호 재설정"
+        android:text="⦁ 아이디 찾기"
         android:textSize="38px"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="@id/loginButton"/>
+    <TextView
+        android:id="@+id/resetPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="⦁ 비밀번호 재설정"
+        android:textSize="38px"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toEndOf="@id/findID"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"/>
 
     <LinearLayout
         android:id="@+id/goSignUp"
