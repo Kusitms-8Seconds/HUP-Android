@@ -81,6 +81,11 @@ public interface RestAPI {
     Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
     @POST("api/v1/email/activate-user")   //유저 활성화하기 위한 인증코드 검증
     Call<DefaultResponse> checkAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
+    @POST("api/v1/email/reset-password")   //비밀번호 재설정 인증코드 검증
+    Call<DefaultResponse> resetPWAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
+
+    //아이디 찾기/비번 재설정
+
 
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);

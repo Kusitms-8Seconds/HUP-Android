@@ -10,8 +10,7 @@
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="79px"
-        android:layout_marginBottom="74px"
+        android:layout_marginTop="25dp"
         android:layout_weight="0"
         android:fontFamily="sans-serif-black"
         android:text="로그인"
@@ -25,7 +24,7 @@
         android:id="@+id/btn_kakao_login"
         android:layout_width="915.81px"
         android:layout_height="136.13px"
-        android:layout_marginTop="161px"
+        android:layout_marginTop="25dp"
         app:layout_constraintBottom_toTopOf="@id/btn_google_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,13 +97,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/loginbutton"/>
+    <TextView
+        android:id="@+id/findIDPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="아이디 찾기 / 비밀번호 재설정"
+        android:textSize="38px"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintStart_toStartOf="@id/loginButton"/>
 
     <LinearLayout
         android:id="@+id/goSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="40dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
