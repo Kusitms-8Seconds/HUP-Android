@@ -76,9 +76,10 @@ public interface RestAPI {
     @PUT("api/v1/users/images")    //사용자 프로필 사진 수정
     Call<UpdateProfileResponse> updateUserProfileImg(@Part MultipartBody.Part file,
                                                      @Part("userId") RequestBody userId);
+    //email
     @POST("api/v1/email/send")   //회원가입 시 이메일 인증
     Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
-    @POST("api/v1/email/verify")   //인증코드 확인
+    @POST("api/v1/email/activate-user")   //유저 활성화하기 위한 인증코드 검증
     Call<DefaultResponse> checkAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
 
     @POST("api/v1/users/login") //로그인
