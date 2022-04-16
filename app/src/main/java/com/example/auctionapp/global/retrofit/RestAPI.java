@@ -82,11 +82,13 @@ public interface RestAPI {
     Call<UpdateProfileResponse> updateUserProfileImg(@Part MultipartBody.Part file,
                                                      @Part("userId") RequestBody userId);
     //email
-    @POST("api/v1/email/send")   //회원가입 시 이메일 인증
-    Call<DefaultResponse> sendAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
-    @POST("api/v1/email/activate-user")   //유저 활성화하기 위한 인증코드 검증
+    @POST("api/v1/email/send/activate-user")   //회원가입 시 이메일 인증
+    Call<DefaultResponse> sendActivateAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
+    @POST("api/v1/email/send/reset-password")   //비번 재설정 시 이메일 인증
+    Call<DefaultResponse> sendResetPWAuthCode(@Body EmailAuthCodeRequest emailAuthCodeRequest);
+    @POST("api/v1/email/verify/activate-user")   //유저 활성화하기 위한 인증코드 검증
     Call<DefaultResponse> checkAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
-    @POST("api/v1/email/reset-password")   //비밀번호 재설정 인증코드 검증
+    @POST("api/v1/email/verify/reset-password")   //비밀번호 재설정 인증코드 검증
     Call<EmailResetPasswordResponse> resetPWAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
 
     //아이디 찾기/비번 재설정
