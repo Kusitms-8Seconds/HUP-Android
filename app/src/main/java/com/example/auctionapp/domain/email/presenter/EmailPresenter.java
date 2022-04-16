@@ -5,23 +5,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.databinding.ActivitySignupEmailcheckBinding;
 import com.example.auctionapp.domain.email.dto.CheckAuthCodeRequest;
 import com.example.auctionapp.domain.email.dto.EmailAuthCodeRequest;
 import com.example.auctionapp.domain.email.view.EmailView;
-import com.example.auctionapp.domain.home.constant.HomeConstants;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -45,7 +41,7 @@ public class EmailPresenter implements EmailPresenterInterface {
 
     @Override
     public void sendEmail(String email) {
-        RetrofitTool.getAPIWithNullConverter().sendAuthCode(new EmailAuthCodeRequest(email))
+        RetrofitTool.getAPIWithNullConverter().sendActivateAuthCode(new EmailAuthCodeRequest(email))
                 .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
         // 버튼 한번 누르면 비활성화
         binding.btnSendEmail.setEnabled(false);

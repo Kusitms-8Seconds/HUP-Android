@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,22 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
-import com.example.auctionapp.databinding.ActivityMypageBinding;
 import com.example.auctionapp.domain.email.dto.CheckAuthCodeRequest;
 import com.example.auctionapp.domain.email.dto.EmailAuthCodeRequest;
-import com.example.auctionapp.domain.email.presenter.EmailPresenter;
-import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
-import com.example.auctionapp.domain.mypage.view.Mypage;
-import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
 import com.example.auctionapp.domain.user.dto.EmailResetPasswordResponse;
 import com.example.auctionapp.domain.user.dto.FindLoginIdRequest;
@@ -42,12 +34,10 @@ import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
 import com.example.auctionapp.domain.user.dto.ResetPasswordRequest;
 import com.example.auctionapp.domain.user.dto.ResetPasswordResponse;
-import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
 import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
-import com.example.auctionapp.global.retrofit.RetrofitConstants;
 import com.example.auctionapp.global.retrofit.RetrofitTool;
 import com.example.auctionapp.global.util.ErrorMessageParser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -288,7 +278,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onClick(View view) {
                 String email = email_tv.getText().toString();
                 EmailAuthCodeRequest emailAuthCodeRequest = new EmailAuthCodeRequest(email);
-                RetrofitTool.getAPIWithNullConverter().sendAuthCode(emailAuthCodeRequest)
+                RetrofitTool.getAPIWithNullConverter().sendResetPWAuthCode(emailAuthCodeRequest)
                         .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
@@ -303,7 +293,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onClick(View view) {
                 String email = email_tv.getText().toString();
                 EmailAuthCodeRequest emailAuthCodeRequest = new EmailAuthCodeRequest(email);
-                RetrofitTool.getAPIWithNullConverter().sendAuthCode(emailAuthCodeRequest)
+                RetrofitTool.getAPIWithNullConverter().sendResetPWAuthCode(emailAuthCodeRequest)
                         .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
 //                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
@@ -502,8 +492,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
         @Override
         public void onFailResponse(Response<FindLoginIdResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
-            loginView.showToast(errorMessageParser.getParsedErrorMessage());
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
 
             LinearLayout ly = findIDDialog.findViewById(R.id.ly_show_id);
             ly.setVisibility(View.GONE);
@@ -522,7 +511,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         @Override
         public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
             errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
-            Log.d(TAG, "onFailResponse");
+            Log.d(TAG, errorMessageParser.getParsedErrorMessage());
         }
         @Override
         public void onConnectionFail(Throwable t) {
@@ -532,7 +521,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     private class ResetPWCallback implements MainRetrofitCallback<ResetPasswordResponse> {
         @Override
         public void onSuccessResponse(Response<ResetPasswordResponse> response) {
-
+            loginView.showToast("비밀번호 재설정을 완료했습니다.");
+            resetPWDialog.dismiss();
             Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
         }
         @Override

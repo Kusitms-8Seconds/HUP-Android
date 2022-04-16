@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailResetPasswordResponse extends DefaultResponse {
+public class EmailResetPasswordResponse {
     private Long userId;
     private String loginId;
 
-    public static EmailResetPasswordResponse from(Long userId, String loginId, String message) {
+    public static EmailResetPasswordResponse from(Long userId, String loginId) {
         EmailResetPasswordResponse emailResetPasswordResponse = EmailResetPasswordResponse.builder()
                 .userId(userId)
                 .loginId(loginId)
