@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity implements LoginView{
     Context mContext;
 
     Dialog findIDDialog;
+    Dialog resetPWDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,9 @@ public class Login extends AppCompatActivity implements LoginView{
 
 
         findIDDialog = new Dialog(Login.this);
+        resetPWDialog = new Dialog(Login.this);
         findIDDialog.setContentView(R.layout.dialog_find_id);
+        resetPWDialog.setContentView(R.layout.dialog_reset_password);
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key));
         binding.goSignUp.setOnClickListener(new View.OnClickListener() {
@@ -118,15 +121,14 @@ public class Login extends AppCompatActivity implements LoginView{
         binding.findID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showFindIDDialog();
+                presenter.showFindIDDialog(findIDDialog);
             }
         });
         // 비번 재설정
         binding.resetPW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login.this, SignUp.class);
-                startActivity(intent);
+                presenter.showResetPWDialog(resetPWDialog);
             }
         });
         // 앱 회원가입
@@ -138,68 +140,6 @@ public class Login extends AppCompatActivity implements LoginView{
             }
         });
 
-    }
-
-    // findID dialog 함수
-    public void showFindIDDialog(){
-        findIDDialog.show(); // 다이얼로그 띄우기
-
-        EditText email_tv = findIDDialog.findViewById(R.id.edit_email);
-        // 찾기 버튼
-        findIDDialog.findViewById(R.id.bt_find).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = email_tv.getText().toString();
-                FindLoginIdRequest findLoginIdRequest = new FindLoginIdRequest(email);
-                RetrofitTool.getAPIWithNullConverter().findId(findLoginIdRequest)
-                        .enqueue(MainRetrofitTool.getCallback(new FindIDCallback()));
-                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
-            }
-        });
-    }
-    // resetPW dialog 함수
-    public void showResetPWDialog(){
-//        dialog.show(); // 다이얼로그 띄우기
-//
-//        // 홈으로 돌아가기 버튼
-//        dialog01.findViewById(R.id.goHome).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog01.dismiss();
-//                Intent intent = new Intent(context, MainActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//                dialog01.dismiss();
-//            }
-//        });
-    }
-    private class FindIDCallback implements MainRetrofitCallback<FindLoginIdResponse> {
-        @Override
-        public void onSuccessResponse(Response<FindLoginIdResponse> response) {
-            String loginId = response.body().getLoginId();
-            Long userId = response.body().getUserId();
-
-            LinearLayout ly = findIDDialog.findViewById(R.id.ly_show_id);
-            TextView tv_showId = findIDDialog.findViewById(R.id.tv_show_id);
-            ly.setVisibility(View.VISIBLE);
-            tv_showId.setText(loginId);
-            Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
-        }
-        @Override
-        public void onFailResponse(Response<FindLoginIdResponse> response) throws IOException, JSONException {
-            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), getApplicationContext());
-            showToast(errorMessageParser.getParsedErrorMessage());
-
-            LinearLayout ly = findIDDialog.findViewById(R.id.ly_show_id);
-            ly.setVisibility(View.GONE);
-            Log.d("findID", Constants.ELoginCallback.eFailResponse.getText());
-        }
-        @Override
-        public void onConnectionFail(Throwable t) {
-            Log.e(Constants.ELoginCallback.eConnectionFail.getText(), t.getMessage());
-        }
     }
 
     @Override

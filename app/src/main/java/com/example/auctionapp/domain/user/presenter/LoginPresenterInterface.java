@@ -1,5 +1,6 @@
 package com.example.auctionapp.domain.user.presenter;
 
+import android.app.Dialog;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,9 @@ public interface LoginPresenterInterface {
     void googleLogin() throws InterruptedException;
     void googleSignIn();
     void naverSignIn();
+
+    void showFindIDDialog(Dialog dialog);
+    void showResetPWDialog(Dialog dialog);
 
     void onDestroy();
     void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);

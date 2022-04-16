@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50px"
             android:layout_marginTop="69px"
-            android:text="인증번호"
+            android:text="인증번호 입력"
             android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.0"

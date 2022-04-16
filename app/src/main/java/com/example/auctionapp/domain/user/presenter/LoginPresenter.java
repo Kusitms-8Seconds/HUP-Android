@@ -2,30 +2,49 @@ package com.example.auctionapp.domain.user.presenter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.auctionapp.MainActivity;
 import com.example.auctionapp.R;
 import com.example.auctionapp.databinding.ActivityLoginBinding;
 import com.example.auctionapp.databinding.ActivityMypageBinding;
+import com.example.auctionapp.domain.email.dto.CheckAuthCodeRequest;
+import com.example.auctionapp.domain.email.dto.EmailAuthCodeRequest;
+import com.example.auctionapp.domain.email.presenter.EmailPresenter;
 import com.example.auctionapp.domain.mypage.presenter.MypagePresenter;
 import com.example.auctionapp.domain.mypage.view.Mypage;
 import com.example.auctionapp.domain.mypage.view.MypageView;
 import com.example.auctionapp.domain.user.constant.Constants;
+import com.example.auctionapp.domain.user.dto.EmailResetPasswordResponse;
+import com.example.auctionapp.domain.user.dto.FindLoginIdRequest;
+import com.example.auctionapp.domain.user.dto.FindLoginIdResponse;
 import com.example.auctionapp.domain.user.dto.LoginRequest;
 import com.example.auctionapp.domain.user.dto.LoginResponse;
 import com.example.auctionapp.domain.user.dto.OAuth2GoogleLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2KakaoLoginRequest;
 import com.example.auctionapp.domain.user.dto.OAuth2NaverLoginRequest;
+import com.example.auctionapp.domain.user.dto.ResetPasswordRequest;
+import com.example.auctionapp.domain.user.dto.ResetPasswordResponse;
+import com.example.auctionapp.domain.user.view.Login;
 import com.example.auctionapp.domain.user.view.LoginView;
+import com.example.auctionapp.global.dto.DefaultResponse;
 import com.example.auctionapp.global.retrofit.MainRetrofitCallback;
 import com.example.auctionapp.global.retrofit.MainRetrofitTool;
 import com.example.auctionapp.global.retrofit.RetrofitConstants;
@@ -60,6 +79,8 @@ import java.io.IOException;
 import lombok.SneakyThrows;
 import retrofit2.Response;
 
+import static android.content.ContentValues.TAG;
+
 public class LoginPresenter implements LoginPresenterInterface {
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
@@ -67,14 +88,19 @@ public class LoginPresenter implements LoginPresenterInterface {
     private int RC_SIGN_IN = 0116;  //google login request code
     private int NOT_SELECTED = 12501;
     OAuthLogin mOAuthLoginModule;
-    //token 만료
-    boolean isExpired = false;
+    //find id dialog
+    Dialog findIDDialog;
+    //reset Pw dialog
+    Dialog resetPWDialog;
+    // userId
+    Long userId;
     
     // Attributes
     private LoginView loginView;
     private ActivityLoginBinding binding;
     private Context context;
     private Activity activity;
+    ErrorMessageParser errorMessageParser;
 
     // Constructor
     public LoginPresenter(LoginView loginView, ActivityLoginBinding binding, Context context, Activity activity){
@@ -194,6 +220,121 @@ public class LoginPresenter implements LoginPresenterInterface {
             };
         };
         mOAuthLoginModule.startOauthLoginActivity(activity, mOAuthLoginHandler);
+    }
+
+    @Override
+    public void showFindIDDialog(Dialog dialog) {
+        this.findIDDialog = dialog;
+        findIDDialog.show(); // 다이얼로그 띄우기
+
+        EditText email_tv = findIDDialog.findViewById(R.id.edit_email);
+        // 찾기 버튼
+        findIDDialog.findViewById(R.id.bt_find).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = email_tv.getText().toString();
+                FindLoginIdRequest findLoginIdRequest = new FindLoginIdRequest(email);
+                RetrofitTool.getAPIWithNullConverter().findId(findLoginIdRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new FindIDCallback()));
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
+            }
+        });
+    }
+
+    @Override
+    public void showResetPWDialog(Dialog dialog) {
+        this.resetPWDialog = dialog;
+        resetPWDialog.show();
+
+        //attributes
+        EditText email_tv = resetPWDialog.findViewById(R.id.edit_email);
+        Button sendEmail = resetPWDialog.findViewById(R.id.bt_send_email);
+        Button resendEmail = resetPWDialog.findViewById(R.id.btn_reSend);
+        ConstraintLayout ly_codeCheck = resetPWDialog.findViewById(R.id.ly_check_authcode);
+        ConstraintLayout ly_reset_pw = resetPWDialog.findViewById(R.id.ly_reset_pw);
+        EditText edt_codeCheck = resetPWDialog.findViewById(R.id.edt_codeCheck);
+        Button btn_codeCheck = resetPWDialog.findViewById(R.id.btn_codeCheck);
+        EditText edt_reset_pw = resetPWDialog.findViewById(R.id.edt_reset_pw);
+        EditText edt_reset_pw_check = resetPWDialog.findViewById(R.id.edt_reset_pw_check);
+        Button btn_reset_pw = resetPWDialog.findViewById(R.id.btn_reset_pw);
+
+        ly_codeCheck.setVisibility(View.GONE);
+        ly_reset_pw.setVisibility(View.GONE);
+
+        class checkCodeCallback implements MainRetrofitCallback<EmailResetPasswordResponse> {
+            @Override
+            public void onSuccessResponse(Response<EmailResetPasswordResponse> response) {
+                loginView.showToast("이메일 인증 성공");
+                ly_reset_pw.setVisibility(View.VISIBLE);
+                Constants.userId = response.body().getUserId();
+                Log.d(TAG, "checking code success, idToken: " + response.body().toString());
+            }
+            @Override
+            public void onFailResponse(Response<EmailResetPasswordResponse> response) throws IOException, JSONException {
+                errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
+                ly_reset_pw.setVisibility(View.GONE);
+                Log.d(TAG, "onFailResponse");
+            }
+            @Override
+            public void onConnectionFail(Throwable t) {
+                Log.e("연결실패", t.getMessage());
+            }
+        }
+
+        // 전송 버튼
+        sendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = email_tv.getText().toString();
+                EmailAuthCodeRequest emailAuthCodeRequest = new EmailAuthCodeRequest(email);
+                RetrofitTool.getAPIWithNullConverter().sendAuthCode(emailAuthCodeRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
+                sendEmail.setEnabled(false);
+                sendEmail.setBackgroundColor(Color.GRAY);
+                ly_codeCheck.setVisibility(View.VISIBLE);
+            }
+        });
+        // 재전송 버튼
+        resendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = email_tv.getText().toString();
+                EmailAuthCodeRequest emailAuthCodeRequest = new EmailAuthCodeRequest(email);
+                RetrofitTool.getAPIWithNullConverter().sendAuthCode(emailAuthCodeRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new sendEmailCallback()));
+//                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(email_tv.getWindowToken(), 0);
+            }
+        });
+        // 인증번호 확인 버튼
+        btn_codeCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String checkCode = edt_codeCheck.getText().toString();
+                CheckAuthCodeRequest checkAuthCodeRequest = new CheckAuthCodeRequest(checkCode);
+                RetrofitTool.getAPIWithNullConverter().resetPWAuthCode(checkAuthCodeRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new checkCodeCallback()));
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edt_codeCheck.getWindowToken(), 0);
+            }
+        });
+        // 비밀번호 재설정 버튼
+        btn_reset_pw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String password = edt_reset_pw.getText().toString();
+                String passwordCheck = edt_reset_pw_check.getText().toString();
+                ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(Constants.userId, password, passwordCheck);
+                RetrofitTool.getAPIWithNullConverter().resetPW(resetPasswordRequest)
+                        .enqueue(MainRetrofitTool.getCallback(new ResetPWCallback()));
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edt_reset_pw_check.getWindowToken(), 0);
+            }
+        });
+        //TODO : 더해
     }
 
     @Override
@@ -347,6 +488,62 @@ public class LoginPresenter implements LoginPresenterInterface {
                     });
         }
     }
+    private class FindIDCallback implements MainRetrofitCallback<FindLoginIdResponse> {
+        @Override
+        public void onSuccessResponse(Response<FindLoginIdResponse> response) {
+            String loginId = response.body().getLoginId();
+            Long userId = response.body().getUserId();
 
+            LinearLayout ly = findIDDialog.findViewById(R.id.ly_show_id);
+            TextView tv_showId = findIDDialog.findViewById(R.id.tv_show_id);
+            ly.setVisibility(View.VISIBLE);
+            tv_showId.setText(loginId);
+            Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<FindLoginIdResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
+            loginView.showToast(errorMessageParser.getParsedErrorMessage());
 
+            LinearLayout ly = findIDDialog.findViewById(R.id.ly_show_id);
+            ly.setVisibility(View.GONE);
+            Log.d("findID", Constants.ELoginCallback.eFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e(Constants.ELoginCallback.eConnectionFail.getText(), t.getMessage());
+        }
+    }
+    class sendEmailCallback implements MainRetrofitCallback<DefaultResponse> {
+        @Override
+        public void onSuccessResponse(Response<DefaultResponse> response) {
+            Log.d(TAG, "sending email success, idToken: " + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<DefaultResponse> response) throws IOException, JSONException {
+            errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
+            Log.d(TAG, "onFailResponse");
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e("연결실패", t.getMessage());
+        }
+    }
+    private class ResetPWCallback implements MainRetrofitCallback<ResetPasswordResponse> {
+        @Override
+        public void onSuccessResponse(Response<ResetPasswordResponse> response) {
+
+            Log.d(Constants.ELoginCallback.TAG.getText(), Constants.ELoginCallback.eSuccessResponse.getText() + response.body().toString());
+        }
+        @Override
+        public void onFailResponse(Response<ResetPasswordResponse> response) throws IOException, JSONException {
+            ErrorMessageParser errorMessageParser = new ErrorMessageParser(response.errorBody().string(), context);
+            loginView.showToast(errorMessageParser.getParsedErrorMessage());
+            Log.d("findID", Constants.ELoginCallback.eFailResponse.getText());
+        }
+        @Override
+        public void onConnectionFail(Throwable t) {
+            Log.e(Constants.ELoginCallback.eConnectionFail.getText(), t.getMessage());
+        }
+    }
 }

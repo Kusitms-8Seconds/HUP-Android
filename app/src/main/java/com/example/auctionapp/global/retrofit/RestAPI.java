@@ -15,9 +15,12 @@ import com.example.auctionapp.domain.mypage.notice.dto.UpdateNoticeResponse;
 import com.example.auctionapp.domain.notification.dto.NotificationListResponse;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionRequest;
 import com.example.auctionapp.domain.pricesuggestion.dto.PriceSuggestionResponse;
+import com.example.auctionapp.domain.user.dto.EmailResetPasswordResponse;
 import com.example.auctionapp.domain.user.dto.FindLoginIdRequest;
 import com.example.auctionapp.domain.user.dto.FindLoginIdResponse;
 import com.example.auctionapp.domain.user.dto.LogoutRequest;
+import com.example.auctionapp.domain.user.dto.ResetPasswordRequest;
+import com.example.auctionapp.domain.user.dto.ResetPasswordResponse;
 import com.example.auctionapp.domain.user.dto.TokenInfoResponse;
 import com.example.auctionapp.domain.user.dto.UpdateProfileImgRequest;
 import com.example.auctionapp.domain.user.dto.UpdateProfileResponse;
@@ -84,13 +87,13 @@ public interface RestAPI {
     @POST("api/v1/email/activate-user")   //유저 활성화하기 위한 인증코드 검증
     Call<DefaultResponse> checkAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
     @POST("api/v1/email/reset-password")   //비밀번호 재설정 인증코드 검증
-    Call<DefaultResponse> resetPWAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
+    Call<EmailResetPasswordResponse> resetPWAuthCode(@Body CheckAuthCodeRequest checkAuthCodeRequest);
 
     //아이디 찾기/비번 재설정
     @POST("api/v1/users/find-id") //아이디 찾기
     Call<FindLoginIdResponse> findId(@Body FindLoginIdRequest findLoginIdRequest);
     @POST("api/v1/users/reset-password") //비밀번호 재설정
-    Call<FindLoginIdResponse> resetPW(@Body FindLoginIdRequest findLoginIdRequest);
+    Call<ResetPasswordResponse> resetPW(@Body ResetPasswordRequest resetPasswordRequest);
 
     @POST("api/v1/users/login") //로그인
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
