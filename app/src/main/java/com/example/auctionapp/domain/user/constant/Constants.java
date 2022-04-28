@@ -11,7 +11,7 @@ public class Constants {
     public static String accessToken = null;
     public static String refreshToken = null;
     public static String targetToken = null;
-    public static final String imageBaseUrl = "http://www.hurryuphup.me/api/v1/files/";
+    public static final String imageBaseUrl = "https://hup-bucket.s3.ap-northeast-2.amazonaws.com/";
 
     @Getter
     @NoArgsConstructor
