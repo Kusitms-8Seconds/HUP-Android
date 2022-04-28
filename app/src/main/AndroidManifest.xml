@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.auctionapp">
+    package="com.me.hurryuphup">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".domain.user.presenter.GlobalApplication"
+        android:name="com.me.hurryuphup.domain.user.presenter.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/hup_icon_2"
         android:label="@string/app_name"
@@ -22,38 +22,38 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/Hup" />
-        <activity android:name=".domain.item.view.QnA"></activity>
+        <activity android:name="com.me.hurryuphup.domain.item.view.QnA"></activity>
         <activity
-            android:name=".domain.home.view.SplashActivity"
+            android:name="com.me.hurryuphup.domain.home.view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".domain.user.view.SignUp" />
-        <activity android:name=".domain.user.view.Login" />
-        <activity android:name=".domain.item.view.ItemDetail" />
-        <activity android:name=".domain.pricesuggestion.view.BidPage" />
-        <activity android:name=".domain.upload.view.UploadPage" />
-        <activity android:name=".domain.item.view.Search" />
-        <activity android:name=".domain.item.view.AuctionHistory" />
-        <activity android:name=".domain.item.view.SellHistory" />
-        <activity android:name=".domain.mypage.notice.view.Notice" />
-        <activity android:name=".domain.mypage.notice.view.NoticeDetail" />
-        <activity android:name=".domain.mypage.notice.view.UploadNotice" />
-        <activity android:name=".domain.mypage.notice.view.UpdateNotice" />
-        <activity android:name=".domain.scrap.view.Scrap" />
-        <activity android:name=".domain.item.view.Interests" />
-        <activity android:name=".domain.chat.view.ChatMessage" />
-        <activity android:name=".domain.pricesuggestion.view.FeesPage" />
-        <activity android:name=".domain.pricesuggestion.view.GoChat"/>
-        <activity android:name=".domain.item.view.EditQnA" />
-        <activity android:name=".domain.email.view.Email"/>
-        <activity android:name=".domain.user.view.ChangeInfo"/>
-        <activity android:name=".domain.user.view.MyInfo"/>
-        <activity android:name=".domain.notification.view.NotificationList"/>
-        <activity android:name=".domain.mypage.view.SafeTransactionSetting"/>
+        <activity android:name="com.me.hurryuphup.domain.user.view.SignUp" />
+        <activity android:name="com.me.hurryuphup.domain.user.view.Login" />
+        <activity android:name="com.me.hurryuphup.domain.item.view.ItemDetail" />
+        <activity android:name="com.me.hurryuphup.domain.pricesuggestion.view.BidPage" />
+        <activity android:name="com.me.hurryuphup.domain.upload.view.UploadPage" />
+        <activity android:name="com.me.hurryuphup.domain.item.view.Search" />
+        <activity android:name="com.me.hurryuphup.domain.item.view.AuctionHistory" />
+        <activity android:name="com.me.hurryuphup.domain.item.view.SellHistory" />
+        <activity android:name="com.me.hurryuphup.domain.mypage.notice.view.Notice" />
+        <activity android:name="com.me.hurryuphup.domain.mypage.notice.view.NoticeDetail" />
+        <activity android:name="com.me.hurryuphup.domain.mypage.notice.view.UploadNotice" />
+        <activity android:name="com.me.hurryuphup.domain.mypage.notice.view.UpdateNotice" />
+        <activity android:name="com.me.hurryuphup.domain.scrap.view.Scrap" />
+        <activity android:name="com.me.hurryuphup.domain.item.view.Interests" />
+        <activity android:name="com.me.hurryuphup.domain.chat.view.ChatMessage" />
+        <activity android:name="com.me.hurryuphup.domain.pricesuggestion.view.FeesPage" />
+        <activity android:name="com.me.hurryuphup.domain.pricesuggestion.view.GoChat"/>
+        <activity android:name="com.me.hurryuphup.domain.item.view.EditQnA" />
+        <activity android:name="com.me.hurryuphup.domain.email.view.Email"/>
+        <activity android:name="com.me.hurryuphup.domain.user.view.ChangeInfo"/>
+        <activity android:name="com.me.hurryuphup.domain.user.view.MyInfo"/>
+        <activity android:name="com.me.hurryuphup.domain.notification.view.NotificationList"/>
+        <activity android:name="com.me.hurryuphup.domain.mypage.view.SafeTransactionSetting"/>
 
 
         <meta-data
@@ -66,7 +66,7 @@
 <!--            android:name="com.google.firebase.messaging.default_notification_color"-->
 <!--            android:resource="@color/white" />-->
 
-        <activity android:name=".MainActivity" android:launchMode="singleTop" />
+        <activity android:name="com.me.hurryuphup.MainActivity" android:launchMode="singleTop" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -82,7 +82,7 @@
                     android:scheme="6605274d9a8165288410480f4bd1fa9b" />
             </intent-filter>
         </activity>
-        <service android:name=".global.firebase.MyFirebaseMessagingService">
+        <service android:name="com.me.hurryuphup.global.firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
