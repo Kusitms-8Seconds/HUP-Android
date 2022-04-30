@@ -84,10 +84,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/home_pic2" />
 
-            <androidx.viewpager.widget.ViewPager
+            <com.me.hurryuphup.domain.home.adapter.MeasuredViewPager
                 android:id="@+id/bestItemViewPager"
-                android:layout_width="wrap_content"
-                android:layout_height="925px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +133,15 @@
                     android:layout_weight="0"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
+<!--                <GridView-->
+<!--                    android:id="@+id/AuctionNowView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="100dp"-->
+<!--                    android:columnWidth="100dp"-->
+<!--                    android:horizontalSpacing="10dp"-->
+<!--                    android:verticalSpacing="10dp"-->
+<!--                    android:numColumns="2" />-->
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
