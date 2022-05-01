@@ -94,27 +94,14 @@ public class MainPresenter implements Presenter{
 
     @Override
     public void init() {
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 2);
-        binding.AuctionNowView.setLayoutManager(linearLayoutManager);
         auctionNowAdapter = new AuctionNowAdapter();
+        binding.AuctionNowView.setExpanded(true);
         binding.AuctionNowView.setAdapter(auctionNowAdapter);
 
         bestItemDataList = new ArrayList<>();
         bestItemAdapter = new BestItemAdapter(context, bestItemDataList);
         binding.bestItemViewPager.setAdapter(bestItemAdapter);
 
-        auctionNowAdapter.setOnItemClickListener(new AuctionNowAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                if (Constants.userId != null) {
-                    Intent intent = new Intent(context, ItemDetail.class);
-                    intent.putExtra("itemId", auctionNowAdapter.getAuctionNowData().get(position).getItemId());
-                    context.startActivity(intent);
-                } else {
-                    mainView.showToast(MypageConstants.ELogin.afterLogin.getText());
-                }
-            }
-        });
         setBestItemAnimation();
     }
 

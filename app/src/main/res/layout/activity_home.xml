@@ -47,6 +47,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -67,18 +68,18 @@
                 app:srcCompat="@drawable/home_pic1" />
 
             <ImageView
-                android:layout_width="79px"
-                android:layout_height="31.48px"
-                android:layout_marginLeft="53px"
+                android:layout_width="35dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="120dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/home_pic3" />
 
             <ImageView
-                android:layout_width="78px"
-                android:layout_height="44.91px"
-                android:layout_marginLeft="387px"
+                android:layout_width="35dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="120dp"
                 android:layout_marginTop="150dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -125,23 +126,15 @@
                     android:textColor="#000000"
                     android:textSize="48px" />
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.me.hurryuphup.domain.home.adapter.ExpandableHeightGridView
                     android:id="@+id/AuctionNowView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="100dp"
-                    android:layout_weight="0"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-
-<!--                <GridView-->
-<!--                    android:id="@+id/AuctionNowView"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginBottom="100dp"-->
-<!--                    android:columnWidth="100dp"-->
-<!--                    android:horizontalSpacing="10dp"-->
-<!--                    android:verticalSpacing="10dp"-->
-<!--                    android:numColumns="2" />-->
+                    android:layout_marginBottom="80dp"
+                    android:horizontalSpacing="10dp"
+                    android:verticalSpacing="10dp"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="2" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
