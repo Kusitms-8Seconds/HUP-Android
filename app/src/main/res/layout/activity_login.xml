@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="22dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="3dp"
         android:layout_weight="0"
         android:fontFamily="sans-serif-black"
         android:text="로그인"
@@ -22,8 +23,8 @@
 
     <ImageView
         android:id="@+id/btn_kakao_login"
-        android:layout_width="915.81px"
-        android:layout_height="136.13px"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toTopOf="@id/btn_google_login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +34,9 @@
 
     <ImageView
         android:id="@+id/btn_google_login"
-        android:layout_width="915.81px"
-        android:layout_height="136.13px"
-        android:layout_margin="34px"
-        android:text="GOOGLE LOGIN"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBaseline_toTopOf="@drawable/naverloginbut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,9 +45,9 @@
 
     <ImageView
         android:id="@+id/btn_naver_login"
-        android:layout_width="915.81px"
-        android:layout_height="136.13px"
-        android:layout_margin="34px"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_google_login"
@@ -65,24 +65,24 @@
 
     <EditText
         android:id="@+id/editID"
-        android:layout_width="980px"
-        android:layout_height="140px"
-        android:layout_marginTop="79px"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/box_edge"
         android:hint="아이디 입력"
-        android:paddingLeft="30px"
+        android:paddingLeft="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/or"/>
 
     <EditText
         android:id="@+id/editPW"
-        android:layout_width="980px"
-        android:layout_height="140px"
-        android:layout_marginTop="35px"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="13dp"
         android:background="@drawable/box_edge"
         android:hint="비밀번호 입력"
-        android:paddingLeft="30px"
+        android:paddingLeft="15dp"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,9 +90,9 @@
 
     <ImageView
         android:id="@+id/loginButton"
-        android:layout_width="980px"
-        android:layout_height="140px"
-        android:layout_marginTop="35px"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="13dp"
         app:layout_constraintTop_toBottomOf="@id/editPW"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:text="⦁ 아이디 찾기"
-        android:textSize="38px"
+        android:textSize="14sp"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="@id/loginButton"/>
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
         android:text="⦁ 비밀번호 재설정"
-        android:textSize="38px"
+        android:textSize="14sp"
         android:layout_margin="10dp"
         app:layout_constraintStart_toEndOf="@id/findID"
         app:layout_constraintTop_toBottomOf="@id/loginButton"/>
@@ -123,7 +123,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -134,7 +133,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="아직 계정이 없으신가요? "
-            android:textSize="38px" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/signUp_tv"
@@ -143,7 +142,7 @@
             android:fontFamily="sans-serif-black"
             android:text="회원가입하기"
             android:textColor="@color/Hup"
-            android:textSize="38px" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 

@@ -33,31 +33,31 @@
 
                 <ImageView
                     android:id="@+id/goback"
-                    android:layout_width="60px"
-                    android:layout_height="52px"
-                    android:layout_marginTop="99px"
-                    android:layout_marginStart="50px"
+                    android:layout_width="48dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="38dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/arrow" />
 
                 <ImageView
                     android:id="@+id/bidImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="938px"
+                    android:layout_width="0dp"
+                    android:layout_height="350dp"
                     android:background="@drawable/gradation"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50px"
-                    android:layout_marginBottom="51px"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginBottom="19dp"
                     android:background="@drawable/searchview_background"
                     android:elevation="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -65,11 +65,11 @@
 
                     <ImageView
                         android:id="@+id/imgV1"
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="10px"
-                        android:layout_marginStart="10px"
                         android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
                         app:srcCompat="@drawable/clockpic" />
 
                     <TextView
@@ -78,8 +78,8 @@
                         android:layout_height="wrap_content"
                         android:text="00일 00시간 00분 전"
                         android:textColor="#000000"
-                        android:padding="20px"
-                        android:textSize="40px"
+                        android:padding="8dp"
+                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/imgV1" />
                 </LinearLayout>
@@ -91,21 +91,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginStart="50px"
-                android:layout_marginTop="43px"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/c3">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32px"
+                    android:layout_marginBottom="14dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="40px"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="0"
                         android:background="@drawable/blue_edge"
                         android:text="시작가"
@@ -141,14 +141,14 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32px"
+                    android:layout_marginBottom="14dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="40px"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="0"
                         android:background="@drawable/red_edge"
                         android:text="최고가"
@@ -191,7 +191,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="40px"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="0"
                         android:background="@drawable/blue_edge"
                         android:text="참여자"
@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="* 최고가보다 높게 입찰하세요"
-                android:padding="50px"
+                android:padding="19dp"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/view1"/>
@@ -239,9 +239,9 @@
                 android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="42px"
-                android:layout_marginStart="50px"
-                android:layout_marginEnd="50px"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="19dp"
                 android:background="#E9E9E9"
                 app:layout_constraintTop_toBottomOf="@id/l3" />
 
@@ -253,7 +253,7 @@
                 android:text="판매상태"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:layout_marginEnd="50px"
+                android:layout_marginEnd="19dp"
                 app:layout_constraintBaseline_toBottomOf="@id/c3"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -261,10 +261,10 @@
                 android:id="@+id/participants_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50px"
-                android:layout_marginEnd="50px"
-                android:layout_marginTop="36px"
-                android:paddingBottom="174px"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="19dp"
+                android:layout_marginTop="14dp"
+                android:paddingBottom="80dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -274,9 +274,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ly_editPrice"
         android:layout_width="match_parent"
-        android:layout_height="190px"
+        android:layout_height="70dp"
         android:background="#FFFFFF"
         android:orientation="horizontal"
+        android:paddingLeft="19dp"
+        android:paddingRight="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -284,15 +286,15 @@
 
         <EditText
             android:id="@+id/editPrice"
-            android:layout_width="670px"
-            android:layout_height="120px"
-            android:layout_marginLeft="50px"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/box_edge"
             android:ems="7"
             android:inputType="number"
             android:digits="0123456789"
             android:hint="가격을 입력해주세요 (숫자만 입력)"
-            android:textSize="34px"
+            android:textSize="13sp"
             android:paddingLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bidbutton"
@@ -304,7 +306,7 @@
             android:layout_height="wrap_content"
             android:text="원"
             android:layout_marginEnd="10dp"
-            android:textSize="38px"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@id/editPrice"
             app:layout_constraintTop_toTopOf="@id/editPrice"
             app:layout_constraintBottom_toBottomOf="@id/editPrice"/>
@@ -312,14 +314,11 @@
         <Button
             android:id="@+id/bidbutton"
             android:layout_width="0dp"
-            android:layout_height="150px"
-            android:layout_marginLeft="26px"
-            android:layout_marginRight="50px"
+            android:layout_height="60dp"
             android:text="입찰하기"
             android:backgroundTint="@color/Hup"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editPrice"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

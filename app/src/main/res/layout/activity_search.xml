@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="67px">
+    android:padding="17dp"
+    tools:context=".domain.item.view.Search">
 
     <ImageView
         android:id="@+id/goBack"
-        android:layout_width="60px"
-        android:layout_height="52px"
-        android:layout_marginTop="32px"
+        android:layout_width="20dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
 
     <android.widget.SearchView
         android:id="@+id/searchView2"
-        android:layout_width="880px"
-        android:layout_height="116px"
-        android:layout_marginLeft="40px"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
         android:background="@drawable/searchview_background"
         android:queryHint="검색어를 입력해주세요."
         app:iconifiedByDefault="false"
+        app:layout_constraintStart_toEndOf="@id/goBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,11 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="68px"
-        android:layout_marginBottom="30px"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="sans-serif-black"
         android:text="최근 검색어"
-        android:textSize="42px"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/searchWordList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView2" />
@@ -44,19 +47,19 @@
         android:id="@+id/removeAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68px"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-black"
         android:text="전체 삭제"
         android:textColor="#0505E8"
-        android:textSize="42px"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView2" />
 
     <ListView
         android:id="@+id/searchWordList"
         android:layout_width="match_parent"
-        android:layout_height="428px"
+        android:layout_height="wrap_content"
         android:divider="#00000000"
         android:dividerHeight="0px"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="19dp"
     tools:context=".domain.upload.view.UploadPage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +21,6 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="79px"
             android:layout_marginBottom="74px"
             android:layout_weight="0"
             android:fontFamily="sans-serif-black"
@@ -39,7 +39,6 @@
             app:srcCompat="@drawable/arrow"
             android:layout_marginTop="79px"
             android:layout_marginBottom="74px"
-            android:layout_marginStart="50px"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -49,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="79px"
             android:layout_marginBottom="74px"
-            android:layout_marginRight="50px"
             android:layout_weight="0"
             android:fontFamily="sans-serif-black"
             android:text="완료"
@@ -77,8 +75,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,14 +119,10 @@
                 android:fontFamily="sans-serif-black"
                 android:text="제목"
                 android:textColor="#000000"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textSize="44px" />
 
             <EditText
                 android:id="@+id/editItemName"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="145px"
                 android:background="@drawable/box_edge"
@@ -147,8 +139,6 @@
                 android:layout_marginTop="57px"
                 android:layout_marginBottom="30px"
                 android:fontFamily="sans-serif-black"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:text="카테고리"
                 android:textColor="#000000"
                 android:textSize="44px" />
@@ -157,8 +147,6 @@
                 android:id="@+id/selectCategoryLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -189,17 +177,13 @@
                 android:layout_marginBottom="30px"
                 android:fontFamily="sans-serif-black"
                 android:text="경매 시작가"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textColor="#000000"
                 android:textSize="44px" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/editItemStartPrice"
@@ -233,16 +217,12 @@
                 android:fontFamily="sans-serif-black"
                 android:text="구매 일자"
                 android:textColor="#000000"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textSize="44px" />
 
             <TextView
                 android:id="@+id/editAuctionBuyDate"
                 android:layout_width="match_parent"
                 android:layout_height="145px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:background="@drawable/box_edge"
                 android:paddingLeft="39px"
                 android:paddingTop="39px"
@@ -257,8 +237,6 @@
                 android:layout_marginBottom="30px"
                 android:fontFamily="sans-serif-black"
                 android:text="경매 종료 일자"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textColor="#000000"
                 android:textSize="44px" />
 
@@ -270,7 +248,6 @@
                     android:id="@+id/editAuctionFinalDate"
                     android:layout_width="wrap_content"
                     android:layout_height="145px"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@drawable/box_edge"
@@ -284,7 +261,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="145px"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@drawable/box_edge"
                     android:paddingLeft="39px"
@@ -301,8 +277,6 @@
                 android:layout_marginBottom="30px"
                 android:fontFamily="sans-serif-black"
                 android:text="물건 상태"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textColor="#000000"
                 android:textSize="44px" />
 
@@ -311,8 +285,6 @@
                 style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:isIndicator="false"
                 android:numStars="5"
                 android:rating="0"
@@ -327,16 +299,12 @@
                 android:fontFamily="sans-serif-black"
                 android:text="제품 소개"
                 android:textColor="#000000"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textSize="44px" />
 
             <EditText
                 android:id="@+id/editItemContent"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="70dp"
                 android:layout_weight="1"
                 android:background="@drawable/box_edge"

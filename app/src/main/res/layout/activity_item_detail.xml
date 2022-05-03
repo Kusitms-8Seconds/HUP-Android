@@ -28,10 +28,10 @@
 
                 <ImageView
                     android:id="@+id/goback"
-                    android:layout_width="60px"
-                    android:layout_height="52px"
-                    android:layout_marginStart="50px"
-                    android:layout_marginTop="99px"
+                    android:layout_width="48dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="38dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/arrow" />
@@ -39,7 +39,7 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/itemDetailViewPager"
                     android:layout_width="0dp"
-                    android:layout_height="938px"
+                    android:layout_height="350dp"
                     android:background="@drawable/gradation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -51,8 +51,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50px"
-                    android:layout_marginBottom="51px"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginBottom="19dp"
                     android:background="@drawable/searchview_background"
                     android:elevation="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -60,11 +60,11 @@
 
                     <ImageView
                         android:id="@+id/imgV1"
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="10px"
                         android:layout_gravity="center"
-                        android:layout_marginStart="20px"
+                        android:layout_marginStart="8dp"
                         app:srcCompat="@drawable/clockpic" />
 
                     <TextView
@@ -73,8 +73,8 @@
                         android:layout_height="wrap_content"
                         android:text="00일 00시간 00분 전"
                         android:textColor="#000000"
-                        android:padding="20px"
-                        android:textSize="40px"
+                        android:padding="8dp"
+                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/imgV1" />
                 </LinearLayout>
@@ -84,16 +84,16 @@
             <LinearLayout
                 android:id="@+id/ly_seller"
                 android:layout_width="match_parent"
-                android:layout_height="260px"
-                android:layout_marginStart="50px"
-                android:layout_marginEnd="50px"
+                android:layout_height="100dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/sellerImage"
-                    android:layout_width="160px"
-                    android:layout_height="160px"
-                    android:layout_marginTop="50px"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="22dp"
                     android:layout_weight="0"
                     app:srcCompat="@drawable/testuserimage" />
 
@@ -101,17 +101,12 @@
                     android:id="@+id/sellerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="31px"
-                    android:layout_marginTop="102px"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="40dp"
                     android:layout_weight="0"
                     android:text="판매자 이름"
                     android:textColor="#000000"
-                    android:textSize="38px" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/deleteButton"
@@ -134,16 +129,16 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginStart="50px"
-                android:layout_marginEnd="50px"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
                 android:background="#E9E9E9" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50px"
-                android:layout_marginTop="50px"
-                android:layout_marginEnd="50px"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="22dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -161,27 +156,27 @@
                     android:fontFamily="sans-serif-black"
                     android:text="제품 이름"
                     android:textColor="#000000"
-                    android:textSize="48px" />
+                    android:textSize="17sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50px"
-                    android:layout_marginBottom="50px"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="22dp"
                     android:layout_weight="0"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="83px"
+                        android:layout_marginRight="40dp"
                         android:layout_weight="0"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="40px"
+                            android:layout_marginEnd="15dp"
                             android:layout_weight="0"
                             android:background="@drawable/blue_edge"
                             android:text="최고가"
@@ -201,7 +196,7 @@
                             android:layout_weight="0"
                             android:text="00000"
                             android:textColor="#000000"
-                            android:textSize="40px" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/won"
@@ -211,7 +206,7 @@
                             android:layout_weight="0"
                             android:text="원"
                             android:textColor="#000000"
-                            android:textSize="40px" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -223,7 +218,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="40px"
+                            android:layout_marginEnd="15dp"
                             android:layout_weight="0"
                             android:background="@drawable/blue_edge"
                             android:text="참여자"
@@ -243,7 +238,7 @@
                             android:layout_weight="0"
                             android:text="00"
                             android:textColor="#000000"
-                            android:textSize="40px" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -252,7 +247,7 @@
                             android:layout_weight="0"
                             android:text="명"
                             android:textColor="#000000"
-                            android:textSize="40px" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -269,8 +264,8 @@
                     android:layout_weight="0"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ligula sapien, rutrum sed vestibulum eget, rhoncus ac erat. Aliquam erat volutpat. Sed convallis scelerisque enim at fermentum. Aliquam consectetur, est ac auctor iaculis, odio mi bibendum leo, in congue neque velit vel enim. Nullam vitae justo at mauris sodales feugiat. Praesent pellentesque ipsum eget tellus imperdiet ultrices. Sed ultricies nisi nec diam sodales fringilla. Quisque adipiscing cursus porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum scelerisque elit, eu pharetra dui pulvinar eget. Nam mollis mauris id tellus ultricies at porttitor neque vulputate. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
                     android:textColor="#000000"
-                    android:textSize="44px"
-                    android:layout_marginBottom="50px"/>
+                    android:textSize="15sp"
+                    android:layout_marginBottom="22dp"/>
 
                 <View
                     android:id="@+id/view"
@@ -295,8 +290,8 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="50dp"
                         android:layout_height="20dp"
-                        android:layout_marginTop="50px"
-                        android:layout_marginBottom="50px"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="22dp"
                         android:src="@drawable/qna" />
 
                     <TextView
@@ -304,8 +299,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="50px"
-                        android:layout_marginBottom="50px"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="22dp"
                         android:text="(3)"
                         android:textColor="#6C6C6C" />
 
@@ -315,8 +310,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="3dp"
                         android:layout_weight="1"
-                        android:layout_marginTop="50px"
-                        android:layout_marginBottom="50px"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="22dp"
                         android:text="전체보기"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -324,8 +319,8 @@
                     android:id="@+id/preparing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50px"
-                    android:layout_marginBottom="50px"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="22dp"
                     android:text="준비중입니다."
                     android:textColor="@color/black"
                     android:fontFamily="sans-serif-black"
@@ -347,7 +342,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/l2"
         android:layout_width="match_parent"
-        android:layout_height="190px"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
@@ -356,8 +351,8 @@
 
         <ImageView
             android:id="@+id/isheart"
-            android:layout_width="72px"
-            android:layout_height="63px"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="96px"
             android:layout_weight="0"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -366,27 +361,29 @@
             app:srcCompat="@drawable/heartx" />
 
         <View
+            android:id="@+id/view2"
             android:layout_width="2dp"
-            android:layout_height="70px"
-            android:layout_marginLeft="66px"
-            android:layout_marginRight="66px"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:background="#DCDCDC"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/isheart"
-            app:layout_constraintRight_toLeftOf="@id/participateButton"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
             android:id="@+id/participateButton"
-            android:layout_width="730px"
-            android:layout_height="150px"
-            android:layout_marginEnd="50px"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="22dp"
             android:layout_weight="10"
             android:backgroundTint="@color/Hup"
             android:text="경매 참여하기"
-            android:textSize="50px"
+            android:textSize="19sp"
             android:fontFamily="sans-serif-black"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/view2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.me.hurryuphup.R;
 import com.me.hurryuphup.domain.home.model.AuctionNow;
 import com.me.hurryuphup.domain.item.view.ItemDetail;
@@ -56,7 +57,7 @@ class AuctionNowAdapter extends BaseAdapter {
         final Context context = viewGroup.getContext();
         final AuctionNow auctionNowItem = items.get(position);
 
-        ImageView item_image;
+        RoundedImageView item_image;
         TextView item_name;
         TextView item_upPrice;
         TextView item_date;
@@ -86,7 +87,6 @@ class AuctionNowAdapter extends BaseAdapter {
                 Glide.with(context).load(Constants.imageBaseUrl+auctionNowItem.getImageURL()).override(item_image.getWidth()
                         ,item_image.getHeight()).into(item_image);
             }
-            item_image.setClipToOutline(true);  //item 테두리
             item_name.setText(auctionNowItem.getItemName());
             int dif = auctionNowItem.getItemPrice();
             if(dif <= 0) {
